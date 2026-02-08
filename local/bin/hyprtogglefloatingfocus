@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [[ $(hyprctl activewindow -j | jq ."floating") == "true" ]]; then
+  hyprctl dispatch focuswindow "tiled"
+else
+  hyprctl dispatch focuswindow "floating"
+fi

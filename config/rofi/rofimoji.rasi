@@ -1,0 +1,41 @@
+// @import "config"
+@theme "frappe"
+
+textbox {
+  vertical-align:   0.5;
+  horizontal-align: 0.5;
+  margin: 0;
+}
+
+listview {
+  columns:       9;
+  lines:         7;
+  cycle:         true;
+  dynamic:       true;
+  layout:        vertical;
+  flow:          horizontal;
+  reverse:       false;
+  fixed-height:  true;
+  fixed-columns: true;
+  margin: 0;
+}
+
+prompt {
+  background-color: #303446;
+}
+
+element {
+  orientation: vertical;
+}
+
+element selected {
+  border: 3px;
+  border-color: rgb(148, 156, 187);
+}
+
+element-text {
+  vertical-align:   0.5;
+  horizontal-align: 0.5;
+  font: "FiraCode Nerd Font 24";
+}
+

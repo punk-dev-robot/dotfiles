@@ -1,0 +1,96 @@
+return {}
+
+-- return {
+--   "olimorris/codecompanion.nvim",
+--   enabled = true,
+--   dependencies = {
+--     "nvim-lua/plenary.nvim",
+--     "nvim-treesitter/nvim-treesitter",
+--     "ravitemer/mcphub.nvim",
+--     "ravitemer/codecompanion-history.nvim",
+--   },
+--   opts = {
+--     adapters = {
+--       openai = function()
+--         return require("codecompanion.adapters").extend("openai", {
+--           env = {
+--             api_key = "cmd:op read op://AI/CodeCompanionLiteLlmKey/password --no-newline",
+--             -- api_key = "cmd:op read op://AI/OpenAIApiKey/password --no-newline",
+--           },
+--         })
+--       end,
+--       anthropic = function()
+--         return require("codecompanion.adapters").extend("openai_compatible", {
+--           env = {
+--             api_key = "cmd:op read op://AI/CodeCompanionLiteLlmKey/password --no-newline",
+--           },
+--         })
+--       end,
+--       gemini = function()
+--         return require("codecompanion.adapters").extend("openai_compatible", {
+--           env = {
+--             api_key = "cmd:op read op://AI/CodeCompanionLiteLlmKey/password --no-newline",
+--           },
+--         })
+--       end,
+--       -- copilot = function()
+--       --   return require("codecompanion.adapters").extend("copilot", {
+--       --     schema = {
+--       --       model = {
+--       --         default = "gemini-2.5-pro",
+--       --       },
+--       --     },
+--       --   })
+--       -- end,
+--     },
+--     display = {
+--       chat = {
+--         intro_message = "Welcome to CodeCompanion ✨! Press ? for options",
+--         show_header_separator = false, -- Show header separators in the chat buffer? Set this to false if you're using an external markdown formatting plugin
+--         auto_scroll = false,
+--       },
+--     },
+--     extensions = {
+--       mcphub = {
+--         callback = "mcphub.extensions.codecompanion",
+--         opts = {
+--           show_result_in_chat = true, -- Show mcp tool results in chat
+--           make_vars = true, -- Convert resources to #variables
+--           make_slash_commands = true, -- Add prompts as /slash commands
+--         },
+--       },
+--       history = {
+--         enabled = true,
+--         opts = {
+--           keymap = "gh",
+--           save_chat_keymap = "sc",
+--           auto_save = true,
+--           expiration_days = 0,
+--           -- Picker interface ("telescope" or "snacks" or "fzf-lua" or "default")
+--           picker = "fzf-lua",
+--           auto_generate_title = true,
+--           title_generation_opts = {
+--             adapter = nil, -- "copilot"
+--             model = nil, -- "gpt-4o"
+--           },
+--           continue_last_chat = false,
+--           ---When chat is cleared with `gx` delete the chat from history
+--           delete_on_clearing_chat = false,
+--           ---Directory path to save the chats
+--           dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
+--           enable_logging = false,
+--         },
+--       },
+--     },
+--   },
+--   keys = {
+--     { "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>", desc = "Toggle (CodeCompanion)" },
+--     { "<leader>ac", "<cmd>CodeCompanionActions<cr>", desc = "Actions (CodeCompanion)", mode = { "n", "v" } },
+--     { "<C-a>", "<cmd>CodeCompanionActions<cr>", desc = "Actions (CodeCompanion)", mode = { "n", "v" } },
+--     { "ga", "<cmd>CodeCompanionChat Add<cr>", desc = "Add selection to CodeCompanion", mode = "v" },
+--   },
+--   init = function()
+--     -- Expand 'cc' into 'CodeCompanion' in the command line
+--     vim.cmd([[cab cc CodeCompanion]])
+--   end,
+-- }

@@ -1,0 +1,12 @@
+# Disable wake for Thunderbolt controllers (prevent monitor wake signals)
+ACTION=="add", SUBSYSTEM=="pci", KERNEL=="0000:c3:00.5", ATTR{power/wakeup}="disabled"
+ACTION=="add", SUBSYSTEM=="pci", KERNEL=="0000:c3:00.6", ATTR{power/wakeup}="disabled"
+
+# Disable wake for fingerprint reader
+ACTION=="add", SUBSYSTEM=="pci", KERNEL=="0000:c1:00.3", ATTR{power/wakeup}="disabled"
+
+# Disable wake for ethernet USB controller (redundant with WakeOnLan=off)
+ACTION=="add", SUBSYSTEM=="pci", KERNEL=="0000:c1:00.4", ATTR{power/wakeup}="disabled"
+
+# Disable wake for unused USB controller
+ACTION=="add", SUBSYSTEM=="pci", KERNEL=="0000:c3:00.3", ATTR{power/wakeup}="disabled"

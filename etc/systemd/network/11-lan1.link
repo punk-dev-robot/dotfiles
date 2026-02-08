@@ -1,0 +1,7 @@
+# Secondary USB ethernet dongle (Framework RTL8156 2.5G)
+[Match]
+MACAddress=00:e0:4c:33:7e:30
+
+[Link]
+Name=lan1
+Description=Secondary USB Ethernet (framework dongle)

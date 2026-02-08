@@ -1,0 +1,10 @@
+[Match]
+Name=bond0
+
+[Link]
+RequiredForOnline=routable
+
+[Network]
+BindCarrier=lan0 wlan0
+DHCP=yes
+; MACVLAN=mv1

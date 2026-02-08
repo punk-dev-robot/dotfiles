@@ -1,0 +1,18 @@
+[settings]
+default_target_type = "symbolic"
+
+[all]
+depends = ["user", "system"]
+
+[user.files]
+"config" = "~/.config"
+"config/git/gitconfig" = "~/.gitconfig"
+"config/git/gitignore" = "~/.gitignore"
+"config/ssh" = { target = "~/.ssh", type = "template" }
+# "config/easyeffects" = { target = "~/.config/easyeffects", type = "template" }
+"config/zsh/.zshenv" = "~/.zshenv"
+"config/.markdownlint.jsonc" = "~/.markdownlint.jsonc"
+"local" = "~/.local"
+
+[system.files]
+"etc" = { target = "/etc", type = "template", owner = "root" }

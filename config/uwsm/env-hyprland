@@ -1,0 +1,11 @@
+#!/bin/sh
+# Hyprland-specific environment configuration
+
+# Theming Variables
+export GTK_THEME="catppuccin-mocha-mauve-standard+default"
+
+# Cursor themes are set here but the Hyprland plugin will handle their finalization
+export XCURSOR_THEME="catppuccin-mocha-peach-cursors"
+export XCURSOR_SIZE=30
+export HYPRCURSOR_THEME="catppuccin-mocha-peach-cursors"
+export HYPRCURSOR_SIZE=30

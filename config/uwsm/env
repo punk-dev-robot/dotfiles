@@ -1,0 +1,22 @@
+#!/bin/sh
+# uwsm environment configuration
+# This file is sourced during environment preparation
+
+# Toolkit Backend Variables
+export GDK_BACKEND="wayland,x11,*"
+export SDL_VIDEODRIVER="wayland"
+export CLUTTER_BACKEND="wayland"
+
+# Qt Variables
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+export QT_QPA_PLATFORM="wayland;xcb"
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=0
+export QT_QPA_PLATFORMTHEME="qt6ct"
+export QT_SCALE_FACTOR=1
+
+# Application Variables
+export MOZ_ENABLE_WAYLAND=1
+export MOZ_DBUS_REMOTE=1
+export ELECTRON_OZONE_PLATFORM_HINT="auto"
+export APP2UNIT_SLICES='a=app-graphical.slice b=background-graphical.slice s=session-graphical.slice'
+export APP2UNIT_TYPE='service'

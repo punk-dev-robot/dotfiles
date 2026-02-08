@@ -1,0 +1,6 @@
+[Match]
+Name=lan0
+
+[Network]
+Bond=bond0
+PrimarySlave=true

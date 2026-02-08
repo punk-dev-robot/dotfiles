@@ -1,0 +1,7 @@
+" LikeC4 (C4 DSL) filetype detection
+augroup structurizr_ftdetect
+  au!
+  au BufRead,BufNewFile *.c4 set filetype=structurizr
+  au BufRead,BufNewFile *.dsl set filetype=structurizr
+  au BufRead,BufNewFile */.c4/* set filetype=structurizr
+augroup END

@@ -1,0 +1,21 @@
+[Match]
+; Name=!lan0
+; Name=!bond0
+Kind=!*
+Type=ether
+
+[Link]
+RequiredForOnline=routable
+
+[Network]
+DHCP=yes
+
+[DHCP]
+RouteMetric=100
+
+# Speeding up TCP slow start: https://wiki.archlinux.org/title/Systemd-networkd#Configuring_a_second_static_IP_with_its_own_MAC_address_on_an_existing_interface
+[Route]
+Gateway=_dhcp4
+# The defaults for these values is 10.  They are a multiple of the MSS (1460 bytes).
+InitialCongestionWindow=50
+InitialAdvertisedReceiveWindow=50

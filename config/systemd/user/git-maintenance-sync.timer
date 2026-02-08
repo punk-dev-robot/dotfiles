@@ -1,0 +1,11 @@
+[Unit]
+Description=Sync Git Maintenance Configuration Weekly
+Requires=git-maintenance-sync.service
+
+[Timer]
+OnCalendar=weekly
+OnBootSec=5min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

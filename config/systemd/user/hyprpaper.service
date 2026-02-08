@@ -1,0 +1,16 @@
+[Unit]
+Description=wallpaper utility for Hyprland
+Documentation=https://github.com/hyprwm/hyprpaper
+; PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=HYPRLAND_INSTANCE_SIGNATURE
+
+[Service]
+Type=simple
+; ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
+ExecStart=/usr/bin/hyprpaper
+Restart=on-failure
+Slice=session-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target

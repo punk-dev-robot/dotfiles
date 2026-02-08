@@ -1,0 +1,68 @@
+# <pre/post/both/pre-log/post-log/none run>{btrbk config location}[profiles,comma separated](log name)
+# <Optional>							   {Optional}			  [Required]				(Optional)
+
+# <pre/post/both/pre-log/post-log/none run>
+# Choose whether you want btrbk to create snapshots and update the log before and/or
+# after the pacman transaction. If you want to run btrbk but not update the log, make the
+# log name section "(none)". If you want to update the log, but not run btrbk, add "-log"
+# to the end of "pre" or "post" i.e. "<post-log>". Defaults to "none", which runs both logs
+# but doesn't run btrbk.
+
+# {btrbk config location}
+# The absolute path to the btrbk configuration file that will be used. This must have the
+# relevant profiles on in-line comments, as seen in "btrbk.conf.example". If empty, uses
+# "/etc/btrbk/btrbk.conf" or "/etc/btrbk.conf" as default.
+
+# [profiles,comma separated]
+# The profiles that will be looked for in the btrbk config in-line comments, comma separated.
+# Space/tab separated in the btrbk config.
+
+# (log name)
+# Absolute path required if log name given. If left blank, will default to the snapshot
+# locations found in the btrbk config file. If no log file is desired, use: "(none)".
+
+###  EXAMPLES ###
+
+# Run btrbk before and after the pacman transaction, using the default btrbk config
+# with both root and remote profiles being logged in the same snapshot_dir and target
+# directories that the snapshots are stored.
+<both>{/etc/btrbk/btrbk.conf}[root,remote]()
+
+# Don't run btrbk, but do log the root and remote snapshot information to the same
+# file in /var/log/btrbk_logger.log. Choosing not to run btrbk means no new snapshot
+# will be made, but this can be handy if you have a preceding line calling btrbk,
+# such as the previous example, and want an extra log file.
+<none>{/etc/btrbk/btrbk.conf}[root,remote](/var/log/btrbk_logger.log)
+
+# The same as the previous example, but only log the data of the root snapshots.
+# The <> section can be blank, as it defaults to "none" if it isn't "pre", "post",
+# "pre-log", "post-log", or "both".
+<>{/etc/btrbk/btrbk.conf}[root](/var/log/btrbk_logger.log)
+
+# If you only want to log the pre-transaction snapshot, but not the post-transaction
+# snapshot, but still want to take both snapshots, do the following:
+<pre>{/etc/btrbk/btrbk.conf}[root,remote]()
+<post>{/etc/btrbk/btrbk.conf}[root,remote](none)
+
+# If you want to take a pre and post-transaction snapshot, log them both, then log
+# them both to separate locations without taking another snapshot, do the following
+# (only logging root in the pre/post-log options since the target has the same
+# snapshot names, which would result in double entries in 
+# "/var/log/{pre,post}_btrbk_logger.log"):
+<both>{/etc/btrbk/btrbk.conf}[root,remote]()
+<pre-log>{/etc/btrbk/btrbk.conf}[root](/var/log/pre_btrbk_logger.log)
+<post-log>{/etc/btrbk/btrbk.conf}[root](/var/log/post_btrbk_logger.log)
+
+# If you want to take a local snapshot, but keep the log on a drive accessed via
+# SSH, you can use the following (first with port specified, second without).
+# Note: if using an ssh_identity, the in-line comment is needed, even if btrbk
+# is not making a snapshot over SSH, in order to access the log over SSH.
+<both>{/etc/btrbk/btrbk.conf}[root](ssh://192.160.1.70:1234/var/log/btrbk_logger.log)
+<none>{/etc/btrbk/btrbk.conf}[root](ssh://192.160.1.70/var/log/btrbk_logger.log)
+
+# If you want to do a snapshot over SSH, and use the ssh_identity as recommended
+# in the btrbk how-to, use the in-line commenting system to denote that.
+<both>{/etc/btrbk/btrbk.conf}[ssh]()
+<none>{/etc/btrbk/btrbk.conf}[ssh](/var/log/btrbk_logger_local.log)
+<none>{/etc/btrbk/btrbk.conf}[ssh](ssh://192.160.1.70:1234/var/log/btrbk_logger_ssh.log)
+

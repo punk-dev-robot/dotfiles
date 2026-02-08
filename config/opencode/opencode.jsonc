@@ -1,0 +1,55 @@
+{
+  "mcp": {
+    "basic-memory": {
+      "type": "local",
+      "command": ["uvx", "basic-memory", "mcp"],
+      "environment": {
+        "LOG_LEVEL": "warn",
+      },
+    },
+    "context7": {
+      "type": "local",
+      "command": ["npx", "-y", "@upstash/context7-mcp"],
+    },
+    "exa": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "exa-mcp-server",
+        "--tools=web_search_exa,research_paper_search,company_research,crawling,competitor_finder,linkedin_search,wikipedia_search_exa,github_search",
+      ],
+    },
+    "firecrawl": {
+      "type": "local",
+      "command": ["npx", "-y", "firecrawl-mcp"],
+      "environment": {
+        "FIRECRAWL_API_URL": "http://10.10.10.51:3002",
+      },
+    },
+    "firecrawl-cloud": {
+      "type": "local",
+      "command": ["npx", "-y", "firecrawl-mcp"],
+    },
+  },
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "openai": {
+      "options": {
+        "baseURL": "${LITELLM_BASE_URL}",
+      },
+    },
+  },
+  "model": "openai/gpt-5.2",
+  "keybinds": {
+    "input_newline": "alt+enter,ctrl+j,shift+enter",
+  },
+  "instructions": ["./instructions.md"],
+  "plugin": ["./plugins/modern-cli-warn.ts"],
+  "permission": {
+    "bash": {
+      "nx run deploy:*": "deny",
+      "nx deploy:*": "deny",
+    },
+  },
+}

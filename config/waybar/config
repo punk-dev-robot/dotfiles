@@ -1,0 +1,187 @@
+// vim: set ft=jsonc:
+{
+  "layer": "top", // Waybar at top layer
+  "position": "top", // Waybar position (top|bottom|left|right)
+  "output": "DP-3", // Only show on ultrawide
+  // "height": 20, // Waybar height (to be removed for auto height)
+  // Choose the order of the modules
+  "modules-left": [
+    "cffi/virtual-desktops",
+    "hyprland/submap"
+  ],
+  "modules-center": [
+    "hyprland/window",
+    "custom/recorder"
+  ],
+  "modules-right": [
+    "custom/crypto",
+    "idle_inhibitor",
+    "pulseaudio",
+    "network",
+    "network#vpn",
+    "cpu",
+    "memory",
+    "temperature",
+    "backlight",
+    "battery",
+    "tray",
+    "clock"
+  ],
+
+  "cffi/virtual-desktops": {
+    "module_path": "/home/kuba/.config/waybar/modules/libwaybar_vd.so",
+    "format": "{id}",
+    "show_empty": false,
+    "separator": " ",
+    "on-scroll-up": "hyprctl dispatch nextdesk",
+    "on-scroll-down": "hyprctl dispatch prevdesk"
+  },
+
+  "hyprland/submap": {
+    "format": "📸 [R]eg [F]rz [W]in [M]on [V]id",
+    "format-screenshot": "📸 [R]eg [F]rz [W]in [M]on [V]id",
+    "max-length": 40,
+    "tooltip": true,
+    "tooltip-format": "Screenshot shortcuts:\n[r] region\n[f] freeze+region\n[w] window\n[m] monitor\n[v] video\n[ESC] exit"
+  },
+
+  "hyprland/window": {
+    "max-length": 200,
+    "separate-outputs": true
+  },
+
+  "custom/crypto": {
+    "format": "{}",
+    "interval": 600,
+    "return-type": "json",
+    "exec": "~/.config/waybar/modules/crypto/crypto.py",
+    "exec-if": "ping -c1 -W1 pro-api.coinmarketcap.com"
+  },
+
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
+
+  "pulseaudio": {
+    // "format": "{icon} {volume}%",
+    // "", "", " ", 
+    "format": "{icon}    {volume}%   {format_source}",
+    // "format-bluetooth": "{volume}% {icon} {format_source}",
+    "format-muted": " {format_source_muted}",
+    "format-source": " {volume}%",
+    "format-source-muted": "",
+    "format-icons": {
+      "headphones": "",
+      "handsfree": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "on-click": "alacritty --class=ncpamixer ncpamixer"
+  },
+
+  "network": {
+    "format-wifi": "    {essid} ({signalStrength}%)",
+    "format-ethernet": "  {ifname}: {ipaddr}/{cidr}",
+    "format-linked": "  {ifname} (No IP)",
+    "format-disconnected": "⚠ Disconnected",
+    "format-alt": "  gw: {gwaddr}"
+  },
+
+  "network#vpn": {
+    "interface": "tun0",
+    "format-wifi": "🔒",
+    "format-ethernet": "🔒",
+    "format-disconnected": "🔓",
+    "on-click": "alacritty --class=nmtui nmtui connect"
+    // "on-click": ".dotfiles/bin/toggle-vpn""interface": "tun0", // (Optional) To force the use of this interface
+  },
+
+  "cpu": {
+    "format": "   {usage}%",
+    "tooltip": false
+  },
+
+  "memory": {
+    "format": "   {}%"
+  },
+
+  "temperature": {
+    // "thermal-zone": 2,
+    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 80,
+    // "format-critical": "{temperatureC}°C {icon}",
+    "format": "{icon}  {temperatureC}°C",
+    "format-icons": [
+      "",
+      "",
+      ""
+    ]
+  },
+
+  "backlight": {
+    // "device": "acpi_video1",
+    "format": "{icon}  {percent}%",
+    "format-icons": ["", "", "", "", "", "", "", "", ""]
+  },
+
+  "battery": {
+    "states": {
+      "good": 80,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon}  {capacity}%",
+    "format-charging": "   {capacity}%",
+    "format-plugged": "  {capacity}% ",
+    // "format-alt": "{time} {icon}",
+    // "format-good": "", // An empty format will hide the module
+    // "format-full": "",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+
+  "tray": {
+    "spacing": 10
+  },
+
+  "clock": {
+    "timezone": "Europe/London",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": " {:%d/%m/%Y}",
+    "format": "  {:%H:%M}"
+}
+//   "clock": {
+//    "format": " {:%H:%M}"
+//     "tooltip-format": "{:%Y-%m-%d | %H:%M}",
+//     "format-alt": "{:%Y-%m-%d}"
+//  },
+/*
+  "battery#bat2": {
+    "bat": "BAT2"
+  },
+
+  "custom/recorder": {
+    "format": "",
+    "return-type": "json",
+    "interval": 1,
+    "exec": "echo '{\"class\": \"recording\"}'",
+    "exec-if": "pgrep wf-recorder"
+  }
+*/
+}

@@ -1,0 +1,22 @@
+[Unit]
+Description=btrbk SSH backup to px-nas.lan
+Documentation=man:btrbk(1)
+ConditionACPower=true
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+
+# Check if px-nas.lan is reachable before attempting backup
+ExecCondition=/bin/sh -c 'ping -c 1 -W 3 px-nas.lan >/dev/null 2>&1'
+
+# Clean any incomplete subvolumes from previous failed attempts
+ExecStartPre=-/usr/bin/btrbk -c /etc/btrbk/btrbk-ssh.conf clean
+
+# Run backup with sleep inhibition
+ExecStart=/usr/bin/systemd-inhibit --what=sleep:handle-lid-switch --why="SSH backup running" --mode=block /usr/bin/btrbk -c /etc/btrbk/btrbk-ssh.conf run
+
+Nice=10
+IOSchedulingClass=idle
+PrivateTmp=true

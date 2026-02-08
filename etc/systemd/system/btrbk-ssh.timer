@@ -1,0 +1,11 @@
+[Unit]
+Description=btrbk SSH backup (every 4 hours)
+Documentation=man:btrbk(1)
+
+[Timer]
+OnBootSec=20min
+OnUnitActiveSec=4h
+Persistent=false
+
+[Install]
+WantedBy=timers.target

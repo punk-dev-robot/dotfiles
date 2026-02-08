@@ -1,0 +1,17 @@
+[Unit]
+Description=Linux port of tailscale system tray menu.
+Documentation=https://github.com/mattn/tailscale-systray/
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=simple
+; ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
+ExecStart=/usr/bin/tailscale-systray
+Restart=on-failure
+Slice=background-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target
+
+

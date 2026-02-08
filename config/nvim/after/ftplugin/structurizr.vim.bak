@@ -1,0 +1,25 @@
+" Vim filetype plugin for Structurizr C4 DSL
+" This file sets up filetype-specific settings for Structurizr files
+
+" Comments
+setlocal commentstring=//\ %s
+setlocal comments=s1:/*,mb:*,ex:*/,://
+
+" Indentation (4 spaces is standard for C4 DSL)
+setlocal expandtab
+setlocal shiftwidth=4
+setlocal softtabstop=4
+setlocal tabstop=4
+
+" Folding based on braces
+setlocal foldmethod=marker
+setlocal foldmarker={,}
+
+" Keywordprg to open documentation
+setlocal keywordprg=xdg-open\ https://docs.structurizr.com/dsl/
+
+" Set formatoptions to handle comments correctly
+setlocal formatoptions+=r
+setlocal formatoptions+=o
+setlocal formatoptions+=q
+setlocal formatoptions+=j

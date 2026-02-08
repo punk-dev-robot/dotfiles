@@ -1,0 +1,11 @@
+[Unit]
+Description=Clean up old tmux resurrect sessions daily
+Requires=tmux-cleanup.service
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=1h
+
+[Install]
+WantedBy=timers.target

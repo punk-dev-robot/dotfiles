@@ -1,0 +1,13 @@
+[Unit]
+Description=Surfshark widget
+PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+ExecStart=/usr/bin/surfshark
+; ExecStart=/opt/Surfshark/surfshark --ozone-platform=wayland --enable-features=UseOzonePlatform --disable-features=WaylandFractionalScaleV1
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

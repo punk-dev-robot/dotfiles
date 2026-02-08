@@ -1,0 +1,69 @@
+" Vim syntax file for Structurizr C4 DSL
+" Force reload syntax even if it was loaded before
+" This helps overcome conflicts with TreeSitter
+if exists("b:current_syntax")
+  unlet b:current_syntax
+endif
+
+" Define syntax case sensitivity
+syntax case match
+
+" Enable very high priority for these rules to overcome TreeSitter
+syntax sync fromstart
+
+" Keywords
+syntax keyword structurizrKeyword workspace model views configuration properties styles themes
+
+" Element types
+syntax keyword structurizrType softwareSystem system container component person enterprise
+syntax keyword structurizrType deploymentEnvironment deploymentNode infrastructureNode
+syntax keyword structurizrType relationship relationships group groups
+syntax keyword structurizrType actor service database queue
+
+" View types
+syntax keyword structurizrView systemLandscape systemContext container component dynamic deployment
+
+" Property names
+syntax keyword structurizrProperty description technology url title autoLayout include exclude
+syntax keyword structurizrProperty animation theme themes tags tag shape icon width height thickness
+syntax keyword structurizrProperty background color fontSize stroke border position opacity
+syntax keyword structurizrProperty elements style styles properties relationships uses delivers
+syntax keyword structurizrProperty vertices routing perspective display filter key
+
+" Operators
+syntax match structurizrOperator "->"
+syntax match structurizrOperator "<-"
+syntax match structurizrOperator "<->"
+
+" Strings
+syntax region structurizrString start=/"/ skip=/\\"/ end=/"/
+syntax region structurizrString start=/'/ skip=/\\'/ end=/'/
+
+" Comments
+syntax match structurizrComment "//.*$"
+syntax region structurizrComment start="/\*" end="\*/"
+
+" Identifiers with special meaning
+syntax match structurizrIdentifier "\<[a-zA-Z][a-zA-Z0-9_]*\>"
+
+" Brackets and delimiters
+syntax match structurizrDelimiter "[\[\]\{\}\(\),\.=:]"
+
+" Mark identifiers after relation keywords with different color
+syntax match structurizrRelation "\(\<relationship\>\|\<relationships\>\)\s\+\([a-zA-Z][a-zA-Z0-9_\.]*\)"
+syntax match structurizrRelationRef "\([a-zA-Z][a-zA-Z0-9_\.]*\)\s\+\(->\|<-\|<->\)"
+
+" Link syntax to highlight groups
+highlight default link structurizrKeyword Keyword
+highlight default link structurizrType Type
+highlight default link structurizrView Function
+highlight default link structurizrProperty Special
+highlight default link structurizrOperator Operator
+highlight default link structurizrString String
+highlight default link structurizrComment Comment
+highlight default link structurizrIdentifier Identifier
+highlight default link structurizrRelation PreProc
+highlight default link structurizrRelationRef PreProc
+highlight default link structurizrDelimiter Delimiter
+
+let b:current_syntax = "structurizr"

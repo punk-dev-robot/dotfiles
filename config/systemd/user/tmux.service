@@ -1,0 +1,14 @@
+[Unit]
+Description=tmux: A terminal multiplexer 
+Documentation=man:tmux(1)
+Requires=tmux.socket
+
+[Service]
+Type=forking
+Slice=session-graphical.slice
+ExecStart=/usr/bin/tmux new-session -t main -d
+ExecStop=/usr/bin/tmux kill-server
+
+[Install]
+; started before the default (or probably by socket)
+WantedBy=multiplexer.target

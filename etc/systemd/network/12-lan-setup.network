@@ -1,0 +1,8 @@
+[Match]
+Name=lansetup
+
+[Network]
+DHCP=no
+Address=10.10.101.48/24
+; Address=192.168.1.99/24
+

@@ -1,0 +1,17 @@
+[Unit]
+Description=Save tmux sessions
+OnFailure=error@%n.service
+# Ensure restore completed successfully before we ever save
+After=tmux-restore.service
+Requisite=tmux-restore.service
+# Don't run during shutdown
+Conflicts=shutdown.target
+After=multiplexer.target
+Wants=multiplexer.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/home/kuba/.local/bin/tmux-save-wrapper.sh
+StandardOutput=journal
+StandardError=journal

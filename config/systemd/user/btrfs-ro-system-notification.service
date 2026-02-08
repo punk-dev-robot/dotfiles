@@ -1,0 +1,16 @@
+[Unit]
+Description=Detect booting into a read-only system or snapshot.
+Documentation=https://gitlab.com/Zesko/btrfs-desktop-notification
+; PartOf=graphical-session.target
+After=graphical-session.target
+; ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=simple
+ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
+ExecStart=/usr/bin/detect-ro-system
+Restart=on-failure
+Slice=background-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target

@@ -1,0 +1,22 @@
+[Unit]
+Description=tmux resurrect session
+
+Wants=graphical-session.target
+After=graphical-session.target
+
+Requires=tmux.service
+After=tmux.service
+ConditionEnvironment=HYPRLAND_INSTANCE_SIGNATURE
+
+[Service]
+; Environment=SYSTEMD_LOG_LEVEL=debug
+Type=oneshot
+RemainAfterExit=yes
+; ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
+ExecStart=/home/kuba/.local/bin/tmux-restore-wrapper.sh
+ExecStart=/bin/echo "Giving tmux couple of seconds to settle down"
+ExecStart=/bin/sleep 4
+
+[Install]
+WantedBy=multiplexer.target
+; WantedBy=graphical-session.target

@@ -1,0 +1,28 @@
+# /dev/mapper/archlinux LABEL=root
+# Mount options:
+# - noatime: Reduces metadata writes, improves performance especially with snapshots
+# - compress=zstd:1: Enable fast compression for better space usage and SSD wear
+# - ssd: Optimizations for SSD drives
+# - discard=async: Async TRIM for better SSD performance and longevity
+# - space_cache=v2: Improved free space tracking
+UUID=ae6e225b-d5d3-44d0-8d76-91a27573116c	/         	btrfs     	rw,noatime,compress=zstd:1,ssd,discard=async,space_cache=v2,subvol=/@root	0 0
+
+# /dev/mapper/archlinux LABEL=home
+UUID=ae6e225b-d5d3-44d0-8d76-91a27573116c	/home     	btrfs     	rw,noatime,compress=zstd:1,ssd,discard=async,space_cache=v2,subvol=/@home	0 0
+
+# /dev/nvme0n1p2 LABEL=boot
+UUID=64cede78-98c2-466f-b852-6859e7ed9589	/boot     	ext4      	rw,relatime	0 2
+
+# /dev/nvme0n1p1 LABEL=EFI\134x20System
+UUID=FA32-2600      	/boot/efi 	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
+
+# /swap/swapfile none swap defaults 0 0
+
+# Btrfs pool mount for snapshots and maintenance access
+UUID=ae6e225b-d5d3-44d0-8d76-91a27573116c	/mnt/btr_pool	 btrfs     	 subvolid=5,noatime,compress=zstd:1,ssd,discard=async,space_cache=v2 0 0
+
+# Containerd storage - separate subvolume with nodatacow for performance
+UUID=ae6e225b-d5d3-44d0-8d76-91a27573116c	/var/lib/containerd	btrfs     	rw,noatime,nodatacow,compress=no,ssd,discard=async,space_cache=v2,subvol=/@containerd	0 0
+
+# Swap file for hibernation
+/swap/swapfile none swap defaults,pri=10 0 0

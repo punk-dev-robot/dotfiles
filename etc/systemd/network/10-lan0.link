@@ -1,0 +1,8 @@
+# Primary USB ethernet dongle (Ugreen/RTL8156 2.5G)
+[Match]
+MACAddress=6c:1f:f7:21:c3:48
+
+[Link]
+Name=lan0
+Description=Primary USB Ethernet
+WakeOnLan=off

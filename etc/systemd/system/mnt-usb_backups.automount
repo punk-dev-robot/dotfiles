@@ -1,0 +1,11 @@
+[Unit]
+Description=USB encrypted btrfs backup automount
+After=dev-mapper-usb_backups.device
+Requires=dev-mapper-usb_backups.device
+
+[Automount]
+Where=/mnt/usb_backups
+TimeoutIdleSec=14400
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=Btrfs disk space monitoring
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/btrfs-space-monitor
+StandardOutput=journal
+StandardError=journal
+
+# Environment variables are now hardcoded in script
+# Only 3 simple alerts based on unallocated space
+
+# Pass display environment for notifications
+PassEnvironment=DISPLAY WAYLAND_DISPLAY DBUS_SESSION_BUS_ADDRESS

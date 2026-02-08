@@ -1,0 +1,76 @@
+# === Dotter ===
+.dotter/local.toml
+.dotter/cache.toml
+.dotter/cache
+
+# === Planning (internal, not public) ===
+.planning/
+
+# === Private/secret files ===
+config/zsh/.zshenv.priv
+config/zsh/rc.d/031-env-local.zsh
+config/claude/.claude.json
+config/claude/about_me.md
+.claude-state/
+.claude/settings.local.json
+.lin_sec
+waybar/modules/crypto
+todo.md
+memory
+
+# === Environment and secrets ===
+*.env
+*.env.*
+!*.env.example
+*.secret
+*.secrets
+secrets.env
+.netrc
+.npmrc.local
+
+# === SSH keys and certificates ===
+*.pem
+*.key
+*.p12
+*.pfx
+*.cert
+id_rsa*
+id_ed25519*
+id_ecdsa*
+
+# === GPG ===
+*.gpg
+*.asc
+secring.*
+
+# === Credentials ===
+*credentials*
+*_credentials*
+.aws/credentials
+.kube/config
+
+# === Editor backups and swap files ===
+*.swp
+*.swo
+*~
+.*.swp
+\#*\#
+.#*
+
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# === Node ===
+node_modules/
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+.directory
+
+# === Logs ===
+linear-*.log
+*.log

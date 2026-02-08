@@ -1,0 +1,18 @@
+; TODO: https://github.com/sentriz/cliphist/issues/54
+; TODO: add support for primary?
+[Unit]
+Description=clipboard history manager for wayland
+Documentation=https://github.com/sentriz/cliphist
+; PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=simple
+; ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
+ExecStart=/usr/bin/wl-paste --watch cliphist store
+Restart=on-failure
+Slice=app-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target

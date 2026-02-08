@@ -1,0 +1,8 @@
+[Unit]
+Description=Empty trash files older than 5 days
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/trash-empty -f 5
+StandardOutput=journal
+StandardError=journal

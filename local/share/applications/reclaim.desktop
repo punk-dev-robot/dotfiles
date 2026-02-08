@@ -1,0 +1,9 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Reclaim
+Exec=/usr/bin/chromium "--profile-directory=Profile 1" --app=https://reclaim.ai
+Icon=chrome-chjbbpdidamagiofpdhenaghgkllbfml-Profile_1
+StartupWMClass=chrome-reclaim.ai__-Profile_1

@@ -1,0 +1,8 @@
+secrets:
+    provider_type: 1password
+    setup_completed: true
+clients:
+    registered_clients: []
+    auto_discovery: false
+registry_url: ""
+allow_private_registry_ip: false

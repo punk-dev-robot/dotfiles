@@ -1,0 +1,11 @@
+@import "mocha.css";
+
+* {
+  font-size: 16px;
+}
+
+/* For blur using hyprland */
+.control-center {
+  background-color: rgba(30, 30, 46, 0.5);
+  border-radius: 0;
+}

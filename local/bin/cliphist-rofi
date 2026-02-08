@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# Usage: rofi -show clipboard -config ~/.config/rofi/config-clipboard.rasi
+
+print_lines() {
+  tmp_dir="/tmp/cliphist"
+  rm -rf "$tmp_dir"
+  mkdir -p "$tmp_dir"
+
+  cliphist list | while read -r line; do
+    if [[ $line == *meta\ http-equiv=* ]]; then
+      continue
+    fi
+
+    id=$(echo "$line" | awk '{print $1}')
+    name=$(echo "$line" | awk '{$1=""; print $0}')
+
+    printf '%s\000info\037%s\n' "$name" "$id"
+    # if [[ "$line" =~ ^([0-9]+)[[:space:]]+\[\[\ binary.*(jpg|jpeg|png|bmp) ]]; then
+    #   ext="${BASH_REMATCH[2]}"
+    #   icon_path="$tmp_dir/$id.$ext"
+    #   if ! [ -f "$icon_path" ]; then
+    #     cliphist decode "$id" >"$icon_path"
+    #   fi
+    #   printf '%s\000icon\037%s\037info\037%s\n' "$name" "$icon_path" "$id"
+    # else
+    #   printf '%s\000info\037%s\n' "$name" "$id"
+    # fi
+  done
+}
+
+case $ROFI_RETV in
+# print lines on start
+0)
+  # needs to be enabled to handle custom keys
+  echo -en "\x00use-hot-keys\x1ftrue\n"
+  print_lines
+  ;;
+# handle select line
+1)
+  cliphist decode "$ROFI_INFO" | wl-copy
+
+  title=$(hyprctl -j activewindow | jq -r '.initialTitle')
+  if [[ "$title" = "kitty2" ]]; then
+    coproc wtype -M shift -M ctrl -P v -m ctrl
+  else
+    coproc wtype -M ctrl -P v -m ctrl
+  fi
+  exit
+  ;;
+# kb-custom-1 (Ctrl-Delete)
+10)
+  cliphist delete <<<"$ROFI_INFO" && print_lines
+  ;;
+# kb-custom-2 (Alt-Delete)
+11)
+  cliphist wipe
+  ;;
+*) notify-send "Clipboard: unknown exit $ROFI_RETV" ;;
+esac

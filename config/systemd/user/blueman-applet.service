@@ -1,0 +1,18 @@
+[Unit]
+Description=Bluetooth applet (blueman)
+Documentation=https://wiki.archlinux.org/title/Blueman
+; PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=simple
+; ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
+ExecStart=/usr/bin/blueman-applet
+Restart=on-failure
+Slice=background-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target
+
+

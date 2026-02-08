@@ -1,0 +1,52 @@
+# vim: filetype=ini
+# Shared vim-style layer (activated by holding /)
+[main]
+
+/ = overload(vim, /)
+
+[vim]
+
+# Vim navigation
+h = left
+j = down
+k = up
+l = right
+
+# Page navigation
+u = pagedown
+i = pageup
+
+# Insert/Home/End cluster
+n = insert
+m = home
+, = end
+
+# Media controls
+q = playpause
+w = previoussong
+e = nextsong
+
+# Volume controls
+a = mute
+s = volumedown
+d = volumeup
+
+# Function keys (1-0, -, =)
+1 = f1
+2 = f2
+3 = f3
+4 = f4
+5 = f5
+6 = f6
+7 = f7
+8 = f8
+9 = f9
+0 = f10
+- = f11
+= = f12
+
+# Caps lock toggle
+capslock = capslock
+
+# Esc on grave position
+` = escape

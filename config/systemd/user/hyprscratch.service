@@ -1,0 +1,16 @@
+[Unit]
+Description=Hyprscratch scratchpad daemon for Hyprland
+After=graphical-session.target
+ConditionEnvironment=HYPRLAND_INSTANCE_SIGNATURE
+
+[Service]
+Type=simple
+; ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
+ExecStart=/usr/bin/hyprscratch init
+ExecReload=/usr/bin/hyprscratch reload
+Restart=on-failure
+RestartSec=5
+Slice=session-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target

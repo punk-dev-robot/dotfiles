@@ -1,0 +1,5 @@
+# This is the 1Password SSH agent config file
+# Enable SSH keys from the Personal vault
+
+[[ssh-keys]]
+vault = "Personal"

@@ -1,0 +1,18 @@
+[Unit]
+Description=Shikane output configuration service
+Documentation=https://gitlab.com/w0lff/shikane
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+; Environment=SHIKANE_LOG=trace
+Type=exec
+# Repurpose XDG Autostart filtering
+; ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
+ExecStart=/usr/bin/shikane
+ExecReload=/usr/bin/shikanectl reload
+Restart=on-failure
+Slice=background-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target

@@ -1,0 +1,40 @@
+#!/bin/bash
+# hyprland-session-start - Ensures environment is ready before starting session
+# This prevents race conditions where services like swaync fail because WAYLAND_DISPLAY isn't set
+
+# Log function for debugging
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] hyprland-session-start: $*" | systemd-cat -t hyprland-session
+}
+
+log "Starting Hyprland session initialization"
+
+# Update dbus and systemd with all environment variables
+log "Updating dbus/systemd environment"
+dbus-update-activation-environment --systemd --all
+
+# Wait for environment to propagate (1 second to be safe)
+log "Waiting for environment propagation"
+sleep 1
+
+# Verify critical environment variables
+if ! systemctl --user show-environment | grep -q "WAYLAND_DISPLAY="; then
+    log "Warning: WAYLAND_DISPLAY not set after 1 second, waiting another second..."
+    sleep 1
+    
+    # Final check
+    if ! systemctl --user show-environment | grep -q "WAYLAND_DISPLAY="; then
+        log "Error: WAYLAND_DISPLAY still not set after 2 seconds!"
+        exit 1
+    fi
+fi
+
+log "Environment ready, starting hyprland-session.target"
+
+# Start session target
+if systemctl --user start hyprland-session.target; then
+    log "Successfully started hyprland-session.target"
+else
+    log "Failed to start hyprland-session.target"
+    exit 1
+fi

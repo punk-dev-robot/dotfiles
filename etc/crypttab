@@ -1,0 +1,14 @@
+# Configuration for encrypted block devices.
+# See crypttab(5) for details.
+
+# NOTE: Do not list your root (/) partition here, it must be set up
+#       beforehand by the initramfs (/etc/mkinitcpio.conf).
+
+# <name>       <device>                                     <password>              <options>
+# ext_backup_1    UUID=813aad98-2694-4a46-99cf-7e927f427cae    /etc/cryptsetup-keys.d/ext_backup    nofail
+# ext_backup_2    UUID=98181411-09c6-4c66-9a11-51b7268cfc20    /etc/cryptsetup-keys.d/ext_backup    nofail
+# data1        /dev/sda3                                    /etc/mypassword2
+# data2        /dev/sda5                                    /etc/cryptfs.key
+# swap         /dev/sdx4                                    /dev/urandom            swap,cipher=aes-cbc-essiv:sha256,size=256
+# vol          /dev/sdb7                                    none
+usb_backups UUID=13448866-b6c6-4bd1-9485-8662c54956ea /etc/cryptsetup-keys.d/btrfs_backups.passphrase luks,nofail

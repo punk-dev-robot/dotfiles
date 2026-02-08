@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# if [ $(loginctl show-session $(loginctl | grep $(whoami) | sort -n | head -n 1 | awk '{print $1}') -p Type) = "Type=wayland" ]; then
+#   xhost +si:localuser:root
+# fi
+
+# fix for running x application as root
+xhost +si:localuser:root
+command /usr/bin/gufw
+xhost -si:localuser:root

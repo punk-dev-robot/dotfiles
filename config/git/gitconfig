@@ -1,0 +1,77 @@
+; vim: set ft=gitconfig:
+[user]
+	name = PunkDevRobot
+	email = punkdevninja@proton.me
+[pull]
+  rebase = true
+[init]
+	defaultBranch = main
+[rebase]
+  autoStash = true
+[core]
+	excludesfile = ~/.gitignore
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[blame]
+	date = short
+[fetch]
+	prune = true
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[diff]
+  tool = difftastic
+  external = difft
+[difftool]
+  prompt = false
+[difftool "difftastic"]
+  cmd = difft "$LOCAL" "$REMOTE"
+[include]
+  path = /home/kuba/.config/delta/catppuccin.gitconfig
+[delta]
+  features = catppuccin-macchiato
+  side-by-side = false
+  navigate = true    # use n and N to move between diff sections
+[merge]
+  conflictStyle = zdiff3
+[pager]
+  difftool = true
+[maintenance]
+	repo = /home/kuba/dev/oss/LazyVim
+	repo = /home/kuba/dev/oss/next.js
+	repo = /home/kuba/dev/oss/nx
+	repo = /home/kuba/dev/oss/nx-examples
+	repo = /home/kuba/dev/oss/nx-tuskydesign
+	repo = /home/kuba/dev/oss/pyprland
+	repo = /home/kuba/dev/oss/pyprland_pkg
+	repo = /home/kuba/dev/oss/serverless-lambda-log-management
+	repo = /home/kuba/dev/oss/sst
+	repo = /home/kuba/dev/oss/zsh-bench
+	repo = /home/kuba/dev/oss/zsh-snap
+	repo = /home/kuba/dev/oss/Aloxaf/fzf-tab
+	repo = /home/kuba/dev/oss/jeffreytse/zsh-vi-mode
+	repo = /home/kuba/dev/oss/MichaelAquilina/zsh-you-should-use
+	repo = /home/kuba/dev/oss/ohmyzsh/ohmyzsh
+	repo = /home/kuba/dev/oss/sorin-ionescu/prezto
+	repo = /home/kuba/dev/oss/zsh-users/zsh-autosuggestions
+	repo = /home/kuba/dev/oss/zsh-users/zsh-syntax-highlighting
+	repo = /home/kuba/.local/share/znap/zsh-snap
+	repo = /home/kuba/.local/share/znap/Aloxaf/fzf-tab
+	repo = /home/kuba/.local/share/znap/jeffreytse/zsh-vi-mode
+	repo = /home/kuba/.local/share/znap/MichaelAquilina/zsh-you-should-use
+	repo = /home/kuba/.local/share/znap/ohmyzsh/ohmyzsh
+	repo = /home/kuba/.local/share/znap/sindresorhus/pure
+	repo = /home/kuba/.local/share/znap/sorin-ionescu/prezto
+	repo = /home/kuba/.local/share/znap/zsh-users/zsh-autosuggestions
+	repo = /home/kuba/.local/share/znap/zsh-users/zsh-syntax-highlighting
+	repo = /home/kuba/.local/share/znap/marlonrichert/zsh-autocomplete
+	repo = /home/kuba/.local/share/znap/marlonrichert/zsh-edit
+	repo = /home/kuba/.local/share/znap/zdharma-continuum/fast-syntax-highlighting
+	repo = /home/kuba/.local/share/znap/jimeh/dotfiles
+	repo = /home/kuba/.local/share/znap/catppuccin/zsh-syntax-highlighting
+[checkout]
+	workers = 8

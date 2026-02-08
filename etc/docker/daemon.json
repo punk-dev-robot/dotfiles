@@ -1,0 +1,12 @@
+{
+  "default-address-pools": [
+    {
+      "base": "172.240.0.0/16",
+      "size": 24
+    }
+  ],
+  "features": {
+    "buildkit": true,
+    "containerd-snapshotter": true
+  }
+}

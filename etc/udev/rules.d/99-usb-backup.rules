@@ -1,0 +1,10 @@
+# Sabrent USB to NVMe adapter - disable all power management
+# This prevents I/O errors caused by aggressive USB autosuspend
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0bda", ATTR{idProduct}=="9210", \
+  ATTR{power/control}="on", \
+  ATTR{power/autosuspend}="-1"
+
+# Set optimal I/O scheduler for external USB storage
+ACTION=="add", SUBSYSTEM=="block", KERNEL=="sd[a-z]", \
+  ATTRS{idVendor}=="0bda", ATTRS{idProduct}=="9210", \
+  ATTR{queue/scheduler}="none"

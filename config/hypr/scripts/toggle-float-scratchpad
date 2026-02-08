@@ -1,0 +1,26 @@
+#!/bin/bash
+# Workaround for Hyprland 0.53 bug where max_size breaks togglefloating
+# https://github.com/hyprwm/Hyprland/discussions/12762
+
+# Check if window is currently floating
+was_floating=$(hyprctl activewindow -j | jq -r '.floating')
+
+# Disable max_size rules temporarily
+hyprctl keyword 'windowrule[scratchpad-max-size]:enable' false 2>/dev/null
+hyprctl keyword 'windowrule[scratchpad-title-max-size]:enable' false 2>/dev/null
+hyprctl keyword 'windowrule[1password-max-size]:enable' false 2>/dev/null
+hyprctl keyword 'windowrule[volume-max-size]:enable' false 2>/dev/null
+
+# Toggle floating state
+hyprctl dispatch togglefloating
+
+# Re-enable max_size rules
+hyprctl keyword 'windowrule[scratchpad-max-size]:enable' true 2>/dev/null
+hyprctl keyword 'windowrule[scratchpad-title-max-size]:enable' true 2>/dev/null
+hyprctl keyword 'windowrule[1password-max-size]:enable' true 2>/dev/null
+hyprctl keyword 'windowrule[volume-max-size]:enable' true 2>/dev/null
+
+# If window was tiled (not floating) and is now floating, center it
+if [[ "$was_floating" == "false" ]]; then
+  hyprctl dispatch centerwindow
+fi

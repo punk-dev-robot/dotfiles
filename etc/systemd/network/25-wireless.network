@@ -1,0 +1,15 @@
+[Match]
+Name=wlan0
+; Name=!bond0
+SSID=!wearthefoxhat
+
+[Link]
+RequiredForOnline=routable
+
+[Network]
+DHCP=yes
+IPv6PrivacyExtensions=yes
+IgnoreCarrierLoss=3s
+
+[DHCP]
+RouteMetric=600

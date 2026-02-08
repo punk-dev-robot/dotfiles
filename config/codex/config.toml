@@ -1,0 +1,27 @@
+# Codex configuration managed by mymcp (source of truth)
+# Deployed via Dotter to the runtime location.
+
+# [mcp_servers.example]
+# command = "npx"
+# args = ["-y", "mcp-server"]
+# env = { API_KEY = "..." }
+
+# Managed by mymcp: mcp_servers
+
+# Managed by mymcp: mcp_servers
+
+# Managed by mymcp: mcp_servers
+[mcp_servers.basic-memory]
+command = "uvx"
+args = ["basic-memory", "mcp"]
+env = { LOG_LEVEL = "warn" }
+
+[mcp_servers.exa]
+command = "npx"
+args = ["-y", "exa-mcp-server@latest", "--tools=web_search_exa,research_paper_search,company_research,crawling,competitor_finder,linkedin_search,wikipedia_search_exa,github_search"]
+env = { EXA_API_KEY = "PLACEHOLDER_!op read 'op://Homelab/Exa-MCP/password'" }
+
+[mcp_servers.firecrawl]
+command = "npx"
+args = ["-y", "firecrawl-mcp"]
+env = { FIRECRAWL_API_URL = "http://10.10.10.51:3002" }

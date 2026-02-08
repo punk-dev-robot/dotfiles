@@ -1,0 +1,15 @@
+[Unit]
+Description=MCP proxy
+Documentation=github.com/open-webui/mcpo
+PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=HYPRLAND_INSTANCE_SIGNATURE
+
+[Service]
+Type=simple
+ExecStart=/home/kuba/.local/bin/mcpo --port=8000 --config=/home/kuba/.config/mcpo.json
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target
+

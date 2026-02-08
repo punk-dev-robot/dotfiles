@@ -1,0 +1,21 @@
+configuration{
+    modi: "run,drun,combi";
+    icon-theme: "Oranchelo";
+    show-icons: true;
+    terminal: "alacritty";
+    drun-display-format: "{icon} {name}";
+    combi-hide-mode-prefix: true;
+    location: 0;
+    disable-history: false;
+    hide-scrollbar: true;
+    display-drun: "   Apps ";
+    display-run: "   Run ";
+    display-combi: "    Run ";
+    display-window: " 󰕰  Window";
+    display-Network: " 󰤨  Network";
+    sidebar-mode: false;
+    run-command: "uwsm app -- {cmd}";
+    drun-command: "uwsm app -- {cmd}";
+}
+
+@theme "frappe"

@@ -1,0 +1,86 @@
+#!/bin/bash
+
+# State variables for 1Password focus restoration
+LAST_FOCUS=""           # Address of last non-auth focused window
+OP_WINDOW_ADDR=""       # Address of 1password window when it gains focus
+
+# Get window class by address
+get_window_class() {
+  local addr="$1"
+  hyprctl clients -j | jq -r --arg addr "$addr" '.[] | select(.address == $addr) | .class'
+}
+
+# Calculate vdesk number from workspace ID
+# vdesk N uses workspaces (2N-1) and (2N) in dual-monitor setup
+get_vdesk_from_workspace() {
+  local ws_id="$1"
+  echo $(( (ws_id + 1) / 2 ))
+}
+
+move_to_vdesk_if_needed() {
+  local target_vdesk="$1"
+  local window_address="$2"
+  local current_workspace="$3"
+
+  local current_vdesk=$(get_vdesk_from_workspace "$current_workspace")
+
+  if [[ "$current_vdesk" -ne "$target_vdesk" ]]; then
+    hyprctl dispatch movetodesksilent "$target_vdesk,address:$window_address"
+    pkill -SIGUSR2 waybar
+  fi
+}
+
+window_title_changed() {
+  local window_address="0x${1#windowtitle>>}"
+
+  local windows_json=$(hyprctl -j clients)
+
+  local window_info=$(echo "$windows_json" | jq --arg addr "$window_address" '.[] | select(.address == $addr) | { class, title, workspace_id: .workspace.id }')
+
+  local window_class=$(echo "$window_info" | jq -r '.class')
+  local window_title=$(echo "$window_info" | jq -r '.title')
+  local current_workspace=$(echo "$window_info" | jq -r '.workspace_id')
+
+  if [[ "$window_class" =~ ^(zen|floorp) ]]; then
+    if [[ "$window_title" =~ ^\[?vd([0-9]+) ]]; then
+      move_to_vdesk_if_needed "${BASH_REMATCH[1]}" "$window_address" "$current_workspace"
+    elif [[ "$window_title" =~ ^\[?ws([0-9]+) ]]; then
+      move_to_vdesk_if_needed "${BASH_REMATCH[1]}" "$window_address" "$current_workspace"
+    fi
+  fi
+}
+
+handle() {
+  case $1 in
+  windowtitle*) window_title_changed "$1" ;;
+  configreloaded*) shikanectl reload ;;
+  activewindowv2\>\>*)
+    local addr="0x${1#activewindowv2>>}"
+    local class=$(get_window_class "$addr")
+    if [[ "$class" == "1password" ]]; then
+      # 1Password gained focus - start auth session
+      OP_WINDOW_ADDR="$addr"
+    elif [[ -n "$OP_WINDOW_ADDR" ]]; then
+      # In auth session - don't update LAST_FOCUS (polkit, auto-focus, etc.)
+      :
+    else
+      # Normal focus change - save as restore target
+      LAST_FOCUS="$addr"
+    fi
+    ;;
+  closewindow\>\>*)
+    local addr="0x${1#closewindow>>}"
+    if [[ "$addr" == "$OP_WINDOW_ADDR" ]]; then
+      # 1Password closed - end auth session
+      OP_WINDOW_ADDR=""
+      # Restore focus if we have a valid target
+      if [[ -n "$LAST_FOCUS" ]]; then
+        hyprctl dispatch focuswindow "address:$LAST_FOCUS"
+      fi
+    fi
+    ;;
+  esac
+}
+
+# Process substitution keeps while loop in main shell (variables persist between events)
+while read -r line; do handle "$line"; done < <(socat -U - UNIX-CONNECT:"$XDG_RUNTIME_DIR"/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock)

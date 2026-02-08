@@ -1,0 +1,29 @@
+[Default Applications]
+application/pdf=org.pwmt.zathura.desktop
+x-scheme-handler/obsidian=obsidian.desktop
+x-scheme-handler/http=zen-twilight.desktop
+x-scheme-handler/https=zen-twilight.desktop
+x-scheme-handler/chrome=zen-twilight.desktop
+text/html=zen-twilight.desktop
+application/x-extension-htm=zen-twilight.desktop
+application/x-extension-html=zen-twilight.desktop
+application/x-extension-shtml=zen-twilight.desktop
+application/xhtml+xml=zen-twilight.desktop
+application/x-extension-xhtml=zen-twilight.desktop
+application/x-extension-xht=zen-twilight.desktop
+x-scheme-handler/slack=Slack.desktop
+x-scheme-handler/about=zen.desktop
+x-scheme-handler/unknown=zen.desktop
+x-scheme-handler/discord=vesktop.desktop
+
+[Added Associations]
+x-scheme-handler/http=zen-twilight.desktop;zen.desktop;firefox.desktop;firefox-developer-edition.desktop;userapp-Floorp-409IS2.desktop;userapp-Firefox-3J9I12.desktop;
+x-scheme-handler/https=zen-twilight.desktop;zen.desktop;firefox.desktop;firefox-developer-edition.desktop;userapp-Floorp-409IS2.desktop;userapp-Firefox-3J9I12.desktop;
+x-scheme-handler/chrome=zen-twilight.desktop;zen.desktop;firefox.desktop;firefox-developer-edition.desktop;userapp-Floorp-409IS2.desktop;userapp-Firefox-3J9I12.desktop;
+text/html=firefox.desktop;firefox-developer-edition.desktop;userapp-Floorp-409IS2.desktop;userapp-Firefox-3J9I12.desktop;zen-twilight.desktop;
+application/x-extension-htm=firefox.desktop;firefox-developer-edition.desktop;userapp-Floorp-409IS2.desktop;userapp-Firefox-3J9I12.desktop;zen-twilight.desktop;
+application/x-extension-html=firefox.desktop;firefox-developer-edition.desktop;userapp-Floorp-409IS2.desktop;userapp-Firefox-3J9I12.desktop;zen-twilight.desktop;
+application/x-extension-shtml=firefox.desktop;firefox-developer-edition.desktop;userapp-Floorp-409IS2.desktop;userapp-Firefox-3J9I12.desktop;zen-twilight.desktop;
+application/xhtml+xml=firefox.desktop;firefox-developer-edition.desktop;userapp-Floorp-409IS2.desktop;userapp-Firefox-3J9I12.desktop;zen-twilight.desktop;
+application/x-extension-xhtml=firefox.desktop;firefox-developer-edition.desktop;userapp-Floorp-409IS2.desktop;userapp-Firefox-3J9I12.desktop;zen-twilight.desktop;
+application/x-extension-xht=firefox.desktop;firefox-developer-edition.desktop;userapp-Floorp-409IS2.desktop;userapp-Firefox-3J9I12.desktop;zen-twilight.desktop;

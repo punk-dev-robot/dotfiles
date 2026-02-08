@@ -1,0 +1,12 @@
+[Unit]
+Description=Clean up old tmux resurrect sessions
+# Prevent running during saves
+Conflicts=tmux-save.service
+After=tmux-sessions.target
+Wants=tmux-sessions.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/kuba/.local/bin/tmux-cleanup-sessions.sh
+StandardOutput=journal
+StandardError=journal

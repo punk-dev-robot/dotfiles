@@ -1,0 +1,21 @@
+[Unit]
+Description=Graphical terminals with restored sessions
+
+# should wait for oneshot to finish
+Requires=tmux-restore.service
+After=tmux-restore.service
+# and rurn after our targets
+After=graphical-session.target
+After=multiplexer.target
+
+[Service]
+Type=exec
+Slice=app-graphical.slice
+ExecStart=/usr/bin/alacritty --class %i-term -e tmux new-session -t %i -A
+; ExecStart=/usr/bin/alacritty --class %i-term -e tmux attach -t %i
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multiplexer.target
+WantedBy=graphical-session.target

@@ -1,0 +1,8 @@
+[Match]
+# Dongle used for new network setup
+MACAddress=9c:bf:0d:00:39:95
+
+[Link]
+Name=lansetup
+Description=The white dongle, used often for setup of new net gear
+

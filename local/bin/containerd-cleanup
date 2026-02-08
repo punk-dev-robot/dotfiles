@@ -1,0 +1,222 @@
+#!/bin/bash
+# containerd-cleanup - Clean up old containerd storage safely
+# Uses the shell utility library for consistent logging and notifications
+
+set -euo pipefail
+
+# Source the shell utility library
+source "${ZSH_LIB_DIR:-/home/kuba/.config/zsh/lib}/core.sh"
+shell::load "logging"
+shell::load "notifications"
+shell::load "banners"
+
+# Configuration
+CONTAINERD_DIR="/var/lib/containerd"
+LOG_TAG="containerd-cleanup"
+MAX_AGE_DAYS=7
+DRY_RUN=false
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+  --dry-run)
+    DRY_RUN=true
+    shift
+    ;;
+  --age-days)
+    MAX_AGE_DAYS="$2"
+    shift 2
+    ;;
+  --help)
+    banner::box "Containerd Cleanup Tool" "unicornsay"
+    echo
+    echo "Usage: $0 [OPTIONS]"
+    echo "Options:"
+    echo "  --dry-run      Show what would be deleted without actually deleting"
+    echo "  --age-days N   Delete containers older than N days (default: 7)"
+    echo "  --help         Show this help message"
+    echo
+    banner::fortune_cow
+    exit 0
+    ;;
+  *)
+    log::error "Unknown option: $1"
+    exit 1
+    ;;
+  esac
+done
+
+# Check if running as root
+if [[ $EUID -ne 0 ]]; then
+  log::error "This script must be run as root"
+  notify::error "Containerd Cleanup" "Must run as root"
+  exit 1
+fi
+
+# Check if containerd directory exists
+if [[ ! -d "$CONTAINERD_DIR" ]]; then
+  log::info "Containerd directory not found: $CONTAINERD_DIR"
+  exit 0
+fi
+
+# Function to count files in a directory quickly
+count_files() {
+  local dir="$1"
+  find "$dir" -type f 2>/dev/null | wc -l
+}
+
+# Start cleanup
+banner::section "Containerd Cleanup"
+log::info "Starting containerd cleanup (age threshold: $MAX_AGE_DAYS days)"
+
+if [[ "$DRY_RUN" == "true" ]]; then
+  log::warning "DRY RUN MODE - No files will be deleted"
+  echo
+fi
+
+# Get initial file count
+initial_files=$(count_files "$CONTAINERD_DIR" 2>/dev/null || echo 0)
+initial_size=$(du -sh "$CONTAINERD_DIR" 2>/dev/null | cut -f1 || echo "0")
+log::info "Initial state: $initial_files files, $initial_size"
+
+# Show a fun banner if we have a lot of files
+if [[ $initial_files -gt 1000000 ]]; then
+  banner::alert "Over 1 million files detected!"
+  echo
+  banner::cowsay "This might take a while... Time for coffee? ☕" "alacritty"
+  echo
+fi
+
+# Stop containerd service to ensure safe cleanup
+log::arrow "Stopping container services..."
+systemctl stop containerd.service 2>/dev/null || true
+systemctl stop docker.service 2>/dev/null || true
+
+# Wait for services to fully stop
+sleep 5
+
+if [[ "$DRY_RUN" == "true" ]]; then
+  log::header "Directories that would be cleaned"
+
+  # Find old directories
+  log::arrow "Finding directories older than $MAX_AGE_DAYS days..."
+  old_dirs=$(find "$CONTAINERD_DIR" -type d -mtime +$MAX_AGE_DAYS 2>/dev/null | wc -l)
+  log::info "Found $old_dirs old directories"
+
+  # Show sample of what would be deleted
+  echo "Sample of directories to be removed:"
+  find "$CONTAINERD_DIR" -type d -mtime +$MAX_AGE_DAYS 2>/dev/null | head -10
+
+else
+  log::header "Performing Cleanup"
+
+  # Use crictl if available for proper cleanup
+  if command -v crictl &>/dev/null; then
+    log::arrow "Using crictl for container cleanup..."
+
+    # Clean up stopped containers
+    stopped=$(crictl ps -a -q 2>/dev/null | wc -l)
+    if [[ $stopped -gt 0 ]]; then
+      log::info "Removing $stopped stopped containers..."
+      crictl rm $(crictl ps -a -q) 2>/dev/null || true
+    fi
+
+    # Clean up unused images
+    log::arrow "Removing unused images..."
+    crictl rmi --prune 2>/dev/null || true
+  fi
+
+  # Clean up old overlayfs layers
+  if [[ -d "$CONTAINERD_DIR/io.containerd.snapshotter.v1.overlayfs" ]]; then
+    log::arrow "Cleaning old overlayfs snapshots..."
+
+    # Use fast removal tool if available and we have many files
+    if command -v rmz &>/dev/null && [[ $initial_files -gt 100000 ]]; then
+      log::info "Using rmz for fast parallel deletion..."
+      find "$CONTAINERD_DIR/io.containerd.snapshotter.v1.overlayfs/snapshots" \
+        -maxdepth 1 -type d -mtime +$MAX_AGE_DAYS -print0 2>/dev/null |
+        xargs -0 -r rmz 2>/dev/null || true
+    else
+      find "$CONTAINERD_DIR/io.containerd.snapshotter.v1.overlayfs/snapshots" \
+        -maxdepth 1 -type d -mtime +$MAX_AGE_DAYS -exec rm -rf {} + 2>/dev/null || true
+    fi
+  fi
+
+  # Clean up metadata
+  if [[ -d "$CONTAINERD_DIR/io.containerd.metadata.v1.bolt" ]]; then
+    log::note "Metadata cleanup requires containerd garbage collection"
+  fi
+fi
+
+# Start services again
+log::arrow "Starting container services..."
+systemctl start containerd.service 2>/dev/null || true
+systemctl start docker.service 2>/dev/null || true
+
+# Wait for services to start
+sleep 5
+
+# Run containerd garbage collection if not dry run
+if [[ "$DRY_RUN" != "true" ]] && command -v ctr &>/dev/null && systemctl is-active --quiet containerd; then
+  log::arrow "Running containerd garbage collection..."
+  ctr content gc 2>/dev/null || true
+  ctr snapshot gc 2>/dev/null || true
+fi
+
+# Get final statistics
+log::separator
+final_files=$(count_files "$CONTAINERD_DIR" 2>/dev/null || echo 0)
+final_size=$(du -sh "$CONTAINERD_DIR" 2>/dev/null | cut -f1 || echo "0")
+files_removed=$((initial_files - final_files))
+
+# Show results
+log::header "Cleanup Results"
+log::info "Initial: $initial_files files, $initial_size"
+log::info "Final: $final_files files, $final_size"
+log::info "Removed: $files_removed files"
+
+# Send notification and show appropriate banner
+if [[ "$DRY_RUN" == "true" ]]; then
+  notify::info "Containerd Cleanup (Dry Run)" \
+    "Would remove $files_removed files
+Final size: ~$final_size"
+  echo
+  banner::misfortune_tux
+else
+  if [[ "$files_removed" -gt 0 ]]; then
+    notify::success "Containerd Cleanup Complete" \
+      "Removed $files_removed files
+Space saved: $(echo "$initial_size -> $final_size")
+Remaining: $final_files files"
+
+    echo
+    if [[ "$files_removed" -gt 1000000 ]]; then
+      banner::celebrate "Mega Cleanup Complete!"
+    else
+      banner::rainbow_cow "Cleanup successful! 🧹✨"
+    fi
+  else
+    notify::normal "Containerd Cleanup" "No files removed - already clean!"
+    echo
+    banner::fortune_cow "stegosaurus"
+  fi
+fi
+
+# If still too many files, suggest more aggressive cleanup
+if [[ "$final_files" -gt 1000000 ]]; then
+  echo
+  log::warning "Still have $final_files files in containerd"
+  log::note "Consider more aggressive cleanup:"
+  echo "  - Reduce --age-days parameter"
+  echo "  - Use 'docker system prune -a' for Docker cleanup"
+  echo "  - Check for unused container images"
+  echo
+  notify::warning "Containerd Storage Large" \
+    "Still have $final_files files
+Consider more aggressive cleanup"
+fi
+
+# Exit with appropriate code
+[[ "$DRY_RUN" == "true" ]] && exit 0
+[[ "$files_removed" -gt 0 ]] && exit 0 || exit 1
+

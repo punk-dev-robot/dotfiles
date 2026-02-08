@@ -1,0 +1,16 @@
+[Unit]
+Description=Handle automounting of usb devices
+Documentation=https://github.com/coldfix/udiskie
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/udiskie --smart-tray
+Restart=on-failure
+Slice=background-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target
+
+

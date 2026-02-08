@@ -1,0 +1,133 @@
+@import "themes/mocha.css";
+
+* {
+  font-family: FantasqueSansMono Nerd Font;
+  font-size: 14px;
+  min-height: 0;
+}
+
+#waybar {
+  background: @mantle;
+  /* background: transparent; */
+  color: @text;
+  /* margin: 24px 48px; */
+}
+
+#workspaces,
+#waybar-vd,
+#custom-music,
+#tray,
+#backlight,
+#clock,
+#battery,
+#pulseaudio,
+#custom-lock,
+#network,
+#cpu,
+#memory,
+#mode,
+#temperature,
+#custom-power {
+  background-color: @surface0;
+  border-radius: 1rem;
+  padding: 0 1rem;
+  margin: 4px 4px;
+}
+
+#workspaces,
+#waybar-vd {
+  margin-left: 1rem;
+}
+
+#workspaces button,
+#waybar-vd button {
+  color: @lavender;
+  border-radius: 1rem;
+  padding: 2px 4px;
+}
+
+#workspaces button.active,
+#waybar-vd button.vdesk-focused {
+  color: @sky;
+  border-radius: 1rem;
+  font-weight: bold;
+}
+
+#waybar-vd button.vdesk-unfocused {
+  color: @overlay0;
+}
+
+#waybar-vd button.vdesk-populated {
+  color: @lavender;
+}
+
+#workspaces button:hover,
+#waybar-vd button:hover {
+  color: @sapphire;
+  border-radius: 1rem;
+  background-color: @surface1;
+}
+
+#clock {
+  color: @blue;
+  /* border-radius: 0px 1rem 1rem 0px; */
+  margin-right: 1rem;
+}
+
+#battery {
+  color: @green;
+}
+
+#battery.charging {
+  color: @green;
+}
+
+#battery.warning:not(.charging) {
+  color: @red;
+}
+
+#backlight {
+  color: @yellow;
+}
+
+#backlight,
+#battery {
+  /* border-radius: 0; */
+}
+
+#pulseaudio {
+  color: @maroon;
+  /* border-radius: 1rem; */
+  /* border-radius: 1rem 0px 0px 1rem; */
+  margin-left: 1rem;
+}
+
+#custom-music {
+  color: @mauve;
+  /* border-radius: 1rem; */
+}
+
+#custom-lock {
+  /* border-radius: 1rem 0px 0px 1rem; */
+  color: @lavender;
+}
+
+#custom-power {
+  margin-right: 1rem;
+  /* border-radius: 0px 1rem 1rem 0px; */
+  color: @red;
+}
+
+#tray {
+  margin-right: 1rem;
+  border-radius: 1rem;
+}
+
+#network {
+  color: @mauve;
+}
+
+#network.disconnected {
+  color: @red;
+  /* border-bottom: 4px solid #cc241d; */
+}

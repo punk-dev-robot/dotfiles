@@ -1,0 +1,118 @@
+#!/bin/bash
+
+# Simple, reliable wrapper for the C4 LSP server
+# This focuses on diagnostics to understand what's failing
+
+# Set up log directory
+LOG_DIR="$HOME/.cache/c4-lsp-logs"
+mkdir -p "$LOG_DIR"
+
+# Clear logs
+echo "" > "$LOG_DIR/simple-wrapper.log"
+echo "" > "$LOG_DIR/server-output.log"
+echo "" > "$LOG_DIR/server-error.log"
+
+# Log function
+log() {
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_DIR/simple-wrapper.log"
+}
+
+log "Starting simple wrapper with diagnostics"
+
+# Verify server exists
+LSP_SERVER="$HOME/.local/share/lsp-servers/c4-dsl-language-server/bin/c4-language-server"
+
+if [ ! -f "$LSP_SERVER" ]; then
+  log "ERROR: Server not found at $LSP_SERVER"
+  echo "ERROR: Server not found at $LSP_SERVER" >&2
+  exit 1
+fi
+
+log "Server found at $LSP_SERVER"
+
+# Make sure it's executable
+chmod +x "$LSP_SERVER"
+
+# Create a logback config file to redirect logs to a file
+LOGBACK_CONFIG="$LOG_DIR/logback.xml"
+cat > "$LOGBACK_CONFIG" << 'EOF'
+<configuration>
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>${user.home}/.cache/c4-lsp-logs/logback-output.log</file>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+  <root level="ERROR">
+    <appender-ref ref="FILE" />
+  </root>
+</configuration>
+EOF
+
+log "Created logback config at $LOGBACK_CONFIG"
+
+# Check Java version
+JAVA_VERSION=$(java -version 2>&1 | head -n 1)
+log "Java version: $JAVA_VERSION"
+
+# Set environment variables
+export JAVA_OPTS="-Dlogback.configurationFile=${LOGBACK_CONFIG}"
+log "Set JAVA_OPTS: $JAVA_OPTS"
+
+# Change to server directory
+SERVER_DIR=$(dirname "$LSP_SERVER")
+cd "$SERVER_DIR" || {
+  log "Failed to change to server directory"
+  exit 1
+}
+
+log "Changed to directory: $(pwd)"
+
+# Test run the server to see if it works
+log "Test running server..."
+"$LSP_SERVER" --help > "$LOG_DIR/server-help.log" 2>&1 || log "Server doesn't support --help"
+
+# List jar files
+log "Listing jar files:"
+ls -la "$SERVER_DIR/../lib" >> "$LOG_DIR/simple-wrapper.log" 2>&1
+
+# Output important environment
+log "PATH: $PATH"
+log "JAVA_HOME: $JAVA_HOME"
+log "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
+
+# Run server with stdout and stderr captured but not modified
+log "Starting server with IO capture"
+"$LSP_SERVER" 2> >(tee "$LOG_DIR/server-error.log" >&2) | tee "$LOG_DIR/server-output.log"
+
+# Capture exit code
+EXIT_CODE=$?
+log "Server exited with code $EXIT_CODE"
+
+# If the server exited with an error, provide more diagnostics
+if [ $EXIT_CODE -ne 0 ]; then
+  log "Server failed - checking for errors"
+  
+  # Check stderr for clues
+  if [ -s "$LOG_DIR/server-error.log" ]; then
+    log "Error output found:"
+    cat "$LOG_DIR/server-error.log" >> "$LOG_DIR/simple-wrapper.log"
+  fi
+  
+  # Check if command not found
+  if grep -q "command not found" "$LOG_DIR/server-error.log"; then
+    log "ERROR: Server command not found - check PATH"
+  fi
+  
+  # Check for Java errors
+  if grep -q "Exception" "$LOG_DIR/server-error.log"; then
+    log "ERROR: Java exception found"
+  fi
+  
+  # Check for library issues
+  if grep -q "shared library" "$LOG_DIR/server-error.log"; then
+    log "ERROR: Missing shared library"
+  fi
+fi
+
+exit $EXIT_CODE

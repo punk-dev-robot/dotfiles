@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Open WebUI (PWA)
+Exec=/usr/bin/chromium "--profile-directory=Profile 1" --app-id=ciaamnabomjhndmogimfmmkflefihebh
+Icon=chrome-ciaamnabomjhndmogimfmmkflefihebh-Profile_1
+StartupWMClass=crx_ciaamnabomjhndmogimfmmkflefihebh
+# doesn't seem to work and change startupwmclass
+# StartupWMClass=crx_ciaamnabomjhndmogimfmmkflefihebh

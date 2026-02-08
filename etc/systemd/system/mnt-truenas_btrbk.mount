@@ -1,0 +1,13 @@
+[Unit]
+Description=TrueNAS btrbk NFS mount
+After=network-online.target
+
+[Mount]
+What=truenas.lan:/mnt/hddpool/backups/btrbk/framework
+Where=/mnt/truenas_btrbk
+Type=nfs
+Options=nfsvers=3,defaults,rw,async,noatime,nofail,_netdev,lookupcache=positive
+TimeoutSec=30
+
+[Install]
+WantedBy=multi-user.target

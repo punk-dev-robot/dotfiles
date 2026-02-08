@@ -1,0 +1,14 @@
+[Unit]
+Description=Walker launcher
+Documentation=https://github.com/abenz1267/walker
+PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/rm -f /tmp/walker-service.lock
+ExecStart=/usr/bin/walker --gapplication-service
+
+[Install]
+WantedBy=graphical-session.target

@@ -1,0 +1,27 @@
+[Unit]
+Description=Containerd Storage Cleanup
+Documentation=man:containerd(8)
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/containerd-cleanup --age-days 7
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=containerd-cleanup
+# Run with elevated privileges
+User=root
+# Set environment for notifications and library path
+Environment="NOTIFY_IS_SERVICE=1"
+Environment="ZSH_LIB_DIR=/home/kuba/.config/zsh/lib"
+Environment="LOG_TAG=containerd-cleanup"
+
+# Security hardening
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/containerd
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=multi-user.target

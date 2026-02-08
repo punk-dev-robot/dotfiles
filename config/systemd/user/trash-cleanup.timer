@@ -1,0 +1,11 @@
+[Unit]
+Description=Empty trash files older than 5 days daily
+Requires=trash-cleanup.service
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=1h
+
+[Install]
+WantedBy=timers.target

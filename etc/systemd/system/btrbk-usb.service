@@ -1,0 +1,18 @@
+[Unit]
+Description=btrbk USB backup
+Documentation=man:btrbk(1)
+ConditionACPower=true
+ConditionPathIsMountPoint=/mnt/usb_backups
+
+[Service]
+Type=oneshot
+
+# Clean any incomplete subvolumes from previous failed attempts
+ExecStartPre=-/usr/bin/btrbk -c /etc/btrbk/btrbk-usb.conf clean
+
+# Run backup with sleep inhibition
+ExecStart=/usr/bin/systemd-inhibit --what=sleep:handle-lid-switch --why="USB backup running" --mode=block /usr/bin/btrbk -c /etc/btrbk/btrbk-usb.conf run
+
+Nice=10
+IOSchedulingClass=idle
+PrivateTmp=true

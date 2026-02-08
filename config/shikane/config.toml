@@ -1,0 +1,75 @@
+# use nwg-displays to configure and save config, 
+# then use shikanectl export <profile>
+#
+
+[[profile]]
+name = "home"
+exec = [
+  'notify-send -i info shikane "Profile $SHIKANE_PROFILE_NAME detected"',
+  'hyprctl dispatch focusmonitor DP-3',                                   # Focus ultrawide at startup
+]
+[[profile.output]]
+# search = ["n=eDP-1"]
+search = ["m=0x0BCA", "s=", "v=BOE"]
+enable = true
+mode = "2256x1504@60"
+position = "-1152,0"
+scale = 1.96
+transform = "normal"
+adaptive_sync = false
+
+[[profile.output]]
+enable = true
+search = [
+  "m=PHL 499P9",
+  "s=AU02015015203",
+  "v=Philips Consumer Electronics Company",
+]
+mode = "5120x1440@70"
+# mode = "5120x1440@59.977Hz"
+position = "0,0"
+scale = 1.0
+transform = "normal"
+adaptive_sync = false
+
+[[profile]]
+name = "dock-4k"
+exec = [
+  'notify-send -i info shikane "Profile $SHIKANE_PROFILE_NAME detected"',
+  'light -S 100',
+]
+
+[[profile.output]]
+search = "eDP-1"
+enable = true
+mode = "2256x1504@60Hz"
+position = "0,902"
+scale = 1.56640625
+transform = "normal"
+adaptive_sync = false
+
+[[profile.output]]
+enable = true
+search = ["m=LG Ultra HD", "s=0x000363D9", "v=LG Electronics"]
+mode = "3840x2160@30Hz"
+position = "1437,0"
+exec = ["echo This is output $SHIKANE_OUTPUT_NAME"]
+scale = 1.33203125
+transform = "normal"
+adaptive_sync = false
+
+[[profile]]
+name = "laptop"
+exec = [
+  'notify-send -i info shikane "Profile $SHIKANE_PROFILE_NAME detected"',
+  'light -S 40',
+]
+
+[[profile.output]]
+search = "eDP-1"
+enable = true
+mode = "2256x1504@60Hz"
+position = "0,0"
+scale = 1.175
+transform = "normal"
+adaptive_sync = false

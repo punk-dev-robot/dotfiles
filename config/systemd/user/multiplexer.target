@@ -1,0 +1,10 @@
+[Unit]
+Description=Terminal multiplexer
+Documentation=man:tmux(1)
+; After=cruft.target
+; Wants=cruft.target
+
+; [Install]
+# graphical or multi_user
+; Alias=default.target 
+; WantedBy=default.target

@@ -1,0 +1,16 @@
+# Enable reusing connections
+ControlMaster auto
+ControlPath ~/.ssh/control-%C
+ControlPersist yes
+
+Host *
+  # Safer default: trust new hosts, and update keys automatically
+  StrictHostKeyChecking accept-new
+  UpdateHostKeys yes
+  HashKnownHosts yes
+  TCPKeepAlive yes
+  ServerAliveInterval 60
+  ServerAliveCountMax 240
+  IdentityAgent ~/.1password/agent.sock
+#  RemoteForward 52698 127.0.0.1:52698
+#  ForwardAgent yes

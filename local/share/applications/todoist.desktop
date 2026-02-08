@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=Todoist
+Exec=env DESKTOPINTEGRATION=false /usr/bin/todoist --ozone-platform=x11 %U
+Terminal=false
+Type=Application
+Icon=todoist
+StartupWMClass=Todoist
+X-AppImage-Version=9.26.1
+MimeType=x-scheme-handler/todoist;x-scheme-handler/com.todoist;
+Comment=The Best To-Do List App and Task Manager
+Categories=Office;
+
+[Desktop Action new-window]
+Name=New Home Window
+Exec=todoist --new-window

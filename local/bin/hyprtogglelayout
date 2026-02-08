@@ -1,0 +1,38 @@
+#!/bin/bash
+# Toggle layout for current workspace (uses hyprWorkspaceLayouts plugin)
+# Usage: hyprtogglelayout [master|dwindle]
+# Without args: toggles between master and dwindle using state file
+# With arg: sets that specific layout
+
+STATE_FILE="/tmp/hypr-layout-$(hyprctl -j activeworkspace | jaq -r '.id')"
+
+if [[ -n "$1" ]]; then
+  # Explicit layout requested
+  hyprctl dispatch layoutmsg setlayout "$1"
+  echo "$1" > "$STATE_FILE"
+  notify-send -t 1500 "Layout" "Set to $1"
+else
+  # Toggle based on last known state (default: master for even, dwindle for odd)
+  current_ws=$(hyprctl -j activeworkspace | jaq -r '.id')
+
+  if [[ -f "$STATE_FILE" ]]; then
+    current=$(cat "$STATE_FILE")
+  else
+    # Use default based on workspace config
+    if (( current_ws % 2 == 0 )); then
+      current="master"
+    else
+      current="dwindle"
+    fi
+  fi
+
+  if [[ "$current" == "master" ]]; then
+    hyprctl dispatch layoutmsg setlayout dwindle
+    echo "dwindle" > "$STATE_FILE"
+    notify-send -t 1500 "Layout" "Switched to dwindle"
+  else
+    hyprctl dispatch layoutmsg setlayout master
+    echo "master" > "$STATE_FILE"
+    notify-send -t 1500 "Layout" "Switched to master"
+  fi
+fi

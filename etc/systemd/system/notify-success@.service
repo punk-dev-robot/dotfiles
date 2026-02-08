@@ -1,0 +1,6 @@
+[Unit]
+Description=Success notification for %i
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/gotify push -t 'Unit Completed' '%i'

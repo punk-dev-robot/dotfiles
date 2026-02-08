@@ -1,0 +1,10 @@
+[Unit]
+Description=Playerctl Daemon - tracks active media players
+Documentation=man:playerctld(1)
+
+[Service]
+ExecStart=/usr/bin/playerctld daemon
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

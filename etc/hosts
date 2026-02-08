@@ -1,0 +1,5 @@
+# Static table lookup for hostnames.
+# See hosts(5) for details.
+127.0.0.1	localhost arch arch.lan
+::1		localhost arch arch.lan
+10.10.101.11 px-cpu px-cpu.lan

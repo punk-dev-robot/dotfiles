@@ -1,0 +1,12 @@
+# 2. very early on sockets.target
+[Unit]
+Description=Socket for tmux
+
+[Socket]
+ListenStream=/tmp/tmux-%U/default
+SocketMode=0600
+DirectoryMode=0700
+SocketUser=kuba
+
+[Install]
+WantedBy=sockets.target

@@ -1,0 +1,19 @@
+# Download binaries from GitHub releases
+# https://github.com/zyedidia/eget
+
+[global]
+to = "~/.local/bin"
+target = "~/.local/bin"
+upgrade_only = true
+quiet = false
+
+# Self-update eget
+["zyedidia/eget"]
+
+# Git integration for shell prompt
+["mroth/scmpuff"]
+
+# Toolhive - MCP server management
+["stacklok/toolhive"]
+asset_filters = [".tar.gz", "^.sig", "^.pem", "^.sbom"]
+file = "thv"

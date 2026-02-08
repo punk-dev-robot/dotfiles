@@ -1,0 +1,28 @@
+[general]
+import = ["~/.config/alacritty/themes/catppuccin-mocha.toml"]
+live_config_reload = true
+
+[window]
+decorations = "None"
+# opacity = 1
+opacity = 0.85
+# blur = true
+
+[font]
+normal = { family = "MesloLGL Nerd Font Mono" }
+size = 14
+
+[keyboard]
+bindings = [{ key = "Enter", mods = "Shift", chars = "\u001b\r" }]
+# bindings = [{ key = "Enter", mods = "Shift", chars = "\n" }]
+
+[terminal]
+# osc52 = "OnlyCopy"
+osc52 = "CopyPaste"
+
+[colors]
+# transparent_background_colors = false
+transparent_background_colors = true
+
+# [env]
+# TERM = "xterm-256color"

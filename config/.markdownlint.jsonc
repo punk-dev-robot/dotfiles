@@ -1,0 +1,13 @@
+{
+  // Global markdownlint configuration
+  // Increase line length limit from default 80 to 120 characters
+  "MD013": {
+    "line_length": 120,
+    // Don't enforce line length in code blocks
+    "code_blocks": false,
+    // Don't enforce line length in tables  
+    "tables": false,
+    // Don't enforce line length in headings
+    "headings": false
+  }
+}

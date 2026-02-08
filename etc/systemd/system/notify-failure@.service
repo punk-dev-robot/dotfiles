@@ -1,0 +1,6 @@
+[Unit]
+Description=Failure notification for %i
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/gotify push -t 'Unit Failed' '%i'

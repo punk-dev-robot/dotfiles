@@ -1,0 +1,108 @@
+#!/bin/bash
+# Simple Btrfs monitoring - Only alerts on what really matters
+
+# Configuration (in GB)
+UNALLOCATED_WARNING_GB=50
+UNALLOCATED_CRITICAL_GB=20
+METADATA_PRESSURE_THRESHOLD=99
+METADATA_PRESSURE_UNALLOC_GB=100
+LOG_FILE="/var/log/btrfs-space-monitor.log"
+
+# Function to send notification
+send_notification() {
+    local urgency="$1"
+    local title="$2"
+    local message="$3"
+    
+    # Log the event
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $urgency: $title - $message" | sudo tee -a "$LOG_FILE" >/dev/null
+    
+    # Send desktop notification if available
+    if command -v notify-send &> /dev/null; then
+        local icon=""
+        local timeout=""
+        case "$urgency" in
+            critical)
+                icon="dialog-error"
+                timeout="0"  # Don't auto-dismiss
+                ;;
+            normal)
+                icon="dialog-warning"
+                timeout="10000"  # 10 seconds
+                ;;
+        esac
+        
+        notify-send -u "$urgency" -i "$icon" -t "$timeout" "$title" "$message"
+    fi
+}
+
+# Convert bytes to GB
+bytes_to_gb() {
+    echo "scale=1; $1 / 1024 / 1024 / 1024" | bc
+}
+
+# Check filesystem with simple rules
+check_filesystem() {
+    local mount_point="$1"
+    
+    # Get usage info in raw bytes
+    local usage_info=$(sudo btrfs filesystem usage -b "$mount_point" 2>/dev/null)
+    if [ $? -ne 0 ]; then
+        return
+    fi
+    
+    # Extract unallocated space in bytes
+    local unalloc_bytes=$(echo "$usage_info" | grep "Device unallocated:" | awk '{print $3}')
+    if [ -z "$unalloc_bytes" ]; then
+        return
+    fi
+    
+    # Convert to GB
+    local unalloc_gb=$(bytes_to_gb "$unalloc_bytes")
+    
+    # Alert 1: Critical unallocated space
+    if (( $(echo "$unalloc_gb < $UNALLOCATED_CRITICAL_GB" | bc -l) )); then
+        send_notification "critical" "🚨 Btrfs Space Critical" \
+            "Only ${unalloc_gb}GB unallocated!
+Mount: $mount_point
+Cannot allocate new chunks
+Action: Free up space NOW!"
+        return  # Don't check other conditions if critical
+    fi
+    
+    # Alert 2: Warning unallocated space
+    if (( $(echo "$unalloc_gb < $UNALLOCATED_WARNING_GB" | bc -l) )); then
+        send_notification "normal" "⚠️  Btrfs Space Warning" \
+            "Only ${unalloc_gb}GB unallocated
+Mount: $mount_point
+Consider cleanup soon"
+        return  # Don't check metadata pressure if already warning
+    fi
+    
+    # Alert 3: Metadata pressure (only when it actually matters)
+    local metadata_line=$(echo "$usage_info" | grep "^Metadata,")
+    if [ -n "$metadata_line" ]; then
+        # Extract percentage (still in the output even with -b flag)
+        local metadata_percent=$(echo "$metadata_line" | grep -oP '\(\K[0-9.]+(?=%\))' | cut -d. -f1)
+        
+        if [ -n "$metadata_percent" ] && [ "$metadata_percent" -ge "$METADATA_PRESSURE_THRESHOLD" ]; then
+            if (( $(echo "$unalloc_gb < $METADATA_PRESSURE_UNALLOC_GB" | bc -l) )); then
+                send_notification "normal" "🔧 Btrfs Metadata Pressure" \
+                    "Metadata at ${metadata_percent}% with only ${unalloc_gb}GB unallocated
+Mount: $mount_point
+This can cause slowdowns
+Action: Run balance with -musage=50"
+            fi
+        fi
+    fi
+}
+
+# Main
+main() {
+    # For now, just check the main btrfs pool once
+    # (all subvolumes share the same unallocated space anyway)
+    check_filesystem "/mnt/btr_pool"
+}
+
+# Run the main function
+main

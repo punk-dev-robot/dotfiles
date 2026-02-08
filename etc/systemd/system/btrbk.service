@@ -1,0 +1,13 @@
+[Unit]
+Description=btrbk local snapshots
+Documentation=man:btrbk(1)
+
+[Service]
+Type=oneshot
+
+# Run snapshot management (no backup targets in main config)
+ExecStart=/usr/bin/btrbk run
+
+Nice=10
+IOSchedulingClass=idle
+PrivateTmp=true
