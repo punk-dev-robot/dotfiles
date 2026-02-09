@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Open an .ics calendar file in Google Calendar via the eventedit URL.
+# Used as a MIME handler for text/calendar files (xdg-open integration).
+set -euo pipefail
+
+die() { notify-send -u critical "gcal-import" "$1"; exit 1; }
+
+[[ $# -ge 1 ]] || die "Usage: gcal-import <file.ics>"
+[[ -f "$1" ]] || die "File not found: $1"
+
+ics_file="$1"
+
+# Extract fields from ICS (handles folded lines by joining continuation lines first)
+# RFC 5545 §3.1: long lines are folded with CRLF+space
+unfold() {
+    sed -e ':a' -e 'N' -e '$!ba' -e 's/\r\n //g' -e 's/\n //g' "$1"
+}
+
+get_field() {
+    unfold "$ics_file" | rg -m1 "^${1}[;:]" | sed "s/^${1}[^:]*://" || true
+}
+
+summary=$(get_field "SUMMARY")
+dtstart=$(get_field "DTSTART")
+dtend=$(get_field "DTEND")
+location=$(get_field "LOCATION")
+description=$(get_field "DESCRIPTION")
+
+[[ -n "$summary" ]] || die "No SUMMARY found in $ics_file"
+[[ -n "$dtstart" ]] || die "No DTSTART found in $ics_file"
+
+# URL-encode a string (POSIX-safe via python)
+urlencode() {
+    python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1], safe=''))" "$1"
+}
+
+# Strip VALUE=DATE: prefixes and non-date chars that some generators add
+clean_date() {
+    echo "$1" | tr -d ':-'
+}
+
+dates="$(clean_date "$dtstart")/$(clean_date "${dtend:-$dtstart}")"
+
+url="https://calendar.google.com/calendar/r/eventedit"
+url+="?text=$(urlencode "$summary")"
+url+="&dates=$dates"
+[[ -z "$location" ]]    || url+="&location=$(urlencode "$location")"
+[[ -z "$description" ]] || url+="&details=$(urlencode "$description")"
+
+xdg-open "$url"

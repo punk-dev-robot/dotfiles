@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Google Calendar Import
+Comment=Import .ics calendar files into Google Calendar
+Exec=gcal-import %f
+Icon=chrome-kjbdgfilnfhdoflbpgamdcdgpehopbep-Default
+Terminal=false
+NoDisplay=true
+MimeType=text/calendar;

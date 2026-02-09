@@ -15,6 +15,7 @@ x-scheme-handler/slack=Slack.desktop
 x-scheme-handler/about=zen.desktop
 x-scheme-handler/unknown=zen.desktop
 x-scheme-handler/discord=vesktop.desktop
+text/calendar=gcal-import.desktop
 
 [Added Associations]
 x-scheme-handler/http=zen-twilight.desktop;zen.desktop;firefox.desktop;firefox-developer-edition.desktop;userapp-Floorp-409IS2.desktop;userapp-Firefox-3J9I12.desktop;
