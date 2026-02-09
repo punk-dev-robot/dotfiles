@@ -227,6 +227,9 @@ alias tlsc='tailscale'
 cld() {
     OP_SERVICE_ACCOUNT_TOKEN= op run --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "claude $*"
 }
+# Tmp fix only for installing plugins
+# https://github.com/anthropics/claude-code/issues/18115
+alias cldpfix='TMPDIR="$XDG_CACHE_HOME/claude" claude plugin'
 
 alias hf='op run -- hf'
 alias cdx='codex'
