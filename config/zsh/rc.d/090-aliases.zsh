@@ -16,6 +16,8 @@
 #   /   to go to the root dir
 setopt auto_cd
 
+alias X="exit"
+
 # Type '-' to return to your previous dir.
 alias -- -='cd -'
 # '--' signifies the end of options. Otherwise, '-=...' would be interpreted as
@@ -232,5 +234,4 @@ oc() {
     OP_SERVICE_ACCOUNT_TOKEN= op run --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "opencode $*"
 }
 alias mem='basic-memory'
-alias task-master="npx -y --package task-master-ai@latest -- task-master"
 
