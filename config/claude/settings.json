@@ -34,6 +34,10 @@
           {
             "type": "command",
             "command": "/home/kuba/.config/claude/hooks/modern-cli.py"
+          },
+          {
+            "type": "command",
+            "command": "/home/kuba/.config/claude/hooks/block-danger.py"
           }
         ]
       },
