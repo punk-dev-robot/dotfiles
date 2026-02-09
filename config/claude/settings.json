@@ -13,13 +13,8 @@
   },
   "includeCoAuthoredBy": false,
   "permissions": {
-    "allow": [
-      "Read(~/dotfiles)"
-    ],
-    "deny": [
-      "Bash(nx run deploy:*)",
-      "Bash(nx deploy:*)"
-    ],
+    "allow": ["Read(~/dotfiles)"],
+    "deny": ["Bash(nx run deploy:*)", "Bash(nx deploy:*)"],
     "defaultMode": "plan",
     "additionalDirectories": [
       "/home/kuba/Pictures/Screenshots",
@@ -33,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/kuba/.config/claude/hooks/modern-cli-warn.py"
+            "command": "/home/kuba/.config/claude/hooks/modern-cli.py"
           }
         ]
       },
@@ -84,7 +79,6 @@
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
     "serena@claude-plugins-official": false,
-    "feature-dev@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": false,
@@ -95,7 +89,6 @@
     "learning-output-style@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true,
     "exa-mcp-server@exa-mcp-server": true,
-    "superpowers@superpowers-marketplace": true,
     "astral@astral-sh": true,
     "code-simplifier@claude-plugins-official": true,
     "hugging-face-cli@huggingface-skills": true,

@@ -9,7 +9,6 @@ _MODERN_ALTERNATIVES = {
     "grep": "rg",
     "find": "fd",
     "sed": "sd",
-    "ls": "eza",
     "du": "dust",
     "df": "duf",
     "ps": "procs",
@@ -23,7 +22,7 @@ _MODERN_ALTERNATIVES = {
     "cloc": "tokei",
 }
 
-_LEGACY_PATTERN = re.compile(r"\b(" + "|".join(_MODERN_ALTERNATIVES) + r")\b")
+_LEGACY_PATTERN = re.compile(r"(?<![-])\b(" + "|".join(_MODERN_ALTERNATIVES) + r")\b")
 
 
 def _validate_command(command: str) -> list[str]:
@@ -61,3 +60,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
