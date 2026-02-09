@@ -1,0 +1,35 @@
+[
+  {
+    "chapter": "Chapter 1: Scale From Zero to Millions",
+    "chapter_number": 1,
+    "topic": "Load Balancing",
+    "card_type": "qa",
+    "question": "What is the primary purpose of a load balancer?",
+    "answer": "A load balancer distributes incoming traffic across multiple servers to prevent any single server from becoming a bottleneck. It improves availability (traffic reroutes if a server fails) and enables horizontal scaling by adding more servers behind the balancer."
+  },
+  {
+    "chapter": "Chapter 1: Scale From Zero to Millions",
+    "chapter_number": 1,
+    "topic": "Caching",
+    "card_type": "cloze",
+    "text": "A cache hit ratio of {{c1::80%}} or higher is generally considered good for web applications.",
+    "extra": "Below 80%, the cache adds latency without sufficient benefit. Monitor and tune cache TTL and eviction policies."
+  },
+  {
+    "chapter": "Chapter 1: Scale From Zero to Millions",
+    "chapter_number": 1,
+    "topic": "System Design",
+    "card_type": "scenario",
+    "scenario": "Your web application experiences a sudden 10x traffic spike during a flash sale. The database is becoming the bottleneck. What steps do you take?",
+    "response": "Immediate: enable read replicas to offload read queries, add a caching layer (Redis/Memcached) for hot data. Short-term: implement connection pooling to reduce DB connection overhead, add rate limiting to protect the database. Longer-term: evaluate sharding strategy for write scaling, consider CQRS to separate read and write paths."
+  },
+  {
+    "chapter": "Chapter 1: Scale From Zero to Millions",
+    "chapter_number": 1,
+    "topic": "Database Scaling",
+    "card_type": "tradeoff",
+    "option_a": "Vertical scaling (scale up)",
+    "option_b": "Horizontal scaling (scale out)",
+    "comparison": "Vertical scaling is simpler — upgrade CPU/RAM on one machine. But there's a hardware ceiling and it's a single point of failure. Horizontal scaling distributes data across multiple machines, offering near-unlimited growth, but adds complexity: sharding logic, cross-shard queries, and data consistency challenges."
+  }
+]
