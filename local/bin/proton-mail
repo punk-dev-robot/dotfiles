@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-exec electron38 /usr/share/proton-mail/app.asar "$@"
+exec electron /usr/share/proton-mail/app.asar "$@"
