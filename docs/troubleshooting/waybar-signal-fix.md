@@ -1,15 +1,3 @@
----
-title: Waybar Signal Fix - SIGUSR1 vs SIGUSR2
-type: note
-permalink: fixes/waybar-signal-fix-sigusr1-vs-sigusr2
-tags:
-- waybar
-- hyprland
-- signals
-- hyprevents
-- virtual-desktops
----
-
 # Waybar Signal Fix - SIGUSR1 vs SIGUSR2
 
 ## Problem

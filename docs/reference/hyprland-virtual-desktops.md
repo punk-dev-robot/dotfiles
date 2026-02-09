@@ -1,9 +1,3 @@
----
-title: Hyprland Virtual Desktops Setup
-type: note
-permalink: configs/hyprland-virtual-desktops-setup
----
-
 # Hyprland Virtual Desktops Setup
 
 ## Overview

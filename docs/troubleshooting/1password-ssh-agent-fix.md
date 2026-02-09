@@ -1,9 +1,3 @@
----
-title: 1Password SSH Agent - GitHub Authentication Fix
-type: note
-permalink: troubleshooting/1-password-ssh-agent-git-hub-authentication-fix
----
-
 # 1Password SSH Agent - GitHub Authentication Fix
 
 ## Problem

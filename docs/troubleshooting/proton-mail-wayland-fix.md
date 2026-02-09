@@ -1,15 +1,3 @@
----
-title: Proton Mail Wayland Segfault Fix
-type: note
-permalink: fixes/proton-mail-wayland-segfault-fix
-tags:
-- proton-mail
-- electron
-- wayland
-- segfault
-- fix
----
-
 # Proton Mail Wayland Segfault Fix
 
 ## Problem

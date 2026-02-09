@@ -1,20 +1,3 @@
----
-title: Blank Screen on Cold Boot with USB-C Monitor Fix
-type: note
-permalink: hardware/blank-screen-on-cold-boot-with-usb-c-monitor-fix
-tags:
-- framework
-- amdgpu
-- display
-- boot
-- mkinitcpio
-- grub
-- usb-c
-- troubleshooting
-- simpledrm
-- warmreboot
----
-
 # Blank Screen on Cold Boot with USB-C Monitor Fix
 
 ## Problem

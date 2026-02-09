@@ -17,6 +17,8 @@ config/claude/about_me.md
 waybar/modules/crypto
 todo.md
 memory
+docs/.scratch/*
+!docs/.scratch/.gitkeep
 
 # === Environment and secrets ===
 *.env

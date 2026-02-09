@@ -1,9 +1,3 @@
----
-title: immutable-mount-point-protection
-type: documentation
-permalink: system/immutable-mount-point-protection
----
-
 # Immutable Mount Point Protection Pattern
 
 ## Problem

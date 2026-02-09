@@ -1,16 +1,3 @@
----
-title: Framework 13 AMD - BIOS 3.18 Warm Reboot Bug
-type: note
-permalink: hardware/framework-13-amd-bios-3.18-warm-reboot-bug
-tags:
-- framework
-- bios
-- firmware
-- reboot
-- bug
-- hardware
----
-
 # Framework 13 AMD - BIOS 3.18 Warm Reboot Bug
 
 ## Problem

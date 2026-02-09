@@ -1,9 +1,3 @@
----
-title: uwsm Migration Summary
-type: note
-permalink: guides/uwsm-migration-summary
----
-
 # uwsm Migration Summary
 
 ## Migration Completed Successfully

@@ -1,9 +1,3 @@
----
-title: Sony WH-1000xm5 EasyEffects Optimal Settings Research
-type: note
-permalink: audio/sony-wh-1000xm5-easy-effects-optimal-settings-research
----
-
 # Sony WH-1000xm5 EasyEffects Optimal Settings Research
 
 ## Current Setup Analysis

@@ -11,3 +11,7 @@
 - [workflow] Use semantic observation patterns `[category] fact #tag` #standards
 - [workflow] **Always** use `dotter` tool for linking config from this repo! `dotter` manages these dotfiles project and we should be dog-fooding it as much as possible #tooling
 - [workflow] You can check and confirm changes before deployment with `dotter -v -d` or even with `-vv` for more verbosity #tooling
+
+## Documentation
+
+@docs/README.md

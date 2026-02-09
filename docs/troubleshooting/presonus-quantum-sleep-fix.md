@@ -1,9 +1,3 @@
----
-title: PreSonus Quantum ES2 Sleep Fix
-type: note
-permalink: solutions/pre-sonus-quantum-es2-sleep-fix
----
-
 # PreSonus Quantum ES2 Sleep/Resume Fix
 
 ## Problem
