@@ -1,19 +1,23 @@
 #!/usr/bin/env python3
-"""Deny first WebSearch/WebFetch call, allow retry after MCP failure.
+"""Deny WebSearch/WebFetch, suggest MCP. Allow retry within TTL window.
 
-Uses session-scoped temp files to track denied tools. First call for a tool
-creates a marker and denies with a message pointing to MCP alternatives.
-Second call (same tool, same session) means MCP failed -- allow as fallback.
+On first call for a tool, creates a marker and denies with a message pointing
+to MCP alternatives. If the same tool is retried within 30 seconds (MCP failed),
+the marker is consumed and the tool is allowed as fallback. Each cycle is
+independent -- after consumption, the next call starts fresh.
 """
 
 import json
 import sys
+import time
 from pathlib import Path
 
 _PREFERRED_TOOLS = {
     "WebSearch": "exa (mcp__plugin_exa-mcp-server_exa__web_search_exa) or firecrawl (mcp__firecrawl-lab__firecrawl_search)",
     "WebFetch": "firecrawl (mcp__firecrawl-lab__firecrawl_scrape or mcp__firecrawl-cloud__firecrawl_scrape)",
 }
+
+_TTL_SECONDS = 30
 
 
 def main():
@@ -28,17 +32,19 @@ def main():
         sys.exit(0)
 
     session_id = input_data.get("session_id", "default")
-    marker_dir = Path(f"/tmp/claude-prefer-tools-{session_id}")
-    marker_file = marker_dir / tool_name
+    marker = Path(f"/tmp/claude-prefer-{session_id}-{tool_name}")
 
-    if marker_file.exists():
-        sys.exit(0)
+    if marker.exists():
+        age = time.time() - marker.stat().st_mtime
+        if age < _TTL_SECONDS:
+            marker.unlink(missing_ok=True)
+            sys.exit(0)
+        marker.unlink(missing_ok=True)
 
-    marker_dir.mkdir(parents=True, exist_ok=True)
-    marker_file.touch()
+    marker.touch()
 
     preferred = _PREFERRED_TOOLS[tool_name]
-    reason = f"Use {preferred} instead of {tool_name}. Retry with {tool_name} if MCP tools fail."
+    reason = f"Use {preferred} instead of {tool_name}. If MCP tools fail, retry {tool_name} as fallback."
     output = {
         "hookSpecificOutput": {
             "hookEventName": "PreToolUse",

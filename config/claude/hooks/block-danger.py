@@ -12,6 +12,9 @@ _DANGEROUS = [
     (re.compile(r"chmod\s+-R\s+777"), "Recursive 777 permissions would break security on the entire tree."),
     (re.compile(r"\bdd\s+if="), "Raw disk write via dd. Too dangerous to run without explicit user confirmation outside Claude."),
     (re.compile(r"\bmkfs\b"), "Filesystem formatting. Too dangerous to run without explicit user confirmation outside Claude."),
+    (re.compile(r"git\s+push\s+.*(-f\b|--force(?!-with-lease)\b)"), "Force push can overwrite remote history. Use --force-with-lease for safer force pushes, or get explicit user confirmation."),
+    (re.compile(r"git\s+reset\s+--hard\b"), "git reset --hard discards all uncommitted changes. This is destructive and irreversible."),
+    (re.compile(r"git\s+clean\s+.*-[a-zA-Z]*f"), "git clean -f removes untracked files permanently. This is destructive and irreversible."),
 ]
 
 

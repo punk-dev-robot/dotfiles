@@ -1,41 +1,6 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(./local/bin/mcp-config:*)",
-      "Bash(basename:*)",
-      "Bash(cp:*)",
-      "Bash(docker logs:*)",
-      "Bash(find:*)",
-      "Bash(git add:*)",
-      "Bash(git rev-parse:*)",
-      "Bash(jq:*)",
-      "Bash(ls:*)",
-      "Bash(mkdir:*)",
-      "Bash(thv list:*)",
-      "Bash(thv logs:*)",
-      "Bash(thv proxy:*)",
-      "Bash(thv run:*)",
-      "Bash(thv stop:*)",
-      "Bash(thv:*)",
-      "Bash(yq:*)",
-      "WebFetch(domain:github.com)",
-      "WebFetch(domain:mcpm.sh)",
-      "mcp__basic-memory__build_context",
-      "mcp__basic-memory__edit_note",
-      "mcp__basic-memory__get_current_project",
-      "mcp__basic-memory__list_directory",
-      "mcp__basic-memory__list_memory_projects",
-      "mcp__basic-memory__read_note",
-      "mcp__basic-memory__recent_activity",
-      "mcp__basic-memory__search_notes",
-      "mcp__basic-memory__switch_project",
-      "mcp__basic-memory__write_note",
-      "mcp__firecrawl-cloud__firecrawl_scrape",
-      "mcp__firecrawl-cloud__firecrawl_search",
-      "mcp__firecrawl__firecrawl_scrape",
-      "mcp__firecrawl__firecrawl_search",
-      "mcp__github__search_repositories"
-    ],
+    "allow": [],
     "deny": []
   }
 }
