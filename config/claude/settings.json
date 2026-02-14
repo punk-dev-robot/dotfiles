@@ -8,8 +8,7 @@
     "DISABLE_TELEMETRY": "1",
     "MCP_TIMEOUT": "180000",
     "MAX_MCP_OUTPUT_TOKENS": "50000",
-    "ENABLE_TOOL_SEARCH": "true",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "true"
+    "ENABLE_TOOL_SEARCH": "true"
   },
   "permissions": {
     "allow": [
@@ -67,10 +66,11 @@
       "Bash(pytest *)",
       "Bash(ruff *)",
       "ToolSearch",
-      "mcp__firecrawl-lab*",
-      "mcp__firecrawl-cloud*",
-      "mcp__plugin_context7*",
-      "mcp__plugin_exa*"
+      "mcp__basic-memory",
+      "mcp__firecrawl-lab",
+      "mcp__firecrawl-cloud",
+      "mcp__plugin_context7",
+      "mcp__plugin_exa"
     ],
     "deny": [
       "Bash(pip install *)",
@@ -164,8 +164,7 @@
     "exa-mcp-server@exa-mcp-server": true,
     "code-simplifier@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
-    "document-skills@anthropic-agent-skills": true,
-    "voicemode@mbailey": true
+    "document-skills@anthropic-agent-skills": true
   },
   "alwaysThinkingEnabled": true,
   "respectGitIgnore": false,
