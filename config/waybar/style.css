@@ -129,5 +129,30 @@
 
 #network.disconnected {
   color: @red;
-  /* border-bottom: 4px solid #cc241d; */
+}
+
+#custom-voxtype {
+  padding: 0 8px;
+  font-size: 14px;
+}
+
+#custom-voxtype.recording {
+  color: @red;
+  animation: pulse 1s infinite;
+}
+
+#custom-voxtype.transcribing {
+  color: @yellow;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }

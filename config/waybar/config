@@ -11,10 +11,11 @@
   ],
   "modules-center": [
     "hyprland/window",
-    "custom/recorder"
+    // "custom/recorder",
+    "custom/voxtype"
   ],
   "modules-right": [
-    "custom/crypto",
+    // "custom/crypto",
     "idle_inhibitor",
     "pulseaudio",
     "network",
@@ -165,7 +166,16 @@
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "format-alt": " {:%d/%m/%Y}",
     "format": "  {:%H:%M}"
-}
+  },
+
+   "custom/voxtype": {
+       "exec": "voxtype status --follow --format json --extended",
+       "return-type": "json",
+       "format": "{}",
+       "tooltip": true,
+       "on-click": "systemctl --user restart voxtype"
+   }
+
 //   "clock": {
 //    "format": " {:%H:%M}"
 //     "tooltip-format": "{:%Y-%m-%d | %H:%M}",
