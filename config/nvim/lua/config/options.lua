@@ -24,5 +24,9 @@ opt.relativenumber = false
 -- vim.g.autoformat = false
 -- LSP Server to use for Python.
 -- Set to "basedpyright" to use basedpyright instead of pyright.
-vim.g.lazyvim_python_lsp = "basedpyright"
+vim.g.lazyvim_python_lsp = "ty"
 vim.g.lazyvim_python_ruff = "ruff"
+
+vim.g.mkdp_preview_options = {
+  css = { "body { font-size: 10px; }" },
+}

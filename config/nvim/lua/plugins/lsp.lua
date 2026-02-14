@@ -34,6 +34,7 @@ return {
           },
         },
         basedpyright = {
+          enabled = false,
           disableOrganizeImports = true,
         },
         pyright = {
