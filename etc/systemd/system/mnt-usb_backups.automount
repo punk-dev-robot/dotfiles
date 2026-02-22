@@ -7,5 +7,5 @@ Requires=dev-mapper-usb_backups.device
 Where=/mnt/usb_backups
 TimeoutIdleSec=14400
 
-[Install]
-WantedBy=multi-user.target
+# [Install] removed — drive is offline; units can still be started manually
+# WantedBy=multi-user.target

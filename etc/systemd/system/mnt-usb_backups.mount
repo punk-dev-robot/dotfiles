@@ -10,5 +10,5 @@ Type=btrfs
 Options=defaults,noatime,compress=zstd:1
 TimeoutSec=5
 
-[Install]
-WantedBy=multi-user.target
+# [Install] removed — drive is offline; units can still be started manually
+# WantedBy=multi-user.target

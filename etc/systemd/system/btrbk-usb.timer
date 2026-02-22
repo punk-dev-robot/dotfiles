@@ -7,5 +7,5 @@ OnBootSec=15min
 OnUnitActiveSec=4h
 Persistent=false
 
-[Install]
-WantedBy=timers.target
+# [Install] removed — drive is offline; timer can still be started manually
+# WantedBy=timers.target
