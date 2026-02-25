@@ -1,0 +1,327 @@
+#!/bin/sh
+# pw-stress-test — synthetic GPU+audio workload simulating video call + screen sharing
+#
+# Reproduces the combined load that causes PipeWire buffer exhaustion:
+#   wf-recorder   → DMA-BUF screencopy (same path as Meet screen sharing)
+#   ffmpeg vaapi  → VA-API H.264 encode (simulates WebRTC video encode)
+#   pw-play       → audio playback (exercises audio graph under GPU contention)
+#   pw-record     → mic capture through RNNoise filter chain
+#
+# Monitors GPU busy%, per-core CPU, thermals, PipeWire buffer errors.
+#
+# Usage: pw-stress-test [duration_seconds]
+#   pw-stress-test        # 3-minute default
+#   pw-stress-test 60     # quick check
+#   pw-stress-test 300    # sustained test
+
+set -eu
+
+DURATION=${1:-180}
+WORKDIR=$(mktemp -d /tmp/pw-stress-test.XXXXXX)
+WORKLOAD_PIDS=""
+MONITOR_PIDS=""
+
+BOLD='\033[1m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NC='\033[0m'
+
+log()  { printf "${BOLD}[stress]${NC} %s\n" "$1"; }
+warn() { printf "${YELLOW}[stress]${NC} %s\n" "$1"; }
+err()  { printf "${RED}[stress]${NC} %s\n" "$1" >&2; }
+
+cleanup() {
+    for pid in $WORKLOAD_PIDS $MONITOR_PIDS; do
+        kill "$pid" 2>/dev/null || true
+    done
+    # Kill orphaned children by workdir marker
+    pkill -f "pw-play.*$WORKDIR" 2>/dev/null || true
+    pkill -f "pw-record.*$WORKDIR" 2>/dev/null || true
+    pkill -f "wf-recorder.*$WORKDIR" 2>/dev/null || true
+    pkill -f "ffmpeg.*$WORKDIR" 2>/dev/null || true
+    wait 2>/dev/null || true
+    rm -f "$WORKDIR"/tone.wav "$WORKDIR"/screencap.mp4 \
+          "$WORKDIR"/vaapi_encode.mp4 "$WORKDIR"/mic_capture.wav
+    if [ -f "$WORKDIR/report.txt" ]; then
+        log "Report: $WORKDIR/report.txt"
+    else
+        rm -rf "$WORKDIR"
+    fi
+}
+trap cleanup EXIT INT TERM
+
+# ── Pre-flight ──────────────────────────────────────────────────────
+
+check_deps() {
+    missing=""
+    for cmd in wf-recorder ffmpeg pw-play pw-record pw-top mpstat journalctl; do
+        command -v "$cmd" >/dev/null 2>&1 || missing="$missing $cmd"
+    done
+    if [ -n "$missing" ]; then
+        err "Missing:$missing"
+        exit 1
+    fi
+    if [ ! -r /sys/class/drm/card0/device/gpu_busy_percent ]; then
+        warn "GPU sysfs not readable — GPU stats unavailable"
+    fi
+}
+
+# ── Snapshots ───────────────────────────────────────────────────────
+
+capture_pwtop_errors() {
+    pw-top -b -n 1 2>/dev/null | awk '
+        NR > 1 && NF >= 9 {
+            id = $2; errv = $9
+            name = ""
+            for (i = 11; i <= NF; i++) name = name (i > 11 ? " " : "") $i
+            if (errv ~ /^[0-9]+$/) print id, errv, name
+        }
+    ' > "$WORKDIR/pwtop_$1.txt"
+}
+
+mark_journal_cursor() {
+    journalctl --user -u pipewire --show-cursor -n 0 2>/dev/null \
+        | sed -n 's/.*-- cursor: //p' > "$WORKDIR/cursor.txt" || true
+}
+
+count_pw_errors() {
+    cursor=$(cat "$WORKDIR/cursor.txt" 2>/dev/null || true)
+    if [ -n "$cursor" ]; then
+        # grep -c exits 1 on zero matches; capture output separately
+        count=$(journalctl --user -u pipewire --after-cursor="$cursor" 2>/dev/null \
+            | grep -c 'out of buffers') || true
+        echo "$count"
+    else
+        echo "?"
+    fi
+}
+
+# ── Workloads ───────────────────────────────────────────────────────
+
+start_workloads() {
+    # Audio playback — looping 30s tone at native 48kHz
+    (
+        trap 'kill $child 2>/dev/null; exit' TERM INT
+        while true; do
+            pw-play "$WORKDIR/tone.wav" 2>/dev/null &
+            child=$!
+            wait "$child" || break
+        done
+    ) &
+    WORKLOAD_PIDS="$WORKLOAD_PIDS $!"
+    log "  Audio playback (pid $!)"
+
+    # Mic capture — exercises RNNoise filter chain
+    pw-record --rate 48000 "$WORKDIR/mic_capture.wav" >/dev/null 2>&1 &
+    WORKLOAD_PIDS="$WORKLOAD_PIDS $!"
+    log "  Mic capture (pid $!)"
+
+    # Screen capture — DMA-BUF screencopy (same mechanism as Meet getDisplayMedia)
+    # Auto-select first output to avoid interactive prompt on multi-monitor
+    output=$(wf-recorder -L 2>/dev/null | awk -F'Name: ' 'NR==1 {split($2, a, " "); print a[1]}')
+    wf-recorder -o "${output:-eDP-1}" -f "$WORKDIR/screencap.mp4" >/dev/null 2>&1 &
+    WORKLOAD_PIDS="$WORKLOAD_PIDS $!"
+    log "  Screen capture via DMA-BUF (pid $!)"
+
+    # VA-API H.264 encode — simulates WebRTC video encode on GPU
+    ffmpeg -loglevel error \
+        -f lavfi -i "testsrc2=size=1920x1080:rate=30" \
+        -vaapi_device /dev/dri/renderD128 \
+        -vf 'format=nv12,hwupload' \
+        -c:v h264_vaapi -b:v 2M \
+        -t "$DURATION" -y "$WORKDIR/vaapi_encode.mp4" >/dev/null 2>&1 &
+    WORKLOAD_PIDS="$WORKLOAD_PIDS $!"
+    log "  VA-API H.264 encode (pid $!)"
+}
+
+# ── Monitors ────────────────────────────────────────────────────────
+
+start_monitors() {
+    # GPU busy% + thermal max (1s interval)
+    (
+        echo "ts,gpu,temp" > "$WORKDIR/gpu_thermal.csv"
+        i=0
+        while [ "$i" -lt "$DURATION" ]; do
+            gpu=$(cat /sys/class/drm/card0/device/gpu_busy_percent 2>/dev/null || echo -1)
+            max_t=0
+            for z in /sys/class/thermal/thermal_zone*/temp; do
+                t=$(cat "$z" 2>/dev/null || echo 0)
+                [ "$t" -gt "$max_t" ] && max_t=$t
+            done
+            echo "$(date +%s),$gpu,$max_t" >> "$WORKDIR/gpu_thermal.csv"
+            sleep 1
+            i=$((i + 1))
+        done
+    ) &
+    MONITOR_PIDS="$MONITOR_PIDS $!"
+
+    # Per-core CPU (mpstat, 1s intervals)
+    mpstat -P ALL 1 "$DURATION" > "$WORKDIR/mpstat.log" 2>&1 &
+    MONITOR_PIDS="$MONITOR_PIDS $!"
+
+    log "  Monitors started (GPU, thermal, per-core CPU)"
+}
+
+# ── Progress ────────────────────────────────────────────────────────
+
+wait_with_progress() {
+    i=0
+    interval=5
+    while [ "$i" -lt "$DURATION" ]; do
+        gpu=$(cat /sys/class/drm/card0/device/gpu_busy_percent 2>/dev/null || echo "?")
+        max_t=0
+        for z in /sys/class/thermal/thermal_zone*/temp; do
+            t=$(cat "$z" 2>/dev/null || echo 0)
+            [ "$t" -gt "$max_t" ] && max_t=$t
+        done
+        temp_c=$(echo "$max_t" | awk '{printf "%.0f", $1/1000}')
+        printf "\r  [%3d/%ds] GPU: %s%%  Temp: %s°C  " "$i" "$DURATION" "$gpu" "$temp_c"
+        remaining=$((DURATION - i))
+        if [ "$remaining" -lt "$interval" ]; then
+            sleep "$remaining"
+            i=$DURATION
+        else
+            sleep "$interval"
+            i=$((i + interval))
+        fi
+    done
+    printf "\r  [%3d/%ds] done%30s\n" "$DURATION" "$DURATION" ""
+}
+
+# ── Report ──────────────────────────────────────────────────────────
+
+generate_report() {
+    report="$WORKDIR/report.txt"
+
+    gpu_stats=$(awk -F, '
+        NR > 1 && $2 >= 0 {
+            sum += $2; n++
+            if ($2 > max) max = $2
+            if ($2 > 90) hi++
+        }
+        END {
+            if (n > 0) printf "avg: %.0f%%  peak: %d%%  >90%%: %ds/%ds", sum/n, max, hi+0, n
+            else print "no data"
+        }
+    ' "$WORKDIR/gpu_thermal.csv")
+
+    thermal_max=$(awk -F, '
+        NR > 1 && $3 > max { max = $3 }
+        END { if (max > 0) printf "%.1f", max/1000; else print "?" }
+    ' "$WORKDIR/gpu_thermal.csv")
+
+    cpu_avg=$(awk '/Average:.*all/ { printf "%.1f%%", 100 - $NF }' \
+        "$WORKDIR/mpstat.log" 2>/dev/null || echo "?")
+
+    cpu_peak=$(awk '
+        /Average:/ && $2 != "CPU" && $2 != "all" {
+            u = 100 - $NF
+            if (u > max) { max = u; core = $2 }
+        }
+        END { if (max > 0) printf "core %s at %.1f%%", core, max; else print "?" }
+    ' "$WORKDIR/mpstat.log" 2>/dev/null || echo "?")
+
+    pw_errors=$(count_pw_errors)
+
+    pwtop_delta=$(awk '
+        NR == FNR { before[$1] = $2; next }
+        {
+            id = $1; err = $2
+            name = ""
+            for (i = 3; i <= NF; i++) name = name (i > 3 ? " " : "") $i
+            delta = err - (id in before ? before[id] : 0)
+            if (delta > 0) printf "    %-40s +%d\n", name, delta
+        }
+    ' "$WORKDIR/pwtop_before.txt" "$WORKDIR/pwtop_after.txt" 2>/dev/null)
+    [ -z "$pwtop_delta" ] && pwtop_delta="    (none)"
+
+    if [ "$pw_errors" = "?" ]; then
+        verdict="INCONCLUSIVE — could not read journal"
+    elif [ "$pw_errors" -eq 0 ] 2>/dev/null; then
+        verdict="PASS — zero buffer errors"
+    elif [ "$pw_errors" -lt 10 ] 2>/dev/null; then
+        verdict="WARN — $pw_errors buffer error(s)"
+    else
+        verdict="FAIL — $pw_errors buffer error(s)"
+    fi
+
+    cat > "$report" <<REPORT
+═══════════════════════════════════════════════════════
+  pw-stress-test — $(date '+%Y-%m-%d %H:%M')
+  Duration: ${DURATION}s
+═══════════════════════════════════════════════════════
+
+  GPU ─────────────────────────────────────────────
+    $gpu_stats
+
+  CPU ─────────────────────────────────────────────
+    avg: $cpu_avg  peak: $cpu_peak
+
+  Thermal ─────────────────────────────────────────
+    max: ${thermal_max}°C
+
+  PipeWire ────────────────────────────────────────
+    journal buffer errors: $pw_errors
+    pw-top ERR deltas:
+$pwtop_delta
+
+  Verdict ─────────────────────────────────────────
+    $verdict
+═══════════════════════════════════════════════════════
+REPORT
+
+    echo
+    cat "$report"
+
+    if [ -n "$DEAD_PIDS" ]; then
+        warn "Some workloads exited early (PIDs:$DEAD_PIDS) — results may understate real load"
+    fi
+}
+
+# ── Main ────────────────────────────────────────────────────────────
+
+main() {
+    log "Starting ${DURATION}s stress test (simulating video call + screen share)"
+    log "Workdir: $WORKDIR"
+    echo
+
+    check_deps
+
+    log "Generating 48kHz test tone..."
+    ffmpeg -y -loglevel error \
+        -f lavfi -i "sine=frequency=440:duration=30:sample_rate=48000" \
+        -ar 48000 -ac 2 "$WORKDIR/tone.wav"
+
+    log "Pre-test snapshots..."
+    capture_pwtop_errors "before"
+    mark_journal_cursor
+
+    log "Starting monitors..."
+    start_monitors
+
+    log "Starting workloads..."
+    start_workloads
+    echo
+
+    wait_with_progress
+
+    # Check which workloads survived before killing them
+    DEAD_PIDS=""
+    for pid in $WORKLOAD_PIDS; do
+        kill -0 "$pid" 2>/dev/null || DEAD_PIDS="$DEAD_PIDS $pid"
+    done
+
+    log "Stopping workloads..."
+    for pid in $WORKLOAD_PIDS; do
+        kill "$pid" 2>/dev/null || true
+    done
+    sleep 2
+
+    log "Post-test snapshots..."
+    capture_pwtop_errors "after"
+
+    generate_report
+}
+
+main

@@ -35,7 +35,7 @@ Gitignored. Transient session notes written by Claude during work sessions. Revi
 
 ```
 docs/
-  reference/       5 standalone + btrfs/ (3) + tmux/ (3)
+  reference/       5 standalone + btrfs/ (3) + tmux/ (3) + pipewire-audio/ (1)
   troubleshooting/ 6 docs
   .scratch/        gitignored, transient
 ```

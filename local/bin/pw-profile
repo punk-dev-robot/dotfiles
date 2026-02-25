@@ -1,0 +1,59 @@
+#!/bin/sh
+# pw-profile — toggle PipeWire between low-latency (music) and high-buffer (call) modes
+#
+# music: forces quantum=128 for eDrum/DAW sessions (~2.7ms at 48kHz)
+# call:  forces quantum=2048 to survive GPU/CPU contention during video calls (~42.7ms)
+
+set -eu
+
+MUSIC_QUANTUM=128
+CALL_QUANTUM=2048
+
+get_current_mode() {
+    forced=$(pw-metadata -n settings 2>/dev/null \
+        | awk -F"'" '/clock.force-quantum/ {print $4}')
+    case "$forced" in
+        "$MUSIC_QUANTUM") echo "music" ;;
+        "$CALL_QUANTUM")  echo "call" ;;
+        "0"|"")           echo "default" ;;
+        *)                echo "custom($forced)" ;;
+    esac
+}
+
+set_music() {
+    pw-metadata -n settings 0 clock.force-quantum "$MUSIC_QUANTUM"
+    notify-send -a pw-profile -i audio-headphones \
+        "Audio: Music Mode" "Quantum locked at ${MUSIC_QUANTUM} (~2.7ms)"
+}
+
+set_call() {
+    pw-metadata -n settings 0 clock.force-quantum "$CALL_QUANTUM"
+    notify-send -a pw-profile -i audio-input-microphone \
+        "Audio: Call Mode" "Quantum locked at ${CALL_QUANTUM} (~42.7ms)"
+}
+
+toggle() {
+    case "$(get_current_mode)" in
+        music) set_call ;;
+        *)     set_music ;;
+    esac
+}
+
+status() {
+    mode=$(get_current_mode)
+    quantum=$(pw-metadata -n settings 2>/dev/null \
+        | awk -F"'" '/clock.force-quantum/ {print $4}')
+    echo "mode: $mode"
+    echo "force-quantum: ${quantum:-<unset>}"
+}
+
+case "${1:-status}" in
+    music)  set_music ;;
+    call)   set_call ;;
+    toggle) toggle ;;
+    status) status ;;
+    *)
+        echo "Usage: pw-profile {music|call|toggle|status}" >&2
+        exit 1
+        ;;
+esac
