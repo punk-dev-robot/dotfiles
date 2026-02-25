@@ -17,7 +17,7 @@ _PREFERRED_TOOLS = {
     "WebFetch": "firecrawl (mcp__firecrawl-lab__firecrawl_scrape or mcp__firecrawl-cloud__firecrawl_scrape)",
 }
 
-_TTL_SECONDS = 30
+_TTL_SECONDS = 120
 
 
 def main():
