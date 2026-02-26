@@ -157,5 +157,6 @@
   },
   "alwaysThinkingEnabled": true,
   "respectGitIgnore": false,
-  "teammateMode": "auto"
+  "teammateMode": "auto",
+  "skipDangerousModePermissionPrompt": true
 }
