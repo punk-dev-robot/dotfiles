@@ -14,7 +14,6 @@
 }
 
 #workspaces,
-#waybar-vd,
 #custom-music,
 #tray,
 #backlight,
@@ -34,35 +33,23 @@
   margin: 4px 4px;
 }
 
-#workspaces,
-#waybar-vd {
+#workspaces {
   margin-left: 1rem;
 }
 
-#workspaces button,
-#waybar-vd button {
+#workspaces button {
   color: @lavender;
   border-radius: 1rem;
   padding: 2px 4px;
 }
 
-#workspaces button.active,
-#waybar-vd button.vdesk-focused {
+#workspaces button.active {
   color: @sky;
   border-radius: 1rem;
   font-weight: bold;
 }
 
-#waybar-vd button.vdesk-unfocused {
-  color: @overlay0;
-}
-
-#waybar-vd button.vdesk-populated {
-  color: @lavender;
-}
-
-#workspaces button:hover,
-#waybar-vd button:hover {
+#workspaces button:hover {
   color: @sapphire;
   border-radius: 1rem;
   background-color: @surface1;

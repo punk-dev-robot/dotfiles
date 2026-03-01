@@ -6,7 +6,7 @@
   // "height": 20, // Waybar height (to be removed for auto height)
   // Choose the order of the modules
   "modules-left": [
-    "cffi/virtual-desktops",
+    "hyprland/workspaces",
     "hyprland/submap"
   ],
   "modules-center": [
@@ -29,13 +29,12 @@
     "clock"
   ],
 
-  "cffi/virtual-desktops": {
-    "module_path": "/home/kuba/.config/waybar/modules/libwaybar_vd.so",
+  "hyprland/workspaces": {
     "format": "{id}",
-    "show_empty": false,
-    "separator": " ",
-    "on-scroll-up": "hyprctl dispatch nextdesk",
-    "on-scroll-down": "hyprctl dispatch prevdesk"
+    "on-scroll-up": "hyprctl dispatch workspace r+1",
+    "on-scroll-down": "hyprctl dispatch workspace r-1",
+    "on-click": "activate",
+    "sort-by-number": true
   },
 
   "hyprland/submap": {

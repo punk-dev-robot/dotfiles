@@ -10,23 +10,13 @@ get_window_class() {
   hyprctl clients -j | jq -r --arg addr "$addr" '.[] | select(.address == $addr) | .class'
 }
 
-# Calculate vdesk number from workspace ID
-# vdesk N uses workspaces (2N-1) and (2N) in dual-monitor setup
-get_vdesk_from_workspace() {
-  local ws_id="$1"
-  echo $(( (ws_id + 1) / 2 ))
-}
-
-move_to_vdesk_if_needed() {
-  local target_vdesk="$1"
+move_to_workspace_if_needed() {
+  local target_workspace="$1"
   local window_address="$2"
   local current_workspace="$3"
 
-  local current_vdesk=$(get_vdesk_from_workspace "$current_workspace")
-
-  if [[ "$current_vdesk" -ne "$target_vdesk" ]]; then
-    hyprctl dispatch movetodesksilent "$target_vdesk,address:$window_address"
-    pkill -SIGUSR2 waybar
+  if [[ "$current_workspace" -ne "$target_workspace" ]]; then
+    hyprctl dispatch movetoworkspacesilent "$target_workspace,address:$window_address"
   fi
 }
 
@@ -42,10 +32,8 @@ window_title_changed() {
   local current_workspace=$(echo "$window_info" | jq -r '.workspace_id')
 
   if [[ "$window_class" =~ ^(zen|floorp) ]]; then
-    if [[ "$window_title" =~ ^\[?vd([0-9]+) ]]; then
-      move_to_vdesk_if_needed "${BASH_REMATCH[1]}" "$window_address" "$current_workspace"
-    elif [[ "$window_title" =~ ^\[?ws([0-9]+) ]]; then
-      move_to_vdesk_if_needed "${BASH_REMATCH[1]}" "$window_address" "$current_workspace"
+    if [[ "$window_title" =~ ^\[?ws([0-9]+) ]]; then
+      move_to_workspace_if_needed "${BASH_REMATCH[1]}" "$window_address" "$current_workspace"
     fi
   fi
 }
