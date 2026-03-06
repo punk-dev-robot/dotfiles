@@ -28,12 +28,13 @@ latency = quantum / sample_rate
 2048 / 48000 = 42.7ms (safe for calls, imperceptible for voice)
 ```
 
-PipeWire's quantum is **adaptive** — it starts at `default.clock.quantum` and can grow up to `max-quantum` when any client requests more buffer. The config sets:
+PipeWire's quantum is **negotiable** — clients can request any quantum between `min-quantum` and `max-quantum`. The config locks the quantum range to a single value:
 
 - `quantum = 2048` — default, safe for video calls (~42.7ms, imperceptible for voice)
-- `min-quantum = 32` — floor for clients requesting ultra-low latency
+- `min-quantum = 2048` — prevents clients (Zoom, browsers) from negotiating quantum down
 - `max-quantum = 2048` — ceiling
 - `allowed-rates = [ 48000 ]` — prevents graph reconfiguration when clients request different rates
+- `link.max-buffers = 64` — buffer headroom for complex audio graph (USB → EasyEffects → RNNoise → app); upstream default is 16
 
 ### Force-quantum override
 
@@ -157,3 +158,48 @@ pw-stress-test 1800   # 30-minute sustained test
 ```
 
 Runs wf-recorder + ffmpeg VA-API encode + pw-play + pw-record in parallel, monitors GPU/CPU/thermals/PipeWire errors, outputs a summary report with PASS/FAIL verdict.
+
+## Incident: Kernel 6.18.13 Audio Regression (2026-03-06)
+
+### Symptoms
+
+Same underwater/crackling distortion during meetings with screen sharing returned. User was not toggling `pw-profile call` before meetings — relying on default quantum=2048.
+
+### Investigation
+
+Systematic Phase 1 checks:
+
+| Check | Result |
+|-------|--------|
+| Config deployment (dotter diff) | Clean — identical to repo |
+| Runtime quantum/rate (pw-metadata) | Correct — quantum=2048, rate=48000 |
+| .pacnew files | None |
+| PipeWire/WirePlumber version | Unchanged (1.4.10 / 0.5.13) |
+| **linux-zen kernel** | **6.18.7 → 6.18.9 (Feb 22) → 6.18.13 (Feb 27)** |
+| New audio consumers | None unexpected |
+
+Baseline stress test (60s) with old config: 1 buffer error (`spa.audioconvert: out of buffers`) despite GPU workloads crashing early (understated load). Config was correct but behavior changed — kernel regression.
+
+### Root Cause
+
+The linux-zen kernel jumped 6 minor versions in two weeks (6.18.7 → 6.18.13). While PipeWire config was correctly deployed and active at runtime, the kernel change altered USB audio scheduling characteristics. Two contributing factors:
+
+1. **`min-quantum = 32` allowed quantum negotiation** — clients like Zoom could request low quantum values, and under GPU contention from screen sharing, the reduced buffer window was insufficient with the new kernel's timing
+2. **`link.max-buffers = 16` (upstream default) was too tight** — the complex audio graph (USB PreSonus → EasyEffects → RNNoise → app) had insufficient buffer headroom to absorb transient scheduling jitter from the kernel change
+
+### Fix
+
+1. **Raised `min-quantum` from 32 to 2048** — locks quantum range to a single value (min=max=2048), preventing any client from negotiating below the safe threshold. This is preferred over `force-quantum` which overrides all negotiation and can break some apps.
+2. **Added `link.max-buffers = 64`** — 4x the upstream default, gives inter-node links enough buffer slack to absorb kernel scheduling jitter.
+
+### Verification
+
+| Test | Duration | Buffer Errors | Verdict |
+|------|----------|---------------|---------|
+| Before fix | 60s | 1 | WARN |
+| After fix | 180s | 0 | PASS |
+| After fix (with Spotify) | 300s | 0 | PASS |
+
+### Known Issue: wf-recorder / VA-API Workload Crashes
+
+During all stress tests, `wf-recorder` (DMA-BUF screencopy) and `ffmpeg` (VA-API H.264 encode) exited early. This appears to be a separate DMA-BUF or VA-API regression in kernel 6.18.13 — not related to audio buffering. May manifest as degraded screen sharing quality in real calls. Needs separate investigation if observed.
