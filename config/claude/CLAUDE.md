@@ -9,15 +9,20 @@
 - Be thorough
 - Always try to get documentation for external tools, services and APIs using tools available to you
 
-## Memory System
+## Memory System (basic-memory)
 
 - Query memory for existing knowledge before starting new research, planning session or task
 - Always pass the `project` parameter to every basic-memory tool call
+- Available projects:
+  - `dotfiles` → `~/dotfiles/docs` — Arch Linux, Hyprland, Neovim, CLI tools, dotter config
+  - `homelab` → `~/lab/docs` — infrastructure, networking, Proxmox, NAS, services
+  - `notes` → `~/Documents/notes` — personal knowledge, web clippings, Obsidian vault (default)
 - Determine project from working directory:
-  - `dotfiles` → dotfiles project
-  - `lab/*` → homelab project
-  - Otherwise → project with same name as working directory
-- If no matching project exists, propose creating one (project directory should be `/docs` inside project root)
+  - `~/dotfiles/*` → dotfiles
+  - `~/lab/*` → homelab
+  - Otherwise → notes (default)
+- Cross-reference: when working in one project, check other projects for related knowledge if relevant
+- Markdown files are the source of truth — the DB is a rebuildable search index
 
 ## Code Implementation Rules
 
