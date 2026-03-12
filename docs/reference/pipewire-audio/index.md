@@ -203,3 +203,7 @@ The linux-zen kernel jumped 6 minor versions in two weeks (6.18.7 → 6.18.13). 
 ### Known Issue: wf-recorder / VA-API Workload Crashes
 
 During all stress tests, `wf-recorder` (DMA-BUF screencopy) and `ffmpeg` (VA-API H.264 encode) exited early. This appears to be a separate DMA-BUF or VA-API regression in kernel 6.18.13 — not related to audio buffering. May manifest as degraded screen sharing quality in real calls. Needs separate investigation if observed.
+
+### Follow-up: Video Freeze During Meet Call (2026-03-12)
+
+Audio remained stable (confirming PipeWire fixes are solid), but video froze and system became sluggish due to **GPU VRAM exhaustion** — a separate issue from audio buffering. The 2GB VRAM allocation was insufficient for dual-monitor compositing + blur + WebRTC under load. See `docs/troubleshooting/gpu-vram-exhaustion-video-calls.md` for full analysis.
