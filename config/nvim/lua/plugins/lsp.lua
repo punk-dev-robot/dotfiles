@@ -43,6 +43,22 @@ return {
         },
         vtsls = {
           single_file_support = false,
+          -- Yarn PnP support: vtsls ignores .vscode/settings.json in Neovim,
+          -- so we manually inject typescript.tsdk before init.
+          -- See: https://github.com/yioneko/vtsls/issues/243
+          before_init = function(_, config)
+            local path = config.root_dir .. "/.vscode/settings.json"
+            local f = io.open(path, "r")
+            if not f then return end
+            local content = f:read("*a")
+            f:close()
+            local ok, json = pcall(vim.json.decode, content)
+            if ok and json and json["typescript.tsdk"] then
+              config.settings = config.settings or {}
+              config.settings.typescript = config.settings.typescript or {}
+              config.settings.typescript.tsdk = json["typescript.tsdk"]
+            end
+          end,
           -- Comment out custom root_dir to use default detection
           -- root_dir = function()
           --   local lazyvimRoot = require("lazyvim.util.root")

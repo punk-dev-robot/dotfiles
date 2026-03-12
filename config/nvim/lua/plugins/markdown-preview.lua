@@ -1,6 +1,6 @@
 return {
   "selimacerbas/markdown-preview.nvim",
-  enabled = true,
+  -- enabled = false,
   dependencies = { "selimacerbas/live-server.nvim" },
   config = function()
     require("markdown_preview").setup({
