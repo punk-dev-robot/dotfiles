@@ -5,7 +5,7 @@ default_target_type = "symbolic"
 
 [common]
 depends = [
-  "alacritty", "atuin", "bat", "bottom", "claude", "codex", "delta", "ghostty",
+  "alacritty", "atuin", "bat", "bottom", "claude", "codex", "delta", "docker", "ghostty",
   "git", "glab-cli", "k9s", "kitty", "lazygit", "lnav", "luarocks",
   "mpv", "nvim", "opencode", "ripgrep", "ssh", "starship", "tealdeer",
   "tmux", "whitefox", "yazi", "zsh", "markdownlint",
@@ -26,6 +26,7 @@ depends = [
 [macos]
 depends = [
   "common",
+  "colima",
   "karabiner",
   "bin-macos",
 ]
@@ -159,6 +160,13 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 # macOS-specific scripts go here as they're created
 
 # ─── macOS-only app packages ─────────────────────────────────
+
+[colima.files]
+"config/colima/default/colima.yaml" = "~/.config/colima/default/colima.yaml"
+"config/launchagents/com.user.colima.plist" = { target = "~/Library/LaunchAgents/com.user.colima.plist", type = "template" }
+
+[docker.files]
+"config/docker/config.json" = { target = "~/.config/docker/config.json", type = "template" }
 
 [karabiner.files]
 "config/karabiner" = { target = "~/.config/karabiner", type = "symbolic", recurse = false }

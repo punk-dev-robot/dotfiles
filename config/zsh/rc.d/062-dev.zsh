@@ -18,6 +18,8 @@ znap source ntnyq/omz-plugin-pnpm
 znap eval pnpm 'pnpm completion zsh'
 
 # docker
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+[[ -S "$XDG_CONFIG_HOME/colima/default/docker.sock" ]] && export DOCKER_HOST="unix://$XDG_CONFIG_HOME/colima/default/docker.sock"
 export DOCKER_HIDE_LEGACY_COMMANDS=true
 # rust
 path+=("$HOME/.cargo/bin")

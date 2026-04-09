@@ -1,4 +1,6 @@
-# Host-specific blocks must come before Host * (first match wins in SSH config)
+{{#if is_macos}}Include {{home_dir}}/.config/colima/ssh_config
+
+{{/if}}# Host-specific blocks must come before Host * (first match wins in SSH config)
 
 Host github-swap
   HostName github.com

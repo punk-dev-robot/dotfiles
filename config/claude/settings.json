@@ -146,7 +146,8 @@
     "pr-review-toolkit@claude-plugins-official": true,
     "explanatory-output-style@claude-plugins-official": true,
     "exa-mcp-server@exa-mcp-server": true,
-    "plannotator@plannotator": true
+    "plannotator@plannotator": true,
+    "notion@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "exa-mcp-server": {
