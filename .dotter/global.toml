@@ -49,7 +49,6 @@ depends = ["linux", "system"]
 
 [claude.files]
 "config/claude" = "~/.config/claude"
-"config/claude/settings.json" = { target = "~/.config/claude/settings.json", type = "template" }
 
 [codex.files]
 "config/codex" = "~/.config/codex"

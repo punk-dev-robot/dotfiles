@@ -11,6 +11,6 @@ Host *
   TCPKeepAlive yes
   ServerAliveInterval 60
   ServerAliveCountMax 240
-  IdentityAgent {{op_agent_sock}}
+  IdentityAgent "{{op_agent_sock}}"
 #  RemoteForward 52698 127.0.0.1:52698
 #  ForwardAgent yes
