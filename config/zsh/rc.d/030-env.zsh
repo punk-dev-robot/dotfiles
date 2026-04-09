@@ -36,7 +36,13 @@ export ZSH_LIB_DIR="$ZDOTDIR/lib"
 export EDITOR="nvim"
 export VISUAL="nvim"
 export TERMINAL="alacritty"
-export BROWSER="zen-browser"
+if (( $+commands[zen-browser] )); then
+  export BROWSER="zen-browser"
+elif [[ "$OSTYPE" == darwin* ]]; then
+  export BROWSER="open"
+elif (( $+commands[xdg-open] )); then
+  export BROWSER="xdg-open"
+fi
 export READER="zathura"
 export FILE="lf"
 if (( $+commands[moor] )); then
