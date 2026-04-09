@@ -3,7 +3,7 @@ packages = ["macos"]
 [variables]
 gh_binary = "/opt/homebrew/bin/gh"
 delta_theme_path = "~/.config/delta/catppuccin.gitconfig"
-tpm_path = "~/.config/tmux/plugins/tpm/tpm"
+tpm_path = "/opt/homebrew/opt/tpm/share/tpm/tpm"
 op_agent_sock = "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 home_dir = "/Users/kuba.gaj"
 is_macos = true
