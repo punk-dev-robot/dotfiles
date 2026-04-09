@@ -82,10 +82,19 @@ alias lc='ls -lh -c'         # Lists sorted by date, most recent last, shows cha
 alias lu='ls -lh -tr -u'     # Lists sorted by date, most recent last, shows access time.
 alias lx='ll -XB'      # Lists sorted by extension (GNU only).
 
-alias o='xdg-open'
+if (( $+commands[xdg-open] )); then
+  alias o='xdg-open'
+elif [[ "$OSTYPE" == darwin* ]]; then
+  alias o='open'
+fi
 
-alias pbc='wl-copy'
-alias pbp='wl-paste'
+if (( $+commands[wl-copy] )); then
+  alias pbc='wl-copy'
+  alias pbp='wl-paste'
+elif [[ "$OSTYPE" == darwin* ]]; then
+  alias pbc='pbcopy'
+  alias pbp='pbpaste'
+fi
 
 # Command line head / tail shortcuts
 alias H='| head'
@@ -108,9 +117,11 @@ alias vi='nvim'
 alias vim='nvim'
 alias nv='neovide --multigrid'
 
-# docked mode
-alias lap='_ systemctl start udevmon; light -S 30'
-alias desk='_ systemctl stop udevmon; light -S 100'
+# docked mode (Linux only)
+if (( $+commands[systemctl] )); then
+  alias lap='_ systemctl start udevmon; light -S 30'
+  alias desk='_ systemctl stop udevmon; light -S 100'
+fi
 
 # bat
 alias cat='bat --paging=never'
@@ -204,11 +215,13 @@ function upd {
 
 alias psc='ps xawf -eo pid,user,cgroup,args'
 
-# journalctl
-alias jc='sudo journalctl'
-alias jcj='sudo journalctl -o json --output-fields=MESSAGE,PRIORITY,_PID,SYSLOG_IDENTIFIER,_SYSTEMD_UNIT'
-alias jcu='journalctl --user'
-alias jcuj='journalctl --user -o json --output-fields=MESSAGE,PRIORITY,_PID,SYSLOG_IDENTIFIER,_SYSTEMD_UNIT'
+# journalctl (Linux only)
+if (( $+commands[journalctl] )); then
+  alias jc='sudo journalctl'
+  alias jcj='sudo journalctl -o json --output-fields=MESSAGE,PRIORITY,_PID,SYSLOG_IDENTIFIER,_SYSTEMD_UNIT'
+  alias jcu='journalctl --user'
+  alias jcuj='journalctl --user -o json --output-fields=MESSAGE,PRIORITY,_PID,SYSLOG_IDENTIFIER,_SYSTEMD_UNIT'
+fi
 
 # npx
 alias nx='npx nx'

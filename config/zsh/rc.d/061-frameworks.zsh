@@ -2,16 +2,18 @@
 # Plugins from frameworks
 
 # Prezto
-zstyle ':prezto:module:pacman' frontend 'yay'
-# znap source sorin-ionescu/prezto modules/{docker,pacman}
-znap source sorin-ionescu/prezto modules/{docker,pacman,ssh}
+(( $+commands[yay] )) && zstyle ':prezto:module:pacman' frontend 'yay'
+if [[ "$OSTYPE" == linux* ]]; then
+  znap source sorin-ionescu/prezto modules/{docker,pacman,ssh}
+else
+  znap source sorin-ionescu/prezto modules/{docker,ssh}
+fi
 
 # oh-my-zsh lib
 znap source ohmyzsh/ohmyzsh lib/{functions,git}.zsh
 
 # oh-my-zsh plugins
 local -a zsh_plugins=(
-  archlinux
   ansible
   aliases
   eza
@@ -20,15 +22,16 @@ local -a zsh_plugins=(
   kubectl
   node
   pip
-  podman
   python
   # rust
-  systemadmin
-  systemd
   terraform
   tmux
   yarn
 )
+# Linux-only OMZ plugins
+if [[ "$OSTYPE" == linux* ]]; then
+  zsh_plugins+=(archlinux podman systemadmin systemd)
+fi
 
 # Load each plugin, one at a time.
 local p=

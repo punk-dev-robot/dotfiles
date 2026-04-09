@@ -1,0 +1,58 @@
+# Font
+font-family = MesloLGL Nerd Font Mono
+font-size = 16
+
+# Theme
+theme = Catppuccin Mocha
+
+# Window
+background-opacity = 0.95
+# window-decoration = false
+
+# Terminal
+clipboard-read = allow
+clipboard-write = allow
+
+{{#if is_macos}}
+# Copy/paste like Linux terminal (Ctrl+Shift+C/V)
+keybind = ctrl+shift+c=copy_to_clipboard
+keybind = ctrl+shift+v=paste_from_clipboard
+
+# Unbind window/tab/split management (using tmux instead)
+# Window
+keybind = cmd+n=ignore
+keybind = cmd+shift+w=ignore
+keybind = cmd+shift+alt+w=ignore
+keybind = cmd+enter=ignore
+# Tabs
+keybind = cmd+t=ignore
+keybind = cmd+w=ignore
+keybind = cmd+shift+left_bracket=ignore
+keybind = cmd+shift+right_bracket=ignore
+keybind = cmd+one=ignore
+keybind = cmd+two=ignore
+keybind = cmd+three=ignore
+keybind = cmd+four=ignore
+keybind = cmd+five=ignore
+keybind = cmd+six=ignore
+keybind = cmd+seven=ignore
+keybind = cmd+eight=ignore
+keybind = cmd+nine=ignore
+# Splits
+keybind = cmd+d=ignore
+keybind = cmd+shift+d=ignore
+keybind = cmd+left_bracket=ignore
+keybind = cmd+right_bracket=ignore
+keybind = cmd+alt+up=ignore
+keybind = cmd+alt+down=ignore
+keybind = cmd+alt+left=ignore
+keybind = cmd+alt+right=ignore
+keybind = cmd+shift+enter=ignore
+keybind = cmd+ctrl+up=ignore
+keybind = cmd+ctrl+down=ignore
+keybind = cmd+ctrl+left=ignore
+keybind = cmd+ctrl+right=ignore
+keybind = cmd+ctrl+equal=ignore
+# Other
+keybind = cmd+k=ignore
+{{/if}}

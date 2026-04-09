@@ -1,0 +1,9 @@
+packages = ["arch"]
+
+[variables]
+gh_binary = "/usr/bin/gh"
+delta_theme_path = "/home/kuba/.config/delta/catppuccin.gitconfig"
+tpm_path = "/usr/share/tmux-plugin-manager/tpm"
+op_agent_sock = "~/.1password/agent.sock"
+home_dir = "/home/kuba"
+is_linux = true

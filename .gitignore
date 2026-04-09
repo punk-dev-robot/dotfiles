@@ -76,3 +76,8 @@ Thumbs.db
 # === Logs ===
 linear-*.log
 *.log
+
+arch.aur-list.pkg
+arch.pacman-list.pkg
+Brewfile
+

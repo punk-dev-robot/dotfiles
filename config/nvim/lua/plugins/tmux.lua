@@ -10,6 +10,7 @@ return {
     keys = {
       -- navigation
       { "<C-h>", "<cmd>lua require'tmux'.move_left()<cr>", mode = { "n", "i" }, desc = "Go to left window " },
+      { "<BS>", "<cmd>lua require'tmux'.move_left()<cr>", mode = { "n" }, desc = "Go to left window " },
       { "<C-j>", "<cmd>lua require'tmux'.move_bottom()<cr>", mode = { "n", "i" }, desc = "Go to lower window " },
       { "<C-k>", "<cmd>lua require'tmux'.move_top()<cr>", mode = { "n", "i" }, desc = "Go to top window " },
       { "<C-l>", "<cmd>lua require'tmux'.move_right()<cr>", mode = { "n", "i" }, desc = "Go to right window " },

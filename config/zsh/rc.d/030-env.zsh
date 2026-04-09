@@ -39,7 +39,11 @@ export TERMINAL="alacritty"
 export BROWSER="zen-browser"
 export READER="zathura"
 export FILE="lf"
-export PAGER="moar"
+if (( $+commands[moor] )); then
+  export PAGER="moor"
+elif (( $+commands[moar] )); then
+  export PAGER="moar"
+fi
 # use nvim as man viewer
 export MANPAGER='nvim +Man!'
 

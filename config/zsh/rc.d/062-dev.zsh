@@ -1,6 +1,8 @@
 # node
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
-export NPM_TOKEN=$(cat $NPM_CONFIG_USERCONFIG | grep _authToken | sed 's/.*=//')
+if [[ -f "$NPM_CONFIG_USERCONFIG" ]]; then
+  export NPM_TOKEN=$(grep _authToken "$NPM_CONFIG_USERCONFIG" | sed 's/.*=//')
+fi
 # Set Node.js memory limit to 8GB for 64GB system
 export NODE_OPTIONS="--max-old-space-size=8192"
 path+=("./node_modules/.bin")
@@ -35,7 +37,7 @@ znap eval hf 'hf --show-completion'
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && path=("$PYENV_ROOT/bin" $path)
 znap eval pyenv 'pyenv init -'
-znap eval pipx-argcomplete 'register-python-argcomplete pipx'
+# znap eval pipx-argcomplete 'register-python-argcomplete pipx'  # removed: using uv instead of pipx
 
 # lua5.1 is in /usr/local/bin
 export LUAROCKS_CONFIG="$XDG_CONFIG_HOME/luarocks/config-5.4.lua"

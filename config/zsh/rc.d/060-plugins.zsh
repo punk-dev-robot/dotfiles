@@ -64,7 +64,7 @@ znap source catppuccin/zsh-syntax-highlighting themes/catppuccin_mocha-zsh-synta
 
 znap eval zoxide 'zoxide init zsh'
 znap eval direnv 'direnv hook zsh'
-znap eval copilot 'gh copilot alias -- zsh'
+# znap eval copilot 'gh copilot alias -- zsh'  # removed: no longer using copilot
 
 
 #
@@ -90,5 +90,10 @@ export FZF_DEFAULT_OPTS=" \
 --color=border:#6C7086,label:#CDD6F4"
 
 # source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
-source /home/kuba/.config/broot/launcher/bash/br
+if [[ -f /usr/share/fzf/completion.zsh ]]; then
+  source /usr/share/fzf/completion.zsh
+elif [[ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]]; then
+  source /opt/homebrew/opt/fzf/shell/completion.zsh
+fi
+
+[[ -f "$HOME/.config/broot/launcher/bash/br" ]] && source "$HOME/.config/broot/launcher/bash/br"

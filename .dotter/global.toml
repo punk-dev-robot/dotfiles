@@ -1,18 +1,237 @@
 [settings]
 default_target_type = "symbolic"
 
-[all]
-depends = ["user", "system"]
+# ─── Meta-packages (platform selectors) ───────────────────────
 
-[user.files]
-"config" = "~/.config"
-"config/git/gitconfig" = "~/.gitconfig"
+[common]
+depends = [
+  "alacritty", "atuin", "bat", "bottom", "claude", "codex", "delta", "ghostty",
+  "git", "glab-cli", "k9s", "kitty", "lazygit", "lnav", "luarocks",
+  "mpv", "nvim", "opencode", "ripgrep", "ssh", "starship", "tealdeer",
+  "tmux", "whitefox", "yazi", "zsh", "markdownlint",
+  "bin-common",
+]
+
+[linux]
+depends = [
+  "common",
+  "hypr", "rofi", "shikane", "swappy", "swaync", "waybar", "wlogout",
+  "uwsm", "udiskie", "pipewire", "easyeffects", "qt5ct", "qt6ct",
+  "tridactyl", "voxtype", "systemd-user",
+  "1password-linux", "chrome-flags", "electron-flags", "iwgtk",
+  "mimeapps", "desktop-entries",
+  "bin-linux",
+]
+
+[macos]
+depends = [
+  "common",
+  "karabiner",
+  "bin-macos",
+]
+
+[arch]
+depends = ["linux", "system"]
+
+# ─── Cross-platform app packages ──────────────────────────────
+
+[alacritty.files]
+"config/alacritty" = "~/.config/alacritty"
+
+[atuin.files]
+"config/atuin" = "~/.config/atuin"
+
+[bat.files]
+"config/bat" = "~/.config/bat"
+
+[bottom.files]
+"config/bottom" = "~/.config/bottom"
+
+[claude.files]
+"config/claude" = "~/.config/claude"
+"config/claude/settings.json" = { target = "~/.config/claude/settings.json", type = "template" }
+
+[codex.files]
+"config/codex" = "~/.config/codex"
+
+[delta.files]
+"config/delta" = "~/.config/delta"
+
+[ghostty.files]
+"config/ghostty" = { target = "~/.config/ghostty", type = "template" }
+
+[karabiner.files]
+"config/karabiner" = { target = "~/.config/karabiner", type = "symbolic", recurse = false }
+
+[git.files]
+"config/git/gitconfig" = { target = "~/.gitconfig", type = "template" }
 "config/git/gitignore" = "~/.gitignore"
+
+[git.variables]
+gh_binary = "/usr/bin/gh"
+delta_theme_path = "/home/kuba/.config/delta/catppuccin.gitconfig"
+
+[glab-cli.files]
+"config/glab-cli" = "~/.config/glab-cli"
+
+[k9s.files]
+"config/k9s" = "~/.config/k9s"
+
+[kitty.files]
+"config/kitty" = "~/.config/kitty"
+
+[lazygit.files]
+"config/lazygit" = "~/.config/lazygit"
+
+[lnav.files]
+"config/lnav" = "~/.config/lnav"
+
+[luarocks.files]
+"config/luarocks" = "~/.config/luarocks"
+
+[mpv.files]
+"config/mpv" = "~/.config/mpv"
+
+[nvim.files]
+"config/nvim" = "~/.config/nvim"
+
+[opencode.files]
+"config/opencode" = "~/.config/opencode"
+
+[ripgrep.files]
+"config/ripgrep" = "~/.config/ripgrep"
+
+[ssh.files]
 "config/ssh" = { target = "~/.ssh", type = "template" }
-# "config/easyeffects" = { target = "~/.config/easyeffects", type = "template" }
+
+[ssh.variables]
+op_agent_sock = "~/.1password/agent.sock"
+
+[starship.files]
+"config/starship.toml" = "~/.config/starship.toml"
+
+[tealdeer.files]
+"config/tealdeer" = "~/.config/tealdeer"
+
+[tmux.files]
+"config/tmux" = { target = "~/.config/tmux", type = "template" }
+
+[tmux.variables]
+tpm_path = "/usr/share/tmux-plugin-manager/tpm"
+
+[whitefox.files]
+"config/whitefox" = "~/.config/whitefox"
+
+[yazi.files]
+"config/yazi" = "~/.config/yazi"
+
+[zsh.files]
+"config/zsh" = "~/.config/zsh"
 "config/zsh/.zshenv" = "~/.zshenv"
+
+[markdownlint.files]
 "config/.markdownlint.jsonc" = "~/.markdownlint.jsonc"
-"local" = "~/.local"
+
+# ─── User scripts ─────────────────────────────────────────────
+
+[bin-common.files]
+"local/bin/dirwatch" = "~/.local/bin/dirwatch"
+"local/bin/gcal-import" = "~/.local/bin/gcal-import"
+"local/bin/sync-git-maintenance.zsh" = "~/.local/bin/sync-git-maintenance.zsh"
+"local/bin/test-tmux-alacritty.sh" = "~/.local/bin/test-tmux-alacritty.sh"
+"local/bin/tmux-cleanup-sessions.sh" = "~/.local/bin/tmux-cleanup-sessions.sh"
+"local/bin/tmux-restore-wrapper.sh" = "~/.local/bin/tmux-restore-wrapper.sh"
+"local/bin/tmux-save-wrapper.sh" = "~/.local/bin/tmux-save-wrapper.sh"
+"local/bin/tmux-sync-env.sh" = "~/.local/bin/tmux-sync-env.sh"
+"local/bin/update-system.zsh" = "~/.local/bin/update-system.zsh"
+
+[bin-linux.files]
+"local/bin/btrfs-space-monitor" = "~/.local/bin/btrfs-space-monitor"
+"local/bin/cliphist-rofi" = "~/.local/bin/cliphist-rofi"
+"local/bin/containerd-cleanup" = "~/.local/bin/containerd-cleanup"
+"local/bin/dock" = "~/.local/bin/dock"
+"local/bin/gufw" = "~/.local/bin/gufw"
+"local/bin/hyprevents" = "~/.local/bin/hyprevents"
+"local/bin/hyprland-session-start.disabled" = "~/.local/bin/hyprland-session-start.disabled"
+"local/bin/hyprtogglefloatingfocus" = "~/.local/bin/hyprtogglefloatingfocus"
+"local/bin/hyprtogglelayout" = "~/.local/bin/hyprtogglelayout"
+"local/bin/proton-mail" = "~/.local/bin/proton-mail"
+"local/bin/pw-profile" = "~/.local/bin/pw-profile"
+"local/bin/pw-stress-test" = "~/.local/bin/pw-stress-test"
+
+[bin-macos.files]
+# macOS-specific scripts go here as they're created
+
+# ─── Linux-only app packages ──────────────────────────────────
+
+[hypr.files]
+"config/hypr" = "~/.config/hypr"
+
+[rofi.files]
+"config/rofi" = "~/.config/rofi"
+
+[shikane.files]
+"config/shikane" = "~/.config/shikane"
+
+[swappy.files]
+"config/swappy" = "~/.config/swappy"
+
+[swaync.files]
+"config/swaync" = "~/.config/swaync"
+
+[waybar.files]
+"config/waybar" = "~/.config/waybar"
+
+[wlogout.files]
+"config/wlogout" = "~/.config/wlogout"
+
+[uwsm.files]
+"config/uwsm" = "~/.config/uwsm"
+
+[udiskie.files]
+"config/udiskie" = "~/.config/udiskie"
+
+[pipewire.files]
+"config/pipewire" = "~/.config/pipewire"
+
+[easyeffects.files]
+"config/easyeffects" = "~/.config/easyeffects"
+
+[qt5ct.files]
+"config/qt5ct" = "~/.config/qt5ct"
+
+[qt6ct.files]
+"config/qt6ct" = "~/.config/qt6ct"
+
+[tridactyl.files]
+"config/tridactyl" = "~/.config/tridactyl"
+
+[voxtype.files]
+"config/voxtype" = "~/.config/voxtype"
+
+[systemd-user.files]
+"config/systemd" = "~/.config/systemd"
+
+[1password-linux.files]
+"config/1Password" = "~/.config/1Password"
+
+[chrome-flags.files]
+"config/chrome-flags.conf" = "~/.config/chrome-flags.conf"
+
+[electron-flags.files]
+"config/electron-flags.conf" = "~/.config/electron-flags.conf"
+"config/electron-flags-full.conf" = "~/.config/electron-flags-full.conf"
+
+[iwgtk.files]
+"config/iwgtk.conf" = "~/.config/iwgtk.conf"
+
+[mimeapps.files]
+"config/mimeapps.list" = "~/.config/mimeapps.list"
+
+[desktop-entries.files]
+"local/share/applications" = "~/.local/share/applications"
+
+# ─── System-level (Arch Linux only) ───────────────────────────
 
 [system.files]
 "etc" = { target = "/etc", type = "template", owner = "root" }
