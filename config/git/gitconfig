@@ -42,3 +42,5 @@
   difftool = true
 [checkout]
 	workers = 8
+[url "git@github-swap:swapcommerce/"]
+	insteadOf = git@github.com:swapcommerce/

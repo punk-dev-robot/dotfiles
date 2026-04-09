@@ -1,3 +1,13 @@
+# Host-specific blocks must come before Host * (first match wins in SSH config)
+
+Host github-swap
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/kuba.swap.pub
+  IdentitiesOnly yes
+  ControlMaster no
+  ControlPath none
+
 # Enable reusing connections
 ControlMaster auto
 ControlPath ~/.ssh/control-%C
