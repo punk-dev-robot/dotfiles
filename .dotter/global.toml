@@ -60,9 +60,6 @@ depends = ["linux", "system"]
 [ghostty.files]
 "config/ghostty" = { target = "~/.config/ghostty", type = "template" }
 
-[karabiner.files]
-"config/karabiner" = { target = "~/.config/karabiner", type = "symbolic", recurse = false }
-
 [git.files]
 "config/git/gitconfig" = { target = "~/.gitconfig", type = "template" }
 "config/git/gitignore" = "~/.gitignore"
@@ -93,7 +90,7 @@ delta_theme_path = "/home/kuba/.config/delta/catppuccin.gitconfig"
 "config/mpv" = "~/.config/mpv"
 
 [nvim.files]
-"config/nvim" = "~/.config/nvim"
+"config/nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }
 
 [opencode.files]
 "config/opencode" = "~/.config/opencode"
@@ -161,6 +158,11 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 
 [bin-macos.files]
 # macOS-specific scripts go here as they're created
+
+# ─── macOS-only app packages ─────────────────────────────────
+
+[karabiner.files]
+"config/karabiner" = { target = "~/.config/karabiner", type = "symbolic", recurse = false }
 
 # ─── Linux-only app packages ──────────────────────────────────
 
