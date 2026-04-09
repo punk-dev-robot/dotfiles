@@ -238,7 +238,11 @@ alias tlsc='tailscale'
 # Unset service account to use desktop app auth (biometric)
 # script creates PTY to workaround: https://github.com/anthropics/claude-code/issues/6820
 cld() {
-    OP_SERVICE_ACCOUNT_TOKEN= op run --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "claude $*"
+    if [[ "$OSTYPE" == darwin* ]]; then
+        OP_SERVICE_ACCOUNT_TOKEN= op run --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null claude "$@"
+    else
+        OP_SERVICE_ACCOUNT_TOKEN= op run --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "claude $*"
+    fi
 }
 # Tmp fix only for installing plugins
 # https://github.com/anthropics/claude-code/issues/18115
@@ -247,7 +251,11 @@ alias cldpfix='TMPDIR="$XDG_CACHE_HOME/claude" claude plugin'
 alias hf='op run -- hf'
 alias cdx='codex'
 oc() {
-    OP_SERVICE_ACCOUNT_TOKEN= op run --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "opencode $*"
+    if [[ "$OSTYPE" == darwin* ]]; then
+        OP_SERVICE_ACCOUNT_TOKEN= op run --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null opencode "$@"
+    else
+        OP_SERVICE_ACCOUNT_TOKEN= op run --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "opencode $*"
+    fi
 }
 alias mem='basic-memory'
 
