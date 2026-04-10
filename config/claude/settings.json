@@ -154,7 +154,15 @@
       "source": {
         "source": "github",
         "repo": "exa-labs/exa-mcp-server"
-      }
+      },
+      "autoUpdate": true
+    },
+    "plannotator": {
+      "source": {
+        "source": "github",
+        "repo": "backnotprop/plannotator"
+      },
+      "autoUpdate": true
     }
   },
   "alwaysThinkingEnabled": true,

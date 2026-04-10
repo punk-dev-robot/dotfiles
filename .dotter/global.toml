@@ -28,6 +28,9 @@ depends = [
   "common",
   "colima",
   "karabiner",
+  "rio",
+  "hammerspoon",
+  "tmux-server",
   "bin-macos",
 ]
 
@@ -159,11 +162,20 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 [bin-macos.files]
 # macOS-specific scripts go here as they're created
 
+[rio.files]
+"config/rio" = "~/.config/rio"
+
+[hammerspoon.files]
+"config/hammerspoon" = { target = "~/.hammerspoon", type = "symbolic", recurse = false }
+
 # ─── macOS-only app packages ─────────────────────────────────
 
 [colima.files]
 "config/colima/default/colima.yaml" = "~/.config/colima/default/colima.yaml"
 "config/launchagents/com.user.colima.plist" = { target = "~/Library/LaunchAgents/com.user.colima.plist", type = "template" }
+
+[tmux-server.files]
+"config/launchagents/com.user.tmux.plist" = { target = "~/Library/LaunchAgents/com.user.tmux.plist", type = "template" }
 
 [docker.files]
 "config/docker/config.json" = { target = "~/.config/docker/config.json", type = "template" }
