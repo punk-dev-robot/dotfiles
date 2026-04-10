@@ -239,9 +239,9 @@ alias tlsc='tailscale'
 # script creates PTY to workaround: https://github.com/anthropics/claude-code/issues/6820
 cld() {
     if [[ "$OSTYPE" == darwin* ]]; then
-        OP_SERVICE_ACCOUNT_TOKEN= op run --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null claude "$@"
+        OP_SERVICE_ACCOUNT_TOKEN= op run --account my.1password.com --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null claude "$@"
     else
-        OP_SERVICE_ACCOUNT_TOKEN= op run --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "claude $*"
+        OP_SERVICE_ACCOUNT_TOKEN= op run --account my.1password.com --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "claude $*"
     fi
 }
 # Tmp fix only for installing plugins
@@ -252,9 +252,9 @@ alias hf='op run -- hf'
 alias cdx='codex'
 oc() {
     if [[ "$OSTYPE" == darwin* ]]; then
-        OP_SERVICE_ACCOUNT_TOKEN= op run --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null opencode "$@"
+        OP_SERVICE_ACCOUNT_TOKEN= op run --account my.1password.com --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null opencode "$@"
     else
-        OP_SERVICE_ACCOUNT_TOKEN= op run --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "opencode $*"
+        OP_SERVICE_ACCOUNT_TOKEN= op run --account my.1password.com --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "opencode $*"
     fi
 }
 alias mem='basic-memory'
