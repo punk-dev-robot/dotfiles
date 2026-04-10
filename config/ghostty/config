@@ -14,6 +14,17 @@ clipboard-read = allow
 clipboard-write = allow
 
 {{#if is_macos}}
+# Quick terminal (drop-down, Quake-style)
+# position change requires Ghostty restart; global keybind needs Accessibility permission
+quick-terminal-position = top
+quick-terminal-size = 55%,50%
+quick-terminal-animation-duration = 0.15
+# Karabiner swaps Ctrl↔Cmd in non-terminal apps, so physical Ctrl+`
+# arrives as Cmd+` when another app is focused, and stays Ctrl+`
+# when Ghostty itself is focused (no swap). Bind both to cover both cases.
+keybind = global:cmd+grave_accent=toggle_quick_terminal
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
+
 # Copy/paste like Linux terminal (Ctrl+Shift+C/V)
 keybind = ctrl+shift+c=copy_to_clipboard
 keybind = ctrl+shift+v=paste_from_clipboard
@@ -23,7 +34,7 @@ keybind = ctrl+shift+v=paste_from_clipboard
 keybind = cmd+n=ignore
 keybind = cmd+shift+w=ignore
 keybind = cmd+shift+alt+w=ignore
-keybind = cmd+enter=ignore
+# cmd+enter is bound to toggle_quick_terminal above
 # Tabs
 keybind = cmd+t=ignore
 keybind = cmd+w=ignore
