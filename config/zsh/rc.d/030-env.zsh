@@ -53,6 +53,9 @@ fi
 # use nvim as man viewer
 export MANPAGER='nvim +Man!'
 
+# macOS: skip quarantine xattr on brew installs/upgrades
+[[ "$OSTYPE" == darwin* ]] && export HOMEBREW_NO_QUARANTINE=1
+
 # Settings
 # Kill the lag after <ESC> (https://dougblack.io/words/zsh-vi-mode.html)
 export KEYTIMEOUT=1

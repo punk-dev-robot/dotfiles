@@ -34,7 +34,7 @@ path+=("$GOBIN")
 # export WORKON_HOME=$HOME/.virtualenvs
 # source '/usr/bin/virtualenvwrapper.sh'
 # export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-znap eval hf 'hf --show-completion'
+znap eval hf 'command hf --show-completion'
 
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && path=("$PYENV_ROOT/bin" $path)

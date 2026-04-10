@@ -70,7 +70,7 @@ znap eval direnv 'direnv hook zsh'
 #
 # start atuin (can't be deferred in plugins)
 # zsh vi-mode/atuin temp fix https://github.com/atuinsh/atuin/issues/977
-zvm_after_init_commands+=(eval "$(atuin init zsh --disable-up-arrow)")
+(( $+commands[atuin] )) && zvm_after_init_commands+=(eval "$(atuin init zsh --disable-up-arrow)")
 
 # enable smooth scrolling, blured backgrounds and window animations
 # may be causing some bugs

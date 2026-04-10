@@ -31,6 +31,8 @@ export ZDOTDIR=${XDG_CONFIG_HOME:=~/.config}/zsh
 # for $HOME in each $path entry.
 path=(
     ~/.local/bin
+    /opt/homebrew/bin
+    /opt/homebrew/sbin
     $path
 )
 
