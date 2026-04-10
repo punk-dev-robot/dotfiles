@@ -31,13 +31,18 @@ height = 1200
 
 [renderer]
 performance = "High"
-# filters = [
-#   "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crt-1tap-bloom_fast.slangp",
-# ]
-filters = ["/Users/kuba.gaj/dev/oss/slang-shaders/film/technicolor.slangp"]
+backend = "Automatic"
+# Built-in: NewPixieCrt, fubax_vr (case-sensitive); GL backend doesn't support filters
+# Custom .slangp paths also supported: "/path/to/shader.slangp"
+filters = ["/Users/kuba.gaj/dev/oss/slang-shaders/crt/shaders/crt-aperture.slang"]
+# lighter — barely visible:
+# filters = ["/Users/kuba.gaj/dev/oss/slang-shaders/crt/shaders/crt-frutbunn.slang"]
+# moderate — good balance:
+# filters = ["/Users/kuba.gaj/dev/oss/slang-shaders/crt/shaders/crt-cgwg-fast.slang"]
+# heavier:
+# filters = ["/Users/kuba.gaj/dev/oss/slang-shaders/crt/shaders/crt-aperture.slang"]
+# filters = ["NewPixieCrt"]
 
-[platform]
-macos.renderer.backend = "Metal"
 
 [colors]
 background = '#24273a'
