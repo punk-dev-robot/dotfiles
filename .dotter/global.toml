@@ -26,6 +26,7 @@ depends = [
 [macos]
 depends = [
   "common",
+  "borders",
   "colima",
   "karabiner",
   "rio",
@@ -164,6 +165,10 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 
 [rio.files]
 "config/rio" = "~/.config/rio"
+
+[borders.files]
+"config/borders" = "~/.config/borders"
+"config/launchagents/com.user.borders.plist" = { target = "~/Library/LaunchAgents/com.user.borders.plist", type = "template" }
 
 [hammerspoon.files]
 "config/hammerspoon" = { target = "~/.hammerspoon", type = "symbolic", recurse = false }

@@ -1,29 +1,33 @@
--- Window management — basic foundation, to be expanded
--- Ctrl+Alt+Arrow : snap to half
--- Ctrl+Alt+F     : maximise
--- Ctrl+Alt+Shift+Arrow : throw to next/previous screen
+-- Window management
+-- Opt+HJKL   : focus window directionally
+-- Opt+Arrows : resize window incrementally (50px steps)
 
-local function snap(unitRect)
+local resizeStep = 50
+
+local function withFocused(fn)
   local win = hs.window.focusedWindow()
-  if win then win:moveToUnit(unitRect) end
+  if win then fn(win) end
 end
 
-hs.hotkey.bind({"ctrl", "alt"}, "left",  function() snap({0,   0, 0.5, 1  }) end)
-hs.hotkey.bind({"ctrl", "alt"}, "right", function() snap({0.5, 0, 0.5, 1  }) end)
-hs.hotkey.bind({"ctrl", "alt"}, "up",    function() snap({0,   0, 1,   0.5}) end)
-hs.hotkey.bind({"ctrl", "alt"}, "down",  function() snap({0, 0.5, 1,   0.5}) end)
+-- Focus
+hs.hotkey.bind({"alt"}, "h", function() withFocused(function(w) w:focusWindowWest()  end) end)
+hs.hotkey.bind({"alt"}, "l", function() withFocused(function(w) w:focusWindowEast()  end) end)
+hs.hotkey.bind({"alt"}, "k", function() withFocused(function(w) w:focusWindowNorth() end) end)
+hs.hotkey.bind({"alt"}, "j", function() withFocused(function(w) w:focusWindowSouth() end) end)
 
-hs.hotkey.bind({"ctrl", "alt"}, "f", function()
-  local win = hs.window.focusedWindow()
-  if win then win:moveToUnit({0, 0, 1, 1}) end
-end)
+-- Resize (arrow keys = firmware '/' layer + hjkl)
+hs.hotkey.bind({"alt"}, "left",  function() withFocused(function(w)
+  local f = w:frame(); f.w = math.max(200, f.w - resizeStep); w:setFrame(f)
+end) end)
 
-hs.hotkey.bind({"ctrl", "alt", "shift"}, "right", function()
-  local win = hs.window.focusedWindow()
-  if win then win:moveToScreen(win:screen():next()) end
-end)
+hs.hotkey.bind({"alt"}, "right", function() withFocused(function(w)
+  local f = w:frame(); f.w = f.w + resizeStep; w:setFrame(f)
+end) end)
 
-hs.hotkey.bind({"ctrl", "alt", "shift"}, "left", function()
-  local win = hs.window.focusedWindow()
-  if win then win:moveToScreen(win:screen():previous()) end
-end)
+hs.hotkey.bind({"alt"}, "up", function() withFocused(function(w)
+  local f = w:frame(); f.h = math.max(200, f.h - resizeStep); w:setFrame(f)
+end) end)
+
+hs.hotkey.bind({"alt"}, "down", function() withFocused(function(w)
+  local f = w:frame(); f.h = f.h + resizeStep; w:setFrame(f)
+end) end)

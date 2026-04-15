@@ -1,0 +1,13 @@
+#!/bin/bash
+# JankyBorders — focused window highlight
+# Colors: Catppuccin Mocha
+
+options=(
+  style=round
+  width=6.0
+  active_color=0xffb4befe    # lavender
+  inactive_color=0xff45475a  # surface1
+  blur_radius=5.0
+)
+
+borders "${options[@]}"
