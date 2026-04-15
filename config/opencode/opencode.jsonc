@@ -1,6 +1,11 @@
 {
   "mcp": {
+    "tessl": {
+      "type": "local",
+      "command": ["tessl", "mcp", "start"],
+    },
     "basic-memory": {
+      "enabled": false,
       "type": "local",
       "command": ["uvx", "basic-memory", "mcp"],
       "environment": {
@@ -21,6 +26,7 @@
       ],
     },
     "firecrawl": {
+      "enabled": false,
       "type": "local",
       "command": ["npx", "-y", "firecrawl-mcp"],
       "environment": {
@@ -31,21 +37,33 @@
       "type": "local",
       "command": ["npx", "-y", "firecrawl-mcp"],
     },
-  },
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "openai": {
-      "options": {
-        "baseURL": "${LITELLM_BASE_URL}",
-      },
+    "serena": {
+      "type": "local",
+      "enabled": false,
+      "command": [
+        "serena",
+        "start-mcp-server",
+        "--context=oaicompat-agent",
+        "--project-from-cwd",
+      ],
+    },
+    "notion": {
+      "type": "remote",
+      "url": "https://mcp.notion.com/mcp",
+    },
+    "linear": {
+      "type": "remote",
+      "url": "https://mcp.linear.app/sse",
     },
   },
-  "model": "openai/gpt-5.2",
-  "keybinds": {
-    "input_newline": "alt+enter,ctrl+j,shift+enter",
-  },
+  "$schema": "https://opencode.ai/config.json",
+  "model": "openai/gpt-5.4",
   "instructions": ["./instructions.md"],
-  "plugin": ["./plugins/modern-cli-warn.ts"],
+  "plugin": [
+    "@plannotator/opencode@latest",
+    "./plugins/modern-cli-warn.ts",
+    "./plugins/spec-kit-plannotator.ts",
+  ],
   "permission": {
     "bash": {
       "nx run deploy:*": "deny",

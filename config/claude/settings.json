@@ -88,12 +88,13 @@
       "Bash(shutdown *)",
       "Bash(poweroff *)"
     ],
-    "defaultMode": "plan",
+    "defaultMode": "auto",
     "additionalDirectories": [
       "~/dotfiles",
       "~/Pictures/Screenshots"
     ]
   },
+  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -106,6 +107,15 @@
           {
             "type": "command",
             "command": "~/.config/claude/hooks/block-danger.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/claude/hooks/spec-kit-plannotator.py"
           }
         ]
       },
@@ -126,6 +136,46 @@
             "command": "~/.config/claude/hooks/prefer-tools.py"
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "serena-hooks remind --client=claude-code"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__serena__*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "serena-hooks auto-approve --client=claude-code"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "serena-hooks activate --client=claude-code"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "serena-hooks cleanup --client=claude-code"
+          }
+        ]
       }
     ],
     "Notification": [
@@ -141,13 +191,15 @@
   },
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
-    "commit-commands@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
-    "pr-review-toolkit@claude-plugins-official": true,
     "explanatory-output-style@claude-plugins-official": true,
-    "exa-mcp-server@exa-mcp-server": true,
     "plannotator@plannotator": true,
-    "notion@claude-plugins-official": true
+    "notion@claude-plugins-official": true,
+    "linear@claude-plugins-official": true,
+    "agent-skills@addy-agent-skills": true,
+    "skill-codex@skill-codex": true,
+    "exa@exa-mcp-server": true,
+    "claude-mem@thedotmack": true
   },
   "extraKnownMarketplaces": {
     "exa-mcp-server": {
@@ -163,10 +215,36 @@
         "repo": "backnotprop/plannotator"
       },
       "autoUpdate": true
+    },
+    "addy-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "addyosmani/agent-skills"
+      }
+    },
+    "skill-codex": {
+      "source": {
+        "source": "github",
+        "repo": "skills-directory/skill-codex"
+      }
+    },
+    "thedotmack": {
+      "source": {
+        "source": "github",
+        "repo": "thedotmack/claude-mem"
+      }
+    },
+    "context-engine-skills": {
+      "source": {
+        "source": "github",
+        "repo": "Context-Engine-AI/Context-Engine"
+      }
     }
   },
   "alwaysThinkingEnabled": true,
   "skipDangerousModePermissionPrompt": true,
+  "skipAutoPermissionPrompt": true,
   "respectGitIgnore": false,
-  "teammateMode": "auto"
+  "teammateMode": "auto",
+  "permissionMode": "auto"
 }
