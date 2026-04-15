@@ -1,0 +1,116 @@
+schema_version: "1.0"
+
+extension:
+  id: "v-model"
+  name: "V-Model Extension Pack"
+  version: "0.5.0"
+  description: "Enforces V-Model paired generation of development specs and test specs with full traceability."
+  author: "leocamello"
+  repository: "https://github.com/leocamello/spec-kit-v-model"
+  license: "MIT"
+  homepage: "https://github.com/leocamello/spec-kit-v-model"
+
+requires:
+  speckit_version: ">=0.1.0"
+
+  commands:
+    - "speckit.specify"
+
+provides:
+  commands:
+    - name: "speckit.v-model.requirements"
+      file: "commands/requirements.md"
+      description: "Generate a V-Model Requirements Specification with traceable REQ-NNN IDs"
+
+    - name: "speckit.v-model.acceptance"
+      file: "commands/acceptance.md"
+      description: "Generate a three-tier Acceptance Test Plan (Test Cases + BDD Scenarios) with 100% coverage validation"
+
+    - name: "speckit.v-model.system-design"
+      file: "commands/system-design.md"
+      description: "Decompose requirements into IEEE 1016-compliant system components with four mandatory design views"
+
+    - name: "speckit.v-model.system-test"
+      file: "commands/system-test.md"
+      description: "Generate ISO 29119-compliant system test plan with named techniques for every system component"
+
+    - name: "speckit.v-model.architecture-design"
+      file: "commands/architecture-design.md"
+      description: "Decompose system components into IEEE 42010/Kruchten 4+1 architecture modules with four mandatory views"
+
+    - name: "speckit.v-model.integration-test"
+      file: "commands/integration-test.md"
+      description: "Generate ISO 29119-4 integration test plan with four named techniques for every architecture module"
+
+    - name: "speckit.v-model.module-design"
+      file: "commands/module-design.md"
+      description: "Decompose architecture modules into DO-178C/ISO 26262-compliant low-level module designs with four mandatory views"
+
+    - name: "speckit.v-model.unit-test"
+      file: "commands/unit-test.md"
+      description: "Generate ISO 29119-4 white-box unit test plan with five named techniques for every module design"
+
+    - name: "speckit.v-model.hazard-analysis"
+      file: "commands/hazard-analysis.md"
+      description: "Generate an ISO 14971/ISO 26262-compliant Hazard Analysis (FMEA) with operational state awareness and traceable HAZ-NNN IDs"
+
+    - name: "speckit.v-model.impact-analysis"
+      file: "commands/impact-analysis.md"
+      description: "Run deterministic impact analysis to identify all V-Model artifacts affected by a change (downward, upward, or full traversal)"
+
+    - name: "speckit.v-model.peer-review"
+      file: "commands/peer-review.md"
+      description: "AI-powered stateless linter for any V-Model artifact — evaluates against standards-based criteria and produces PRF-{ARTIFACT}-NNN findings with CI exit codes"
+
+    - name: "speckit.v-model.test-results"
+      file: "commands/test-results.md"
+      description: "Ingest JUnit XML test results and optional Cobertura XML code coverage into the traceability matrix (100% deterministic, no AI)"
+
+    - name: "speckit.v-model.audit-report"
+      file: "commands/audit-report.md"
+      description: "Build a release audit report with waiver cross-referencing and compliance gating (100% deterministic, no AI)"
+
+    - name: "speckit.v-model.trace"
+      file: "commands/trace.md"
+      description: "Build a regulatory-grade Traceability Matrix (Matrix A + B + C + D + H: REQ → ATP → SYS → STP → ARCH → ITP → MOD → UTP + HAZ → Mitigation → Verification)"
+
+  config:
+    - name: "v-model-config.yml"
+      template: "config-template.yml"
+      description: "V-Model extension configuration"
+      required: false
+
+hooks:
+  after_tasks:
+    command: "speckit.v-model.trace"
+    optional: true
+    prompt: "Run traceability matrix to validate requirement coverage?"
+    description: "Builds the traceability matrix after tasks are generated"
+
+tags:
+  - "v-model"
+  - "traceability"
+  - "testing"
+  - "compliance"
+  - "safety-critical"
+
+defaults:
+  output_dir: "v-model"
+  id_prefixes:
+    requirements: "REQ"
+    test_cases: "ATP"
+    scenarios: "SCN"
+    system_components: "SYS"
+    system_test_cases: "STP"
+    system_test_scenarios: "STS"
+    architecture_modules: "ARCH"
+    integration_test_cases: "ITP"
+    integration_test_scenarios: "ITS"
+    module_designs: "MOD"
+    unit_test_cases: "UTP"
+    unit_test_scenarios: "UTS"
+    hazards: "HAZ"
+    peer_review_findings: "PRF"
+    waivers: "WAV"
+  coverage_threshold: 100
+  batch_size: 5

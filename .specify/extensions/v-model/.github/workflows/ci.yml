@@ -1,0 +1,132 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-bash:
+    name: Validate & Test Bash Scripts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Check Bash scripts syntax
+        run: |
+          for script in scripts/bash/*.sh; do
+            echo "Checking $script..."
+            bash -n "$script"
+          done
+
+      - name: Validate extension manifest
+        run: |
+          echo "Checking extension.yml exists and has required fields..."
+          test -f extension.yml
+          grep -q 'schema_version:' extension.yml
+          grep -q 'extension:' extension.yml
+          grep -q 'provides:' extension.yml
+          echo "✓ extension.yml is valid"
+
+      - name: Validate command files
+        run: |
+          for cmd in commands/*.md; do
+            echo "Checking $cmd..."
+            head -1 "$cmd" | grep -q '^---$'
+            echo "  ✓ Has frontmatter"
+          done
+
+      - name: Run BATS tests
+        run: |
+          echo "Running BATS tests (acceptance + system-level)..."
+          tests/bats/lib/bats-core/bin/bats tests/bats/*.bats
+
+      - name: Run structural validators
+        run: |
+          python3 -c "
+          from tests.validators.id_validator import validate_all
+          from tests.validators.template_validator import validate_requirements, validate_acceptance_plan
+          from tests.validators.bdd_validator import validate_all_scenarios
+
+          for fixture in ['minimal', 'complex']:
+              with open(f'tests/fixtures/{fixture}/requirements.md') as f: reqs = f.read()
+              with open(f'tests/fixtures/{fixture}/acceptance-plan.md') as f: acc = f.read()
+              r = validate_requirements(reqs)
+              a = validate_acceptance_plan(acc)
+              b = validate_all_scenarios(acc)
+              v = validate_all(reqs + '\n' + acc)
+              print(f'{fixture}: req={r[\"score\"]} acc={a[\"score\"]} bdd={b[\"score\"]} ids={v[\"score\"]}')
+              assert r['score'] >= 0.95, f'{fixture} requirements failed: {r[\"issues\"]}'
+              assert a['score'] >= 0.95, f'{fixture} acceptance failed: {a[\"issues\"]}'
+              assert b['score'] >= 0.95, f'{fixture} bdd failed: {b[\"issues\"]}'
+
+          for domain in ['medical-device', 'automotive-adas']:
+              with open(f'tests/fixtures/golden/{domain}/expected-requirements.md') as f: reqs = f.read()
+              with open(f'tests/fixtures/golden/{domain}/expected-acceptance.md') as f: acc = f.read()
+              r = validate_requirements(reqs)
+              a = validate_acceptance_plan(acc)
+              b = validate_all_scenarios(acc)
+              print(f'{domain}: req={r[\"score\"]} acc={a[\"score\"]} bdd={b[\"score\"]}')
+              assert r['score'] == 1.0, f'{domain} requirements failed: {r[\"issues\"]}'
+              assert a['score'] == 1.0, f'{domain} acceptance failed: {a[\"issues\"]}'
+              assert b['score'] == 1.0, f'{domain} bdd failed: {b[\"issues\"]}'
+
+          print('✓ All structural validators pass')
+          "
+
+  validate-powershell:
+    name: Validate & Test PowerShell Scripts
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check PowerShell scripts syntax
+        shell: pwsh
+        run: |
+          foreach ($script in Get-ChildItem scripts/powershell/*.ps1) {
+            Write-Host "Checking $($script.Name)..."
+            $null = [System.Management.Automation.PSParser]::Tokenize(
+              (Get-Content $script.FullName -Raw), [ref]$null
+            )
+            Write-Host "  OK"
+          }
+
+      - name: Run Pester tests
+        shell: pwsh
+        run: |
+          $config = New-PesterConfiguration
+          $config.Run.Path = "tests/pester"
+          $config.Output.Verbosity = "Detailed"
+          $config.Run.Exit = $true
+          Invoke-Pester -Configuration $config
+
+  structural-evals:
+    name: Structural Evaluations
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run structural eval tests
+        run: pytest tests/evals/ -m structural -v --tb=short
