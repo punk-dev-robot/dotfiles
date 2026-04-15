@@ -22,7 +22,8 @@ return {
     { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
   },
   opts = {
-    terminal_cmd = "zsh -ic cld",
+    terminal_cmd = "zsh -ic claude",
+    -- terminal_cmd = "zsh -ic cld",
     auto_start = true,
     focus_after_send = true,
 

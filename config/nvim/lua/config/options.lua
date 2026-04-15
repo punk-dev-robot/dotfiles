@@ -12,15 +12,16 @@ opt.relativenumber = false
 
 -- vim.lsp.set_log_level("debug")
 -- LazyVim root dir detection
--- Each entry can be:
--- * the name of a detector function like `lsp` or `cwd`
--- * a pattern or array of patterns like `.git` or `lua`.
--- * a function with signature `function(buf) -> string|string[]`
--- vim.g.root_spec = {
---   { "package.json", "project.json", "Cargo.toml", "rust-project.json", "__init__.py", ".git", ".terraform" },
---   "lsp",
---   "cwd",
--- }
+-- Patterns are checked closest-first (upward from buffer).
+-- Separating package.json from .git ensures monorepo apps scope correctly:
+--   <leader>ff → closest app/package dir
+--   <leader>Ff → cwd (monorepo root)
+vim.g.root_spec = {
+  { "package.json", "tsconfig.json", "Cargo.toml", "pyproject.toml" },
+  "lsp",
+  { ".git" },
+  "cwd",
+}
 -- vim.g.autoformat = false
 -- LSP Server to use for Python.
 -- Set to "basedpyright" to use basedpyright instead of pyright.
