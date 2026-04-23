@@ -83,3 +83,4 @@ linear-*.log
 arch.aur-list.pkg
 arch.pacman-list.pkg
 
+/.claude/worktrees

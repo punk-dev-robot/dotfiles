@@ -65,3 +65,8 @@ export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
 export CODEX_HOME="$XDG_CONFIG_HOME/codex"
 znap eval basic-memory 'basic-memory --show-completion'  
 # znap eval thv 'thv completion zsh' 
+
+# Composio CLI
+export COMPOSIO_INSTALL_DIR="/Users/kuba.gaj/.composio"
+export PATH="$COMPOSIO_INSTALL_DIR:$PATH"
+
