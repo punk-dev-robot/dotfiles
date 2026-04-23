@@ -63,4 +63,4 @@ Pyright enabled for Python hooks in `config/claude/hooks/`.
 
 These are enabled in `~/.config/claude/settings.json` and available to all projects:
 
-context7, commit-commands, security-guidance, pr-review-toolkit, explanatory-output-style, learning-output-style, hookify, code-simplifier, claude-md-management, exa-mcp-server, taches-cc-resources, document-skills
+context7, commit-commands, security-guidance, pr-review-toolkit, explanatory-output-style, learning-output-style, hookify, code-simplifier, claude-md-management, taches-cc-resources, document-skills

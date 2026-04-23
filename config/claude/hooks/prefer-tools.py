@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Deny WebSearch/WebFetch, suggest MCP. Allow retry within TTL window.
+"""Deny WebSearch/WebFetch, suggest Composio CLI. Allow retry within TTL window.
 
 On first call for a tool, creates a marker and denies with a message pointing
-to MCP alternatives. If the same tool is retried within 30 seconds (MCP failed),
+to Composio CLI alternatives. If the same tool is retried within the TTL window,
 the marker is consumed and the tool is allowed as fallback. Each cycle is
 independent -- after consumption, the next call starts fresh.
 """
@@ -13,8 +13,15 @@ import time
 from pathlib import Path
 
 _PREFERRED_TOOLS = {
-    "WebSearch": "exa (mcp__plugin_exa-mcp-server_exa__web_search_exa) or firecrawl (mcp__firecrawl-lab__firecrawl_search)",
-    "WebFetch": "firecrawl (mcp__firecrawl-lab__firecrawl_scrape or mcp__firecrawl-cloud__firecrawl_scrape)",
+    "WebSearch": (
+        "the Composio CLI workflow first: run `composio search \"<task>\"` to discover the right slug, "
+        "then use `composio execute <SLUG> --get-schema` or `--dry-run` before execution. "
+        "Common search slugs are `EXA_SEARCH`, `EXA_ANSWER`, and `FIRECRAWL_SEARCH`."
+    ),
+    "WebFetch": (
+        "the Composio CLI workflow first: discover or confirm the slug, then use `composio execute <SLUG> --get-schema` "
+        "or `--dry-run` before execution. Common fetch/scrape slugs are `FIRECRAWL_SCRAPE` and `EXA_GET_CONTENTS_ACTION`."
+    ),
 }
 
 _TTL_SECONDS = 120
@@ -44,7 +51,7 @@ def main():
     marker.touch()
 
     preferred = _PREFERRED_TOOLS[tool_name]
-    reason = f"Use {preferred} instead of {tool_name}. If MCP tools fail, retry {tool_name} as fallback."
+    reason = f"Use {preferred} instead of {tool_name}. If Composio fails or external credits are exhausted, retry {tool_name} as fallback."
     output = {
         "hookSpecificOutput": {
             "hookEventName": "PreToolUse",

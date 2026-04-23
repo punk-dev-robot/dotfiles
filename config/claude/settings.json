@@ -69,8 +69,7 @@
       "mcp__basic-memory*",
       "mcp__firecrawl-lab*",
       "mcp__firecrawl-cloud*",
-      "mcp__plugin_context7*",
-      "mcp__plugin_exa*"
+      "mcp__plugin_context7*"
     ],
     "deny": [
       "Bash(pip install *)",
@@ -194,21 +193,12 @@
     "security-guidance@claude-plugins-official": true,
     "explanatory-output-style@claude-plugins-official": true,
     "plannotator@plannotator": true,
-    "notion@claude-plugins-official": true,
-    "linear@claude-plugins-official": true,
-    "agent-skills@addy-agent-skills": true,
+    "agent-skills@addy-agent-skills": false,
     "skill-codex@skill-codex": true,
-    "exa@exa-mcp-server": true,
-    "claude-mem@thedotmack": true
+    "claude-mem@thedotmack": true,
+    "context-engine@context-engine-skills": true
   },
   "extraKnownMarketplaces": {
-    "exa-mcp-server": {
-      "source": {
-        "source": "github",
-        "repo": "exa-labs/exa-mcp-server"
-      },
-      "autoUpdate": true
-    },
     "plannotator": {
       "source": {
         "source": "github",
