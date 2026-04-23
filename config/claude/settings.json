@@ -195,8 +195,7 @@
     "plannotator@plannotator": true,
     "agent-skills@addy-agent-skills": false,
     "skill-codex@skill-codex": true,
-    "claude-mem@thedotmack": true,
-    "context-engine@context-engine-skills": true
+    "claude-mem@thedotmack": true
   },
   "extraKnownMarketplaces": {
     "plannotator": {

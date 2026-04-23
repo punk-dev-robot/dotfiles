@@ -34,6 +34,11 @@
         "FIRECRAWL_API_URL": "http://10.10.10.51:3002",
       },
     },
+    "augment-context-engine": {
+      "type": "local",
+      "command": ["auggie", "--mcp", "--mcp-auto-workspace"],
+      "enabled": true,
+    },
     "serena": {
       "type": "local",
       "enabled": false,

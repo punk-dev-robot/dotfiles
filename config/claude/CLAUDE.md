@@ -35,3 +35,9 @@
 ## Tools Usage
 
 - Use `Tool search tool` to discover and be aware of useful tooling installed to make our work better
+
+<claude-mem-context>
+# [opencode] recent context, 2026-04-23 4:58am GMT+1
+
+No previous sessions found.
+</claude-mem-context>
