@@ -1,0 +1,31 @@
+#!/bin/bash
+# Toggle a scratchpad window: summon to current workspace or move to scratchpad.
+# Usage: aerospace-toggle <app-name> [launch-command]
+# If launch-command is omitted, defaults to: open -a <app-name>
+
+APP="$1"
+LAUNCH="${2:-open -a \"$APP\"}"
+
+if [ -z "$APP" ]; then
+  echo "Usage: aerospace-toggle <app-name> [launch-command]" >&2
+  exit 1
+fi
+
+SCRATCHPAD=/opt/homebrew/bin/aerospace-scratchpad
+
+result=$($SCRATCHPAD summon --output json "$APP" 2>&1)
+action=$(echo "$result" | /usr/bin/python3 -c "import sys,json; print(json.load(sys.stdin).get('result',''))" 2>/dev/null)
+
+case "$action" in
+  ok)
+    # Window was in scratchpad, now summoned to current workspace
+    ;;
+  skipped)
+    # Window already on current workspace — move to scratchpad
+    $SCRATCHPAD move "$APP"
+    ;;
+  *)
+    # Window not found — launch the app
+    eval "$LAUNCH"
+    ;;
+esac

@@ -26,6 +26,7 @@ depends = [
 [macos]
 depends = [
   "common",
+  "aerospace",
   "borders",
   "colima",
   "karabiner",
@@ -161,7 +162,9 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 "local/bin/pw-stress-test" = "~/.local/bin/pw-stress-test"
 
 [bin-macos.files]
-# macOS-specific scripts go here as they're created
+"local/bin/aerospace-toggle" = "~/.local/bin/aerospace-toggle"
+"local/bin/aerospace-widescreen" = "~/.local/bin/aerospace-widescreen"
+"local/bin/aerospace-master-layout" = "~/.local/bin/aerospace-master-layout"
 
 [rio.files]
 "config/rio" = "~/.config/rio"
@@ -184,6 +187,9 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 
 [docker.files]
 "config/docker/config.json" = { target = "~/.config/docker/config.json", type = "template" }
+
+[aerospace.files]
+"config/aerospace" = "~/.config/aerospace"
 
 [karabiner.files]
 "config/karabiner" = { target = "~/.config/karabiner", type = "symbolic", recurse = false }

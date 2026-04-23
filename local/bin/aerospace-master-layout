@@ -1,0 +1,36 @@
+#!/bin/bash
+# Apply master layout: focused window becomes the master (wide, leftmost).
+# Other tiled windows share the remaining space equally.
+# Usage: aerospace-master-layout
+
+AEROSPACE=/opt/homebrew/bin/aerospace
+
+# Get the focused (master) window ID
+master_id=$($AEROSPACE list-windows --focused --format '%{window-id}' 2>/dev/null)
+[ -z "$master_id" ] && exit 1
+
+# Flatten and set horizontal tiles
+$AEROSPACE flatten-workspace-tree
+$AEROSPACE layout tiles horizontal
+
+# Move master to the leftmost position
+for i in $(seq 1 20); do
+  $AEROSPACE move left --window-id "$master_id" 2>/dev/null || break
+done
+
+# Balance all windows first, then make master wider
+$AEROSPACE balance-sizes
+$AEROSPACE focus --window-id "$master_id"
+
+# Count tiled windows to calculate resize amount
+tiled_count=$($AEROSPACE list-windows --workspace focused --format '%{window-layout}' | rg -c 'tiles')
+[ "$tiled_count" -le 1 ] && exit 0
+
+# Make master ~50% of the space.
+# After balance-sizes, each window has equal weight.
+# To get 50%, master needs weight = (N-1) where N is window count.
+# resize increases weight by the given amount.
+# With N windows balanced, each has weight W. We want master = (N-1)*W.
+# So we need to add (N-2)*W. Using resize increments:
+resize_amount=$(( (tiled_count - 2) * 200 ))
+[ "$resize_amount" -gt 0 ] && $AEROSPACE resize width +"$resize_amount"

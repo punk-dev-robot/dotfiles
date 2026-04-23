@@ -1,0 +1,32 @@
+#!/bin/bash
+# Dynamic single-window centering for ultrawide monitors.
+# When only one tiled window exists on the focused workspace,
+# expands outer gaps to center it at ~2560px width.
+# Called from aerospace exec-on-workspace-change hook.
+
+MONITOR_PATTERN="PHL 499P9"
+SINGLE_GAP=1278  # (5120 - 2560) / 2 - inner_gap(8) / 2 = 1276, rounded
+NORMAL_GAP=8
+# Resolve symlink to real file (sed -i doesn't work on symlinks on macOS)
+CONFIG="$(readlink -f "$HOME/.config/aerospace/aerospace.toml")"
+AEROSPACE=/opt/homebrew/bin/aerospace
+
+# Only act when focused monitor is the ultrawide
+current_monitor=$($AEROSPACE list-monitors --focused --format '%{monitor-name}')
+[[ "$current_monitor" != *"$MONITOR_PATTERN"* ]] && exit 0
+
+# Count tiled windows on focused workspace
+tiled_count=$($AEROSPACE list-windows --workspace focused --format '%{window-layout}' | grep -c 'tiles')
+
+if [ "$tiled_count" -le 1 ]; then
+  gap=$SINGLE_GAP
+else
+  gap=$NORMAL_GAP
+fi
+
+# Only rewrite + reload if the gap value actually changed (avoid flicker)
+current_gap=$(grep "outer.left" "$CONFIG" | head -1 | grep -o "'$MONITOR_PATTERN' = [0-9]*" | grep -o '[0-9]*$')
+[ "$current_gap" = "$gap" ] && exit 0
+
+sed -i '' "s/monitor.'$MONITOR_PATTERN' = [0-9]* }, 4\]/monitor.'$MONITOR_PATTERN' = $gap }, 4]/" "$CONFIG"
+$AEROSPACE reload-config
