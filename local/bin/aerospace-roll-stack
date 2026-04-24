@@ -1,0 +1,113 @@
+#!/bin/bash
+
+AEROSPACE=/opt/homebrew/bin/aerospace
+TILED_LAYOUT_REGEX='^(h|v)_(tiles|accordion)$|^(tiles|accordion)$'
+BORDERS=/opt/homebrew/bin/borders
+
+direction="$1"
+
+if [ "$direction" != "prev" ] && [ "$direction" != "next" ]; then
+  exit 1
+fi
+
+mute_borders() {
+  [ -x "$BORDERS" ] || return 0
+  "$BORDERS" width=0.0 active_color=0x00000000 inactive_color=0x00000000 >/dev/null 2>&1 || true
+}
+
+restore_borders() {
+  [ -x "$BORDERS" ] || return 0
+  "$HOME/.config/borders/bordersrc" >/dev/null 2>&1 || true
+}
+
+trap restore_borders EXIT
+
+collect_spatial_ids() {
+  local saved_focus line window_id window_layout position_x position_raw
+
+  saved_focus=$("$AEROSPACE" list-windows --focused --format '%{window-id}' 2>/dev/null)
+  [ -z "$saved_focus" ] && return 1
+
+  while IFS= read -r line; do
+    window_id=${line%% *}
+    window_layout=${line#* }
+
+    if printf '%s\n' "$window_layout" | grep -Eq "$TILED_LAYOUT_REGEX"; then
+      "$AEROSPACE" focus --window-id "$window_id" >/dev/null 2>&1 || continue
+      position_raw=$(osascript -e 'tell application "System Events" to tell (first application process whose frontmost is true) to tell front window to get position' 2>/dev/null)
+      position_x=$(printf '%s\n' "$position_raw" | cut -d',' -f1 | tr -d ' ')
+
+      if [ -n "$position_x" ]; then
+        printf '%s %s\n' "$position_x" "$window_id"
+      fi
+    fi
+  done < <("$AEROSPACE" list-windows --workspace focused --format '%{window-id} %{window-layout}' 2>/dev/null) \
+    | sort -n | awk '{print $2}'
+
+  "$AEROSPACE" focus --window-id "$saved_focus" >/dev/null 2>&1 || true
+}
+
+focused_id=$("$AEROSPACE" list-windows --focused --format '%{window-id}' 2>/dev/null)
+[ -z "$focused_id" ] && exit 1
+
+current_ids=()
+while IFS= read -r spatial_id; do
+  [ -n "$spatial_id" ] && current_ids+=("$spatial_id")
+done < <(collect_spatial_ids)
+
+tiled_count=${#current_ids[@]}
+[ "$tiled_count" -le 1 ] && exit 0
+
+focused_index=-1
+for ((i = 0; i < tiled_count; i++)); do
+  if [ "${current_ids[$i]}" = "$focused_id" ]; then
+    focused_index=$i
+    break
+  fi
+done
+
+desired_ids=()
+if [ "$direction" = "prev" ]; then
+  for ((i = 1; i < tiled_count; i++)); do
+    desired_ids+=("${current_ids[$i]}")
+  done
+  desired_ids+=("${current_ids[0]}")
+else
+  desired_ids+=("${current_ids[$((tiled_count - 1))]}")
+  for ((i = 0; i < tiled_count - 1; i++)); do
+    desired_ids+=("${current_ids[$i]}")
+  done
+fi
+
+focus_target_id="$focused_id"
+if [ "$focused_index" -ge 0 ]; then
+  focus_target_id="${desired_ids[$focused_index]}"
+fi
+
+mute_borders
+
+for ((i = 0; i < tiled_count; i++)); do
+  if [ "${current_ids[$i]}" = "${desired_ids[$i]}" ]; then
+    continue
+  fi
+
+  target_index=-1
+  for ((j = i + 1; j < tiled_count; j++)); do
+    if [ "${current_ids[$j]}" = "${desired_ids[$i]}" ]; then
+      target_index=$j
+      break
+    fi
+  done
+
+  [ "$target_index" -lt 0 ] && continue
+
+  "$AEROSPACE" focus --window-id "${current_ids[$target_index]}" >/dev/null 2>&1 || continue
+  for ((j = target_index; j > i; j--)); do
+    "$AEROSPACE" swap left >/dev/null 2>&1 || break
+    tmp="${current_ids[$j]}"
+    current_ids[$j]="${current_ids[$((j - 1))]}"
+    current_ids[$((j - 1))]="$tmp"
+  done
+done
+
+"$AEROSPACE" focus --window-id "$focus_target_id" >/dev/null 2>&1 || true

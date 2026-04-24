@@ -4,11 +4,7 @@ Keybinds and features to implement later, carried over from Hyprland parity audi
 
 ## Master Layout
 
-Hyprland master layout keybinds — separate task:
-
-- `alt-;` — swap with master
-- `alt-,` — roll stack prev
-- `alt-.` — roll stack next
+Implemented. See `docs/reference/aerospace-master-workflow.md` for the current AeroSpace workflow and keybinds.
 
 ## Screenshot Submap
 

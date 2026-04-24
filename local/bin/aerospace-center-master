@@ -1,0 +1,9 @@
+#!/bin/bash
+
+AEROSPACE=/opt/homebrew/bin/aerospace
+MONITOR_PATTERN="PHL 499P9"
+
+current_monitor=$("$AEROSPACE" list-monitors --focused --format '%{monitor-name}' 2>/dev/null)
+[[ "$current_monitor" != *"$MONITOR_PATTERN"* ]] && exit 0
+
+exec ~/.local/bin/aerospace-master-layout --center-current

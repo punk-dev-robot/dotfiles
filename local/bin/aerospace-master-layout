@@ -1,36 +1,117 @@
 #!/bin/bash
-# Apply master layout: focused window becomes the master (wide, leftmost).
-# Other tiled windows share the remaining space equally.
-# Usage: aerospace-master-layout
 
 AEROSPACE=/opt/homebrew/bin/aerospace
+TILED_LAYOUT_REGEX='^(h|v)_(tiles|accordion)$|^(tiles|accordion)$'
 
-# Get the focused (master) window ID
-master_id=$($AEROSPACE list-windows --focused --format '%{window-id}' 2>/dev/null)
-[ -z "$master_id" ] && exit 1
+target_id=
+use_current_center=0
 
-# Flatten and set horizontal tiles
-$AEROSPACE flatten-workspace-tree
-$AEROSPACE layout tiles horizontal
-
-# Move master to the leftmost position
-for i in $(seq 1 20); do
-  $AEROSPACE move left --window-id "$master_id" 2>/dev/null || break
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --window-id)
+      target_id="$2"
+      shift 2
+      ;;
+    --center-current)
+      use_current_center=1
+      shift
+      ;;
+    *)
+      shift
+      ;;
+  esac
 done
 
-# Balance all windows first, then make master wider
-$AEROSPACE balance-sizes
-$AEROSPACE focus --window-id "$master_id"
+count_tiled_windows() {
+  "$AEROSPACE" list-windows --workspace focused --format '%{window-layout}' 2>/dev/null | grep -Ec "$TILED_LAYOUT_REGEX"
+}
 
-# Count tiled windows to calculate resize amount
-tiled_count=$($AEROSPACE list-windows --workspace focused --format '%{window-layout}' | rg -c 'tiles')
-[ "$tiled_count" -le 1 ] && exit 0
+collect_spatial_ids() {
+  local tiled_count="$1"
+  local saved_focus current_id current_layout total_count i seen_ids
 
-# Make master ~50% of the space.
-# After balance-sizes, each window has equal weight.
-# To get 50%, master needs weight = (N-1) where N is window count.
-# resize increases weight by the given amount.
-# With N windows balanced, each has weight W. We want master = (N-1)*W.
-# So we need to add (N-2)*W. Using resize increments:
-resize_amount=$(( (tiled_count - 2) * 200 ))
-[ "$resize_amount" -gt 0 ] && $AEROSPACE resize width +"$resize_amount"
+  saved_focus=$("$AEROSPACE" list-windows --focused --format '%{window-id}' 2>/dev/null)
+  [ -z "$saved_focus" ] && return 1
+  total_count=$("$AEROSPACE" list-windows --workspace focused --count 2>/dev/null)
+  [ -z "$total_count" ] && return 1
+
+  for ((i = 0; i < total_count; i++)); do
+    "$AEROSPACE" focus left >/dev/null 2>&1 || true
+  done
+
+  for ((i = 0; i < total_count; i++)); do
+    current_id=$("$AEROSPACE" list-windows --focused --format '%{window-id}' 2>/dev/null)
+    current_layout=$("$AEROSPACE" list-windows --focused --format '%{window-layout}' 2>/dev/null)
+
+    if [ -n "$current_id" ] \
+      && printf '%s\n' "$current_layout" | grep -Eq "$TILED_LAYOUT_REGEX" \
+      && [[ " $seen_ids " != *" $current_id "* ]]; then
+      printf '%s\n' "$current_id"
+      seen_ids="$seen_ids $current_id"
+    fi
+
+    if [ "$i" -lt $((total_count - 1)) ]; then
+      "$AEROSPACE" focus right >/dev/null 2>&1 || true
+    fi
+  done
+
+  "$AEROSPACE" focus --window-id "$saved_focus" >/dev/null 2>&1 || true
+}
+
+apply_master_width() {
+  local tiled_count="$1"
+  local target_id="$2"
+  local resize_amount
+
+  if [ "$tiled_count" -le 1 ]; then
+    return 0
+  fi
+
+  "$AEROSPACE" balance-sizes >/dev/null 2>&1 || true
+
+  "$AEROSPACE" focus --window-id "$target_id" >/dev/null 2>&1 || return 1
+
+  if [ "$tiled_count" -le 2 ]; then
+    return 0
+  fi
+
+  resize_amount=$(( (tiled_count - 2) * 500 ))
+  "$AEROSPACE" resize width +"$resize_amount" >/dev/null 2>&1 || true
+}
+
+tiled_count=$(count_tiled_windows)
+[ "$tiled_count" -le 0 ] && exit 1
+
+focused_id=$("$AEROSPACE" list-windows --focused --format '%{window-id}' 2>/dev/null)
+[ -z "$focused_id" ] && exit 1
+
+if [ "$use_current_center" -eq 1 ]; then
+  center_index=$(( (tiled_count - 1) / 2 ))
+  spatial_ids=()
+  while IFS= read -r spatial_id; do
+    [ -n "$spatial_id" ] && spatial_ids+=("$spatial_id")
+  done < <(collect_spatial_ids "$tiled_count")
+  target_id="${spatial_ids[$center_index]}"
+fi
+
+[ -z "$target_id" ] && target_id="$focused_id"
+
+"$AEROSPACE" focus --window-id "$target_id" >/dev/null 2>&1 || exit 1
+
+if [ "$use_current_center" -eq 0 ] && [ "$tiled_count" -gt 2 ]; then
+  center_index=$(( (tiled_count - 1) / 2 ))
+
+  for ((i = 0; i < tiled_count; i++)); do
+    "$AEROSPACE" swap left >/dev/null 2>&1 || break
+  done
+
+  for ((i = 0; i < center_index; i++)); do
+    "$AEROSPACE" swap right >/dev/null 2>&1 || break
+  done
+fi
+
+apply_master_width "$tiled_count" "$target_id"
+
+if [ "$use_current_center" -eq 1 ] && [ -n "$focused_id" ]; then
+  "$AEROSPACE" focus --window-id "$focused_id" >/dev/null 2>&1 || true
+fi
