@@ -12,6 +12,13 @@ if [ -z "$APP" ]; then
 fi
 
 SCRATCHPAD=/opt/homebrew/bin/aerospace-scratchpad
+FRAME_HELPER="$HOME/.local/bin/aerospace-scratchpad-frame"
+TARGET_MONITOR=$(/opt/homebrew/bin/aerospace list-monitors --focused --format '%{monitor-name}' 2>/dev/null)
+
+center_scratchpad() {
+  [ -x "$FRAME_HELPER" ] || return 0
+  "$FRAME_HELPER" "$APP" "$TARGET_MONITOR" >/dev/null 2>&1 &
+}
 
 result=$($SCRATCHPAD summon --output json "$APP" 2>&1)
 action=$(echo "$result" | /usr/bin/python3 -c "import sys,json; print(json.load(sys.stdin).get('result',''))" 2>/dev/null)
@@ -19,6 +26,7 @@ action=$(echo "$result" | /usr/bin/python3 -c "import sys,json; print(json.load(
 case "$action" in
   ok)
     # Window was in scratchpad, now summoned to current workspace
+    center_scratchpad
     ;;
   skipped)
     # Window already on current workspace — move to scratchpad
@@ -27,5 +35,6 @@ case "$action" in
   *)
     # Window not found — launch the app
     eval "$LAUNCH"
+    center_scratchpad
     ;;
 esac

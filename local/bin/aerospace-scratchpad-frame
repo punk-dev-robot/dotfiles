@@ -1,0 +1,116 @@
+#!/bin/bash
+
+AEROSPACE=/opt/homebrew/bin/aerospace
+APP_NAME="$1"
+TARGET_MONITOR_NAME="$2"
+DEFAULT_WIDTH_PERCENT="${AEROSPACE_SCRATCHPAD_WIDTH_PERCENT:-35}"
+DEFAULT_HEIGHT_PERCENT="${AEROSPACE_SCRATCHPAD_HEIGHT_PERCENT:-88}"
+MAX_RETRIES=20
+SLEEP_SECONDS=0.15
+
+find_target_window() {
+  if [ -n "$APP_NAME" ]; then
+    "$AEROSPACE" list-windows --all --format '%{window-id}	%{app-name}	%{window-layout}' 2>/dev/null | \
+      while IFS=$'\t' read -r window_id app_name window_layout; do
+        if [ "$app_name" = "$APP_NAME" ] && [ "$window_layout" = "floating" ]; then
+          printf '%s\n' "$window_id"
+          return 0
+        fi
+      done
+    return 1
+  fi
+
+  "$AEROSPACE" list-windows --focused --format '%{window-id}' 2>/dev/null
+}
+
+apply_frame() {
+  APP_NAME="$APP_NAME" DEFAULT_WIDTH_PERCENT="$DEFAULT_WIDTH_PERCENT" DEFAULT_HEIGHT_PERCENT="$DEFAULT_HEIGHT_PERCENT" TARGET_MONITOR_NAME="$TARGET_MONITOR_NAME" /usr/bin/osascript -l JavaScript <<'EOF'
+ObjC.import('Cocoa')
+ObjC.import('stdlib')
+
+const appName = ObjC.unwrap($.getenv('APP_NAME')) || ''
+const defaultWidthPercent = Number(ObjC.unwrap($.getenv('DEFAULT_WIDTH_PERCENT'))) / 100
+const defaultHeightPercent = Number(ObjC.unwrap($.getenv('DEFAULT_HEIGHT_PERCENT'))) / 100
+const targetMonitorName = ObjC.unwrap($.getenv('TARGET_MONITOR_NAME')) || ''
+const se = Application('System Events')
+let proc = null
+
+if (appName) {
+  proc = se.applicationProcesses.whose({ name: appName })[0]
+}
+
+if (!proc) {
+  proc = se.applicationProcesses.whose({ frontmost: true })[0]
+}
+
+if (!proc) {
+  throw new Error('no frontmost process')
+}
+
+const win = proc.windows[0]
+const screens = $.NSScreen.screens
+let targetScreen = screens.objectAtIndex(0)
+
+if (targetMonitorName) {
+  for (let i = 0; i < screens.count; i++) {
+    const screen = screens.objectAtIndex(i)
+    const name = ObjC.unwrap(screen.localizedName)
+    if (name === targetMonitorName) {
+      targetScreen = screen
+      break
+    }
+  }
+}
+
+const visible = targetScreen.visibleFrame
+const aspectRatio = visible.size.width / visible.size.height
+let maxScreenTop = 0
+
+for (let i = 0; i < screens.count; i++) {
+  const screen = screens.objectAtIndex(i)
+  const frame = screen.frame
+  const screenTop = frame.origin.y + frame.size.height
+  if (screenTop > maxScreenTop) {
+    maxScreenTop = screenTop
+  }
+}
+
+let widthPercent = defaultWidthPercent
+let heightPercent = defaultHeightPercent
+
+if (aspectRatio >= 2.8) {
+  widthPercent = 0.35
+  heightPercent = 0.88
+} else if (aspectRatio >= 1.7) {
+  widthPercent = 0.5
+  heightPercent = 0.88
+} else {
+  widthPercent = 0.85
+  heightPercent = 0.85
+}
+
+const targetWidth = Math.round(visible.size.width * widthPercent)
+const targetHeight = Math.round(visible.size.height * heightPercent)
+const targetX = Math.round(visible.origin.x + (visible.size.width - targetWidth) / 2)
+const targetTop = maxScreenTop - (visible.origin.y + visible.size.height)
+const targetY = Math.round(targetTop + (visible.size.height - targetHeight) / 2)
+
+win.size = [targetWidth, targetHeight]
+win.position = [targetX, targetY]
+delay(0.12)
+win.size = [targetWidth, targetHeight]
+win.position = [targetX, targetY]
+EOF
+}
+
+for ((i = 0; i < MAX_RETRIES; i++)); do
+  target_window_id=$(find_target_window)
+  if [ -n "$target_window_id" ]; then
+    "$AEROSPACE" focus --window-id "$target_window_id" >/dev/null 2>&1 || true
+    apply_frame && exit 0
+  fi
+
+  sleep "$SLEEP_SECONDS"
+done
+
+exit 1
