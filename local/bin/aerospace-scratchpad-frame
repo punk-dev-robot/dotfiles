@@ -8,11 +8,19 @@ DEFAULT_HEIGHT_PERCENT="${AEROSPACE_SCRATCHPAD_HEIGHT_PERCENT:-88}"
 MAX_RETRIES=20
 SLEEP_SECONDS=0.15
 
+normalize_name() {
+  printf '%s' "$1" | tr -cd '[:alnum:]' | tr '[:upper:]' '[:lower:]'
+}
+
 find_target_window() {
+  local normalized_target
+
   if [ -n "$APP_NAME" ]; then
+    normalized_target=$(normalize_name "$APP_NAME")
+
     "$AEROSPACE" list-windows --all --format '%{window-id}	%{app-name}	%{window-layout}' 2>/dev/null | \
       while IFS=$'\t' read -r window_id app_name window_layout; do
-        if [ "$app_name" = "$APP_NAME" ] && [ "$window_layout" = "floating" ]; then
+        if [ "$window_layout" = "floating" ] && [ "$(normalize_name "$app_name")" = "$normalized_target" ]; then
           printf '%s\n' "$window_id"
           return 0
         fi

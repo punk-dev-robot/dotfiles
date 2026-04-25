@@ -1,0 +1,28 @@
+#!/bin/bash
+
+PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
+AEROSPACE=/opt/homebrew/bin/aerospace
+SCRATCHPAD=/opt/homebrew/bin/aerospace-scratchpad
+
+wait_for_aerospace() {
+  local attempt
+
+  for attempt in $(seq 1 30); do
+    if "$AEROSPACE" list-workspaces --focused >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 1
+  done
+
+  return 1
+}
+
+wait_for_aerospace || exit 0
+
+# First pass catches already-restored floating scratchpads.
+sleep 4
+"$SCRATCHPAD" move --all-floating >/dev/null 2>&1 || true
+
+# Second pass catches slower apps restored after login settles.
+sleep 8
+"$SCRATCHPAD" move --all-floating >/dev/null 2>&1 || true

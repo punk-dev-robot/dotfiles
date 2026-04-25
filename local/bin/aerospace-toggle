@@ -14,11 +14,67 @@ fi
 SCRATCHPAD=/opt/homebrew/bin/aerospace-scratchpad
 FRAME_HELPER="$HOME/.local/bin/aerospace-scratchpad-frame"
 TARGET_MONITOR=$(/opt/homebrew/bin/aerospace list-monitors --focused --format '%{monitor-name}' 2>/dev/null)
+SCRATCHPAD_APPS=(
+  "Rio"
+  "Slack"
+  "WhatsApp"
+  "Claude"
+  "Todoist"
+  "Linear"
+  "Spotify"
+  "Notion"
+  "Obsidian"
+  "1Password"
+)
+
+normalize_name() {
+  printf '%s' "$1" | tr -cd '[:alnum:]' | tr '[:upper:]' '[:lower:]'
+}
+
+is_managed_scratchpad_app() {
+  local candidate normalized_candidate managed_app
+
+  candidate="$1"
+  normalized_candidate=$(normalize_name "$candidate")
+
+  for managed_app in "${SCRATCHPAD_APPS[@]}"; do
+    if [ "$normalized_candidate" = "$(normalize_name "$managed_app")" ]; then
+      return 0
+    fi
+  done
+
+  return 1
+}
 
 center_scratchpad() {
   [ -x "$FRAME_HELPER" ] || return 0
   "$FRAME_HELPER" "$APP" "$TARGET_MONITOR" >/dev/null 2>&1 &
 }
+
+hide_other_floating_scratchpads() {
+  local target_app normalized_target workspace window_id app_name window_layout
+
+  target_app="$1"
+  normalized_target=$(normalize_name "$target_app")
+
+  while IFS=$'\t' read -r workspace window_id app_name window_layout; do
+    [ -z "$app_name" ] && continue
+    [ "$window_layout" != "floating" ] && continue
+    [[ "$workspace" == .scratchpad* ]] && continue
+
+    if ! is_managed_scratchpad_app "$app_name"; then
+      continue
+    fi
+
+    if [ "$(normalize_name "$app_name")" = "$normalized_target" ]; then
+      continue
+    fi
+
+    "$SCRATCHPAD" move "$app_name" >/dev/null 2>&1 || true
+  done < <(/opt/homebrew/bin/aerospace list-windows --all --format '%{workspace}	%{window-id}	%{app-name}	%{window-layout}' 2>/dev/null)
+}
+
+hide_other_floating_scratchpads "$APP"
 
 result=$($SCRATCHPAD summon --output json "$APP" 2>&1)
 action=$(echo "$result" | /usr/bin/python3 -c "import sys,json; print(json.load(sys.stdin).get('result',''))" 2>/dev/null)

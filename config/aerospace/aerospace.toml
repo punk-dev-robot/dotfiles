@@ -6,13 +6,13 @@ config-version = 2
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 # On startup: hide scratchpad apps, reset tiling layout
 after-startup-command = [
-  'exec-and-forget sleep 2 && /opt/homebrew/bin/aerospace-scratchpad move --all-floating',
   'flatten-workspace-tree',
+  'exec-and-forget ~/.local/bin/aerospace-post-startup',
 ]
 
 # Workspace change hooks: scratchpad guard, accordion on ws0
 exec-on-workspace-change = ["/bin/bash", "-c",
-  "/opt/homebrew/bin/aerospace-scratchpad hook pull-window $AEROSPACE_PREV_WORKSPACE $AEROSPACE_FOCUSED_WORKSPACE; if [ \"$AEROSPACE_FOCUSED_WORKSPACE\" = '0' ]; then /opt/homebrew/bin/aerospace layout accordion horizontal 2>/dev/null; fi"
+  "/opt/homebrew/bin/aerospace-scratchpad hook pull-window $AEROSPACE_PREV_WORKSPACE $AEROSPACE_FOCUSED_WORKSPACE; /opt/homebrew/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE >/dev/null 2>&1; if [ \"$AEROSPACE_FOCUSED_WORKSPACE\" = '0' ]; then /opt/homebrew/bin/aerospace layout accordion horizontal 2>/dev/null; fi"
 ]
 
 # Start AeroSpace at login
@@ -96,7 +96,7 @@ inner.horizontal = 8
 inner.vertical = 8
 outer.left = [{ monitor.'PHL 499P9' = 8 }, 4]
 outer.bottom = 8
-outer.top = 8
+outer.top = [{ monitor.'PHL 499P9' = 54 }, { monitor.'Built-in Retina Display' = 24 }, 24]
 outer.right = [{ monitor.'PHL 499P9' = 8 }, 4]
 
 # Window rules — scratchpad/toggle apps always float

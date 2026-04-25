@@ -1,0 +1,40 @@
+#!/bin/bash
+
+PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
+CONFIG_DIR="${CONFIG_DIR:-$HOME/.config/sketchybar}"
+CONFIG_FILE="$CONFIG_DIR/sketchybarrc"
+AEROSPACE=/opt/homebrew/bin/aerospace
+SKETCHYBAR=/opt/homebrew/opt/sketchybar/bin/sketchybar
+
+wait_for_file() {
+  local file="$1"
+  local attempt
+
+  for attempt in $(seq 1 20); do
+    [ -r "$file" ] && return 0
+    sleep 1
+  done
+
+  return 1
+}
+
+wait_for_aerospace() {
+  local attempt
+
+  for attempt in $(seq 1 30); do
+    if "$AEROSPACE" list-workspaces --focused >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 1
+  done
+
+  return 1
+}
+
+wait_for_file "$CONFIG_FILE" || exit 1
+
+# Let login items and the menu bar settle before attaching SketchyBar.
+sleep 5
+wait_for_aerospace || true
+
+exec "$SKETCHYBAR" --config "$CONFIG_FILE"

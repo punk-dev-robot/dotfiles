@@ -29,6 +29,7 @@ depends = [
   "aerospace",
   "borders",
   "colima",
+  "sketchybar",
   "karabiner",
   "rio",
   "hammerspoon",
@@ -165,6 +166,14 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 "local/bin/aerospace-toggle" = "~/.local/bin/aerospace-toggle"
 "local/bin/aerospace-widescreen" = "~/.local/bin/aerospace-widescreen"
 "local/bin/aerospace-master-layout" = "~/.local/bin/aerospace-master-layout"
+"local/bin/aerospace-swap-master" = "~/.local/bin/aerospace-swap-master"
+"local/bin/aerospace-center-master" = "~/.local/bin/aerospace-center-master"
+"local/bin/aerospace-reset-layout" = "~/.local/bin/aerospace-reset-layout"
+"local/bin/aerospace-roll-stack" = "~/.local/bin/aerospace-roll-stack"
+"local/bin/aerospace-scratchpad-frame" = "~/.local/bin/aerospace-scratchpad-frame"
+"local/bin/aerospace-post-startup" = "~/.local/bin/aerospace-post-startup"
+"local/bin/aerospace-float-cmd" = "~/.local/bin/aerospace-float-cmd"
+"local/bin/sketchybar-start" = "~/.local/bin/sketchybar-start"
 
 [rio.files]
 "config/rio" = "~/.config/rio"
@@ -172,6 +181,10 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 [borders.files]
 "config/borders" = "~/.config/borders"
 "config/launchagents/com.user.borders.plist" = { target = "~/Library/LaunchAgents/com.user.borders.plist", type = "template" }
+
+[sketchybar.files]
+"config/sketchybar" = "~/.config/sketchybar"
+"config/launchagents/com.user.sketchybar.plist" = { target = "~/Library/LaunchAgents/com.user.sketchybar.plist", type = "template" }
 
 [hammerspoon.files]
 "config/hammerspoon" = { target = "~/.hammerspoon", type = "symbolic", recurse = false }
