@@ -11,6 +11,7 @@ config/zsh/.zshenv.priv
 config/zsh/rc.d/031-env-local.zsh
 config/claude/.claude.json
 config/claude/about_me.md
+config/claude/settings.hooks.json
 .claude-state/
 .claude/settings.local.json
 .lin_sec
@@ -64,6 +65,12 @@ __pycache__/
 *.pyc
 *.pyo
 .pytest_cache/
+
+# === App-generated backups ===
+config/karabiner/automatic_backups/
+
+# === Generated documentation drafts ===
+docs-canonical/
 
 # === Node ===
 node_modules/
