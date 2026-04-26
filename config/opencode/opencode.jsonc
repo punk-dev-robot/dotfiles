@@ -67,6 +67,7 @@
   "instructions": ["./instructions.md"],
   "plugin": [
     "@plannotator/opencode@latest",
+    "./plugins/caveman.ts",
     "./plugins/modern-cli-warn.ts",
     "./plugins/prefer-composio-web.ts",
     "./plugins/spec-kit-plannotator.ts",
