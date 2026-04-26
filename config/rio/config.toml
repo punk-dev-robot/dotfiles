@@ -36,14 +36,14 @@ disable-unfocused-render = false
 # Built-in: NewPixieCrt, fubax_vr (case-sensitive); GL backend doesn't support filters
 # Custom .slangp paths also supported: "/path/to/shader.slangp"
 filters = [
-  # "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crt-cgwg-fast.slangp",
+  "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crt-cgwg-fast.slangp",
   # "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crt-guest-advanced-fastest.slangp",
   # "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crt-1tap-bloom_fast.slangp",
   # "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crt-beans-vga.slangp",
   # "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crt-consumer.slangp",
   # "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crt-frutbunn.slangp",
   # "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crt-gdv-mini-ultra-trinitron.slangp",
-  "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crt-royale-intel.slangp",
+  # "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crt-royale-intel.slangp",
   # "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crtglow_gauss.slangp",
   # "/Users/kuba.gaj/dev/oss/slang-shaders/crt/crtglow_lanczos.slangp",
   # "/Users/kuba.gaj/dev/oss/slang-shaders/crt/mame_hlsl.slangp",
