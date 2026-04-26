@@ -1,7 +1,6 @@
 import type { Plugin } from "@opencode-ai/plugin"
 import path from "node:path"
 
-const TARGET_FILES = new Set(["spec.md", "plan.md", "tasks.md"])
 const COOLDOWN_MS = 5000
 
 const lastTriggeredAt = new Map<string, number>()
@@ -11,7 +10,12 @@ function toAbsolutePath(projectDir: string, file: string): string {
   return path.isAbsolute(file) ? file : path.join(projectDir, file)
 }
 
-function isSpecKitArtifact(projectDir: string, file: string): boolean {
+type HookResult = {
+  decision?: "allow" | "block"
+  reason?: string
+}
+
+function isMarkdownFile(projectDir: string, file: string): boolean {
   const absolutePath = toAbsolutePath(projectDir, file)
   const relativePath = path.relative(projectDir, absolutePath)
 
@@ -19,12 +23,20 @@ function isSpecKitArtifact(projectDir: string, file: string): boolean {
     return false
   }
 
-  if (!TARGET_FILES.has(path.basename(relativePath))) {
-    return false
+  return path.extname(relativePath).toLowerCase() === ".md"
+}
+
+function parseHookResult(stdout: string): HookResult | undefined {
+  try {
+    const parsed = JSON.parse(stdout) as HookResult
+    if (parsed.decision === "allow" || parsed.decision === "block") {
+      return parsed
+    }
+  } catch {
+    return undefined
   }
 
-  const normalizedPath = relativePath.split(path.sep).join("/")
-  return normalizedPath.startsWith("specs/")
+  return undefined
 }
 
 function shouldTrigger(file: string): boolean {
@@ -82,24 +94,24 @@ export const SpecKitPlannotatorPlugin: Plugin = async ({ client, directory }) =>
         body: {
           service: "spec-kit-plannotator",
           level: "warn",
-          message: "Skipping Spec Kit annotation because `plannotator` is not installed",
+          message: "Skipping markdown annotation because `plannotator` is not installed",
           extra: { file: absolutePath },
         },
       })
       return
     }
 
-    const process = Bun.spawn([plannotator, "annotate", absolutePath], {
+    const proc = Bun.spawn([plannotator, "annotate", absolutePath, "--hook"], {
       stdin: "ignore",
       stdout: "pipe",
       stderr: "pipe",
+      env: { ...globalThis.process.env, NO_COLOR: "1" },
     })
 
     const run = (async () => {
-      // Standalone `plannotator annotate` returns the submitted annotations on stdout.
-      const stdoutPromise = readProcessStream(process.stdout)
-      const stderrPromise = readProcessStream(process.stderr)
-      const exitCode = await process.exited
+      const stdoutPromise = readProcessStream(proc.stdout)
+      const stderrPromise = readProcessStream(proc.stderr)
+      const exitCode = await proc.exited
       const [stdout, stderr] = await Promise.all([stdoutPromise, stderrPromise])
 
       if (exitCode !== 0) {
@@ -123,6 +135,23 @@ export const SpecKitPlannotatorPlugin: Plugin = async ({ client, directory }) =>
         return
       }
 
+      const hookResult = parseHookResult(stdout)
+      if (!hookResult) {
+        await client.app.log({
+          body: {
+            service: "spec-kit-plannotator",
+            level: "error",
+            message: "Plannotator returned non-JSON hook output",
+            extra: { file: absolutePath, stdout },
+          },
+        })
+        return
+      }
+
+      if (hookResult.decision !== "block" || !hookResult.reason) {
+        return
+      }
+
       if (!sessionID) {
         await client.app.log({
           body: {
@@ -143,7 +172,7 @@ export const SpecKitPlannotatorPlugin: Plugin = async ({ client, directory }) =>
             parts: [
               {
                 type: "text",
-                text: `# Markdown Annotations\n\nFile: ${absolutePath}\n\n${stdout}\n\nPlease address the annotation feedback above.`,
+                text: hookResult.reason,
               },
             ],
           },
@@ -170,7 +199,7 @@ export const SpecKitPlannotatorPlugin: Plugin = async ({ client, directory }) =>
       body: {
         service: "spec-kit-plannotator",
         level: "info",
-        message: "Opening Plannotator for Spec Kit artifact",
+        message: "Opening Plannotator for markdown file",
         extra: { file: absolutePath, sessionID },
       },
     })
@@ -190,7 +219,7 @@ export const SpecKitPlannotatorPlugin: Plugin = async ({ client, directory }) =>
       const targetSessionID = sessionID ?? lastSessionID
 
       if (event.type === "file.edited") {
-        if (isSpecKitArtifact(directory, event.properties.file)) {
+        if (isMarkdownFile(directory, event.properties.file)) {
           await launchAnnotator(event.properties.file, targetSessionID)
         }
         return
@@ -201,7 +230,7 @@ export const SpecKitPlannotatorPlugin: Plugin = async ({ client, directory }) =>
           return
         }
 
-        if (isSpecKitArtifact(directory, event.properties.file)) {
+        if (isMarkdownFile(directory, event.properties.file)) {
           await launchAnnotator(event.properties.file, targetSessionID)
         }
       }

@@ -1,16 +1,12 @@
 # Plannotator Agent Integrations
 
-How Plannotator is wired into OpenCode and Claude Code for Spec Kit artifacts in this repo.
+How Plannotator is wired into OpenCode and Claude Code for markdown files in this repo.
 
 ## Scope
 
-Both integrations target the same artifact set under `specs/`:
+Both integrations target any in-workspace file ending in `.md`.
 
-- `spec.md`
-- `plan.md`
-- `tasks.md`
-
-Anything outside `specs/` or outside that filename set is ignored.
+Anything outside the current workspace is ignored.
 
 ## OpenCode
 
@@ -20,11 +16,11 @@ OpenCode uses a local plugin defined in `config/opencode/plugins/spec-kit-planno
 
 - listens to `file.edited`
 - listens to `file.watcher.updated`
-- launches `plannotator annotate <absolute-path>` for matching files
+- launches `plannotator annotate <absolute-path> --hook` for matching files
 
 ### Return path
 
-The plugin reads submitted annotations from `plannotator annotate` stdout and sends them back into the active OpenCode session with `client.session.prompt(...)`.
+The plugin reads Plannotator's hook JSON from stdout. When the result is `{"decision":"block","reason":"..."}`, it sends the `reason` back into the active OpenCode session with `client.session.prompt(...)`. `allow` results are ignored.
 
 File-related OpenCode events do not always include a session ID, so the plugin caches the most recent session ID seen for the current project and reuses it for watcher-triggered callbacks.
 
@@ -41,11 +37,19 @@ Claude Code uses a command hook defined in `config/claude/hooks/spec-kit-plannot
 - runs after Claude successfully uses `Edit`
 - runs after Claude successfully uses `Write`
 - resolves `tool_input.file_path`
-- launches `plannotator annotate <absolute-path>` for matching files
+- launches `plannotator annotate <absolute-path> --hook` for matching files
 
 ### Return path
 
-The reliable path in practice is top-level `PostToolUse` feedback:
+`plannotator annotate --hook` now emits Claude-compatible hook JSON directly, so the wrapper only filters to markdown files and forwards Plannotator's JSON payload.
+
+The relevant hook outputs are:
+
+```json
+{
+  "decision": "allow"
+}
+```
 
 ```json
 {
@@ -53,8 +57,6 @@ The reliable path in practice is top-level `PostToolUse` feedback:
   "reason": "# Markdown Annotations\n..."
 }
 ```
-
-Claude's hook schema also documents `hookSpecificOutput.additionalContext` for `PostToolUse`, but in this workflow that path did not reliably surface the annotation text back to Claude. Using `decision: "block"` with the annotation payload in `reason` did work consistently.
 
 ### Practical result
 
@@ -91,24 +93,24 @@ If that path is missing, redeploy the `claude` package with Dotter or create the
 
 ### OpenCode
 
-1. Edit `specs/.../spec.md`, `plan.md`, or `tasks.md`.
+1. Edit any `.md` file inside the workspace.
 2. Confirm the browser annotation UI opens.
-3. Submit annotation feedback.
-4. Confirm the annotation text returns to the active OpenCode session.
+3. Click Approve, Annotate, or Close.
+4. Confirm only annotation feedback returns to the active OpenCode session.
 
 ### Claude Code
 
-1. Have Claude edit `specs/.../spec.md`, `plan.md`, or `tasks.md`.
+1. Have Claude edit any `.md` file inside the workspace.
 2. Confirm the browser annotation UI opens.
-3. Submit annotation feedback.
-4. Confirm Claude receives the annotation text as post-tool feedback.
+3. Click Approve, Annotate, or Close.
+4. Confirm Claude only receives feedback when you annotate.
 
 ## Troubleshooting
 
 ### OpenCode opens Plannotator but no feedback returns
 
 - confirm the running OpenCode process was restarted after plugin changes
-- check that the edited file matches `specs/**/{spec.md,plan.md,tasks.md}`
+- check that the edited file ends in `.md` and is inside the workspace
 - check OpenCode logs for `spec-kit-plannotator` messages
 - verify the plugin observed or cached a valid session ID before the watcher callback fired
 
@@ -116,5 +118,5 @@ If that path is missing, redeploy the `claude` package with Dotter or create the
 
 - confirm `~/.config/claude/hooks/spec-kit-plannotator.py` exists and is executable
 - confirm `config/claude/settings.json` still registers the hook on `PostToolUse` for `Edit|Write`
-- prefer `decision: "block"` plus `reason` over `additionalContext` for this workflow
+- verify `plannotator annotate <file> --hook` returns valid JSON when run manually
 - restart the Claude session if hook changes were made mid-session and behavior still looks stale

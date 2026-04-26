@@ -8,7 +8,15 @@
     "DISABLE_TELEMETRY": "1",
     "MCP_TIMEOUT": "180000",
     "MAX_MCP_OUTPUT_TOKENS": "50000",
-    "ENABLE_TOOL_SEARCH": "true"
+    "ENABLE_TOOL_SEARCH": "false",
+    "CLAUDE_CODE_DISABLE_VIRTUAL_SCROLL": "0",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_DISABLE_MOUSE": "0",
+    "CLAUDE_CODE_NO_FLICKER": "1",
+    "CLAUDE_CODE_SCROLL_SPEED": "3",
+    "CLAUDE_CODE_TMUX_TRUECOLOR": "1",
+    "ENABLE_CLAUDEAI_MCP_SERVERS": "0",
+    "ENABLE_PROMPT_CACHING_1H": "1"
   },
   "permissions": {
     "allow": [
@@ -87,11 +95,8 @@
       "Bash(shutdown *)",
       "Bash(poweroff *)"
     ],
-    "defaultMode": "auto",
-    "additionalDirectories": [
-      "~/dotfiles",
-      "~/Pictures/Screenshots"
-    ]
+    "defaultMode": "plan",
+    "additionalDirectories": ["~/dotfiles", "~/Pictures/Screenshots"]
   },
   "model": "opus[1m]",
   "hooks": {
@@ -110,15 +115,6 @@
         ]
       },
       {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/spec-kit-plannotator.py"
-          }
-        ]
-      },
-      {
         "matcher": "WebSearch",
         "hooks": [
           {
@@ -133,6 +129,15 @@
           {
             "type": "command",
             "command": "~/.config/claude/hooks/prefer-tools.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/claude/hooks/spec-kit-plannotator.py"
           }
         ]
       },
@@ -195,7 +200,9 @@
     "plannotator@plannotator": true,
     "agent-skills@addy-agent-skills": false,
     "skill-codex@skill-codex": true,
-    "claude-mem@thedotmack": true
+    "claude-mem@thedotmack": true,
+    "superpowers@claude-plugins-official": true,
+    "punkfl0w@punkfl0w-development": true
   },
   "extraKnownMarketplaces": {
     "plannotator": {
@@ -227,6 +234,12 @@
       "source": {
         "source": "github",
         "repo": "Context-Engine-AI/Context-Engine"
+      }
+    },
+    "punkfl0w-development": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/kuba.gaj/dev/oss/punkfl0w"
       }
     }
   },

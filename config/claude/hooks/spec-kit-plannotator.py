@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-"""Run Plannotator on Spec Kit artifacts after Claude edits them."""
+"""Run Plannotator on markdown files after Claude edits them."""
 
 from __future__ import annotations
 
 import json
 import shutil
+import os
 import subprocess
 import sys
 from pathlib import Path
-
-_TARGET_FILES = {"spec.md", "plan.md", "tasks.md"}
 
 
 def _resolve_file_path(cwd: str, tool_input: dict[str, object]) -> Path | None:
@@ -25,16 +24,13 @@ def _resolve_file_path(cwd: str, tool_input: dict[str, object]) -> Path | None:
     return Path(cwd) / path
 
 
-def _is_spec_kit_artifact(project_dir: Path, file_path: Path) -> bool:
+def _is_workspace_markdown_file(project_dir: Path, file_path: Path) -> bool:
     try:
         relative_path = file_path.resolve().relative_to(project_dir.resolve())
     except ValueError:
         return False
 
-    if relative_path.name not in _TARGET_FILES:
-        return False
-
-    return relative_path.parts[:1] == ("specs",)
+    return relative_path.suffix.lower() == ".md"
 
 
 def _print_context(message: str, *, block: bool = False) -> None:
@@ -68,7 +64,7 @@ def main() -> None:
         sys.exit(0)
 
     project_dir = Path(cwd) if cwd else file_path.parent
-    if not _is_spec_kit_artifact(project_dir, file_path):
+    if not _is_workspace_markdown_file(project_dir, file_path):
         sys.exit(0)
 
     plannotator = shutil.which("plannotator")
@@ -79,9 +75,10 @@ def main() -> None:
         sys.exit(0)
 
     result = subprocess.run(
-        [plannotator, "annotate", str(file_path)],
+        [plannotator, "annotate", str(file_path), "--hook"],
         capture_output=True,
         text=True,
+        env={**os.environ, "NO_COLOR": "1"},
     )
 
     stdout = result.stdout.strip()
@@ -99,10 +96,16 @@ def main() -> None:
     if not stdout:
         sys.exit(0)
 
-    _print_context(
-        f"# Markdown Annotations\n\nFile: {file_path}\n\n{stdout}\n\nPlease address the annotation feedback above.",
-        block=True,
-    )
+    try:
+        payload = json.loads(stdout)
+    except json.JSONDecodeError:
+        _print_context(
+            f"Plannotator returned non-JSON hook output for `{file_path}`.\n\n{stdout}",
+            block=True,
+        )
+        sys.exit(0)
+
+    print(json.dumps(payload))
 
 
 if __name__ == "__main__":
