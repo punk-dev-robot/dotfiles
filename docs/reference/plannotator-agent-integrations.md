@@ -1,12 +1,12 @@
 # Plannotator Agent Integrations
 
-How Plannotator is wired into OpenCode and Claude Code for markdown files in this repo.
+How Plannotator is wired into OpenCode and Claude Code for specs markdown files in this repo.
 
 ## Scope
 
-Both integrations target any in-workspace file ending in `.md`.
+Both integrations target any in-workspace file under `specs/` ending in `.md`.
 
-Anything outside the current workspace is ignored.
+Anything outside the current workspace or outside `specs/` is ignored.
 
 ## OpenCode
 
@@ -41,7 +41,7 @@ Claude Code uses a command hook defined in `config/claude/hooks/spec-kit-plannot
 
 ### Return path
 
-`plannotator annotate --hook` now emits Claude-compatible hook JSON directly, so the wrapper only filters to markdown files and forwards Plannotator's JSON payload.
+`plannotator annotate --hook` now emits Claude-compatible hook JSON directly, so the wrapper only filters to specs markdown files and forwards Plannotator's JSON payload.
 
 The relevant hook outputs are:
 
@@ -93,14 +93,14 @@ If that path is missing, redeploy the `claude` package with Dotter or create the
 
 ### OpenCode
 
-1. Edit any `.md` file inside the workspace.
+1. Edit any `.md` file under `specs/` inside the workspace.
 2. Confirm the browser annotation UI opens.
 3. Click Approve, Annotate, or Close.
 4. Confirm only annotation feedback returns to the active OpenCode session.
 
 ### Claude Code
 
-1. Have Claude edit any `.md` file inside the workspace.
+1. Have Claude edit any `.md` file under `specs/` inside the workspace.
 2. Confirm the browser annotation UI opens.
 3. Click Approve, Annotate, or Close.
 4. Confirm Claude only receives feedback when you annotate.
@@ -110,7 +110,7 @@ If that path is missing, redeploy the `claude` package with Dotter or create the
 ### OpenCode opens Plannotator but no feedback returns
 
 - confirm the running OpenCode process was restarted after plugin changes
-- check that the edited file ends in `.md` and is inside the workspace
+- check that the edited file ends in `.md` and is under `specs/` inside the workspace
 - check OpenCode logs for `spec-kit-plannotator` messages
 - verify the plugin observed or cached a valid session ID before the watcher callback fired
 

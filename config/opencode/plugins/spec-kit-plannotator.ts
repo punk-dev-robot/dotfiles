@@ -15,7 +15,7 @@ type HookResult = {
   reason?: string
 }
 
-function isMarkdownFile(projectDir: string, file: string): boolean {
+function isSpecsMarkdownFile(projectDir: string, file: string): boolean {
   const absolutePath = toAbsolutePath(projectDir, file)
   const relativePath = path.relative(projectDir, absolutePath)
 
@@ -23,7 +23,11 @@ function isMarkdownFile(projectDir: string, file: string): boolean {
     return false
   }
 
-  return path.extname(relativePath).toLowerCase() === ".md"
+  const normalizedPath = relativePath.split(path.sep).join("/")
+  return (
+    normalizedPath.startsWith("specs/") &&
+    path.extname(relativePath).toLowerCase() === ".md"
+  )
 }
 
 function parseHookResult(stdout: string): HookResult | undefined {
@@ -94,7 +98,7 @@ export const SpecKitPlannotatorPlugin: Plugin = async ({ client, directory }) =>
         body: {
           service: "spec-kit-plannotator",
           level: "warn",
-          message: "Skipping markdown annotation because `plannotator` is not installed",
+          message: "Skipping specs markdown annotation because `plannotator` is not installed",
           extra: { file: absolutePath },
         },
       })
@@ -199,7 +203,7 @@ export const SpecKitPlannotatorPlugin: Plugin = async ({ client, directory }) =>
       body: {
         service: "spec-kit-plannotator",
         level: "info",
-        message: "Opening Plannotator for markdown file",
+        message: "Opening Plannotator for specs markdown file",
         extra: { file: absolutePath, sessionID },
       },
     })
@@ -219,7 +223,7 @@ export const SpecKitPlannotatorPlugin: Plugin = async ({ client, directory }) =>
       const targetSessionID = sessionID ?? lastSessionID
 
       if (event.type === "file.edited") {
-        if (isMarkdownFile(directory, event.properties.file)) {
+        if (isSpecsMarkdownFile(directory, event.properties.file)) {
           await launchAnnotator(event.properties.file, targetSessionID)
         }
         return
@@ -230,7 +234,7 @@ export const SpecKitPlannotatorPlugin: Plugin = async ({ client, directory }) =>
           return
         }
 
-        if (isMarkdownFile(directory, event.properties.file)) {
+        if (isSpecsMarkdownFile(directory, event.properties.file)) {
           await launchAnnotator(event.properties.file, targetSessionID)
         }
       }

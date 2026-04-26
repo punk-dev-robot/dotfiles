@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run Plannotator on markdown files after Claude edits them."""
+"""Run Plannotator on specs markdown files after Claude edits them."""
 
 from __future__ import annotations
 
@@ -24,13 +24,13 @@ def _resolve_file_path(cwd: str, tool_input: dict[str, object]) -> Path | None:
     return Path(cwd) / path
 
 
-def _is_workspace_markdown_file(project_dir: Path, file_path: Path) -> bool:
+def _is_specs_markdown_file(project_dir: Path, file_path: Path) -> bool:
     try:
         relative_path = file_path.resolve().relative_to(project_dir.resolve())
     except ValueError:
         return False
 
-    return relative_path.suffix.lower() == ".md"
+    return relative_path.parts[:1] == ("specs",) and relative_path.suffix.lower() == ".md"
 
 
 def _print_context(message: str, *, block: bool = False) -> None:
@@ -64,7 +64,7 @@ def main() -> None:
         sys.exit(0)
 
     project_dir = Path(cwd) if cwd else file_path.parent
-    if not _is_workspace_markdown_file(project_dir, file_path):
+    if not _is_specs_markdown_file(project_dir, file_path):
         sys.exit(0)
 
     plannotator = shutil.which("plannotator")
