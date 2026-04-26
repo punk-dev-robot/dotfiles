@@ -44,3 +44,5 @@
 	workers = 8
 [url "git@github-swap:swapcommerce/"]
 	insteadOf = git@github.com:swapcommerce/
+[includeIf "gitdir:/Users/kuba.gaj/dev/swapc/"]
+	path = ~/dotfiles/config/git/gitconfig-swap
