@@ -32,3 +32,11 @@ trust_level = "trusted"
 
 [projects."/Users/kuba.gaj/dotfiles"]
 trust_level = "trusted"
+
+[marketplaces.openai-bundled]
+last_updated = "2026-04-23T23:11:38Z"
+source_type = "local"
+source = "/Users/kuba.gaj/.config/codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[plugins."browser-use@openai-bundled"]
+enabled = true

@@ -1,6 +1,7 @@
 {
   "mcp": {
     "tessl": {
+      "enabled": false,
       "type": "local",
       "command": ["tessl", "mcp", "start"],
     },
@@ -41,18 +42,24 @@
     },
     "serena": {
       "type": "local",
-      "enabled": false,
+      "enabled": true,
       "command": [
         "serena",
         "start-mcp-server",
         "--context=oaicompat-agent",
         "--project-from-cwd",
+        "--open-web-dashboard=False",
       ],
     },
     "composio": {
-      "enabled": false,
+      "enabled": true,
       "type": "remote",
       "url": "https://connect.composio.dev/mcp",
+    },
+    "notion": {
+      "enabled": true,
+      "type": "remote",
+      "url": "https://mcp.notion.com/mcp",
     },
   },
   "$schema": "https://opencode.ai/config.json",
