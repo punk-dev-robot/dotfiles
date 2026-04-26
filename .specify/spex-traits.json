@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "traits": {
+    "superpowers": true,
+    "deep-review": false,
+    "teams": false,
+    "worktrees": false
+  },
+  "applied_at": "2026-04-24T07:05:12Z"
+}
