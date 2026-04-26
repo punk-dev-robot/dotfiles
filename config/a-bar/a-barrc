@@ -1,0 +1,408 @@
+{
+  "activeProfileId" : "5022905E-B774-4512-B292-5EF9D1516884",
+  "global" : {
+    "aerospacePath" : "\/opt\/homebrew\/bin\/aerospace",
+    "barBackgroundBlur" : false,
+    "barCornerRadius" : 6,
+    "barDistanceFromEdges" : 0,
+    "barElementGap" : 4,
+    "barElementsBackgroundOpacity" : 100,
+    "barElementsCornerRadius" : 4,
+    "barEnabled" : true,
+    "barHeight" : 34,
+    "barHorizontalPadding" : 8,
+    "barOpacity" : 90,
+    "barVerticalPadding" : 4,
+    "enableNotifications" : true,
+    "fontName" : "",
+    "fontSize" : 11,
+    "grayscaleAppIcons" : false,
+    "launchAtLogin" : false,
+    "noColorInDataWidgets" : false,
+    "showBorder" : false,
+    "showElementsBorder" : true,
+    "windowManager" : "aerospace",
+    "yabaiPath" : "\/opt\/homebrew\/bin\/yabai"
+  },
+  "profiles" : [
+    {
+      "id" : "5022905E-B774-4512-B292-5EF9D1516884",
+      "isDefault" : true,
+      "multiDisplayLayout" : {
+        "displays" : [
+          {
+            "displayIndex" : 0,
+            "id" : "08915673-4567-4D9A-93B4-223C675D004C",
+            "name" : "Main Display",
+            "topBar" : {
+              "center" : [
+                {
+                  "enabled" : true,
+                  "id" : "191D4018-A8E7-412F-B0A7-6F119BAEDC45",
+                  "identifier" : "aerospace-process",
+                  "showIcon" : true
+                }
+              ],
+              "left" : [
+                {
+                  "enabled" : true,
+                  "id" : "ABBA874B-95F1-4D3F-A9E9-19FE2CF12BCE",
+                  "identifier" : "aerospace-spaces",
+                  "showIcon" : true
+                }
+              ],
+              "right" : [
+                {
+                  "enabled" : true,
+                  "id" : "9749DC09-5B09-4CF8-90A4-DBC838C1AF77",
+                  "identifier" : "github",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "2DDCF802-6B0C-4F07-B0D5-FF949E4A6365",
+                  "identifier" : "hacker-news",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "61D09F4C-A2A7-4026-B6CB-D207ACBFF55D",
+                  "identifier" : "netstats",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "4FF8D697-0E64-43DB-954B-6CC2C1D521D6",
+                  "identifier" : "wifi",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "7CBE6010-B2E2-46C5-89AA-4210EB2E1606",
+                  "identifier" : "cpu",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "04A7613D-516C-4D77-9B1F-157FA712BFF8",
+                  "identifier" : "gpu",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "4F4D1D70-4108-444C-872C-2581D7F45818",
+                  "identifier" : "memory",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "40C31409-268D-41E0-99D8-BCCDA626A9FD",
+                  "identifier" : "storage",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "D796C5DB-9A8F-483D-AD38-0B730CC67920",
+                  "identifier" : "disk-activity",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : false,
+                  "id" : "B4D82F35-0182-4091-97C6-880CC246AA83",
+                  "identifier" : "keyboard",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "EED482F6-E0D9-4C0C-A68C-91B5F960276D",
+                  "identifier" : "mic",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "07AA056D-6AE4-4ECB-9647-6F9CA0345BC9",
+                  "identifier" : "sound",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "A2CE957B-9885-4218-BE62-895C7A1A8B3B",
+                  "identifier" : "battery",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "8D2C958D-900F-4DEF-A1CB-DFF30C22C736",
+                  "identifier" : "weather",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "B0708F0D-F6DD-4BE2-9700-394FA7B04630",
+                  "identifier" : "date-display",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "F89F89BD-793E-40FD-98C6-AAE17D9F87FA",
+                  "identifier" : "time",
+                  "showIcon" : true
+                }
+              ]
+            }
+          },
+          {
+            "displayIndex" : 1,
+            "id" : "A6C6C915-2C20-48A2-9F80-3ECF98F7EE1A",
+            "name" : "Built-in Retina Display",
+            "bottomBar" : {
+              "center" : [
+                {
+                  "enabled" : true,
+                  "id" : "6E87862E-356E-460F-8A55-50E8B197A85A",
+                  "identifier" : "aerospace-process",
+                  "showIcon" : true
+                }
+              ],
+              "left" : [
+                {
+                  "enabled" : true,
+                  "id" : "E65138DB-C620-4BDC-91A8-23E553522D18",
+                  "identifier" : "aerospace-spaces",
+                  "showIcon" : true
+                }
+              ],
+              "right" : [
+                {
+                  "enabled" : true,
+                  "id" : "999D7E0D-5745-4232-9355-5B7B8C373AE0",
+                  "identifier" : "github",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "C32A6B11-76D7-4473-A826-5AF504A9B08D",
+                  "identifier" : "hacker-news",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "F0BB93CC-4A68-4D4A-A32A-6B7F2CC967C1",
+                  "identifier" : "netstats",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "4E23EF1D-4C0A-46A6-8D68-4E2C33A8093E",
+                  "identifier" : "cpu",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "D0FA099E-70D9-4FA2-BD6D-C2C404A72068",
+                  "identifier" : "gpu",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "2E707985-3B45-46A0-954A-1A5A7BF2E970",
+                  "identifier" : "memory",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "9922EFDF-FC49-4EF8-BC0A-B8765CF18FFD",
+                  "identifier" : "storage",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "ED588A93-57AF-4CAB-9D8D-E780A387CD65",
+                  "identifier" : "disk-activity",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "8CC288E0-0531-494D-9404-58E6832CCEB0",
+                  "identifier" : "keyboard",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "BBCB53CF-18F9-42DA-95D0-E1A64FD58D91",
+                  "identifier" : "wifi",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "9FF11682-6460-4E88-AE52-E9C2E4FC9A78",
+                  "identifier" : "mic",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "C803809B-E35A-469A-A62C-D2DB8EA3173F",
+                  "identifier" : "sound",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "1CBAF149-2577-4F7E-B520-B808C84B45DD",
+                  "identifier" : "battery",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "6FD04125-6A0C-4B0A-BF9A-32A6470BD1D0",
+                  "identifier" : "weather",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "D393E7D1-E001-4A5F-BF2F-9479B316BDA3",
+                  "identifier" : "date-display",
+                  "showIcon" : true
+                },
+                {
+                  "enabled" : true,
+                  "id" : "A181A5C0-C843-4DEB-9C88-A506734D3818",
+                  "identifier" : "time",
+                  "showIcon" : true
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "name" : "Default"
+    }
+  ],
+  "theme" : {
+    "appearance" : "auto",
+    "colorOverrides" : {
+
+    },
+    "darkTheme" : "night-shift",
+    "lightTheme" : "day-shift"
+  },
+  "userWidgets" : [
+
+  ],
+  "widgets" : {
+    "battery" : {
+      "backgroundColor" : "magenta",
+      "caffeinateOption" : "systemSleep",
+      "refreshInterval" : 10,
+      "showIcon" : true,
+      "toggleCaffeinateOnClick" : true
+    },
+    "cpu" : {
+      "graphColor" : "yellow",
+      "monitorApp" : "Activity Monitor",
+      "refreshInterval" : 2,
+      "showIcon" : true
+    },
+    "date" : {
+      "backgroundColor" : "cyan",
+      "calendarApp" : "Calendar",
+      "locale" : "en-UK",
+      "refreshInterval" : 30,
+      "shortFormat" : true,
+      "showIcon" : true
+    },
+    "diskActivity" : {
+      "readColor" : "blue",
+      "refreshInterval" : 4,
+      "showIcon" : true,
+      "writeColor" : "red"
+    },
+    "github" : {
+      "ghBinaryPath" : "\/opt\/homebrew\/bin\/gh",
+      "hideWhenNoNotifications" : false,
+      "notificationUrl" : "https:\/\/github.com\/notifications",
+      "refreshInterval" : 600,
+      "showIcon" : true
+    },
+    "gpu" : {
+      "graphColor" : "cyan",
+      "refreshInterval" : 4,
+      "showIcon" : true
+    },
+    "hackerNews" : {
+      "maxTitleLength" : 50,
+      "refreshInterval" : 600,
+      "rotationInterval" : 20,
+      "showIcon" : true,
+      "showPoints" : true
+    },
+    "keyboard" : {
+      "backgroundColor" : "mainAlt",
+      "refreshInterval" : 5,
+      "showIcon" : true
+    },
+    "memory" : {
+      "monitorApp" : "Activity Monitor",
+      "refreshInterval" : 4
+    },
+    "mic" : {
+      "backgroundColor" : "orange",
+      "refreshInterval" : 2,
+      "showIcon" : true
+    },
+    "netstats" : {
+      "downloadColor" : "magenta",
+      "refreshInterval" : 4,
+      "showIcon" : true,
+      "uploadColor" : "blue"
+    },
+    "process" : {
+      "displayOnlyIcon" : false,
+      "hideWindowTitle" : true,
+      "showCurrentSpaceOnly" : true,
+      "showLayoutMode" : true
+    },
+    "sound" : {
+      "backgroundColor" : "blue",
+      "refreshInterval" : 2,
+      "showIcon" : true
+    },
+    "spaces" : {
+      "displayStickyWindowsSeparately" : true,
+      "exclusions" : "^\\.scratchpad\\.",
+      "exclusionsAsRegex" : true,
+      "hideCreateSpaceButton" : true,
+      "hideDuplicateApps" : true,
+      "hideEmptySpaces" : false,
+      "showAllSpacesOnAllScreens" : false,
+      "switchSpacesWithoutYabai" : true,
+      "titleExclusions" : ""
+    },
+    "storage" : {
+      "refreshInterval" : 60
+    },
+    "time" : {
+      "backgroundColor" : "yellow",
+      "hour12" : false,
+      "refreshInterval" : 1,
+      "showDayProgress" : false,
+      "showIcon" : true,
+      "showSeconds" : false
+    },
+    "weather" : {
+      "customLocation" : "",
+      "hideLocation" : true,
+      "refreshInterval" : 1800,
+      "showIcon" : true,
+      "unit" : "C"
+    },
+    "wifi" : {
+      "backgroundColor" : "red",
+      "hideNetworkName" : false,
+      "hideWhenDisabled" : false,
+      "networkDevice" : "en0",
+      "refreshInterval" : 20,
+      "showIcon" : true,
+      "toggleOnClick" : true
+    }
+  }
+}

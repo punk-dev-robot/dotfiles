@@ -26,10 +26,10 @@ depends = [
 [macos]
 depends = [
   "common",
+  "a-bar",
   "aerospace",
   "borders",
   "colima",
-  "sketchybar",
   "karabiner",
   "rio",
   "hammerspoon",
@@ -173,7 +173,6 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 "local/bin/aerospace-scratchpad-frame" = "~/.local/bin/aerospace-scratchpad-frame"
 "local/bin/aerospace-post-startup" = "~/.local/bin/aerospace-post-startup"
 "local/bin/aerospace-float-cmd" = "~/.local/bin/aerospace-float-cmd"
-"local/bin/sketchybar-start" = "~/.local/bin/sketchybar-start"
 
 [rio.files]
 "config/rio" = "~/.config/rio"
@@ -181,10 +180,6 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 [borders.files]
 "config/borders" = "~/.config/borders"
 "config/launchagents/com.user.borders.plist" = { target = "~/Library/LaunchAgents/com.user.borders.plist", type = "template" }
-
-[sketchybar.files]
-"config/sketchybar" = "~/.config/sketchybar"
-"config/launchagents/com.user.sketchybar.plist" = { target = "~/Library/LaunchAgents/com.user.sketchybar.plist", type = "template" }
 
 [hammerspoon.files]
 "config/hammerspoon" = { target = "~/.hammerspoon", type = "symbolic", recurse = false }
@@ -203,6 +198,9 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 
 [aerospace.files]
 "config/aerospace" = "~/.config/aerospace"
+
+[a-bar.files]
+"config/a-bar/a-barrc" = { target = "~/.a-barrc", type = "symbolic" }
 
 [karabiner.files]
 "config/karabiner" = { target = "~/.config/karabiner", type = "symbolic", recurse = false }

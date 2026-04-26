@@ -11,8 +11,10 @@ after-startup-command = [
 ]
 
 # Workspace change hooks: scratchpad guard, accordion on ws0
-exec-on-workspace-change = ["/bin/bash", "-c",
-  "/opt/homebrew/bin/aerospace-scratchpad hook pull-window $AEROSPACE_PREV_WORKSPACE $AEROSPACE_FOCUSED_WORKSPACE; /opt/homebrew/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE >/dev/null 2>&1; if [ \"$AEROSPACE_FOCUSED_WORKSPACE\" = '0' ]; then /opt/homebrew/bin/aerospace layout accordion horizontal 2>/dev/null; fi"
+exec-on-workspace-change = [
+  "/bin/bash",
+  "-c",
+  "/opt/homebrew/bin/aerospace-scratchpad hook pull-window $AEROSPACE_PREV_WORKSPACE $AEROSPACE_FOCUSED_WORKSPACE;  if [ \"$AEROSPACE_FOCUSED_WORKSPACE\" = '0' ]; then /opt/homebrew/bin/aerospace layout accordion horizontal 2>/dev/null; fi",
 ]
 
 # Start AeroSpace at login
@@ -41,7 +43,9 @@ default-root-container-orientation = 'auto'
 # See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
 # Fallback value (if you omit the key): on-focused-monitor-changed = []
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-on-focus-changed = ['exec-and-forget ~/.local/bin/aerospace-widescreen']
+on-focus-changed = [
+  'exec-and-forget ~/.local/bin/aerospace-widescreen',
+]
 
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
 # Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
@@ -52,18 +56,7 @@ automatically-unhide-macos-hidden-apps = false
 # even when they are invisible.
 # This config version is only available since 'config-version = 2'
 # Fallback value (if you omit the key): persistent-workspaces = []
-persistent-workspaces = [
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-]
+persistent-workspaces = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 # A callback that runs every time binding mode changes
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -96,7 +89,11 @@ inner.horizontal = 8
 inner.vertical = 8
 outer.left = [{ monitor.'PHL 499P9' = 8 }, 4]
 outer.bottom = 8
-outer.top = [{ monitor.'PHL 499P9' = 54 }, { monitor.'Built-in Retina Display' = 24 }, 24]
+outer.top = [
+  { monitor.'PHL 499P9' = 54 },
+  { monitor.'Built-in Retina Display' = 24 },
+  24,
+]
 outer.right = [{ monitor.'PHL 499P9' = 8 }, 4]
 
 # Window rules — scratchpad/toggle apps always float
@@ -134,6 +131,10 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'notion.id'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.alienator88.Pearcleaner'
 run = 'layout floating'
 
 # Discord always opens on workspace 0 (secondary monitor)

@@ -4,10 +4,9 @@
 
 options=(
   style=round
-  width=6.0
-  active_color=0xffb4befe    # lavender
+  width=8.0
+  active_color=0xffcba6f7    # mauve
   inactive_color=0xff45475a  # surface1
-  blur_radius=5.0
 )
 
 borders "${options[@]}"

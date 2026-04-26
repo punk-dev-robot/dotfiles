@@ -1,0 +1,56 @@
+#!/opt/homebrew/bin/bash
+# Smart move/resize that works for both tiled and floating windows.
+# For tiled: delegates to aerospace. For floating: uses osascript.
+# Usage: aerospace-float-cmd move left|right|up|down
+#        aerospace-float-cmd resize width|height +50|-50
+
+AEROSPACE=/opt/homebrew/bin/aerospace
+STEP=50
+action="$1"
+direction="$2"
+
+layout=$($AEROSPACE list-windows --focused --format '%{window-layout}' 2>/dev/null)
+
+if [[ "$layout" != "floating" ]]; then
+  $AEROSPACE "$action" "$direction" 2>/dev/null
+  exit 0
+fi
+
+case "$action" in
+  move)
+    case "$direction" in
+      left)  dx=-$STEP; dy=0 ;;
+      right) dx=$STEP;  dy=0 ;;
+      up)    dx=0; dy=-$STEP ;;
+      down)  dx=0; dy=$STEP ;;
+      *) exit 1 ;;
+    esac
+    osascript -e "
+      tell application \"System Events\"
+        set fp to first process whose frontmost is true
+        tell fp
+          set {x, y} to position of window 1
+          set position of window 1 to {x + $dx, y + $dy}
+        end tell
+      end tell"
+    ;;
+  resize)
+    axis="$direction"
+    sign="${3:0:1}"
+    case "${axis}-${sign}" in
+      width-+)  dw=$STEP;  dh=0 ;;
+      width--)  dw=-$STEP; dh=0 ;;
+      height-+) dw=0; dh=$STEP ;;
+      height--) dw=0; dh=-$STEP ;;
+      *) exit 1 ;;
+    esac
+    osascript -e "
+      tell application \"System Events\"
+        set fp to first process whose frontmost is true
+        tell fp
+          set {w, h} to size of window 1
+          set size of window 1 to {w + $dw, h + $dh}
+        end tell
+      end tell"
+    ;;
+esac
