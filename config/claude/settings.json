@@ -96,7 +96,10 @@
       "Bash(poweroff *)"
     ],
     "defaultMode": "plan",
-    "additionalDirectories": ["~/dotfiles", "~/Pictures/Screenshots"]
+    "additionalDirectories": [
+      "~/dotfiles",
+      "~/Pictures/Screenshots"
+    ]
   },
   "model": "opus[1m]",
   "hooks": {
@@ -193,6 +196,10 @@
       }
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"/Users/kuba.gaj/.config/claude/plugins/cache/caveman/caveman/84cc3c14fa1e/hooks/caveman-statusline.sh\""
+  },
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
@@ -200,9 +207,11 @@
     "plannotator@plannotator": true,
     "agent-skills@addy-agent-skills": false,
     "skill-codex@skill-codex": true,
-    "claude-mem@thedotmack": true,
     "superpowers@claude-plugins-official": true,
-    "punkfl0w@punkfl0w-development": true
+    "punkfl0w@punkfl0w-development": true,
+    "caveman@caveman": true,
+    "skill-creator@claude-plugins-official": true,
+    "logfire-session-capture@pydantic-claude-code-logfire-plugin": true
   },
   "extraKnownMarketplaces": {
     "plannotator": {
@@ -241,12 +250,34 @@
         "source": "directory",
         "path": "/Users/kuba.gaj/dev/oss/punkfl0w"
       }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    },
+    "pydantic-claude-code-logfire-plugin": {
+      "source": {
+        "source": "github",
+        "repo": "pydantic/claude-code-logfire-plugin"
+      },
+      "autoUpdate": true
+    },
+    "n8n-mcp-skills": {
+      "source": {
+        "source": "github",
+        "repo": "czlonkowski/n8n-skills"
+      },
+      "autoUpdate": true
     }
   },
   "alwaysThinkingEnabled": true,
+  "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "teammateMode": "auto",
   "skipAutoPermissionPrompt": true,
   "respectGitIgnore": false,
-  "teammateMode": "auto",
   "permissionMode": "auto"
 }

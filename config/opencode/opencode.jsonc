@@ -1,7 +1,12 @@
 {
   "mcp": {
+    "logfire": {
+      "enabled": true,
+      "type": "remote",
+      "url": "https://logfire-eu.pydantic.dev/mcp",
+    },
     "tessl": {
-      "enabled": false,
+      "enabled": true,
       "type": "local",
       "command": ["tessl", "mcp", "start"],
     },
@@ -67,7 +72,6 @@
   "instructions": ["./instructions.md"],
   "plugin": [
     "@plannotator/opencode@latest",
-    "./plugins/caveman.ts",
     "./plugins/modern-cli-warn.ts",
     "./plugins/prefer-composio-web.ts",
     "./plugins/spec-kit-plannotator.ts",
@@ -78,10 +82,10 @@
       "nx deploy:*": "deny",
     },
   },
-  "agent": {
-    "yolo": {
-      "description": "Skip permissions",
-      "permission": "allow",
-    },
-  },
+  // "agent": {
+  //   "yolo": {
+  //     "description": "Skip permissions",
+  //     "permission": "allow",
+  //   },
+  // },
 }

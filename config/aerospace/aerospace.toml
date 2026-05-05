@@ -142,6 +142,18 @@ run = 'layout floating'
 if.app-id = 'com.hnc.Discord'
 run = 'move-node-to-workspace 0'
 
+# Zen browser — float dialog/inspector sub-windows (mirrors Hyprland rules-window.conf:62-63)
+# Trailing space + ^ anchor avoids matching tabs whose page title contains these words mid-string.
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+if.window-title-regex-substring = '^(Page Info|Library|Downloads|About Zen|Browser Console|Print|Profile Manager|Page Source|View Source) '
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen-twilight'
+if.window-title-regex-substring = '^(Page Info|Library|Downloads|About Zen|Browser Console|Print|Profile Manager|Page Source|View Source) '
+run = 'layout floating'
+
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' binding mode must be always presented
