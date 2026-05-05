@@ -8,7 +8,7 @@ depends = [
   "alacritty", "atuin", "bat", "bottom", "claude", "codex", "delta", "docker", "ghostty",
   "git", "glab-cli", "k9s", "kitty", "lazygit", "lnav", "luarocks",
   "mpv", "nvim", "opencode", "ripgrep", "ssh", "starship", "tealdeer",
-  "tmux", "whitefox", "yazi", "zsh", "markdownlint",
+  "tmux", "keyboards", "yazi", "zsh", "markdownlint",
   "bin-common",
 ]
 
@@ -122,8 +122,8 @@ op_agent_sock = "~/.1password/agent.sock"
 [tmux.variables]
 tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 
-[whitefox.files]
-"config/whitefox" = "~/.config/whitefox"
+[keyboards.files]
+"config/keyboards" = "~/.config/keyboards"
 
 [yazi.files]
 "config/yazi" = "~/.config/yazi"

@@ -10,6 +10,7 @@
 config/zsh/.zshenv.priv
 config/zsh/rc.d/031-env-local.zsh
 config/claude/.claude.json
+config/claude/.claude.json.bak.*
 config/claude/about_me.md
 config/claude/settings.hooks.json
 .claude-state/

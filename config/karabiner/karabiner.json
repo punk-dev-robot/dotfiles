@@ -911,6 +911,35 @@
                                 "type": "basic"
                             }
                         ]
+                    },
+                    {
+                        "description": "[HHKB-SHKB] Ctrl → Cmd (non-terminal, firmware does Esc-tap)",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "identifiers": [{ "vendor_id": 18504, "product_id": 1 }],
+                                        "type": "device_if"
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.mitchellh\\.ghostty$",
+                                            "^com\\.apple\\.Terminal$",
+                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^io\\.alacritty$",
+                                            "^com\\.raphaelamorim\\.rio$"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "left_control",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "left_command" }],
+                                "type": "basic"
+                            }
+                        ]
                     }
                 ]
             },
