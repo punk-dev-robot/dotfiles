@@ -123,6 +123,25 @@ Or use [QMK Toolbox](https://github.com/qmk/qmk_toolbox/releases) with the `.hex
 
 `VIA_ENABLE = yes` is set in `rules.mk`, so the firmware exposes the VIA protocol. After flashing, open the [VIA web app](https://usevia.app/) to tweak the keymap at runtime without recompiling. The compiled keymap above is the default that ships in the EEPROM.
 
+### EEPROM gotcha after re-flash
+
+VIA stores the runtime keymap in **EEPROM**, separate from the compile-time keymap in flash. `dfu-programmer atmega32u4 erase` (and therefore `qmk flash`) only wipes flash, **not EEPROM**. After a re-flash the boot sequence checks EEPROM magic, finds it valid, and loads the **stale** EEPROM keymap — the new compile-time keymap is silently ignored.
+
+Symptom: you change `keymap.c`, recompile, flash successfully, but the keyboard behaves as if your changes never landed (e.g. mod-row still in QMK-default `LAlt, LGui, ..., RGui, RAlt` order even though source has `LGui, LAlt, ..., RAlt, RGui`).
+
+**Fix — bootmagic-lite factory reset on next boot:**
+
+1. Unplug SHKB.
+2. Hold the **`2` key** (top row, third from left — matrix `[0][0]` for HHKB ANSI).
+3. Plug USB while holding.
+4. Wait ~3 sec, release.
+
+EEPROM clears, compile-time keymap copies in fresh.
+
+If the `2` key isn't right for your QMK config, find matrix `[0][0]` in `keyboards/hhkb/ansi/info.json` (`jq '.layouts.LAYOUT.layout | to_entries | map(select(.value.matrix==[0,0]))'`).
+
+Alt: open [VIA](https://usevia.app/) → connect → Configure → "Reset keymap to factory defaults".
+
 ## Source-of-truth notes
 
 - Layout intent comes from `config/keyboards/whitefox/keymap_kuba.c` (TMK).
