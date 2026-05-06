@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Outputs OTLP Authorization header for Claude Code → Logfire EU.
+# Called by Claude Code when otelHeadersHelper is set in settings.json.
+# LOGFIRE_TOKEN is injected into the env by `op run --env-file` via the cld() wrapper.
+# Currently inert: native OTel export is broken upstream until anthropics/claude-code#50567 ships.
+set -eu
+: "${LOGFIRE_TOKEN:?LOGFIRE_TOKEN is unset; run Claude Code via 'cld' so 1Password resolves secrets.env}"
+printf 'Authorization=%s\n' "$LOGFIRE_TOKEN"

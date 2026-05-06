@@ -138,6 +138,7 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 # ─── User scripts ─────────────────────────────────────────────
 
 [bin-common.files]
+"local/bin/claude-otel-headers" = "~/.local/bin/claude-otel-headers"
 "local/bin/dirwatch" = "~/.local/bin/dirwatch"
 "local/bin/gcal-import" = "~/.local/bin/gcal-import"
 "local/bin/sync-git-maintenance.zsh" = "~/.local/bin/sync-git-maintenance.zsh"
