@@ -66,20 +66,28 @@ Tracking issues for the spec gap:
 | --- | --- | --- |
 | **Transport** — OTLP envelope, `OTEL_EXPORTER_OTLP_*` env vars, `OTEL_TRACES_EXPORTER=otlp`, etc. | OTel base spec | ✅ Yes (when bundle bug #50567 lands) |
 | **Generic semconv** — `service.name`, `error.type`, span timing attrs | OTel core | ✅ Mostly |
-| **GenAI semconv** — `gen_ai.system`, `gen_ai.agent.name`, `gen_ai.operation.name=invoke_agent`, `gen_ai.usage.input_tokens` | OTel GenAI subspec | ❌ No |
+| **GenAI semconv** — see below | OTel GenAI subspec | ⚠️ Partial |
 
-What Anthropic actually emits, per the same docs that say "OpenTelemetry compatible":
+The docs page (`code.claude.com/docs/en/monitoring-usage`) explicitly tags these `claude_code.llm_request` span attributes as "OpenTelemetry GenAI semantic convention":
 
-- Metrics: `claude_code.session.count`, `claude_code.cost.usage`, `claude_code.token.usage`, `claude_code.lines_of_code.count` — all proprietary.
-- Spans: `claude_code.interaction`, `claude_code.llm_request`, `claude_code.tool`, `claude_code.tool.execution`, `claude_code.hook` — all proprietary.
-- Token attrs: `input_tokens`, `output_tokens` — not `gen_ai.usage.input_tokens` / `gen_ai.usage.output_tokens` per OTel GenAI semconv v1.41.
+- `gen_ai.system` = `anthropic`
+- `gen_ai.request.model`
+- `gen_ai.response.id`
+- `gen_ai.response.finish_reasons`
 
-So:
+Still **missing** for full compliance, and these are the gap that keeps the Logfire **Agents** tab empty:
 
-- **Plug Claude Code into any OTLP-capable backend (Logfire, Datadog, Honeycomb, OTel Collector)** — works at the transport layer once the bundling bug clears. Spans land. Live/Explore views populate.
-- **Spans automatically populate AI-aware UIs that need GenAI semconv** — fails until vocabulary lands. Logfire Agents tab, Sentry AI Monitoring, Honeycomb LLM panel agent grouping all key off `gen_ai.*`. Until #50776 (and a future `gen_ai.agent.name` issue someone still needs to file), all of those views stay empty for Claude Code data even with full transport-level export working.
+- `gen_ai.usage.input_tokens` / `gen_ai.usage.output_tokens` — Anthropic emits bare `input_tokens` / `output_tokens` instead. Tracked in [#50776](https://github.com/anthropics/claude-code/issues/50776).
+- `gen_ai.operation.name = invoke_agent` — spans are named `claude_code.llm_request` / `claude_code.interaction` / `claude_code.tool`, no operation-name attribute matching the GenAI agent-span profile.
+- `gen_ai.agent.name` — Claude Code never emits an agent identity attribute, so Logfire / LangSmith / Honeycomb agent groupers cannot key off it. No upstream issue filed for this yet — would be a worthwhile filing.
 
-The doc page does enumerate the proprietary metric/span names — they just aren't flagged as deviations from the GenAI semconv. The link to the OTel spec is about env vars and transport, not vocabulary.
+What this practically means:
+
+- **Plug Claude Code into any OTLP-capable backend (Logfire, Datadog, Honeycomb, OTel Collector)** — works at the transport layer once the bundling bug clears. Spans land. Live / Explore / Trace views populate.
+- **AI-aware backend features that key off the partial GenAI subset emitted today** (e.g. Logfire LLM panels recognize `gen_ai.system=anthropic` and the model attr) — should light up partly once #50567 lands.
+- **AI-aware features that need agent identity** (Logfire Agents tab, Sentry AI Monitoring agent grouping, Honeycomb LLM-panel agent slicing) — stay empty until both #50776 (token attrs) and a future `gen_ai.agent.name`/`invoke_agent` change land.
+
+So the docs aren't wrong when they say the spans carry GenAI semantic-convention attrs — they just don't carry the *agent* slice of that semantic convention, which is what the Agents tab discovers on.
 
 ## Current Posture: Inert Native OTel, Wait for Upstream Fix
 
