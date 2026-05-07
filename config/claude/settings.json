@@ -5,20 +5,23 @@
     "BASH_MAX_TIMEOUT_MS": "500000",
     "BASH_MAX_OUTPUT_LENGTH": "1000",
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "0",
-    "DISABLE_TELEMETRY": "1",
-    "MCP_TIMEOUT": "180000",
-    "MAX_MCP_OUTPUT_TOKENS": "50000",
-    "ENABLE_TOOL_SEARCH": "false",
-    "CLAUDE_CODE_DISABLE_VIRTUAL_SCROLL": "1",
+    "CLAUDE_CODE_DISABLE_GIT_INSTRUCTIWONS": "1",
+    "CLAUDE_CODE_DISABLE_LEGACY_MODEL_REMAP": "1",
+    "CLAUDE_CODE_DISABLE_VIRTUAL_SCROLL": "0",
+    "CLAUDE_CODE_FORCE_SYNC_OUTPUT": "1",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "0",
     "CLAUDE_CODE_DISABLE_MOUSE": "0",
-    "CLAUDE_CODE_NO_FLICKER": "1",
     "CLAUDE_CODE_SCROLL_SPEED": "3",
+    "CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT": "1",
     "CLAUDE_CODE_TMUX_TRUECOLOR": "1",
-    "ENABLE_CLAUDEAI_MCP_SERVERS": "0",
-    "ENABLE_PROMPT_CACHING_1H": "0",
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
     "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA": "1",
+    "DISABLE_TELEMETRY": "1",
+    "ENABLE_CLAUDEAI_MCP_SERVERS": "0",
+    "ENABLE_PROMPT_CACHING_1H": "1",
+    "ENABLE_TOOL_SEARCH": "false",
+    "MAX_MCP_OUTPUT_TOKENS": "50000",
+    "MCP_TIMEOUT": "180000",
     "OTEL_TRACES_EXPORTER": "otlp",
     "OTEL_LOGS_EXPORTER": "none",
     "OTEL_METRICS_EXPORTER": "otlp",
@@ -107,7 +110,10 @@
       "Bash(poweroff *)"
     ],
     "defaultMode": "plan",
-    "additionalDirectories": ["~/dotfiles", "~/Pictures/Screenshots"]
+    "additionalDirectories": [
+      "~/dotfiles",
+      "~/Pictures/Screenshots"
+    ]
   },
   "model": "opus[1m]",
   "hooks": {
@@ -283,11 +289,12 @@
   },
   "otelHeadersHelper": "/Users/kuba.gaj/dotfiles/local/bin/claude-otel-headers",
   "alwaysThinkingEnabled": true,
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "teammateMode": "auto",
   "skipAutoPermissionPrompt": true,
-  "respectGitIgnore": false,
-  "permissionMode": "auto"
+  "permissionMode": "auto",
+  "respectGitIgnore": false
 }
