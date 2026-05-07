@@ -1,6 +1,5 @@
 {
   "cleanupPeriodDays": 3,
-  "otelHeadersHelper": "/Users/kuba.gaj/dotfiles/local/bin/claude-otel-headers",
   "env": {
     "BASH_DEFAULT_TIMEOUT_MS": "60000",
     "BASH_MAX_TIMEOUT_MS": "500000",
@@ -10,25 +9,25 @@
     "MCP_TIMEOUT": "180000",
     "MAX_MCP_OUTPUT_TOKENS": "50000",
     "ENABLE_TOOL_SEARCH": "false",
-    "CLAUDE_CODE_DISABLE_VIRTUAL_SCROLL": "0",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_DISABLE_VIRTUAL_SCROLL": "1",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "0",
     "CLAUDE_CODE_DISABLE_MOUSE": "0",
     "CLAUDE_CODE_NO_FLICKER": "1",
     "CLAUDE_CODE_SCROLL_SPEED": "3",
     "CLAUDE_CODE_TMUX_TRUECOLOR": "1",
     "ENABLE_CLAUDEAI_MCP_SERVERS": "0",
-    "ENABLE_PROMPT_CACHING_1H": "1",
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "ENABLE_PROMPT_CACHING_1H": "0",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
     "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA": "1",
     "OTEL_TRACES_EXPORTER": "otlp",
-    "OTEL_LOGS_EXPORTER": "otlp",
+    "OTEL_LOGS_EXPORTER": "none",
     "OTEL_METRICS_EXPORTER": "otlp",
     "OTEL_EXPORTER_OTLP_PROTOCOL": "http/protobuf",
     "OTEL_EXPORTER_OTLP_ENDPOINT": "https://logfire-eu.pydantic.dev",
     "OTEL_SERVICE_NAME": "claude-code",
-    "OTEL_LOG_USER_PROMPTS": "1",
+    "OTEL_LOG_USER_PROMPTS": "0",
     "OTEL_LOG_TOOL_DETAILS": "1",
-    "OTEL_LOG_TOOL_CONTENT": "1"
+    "OTEL_LOG_TOOL_CONTENT": "0"
   },
   "permissions": {
     "allow": [
@@ -108,10 +107,7 @@
       "Bash(poweroff *)"
     ],
     "defaultMode": "plan",
-    "additionalDirectories": [
-      "~/dotfiles",
-      "~/Pictures/Screenshots"
-    ]
+    "additionalDirectories": ["~/dotfiles", "~/Pictures/Screenshots"]
   },
   "model": "opus[1m]",
   "hooks": {
@@ -148,7 +144,7 @@
         ]
       },
       {
-        "matcher": "Edit|Write",
+        "matcher": "Edit|Write_DISABLED",
         "hooks": [
           {
             "type": "command",
@@ -214,15 +210,15 @@
   },
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": false,
     "explanatory-output-style@claude-plugins-official": true,
     "plannotator@plannotator": true,
     "agent-skills@addy-agent-skills": false,
     "skill-codex@skill-codex": true,
-    "superpowers@claude-plugins-official": true,
-    "punkfl0w@punkfl0w-development": true,
+    "superpowers@claude-plugins-official": false,
+    "punkfl0w@punkfl0w-development": false,
     "caveman@caveman": true,
-    "skill-creator@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": false,
     "logfire-session-capture@pydantic-claude-code-logfire-plugin": false,
     "clangd-lsp@claude-plugins-official": true
   },
@@ -285,6 +281,7 @@
       "autoUpdate": true
     }
   },
+  "otelHeadersHelper": "/Users/kuba.gaj/dotfiles/local/bin/claude-otel-headers",
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
