@@ -31,3 +31,5 @@
 # "Double quotes" ensures that empty arguments '' are preserved.
 # It's a good practice to pass "$@" by default. You'd be surprised at all the
 # bugs you avoid this way.
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

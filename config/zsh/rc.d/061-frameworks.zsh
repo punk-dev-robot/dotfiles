@@ -4,38 +4,30 @@
 # Prezto
 (( $+commands[yay] )) && zstyle ':prezto:module:pacman' frontend 'yay'
 if [[ "$OSTYPE" == linux* ]]; then
-  znap source sorin-ionescu/prezto modules/{docker,pacman,ssh}
+  znap source sorin-ionescu/prezto modules/{docker,pacman}
 else
-  znap source sorin-ionescu/prezto modules/{docker,ssh}
+  znap source sorin-ionescu/prezto modules/docker
 fi
 
 # oh-my-zsh lib
 znap source ohmyzsh/ohmyzsh lib/{functions,git}.zsh
 
-# oh-my-zsh plugins
-local -a zsh_plugins=(
-  ansible
-  aliases
-  eza
-  git
-  golang
-  kubectl
-  node
-  pip
-  python
-  # rust
-  terraform
-  tmux
-  yarn
-)
-# Linux-only OMZ plugins
-if [[ "$OSTYPE" == linux* ]]; then
-  zsh_plugins+=(archlinux podman systemadmin systemd)
-fi
+# oh-my-zsh plugins — all in one znap source call (one clone-check subshell vs N)
+# removed: ansible (unused at company), node (fnm owns it), pip/python (uv ecosystem), yarn (using pnpm)
+znap source ohmyzsh/ohmyzsh \
+  plugins/aliases \
+  plugins/eza \
+  plugins/git \
+  plugins/golang \
+  plugins/kubectl \
+  plugins/terraform \
+  plugins/tmux
 
-# Load each plugin, one at a time.
-local p=
-for p in $zsh_plugins; do
-  znap source ohmyzsh/ohmyzsh plugins/$p
-done
+if [[ "$OSTYPE" == linux* ]]; then
+  znap source ohmyzsh/ohmyzsh \
+    plugins/archlinux \
+    plugins/podman \
+    plugins/systemadmin \
+    plugins/systemd
+fi
 

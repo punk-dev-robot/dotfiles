@@ -133,7 +133,7 @@ alias trp='trash-put'
 alias tre='trash-empty'
 alias trl='trash-list'
 alias trr='trash-restore'
-alias trrm='trash-remove'
+alias trrm='trash-rm'
 
 # ai
 alias cb='chatblade -c 4 -s'

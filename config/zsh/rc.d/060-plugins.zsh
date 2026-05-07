@@ -26,6 +26,10 @@
 #   znap source $p
 # done
 
+# sourcing mode: init runs synchronously when sourced, no cursor delay after prompt
+# atuin must run after vi-mode to rebind keys correctly — pre-populate before source
+ZVM_INIT_MODE=sourcing
+(( $+commands[atuin] )) && zvm_after_init_commands+=(eval "$(atuin init zsh --disable-up-arrow)")
 znap source jeffreytse/zsh-vi-mode
 
 # `znap eval <name> '<command>'` is like `eval "$( <command> )"` but with
@@ -67,10 +71,6 @@ znap eval direnv 'direnv hook zsh'
 # znap eval copilot 'gh copilot alias -- zsh'  # removed: no longer using copilot
 
 
-#
-# start atuin (can't be deferred in plugins)
-# zsh vi-mode/atuin temp fix https://github.com/atuinsh/atuin/issues/977
-(( $+commands[atuin] )) && zvm_after_init_commands+=(eval "$(atuin init zsh --disable-up-arrow)")
 
 # enable smooth scrolling, blured backgrounds and window animations
 # may be causing some bugs

@@ -36,6 +36,9 @@ path=(
     $path
 )
 
+# trash-cli is keg-only on macOS (conflicts with macos-trash/osx-trash formulas)
+[[ "$OSTYPE" == darwin* ]] && path+=( /opt/homebrew/opt/trash-cli/bin )
+
 if [ -f $ZDOTDIR/.zshenv.priv ]; then
   source $ZDOTDIR/.zshenv.priv
 fi

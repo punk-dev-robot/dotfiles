@@ -10,11 +10,6 @@ path+=("$HOME/.node_modules/bin")
 path+=("$HOME/.yarn/bin")
 path+=("$HOME/.npm-global/bin")
 znap eval fnm 'fnm env --use-on-cd'
-# pnpm aliases
-znap source ntnyq/omz-plugin-pnpm 
-# use either this (installed with yay pnpm-shell-completion)
-# source /usr/share/zsh/plugins/pnpm-shell-completion/pnpm-shell-completion.zsh
-# or
 znap eval pnpm 'pnpm completion zsh'
 
 # docker
@@ -30,16 +25,8 @@ export GOBIN=$GOPATH/bin
 path+=("$GOBIN")
 
 # python
-# vitualenvwrapper
-# export WORKON_HOME=$HOME/.virtualenvs
-# source '/usr/bin/virtualenvwrapper.sh'
-# export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 znap eval hf 'command hf --show-completion'
-
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && path=("$PYENV_ROOT/bin" $path)
-znap eval pyenv 'pyenv init -'
-# znap eval pipx-argcomplete 'register-python-argcomplete pipx'  # removed: using uv instead of pipx
+znap eval uv 'uv generate-shell-completion zsh'
 
 # lua5.1 is in /usr/local/bin
 export LUAROCKS_CONFIG="$XDG_CONFIG_HOME/luarocks/config-5.4.lua"
@@ -49,7 +36,7 @@ export LUAROCKS_CONFIG="$XDG_CONFIG_HOME/luarocks/config-5.4.lua"
 # git
 znap eval scmpuff 'scmpuff init -s --aliases=false'
 alias gs='scmpuff status'
-znap fpath '_glab' 'glab completion -s zsh'
+# znap fpath '_glab' 'glab completion -s zsh'  # not used at current company
 
 # aws
 export AWS_PAGER=""
