@@ -48,6 +48,24 @@ center_scratchpad() {
   "$FRAME_HELPER" "$APP" "$target_monitor" >/dev/null 2>&1 &
 }
 
+find_tiled_instance() {
+  local target normalized workspace window_id app_name window_layout
+  target="$1"
+  normalized=$(normalize_name "$target")
+
+  while IFS=$'\t' read -r workspace window_id app_name window_layout; do
+    [ -z "$app_name" ] && continue
+    [[ "$workspace" == .scratchpad* ]] && continue
+    # Pinned = anything not floating; skip macos hidden-app marker.
+    [ "$window_layout" = "floating" ] && continue
+    [ "$window_layout" = "macos_native_window_of_hidden_app" ] && continue
+    [ "$(normalize_name "$app_name")" = "$normalized" ] || continue
+    printf '%s' "$window_id"
+    return 0
+  done < <(/opt/homebrew/bin/aerospace list-windows --all --format '%{workspace}	%{window-id}	%{app-name}	%{window-layout}' 2>/dev/null)
+  return 1
+}
+
 hide_other_floating_scratchpads() {
   local target_app normalized_target workspace window_id app_name window_layout
 
@@ -56,6 +74,7 @@ hide_other_floating_scratchpads() {
 
   while IFS=$'\t' read -r workspace window_id app_name window_layout; do
     [ -z "$app_name" ] && continue
+    # tiled windows are user-pinned; do not move them
     [ "$window_layout" != "floating" ] && continue
     [[ "$workspace" == .scratchpad* ]] && continue
 
@@ -70,6 +89,13 @@ hide_other_floating_scratchpads() {
     "$SCRATCHPAD" move "$app_name" >/dev/null 2>&1 || true
   done < <(/opt/homebrew/bin/aerospace list-windows --all --format '%{workspace}	%{window-id}	%{app-name}	%{window-layout}' 2>/dev/null)
 }
+
+# Tiled instance pinned by user — focus only, never toggle to scratchpad.
+if tiled_id=$(find_tiled_instance "$APP"); then
+  /opt/homebrew/bin/aerospace focus --window-id "$tiled_id" >/dev/null 2>&1
+  disown -a 2>/dev/null || true
+  exit 0
+fi
 
 result=$($SCRATCHPAD summon --output json "$APP" 2>&1)
 action=""

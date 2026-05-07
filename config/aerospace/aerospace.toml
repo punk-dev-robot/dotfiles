@@ -102,10 +102,6 @@ if.app-id = 'com.raphaelamorim.rio'
 run = 'layout floating'
 
 [[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
-run = 'layout floating'
-
-[[on-window-detected]]
 if.app-id = 'net.whatsapp.WhatsApp'
 run = 'layout floating'
 
@@ -137,10 +133,19 @@ run = 'layout floating'
 if.app-id = 'com.alienator88.Pearcleaner'
 run = 'layout floating'
 
-# Discord always opens on workspace 0 (secondary monitor)
+# Discord + Slack tile on workspace 0 (secondary monitor); alt-backspace toggle still works on tiled windows
 [[on-window-detected]]
 if.app-id = 'com.hnc.Discord'
 run = 'move-node-to-workspace 0'
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'move-node-to-workspace 0'
+
+# Google Meet PWA — float by default
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome.app.kjgfgldnnfoeklkmfkjfagphfepbbdan'
+run = 'layout floating'
 
 # Zen browser — float dialog/inspector sub-windows (mirrors Hyprland rules-window.conf:62-63)
 # Trailing space + ^ anchor avoids matching tabs whose page title contains these words mid-string.

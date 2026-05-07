@@ -115,7 +115,6 @@
       "~/Pictures/Screenshots"
     ]
   },
-  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -212,7 +211,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bash \"/Users/kuba.gaj/.config/claude/plugins/cache/caveman/caveman/84cc3c14fa1e/hooks/caveman-statusline.sh\""
+    "command": "bash \"/Users/kuba.gaj/.config/claude/hooks/statusline-combined.sh\""
   },
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
