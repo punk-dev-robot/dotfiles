@@ -92,3 +92,5 @@ arch.aur-list.pkg
 arch.pacman-list.pkg
 
 /.claude/worktrees
+/.chunkhound/db
+/.claude/skills

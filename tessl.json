@@ -1,5 +1,9 @@
 {
   "name": "dotfiles",
   "mode": "vendored",
-  "dependencies": {}
+  "dependencies": {
+    "tessl-labs/intent-integrity-kit": {
+      "version": "2.10.1"
+    }
+  }
 }
