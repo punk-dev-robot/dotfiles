@@ -260,13 +260,13 @@ git:
 # skipHookPrefix: WIP
 
 # If true, periodically fetch from remote
-# autoFetch: true
+autoFetch: false
 
 # If true, periodically refresh files and submodules
-# autoRefresh: true
+autoRefresh: false
 
 # If true, pass the --all arg to git fetch
-# fetchAll: true
+fetchAll: false
 
 # Command used when displaying the current branch git log in the main window
 # branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --

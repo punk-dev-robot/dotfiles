@@ -139,16 +139,42 @@ alias trrm='trash-rm'
 alias cb='chatblade -c 4 -s'
 alias cb3='chatblade -c 3 -s'
 
-# docker
-alias gwa='git worktree add'
-alias gwls='git worktree list'
-alias gwlck='git worktree lock'
-alias gwmv='git worktree move'
-alias gwp='git worktree prune'
-alias gwdel='git worktree remove'
-alias gwr='git worktree repair'
-alias gwulck='git worktree unlock'
+# git
 alias lg='lazygit'
+
+# worktrunk
+  wtc() {
+    if [[ -z "$1" ]]; then
+      print -u2 "usage: wtc <branch> [wt switch --create args...]"
+      return 2
+    fi
+    # Resolve primary worktree (always first in `git worktree list`) — this
+    # is the only one guaranteed to have the locally-ignored wt.toml.
+    local primary
+    primary=$(git worktree list --porcelain 2>/dev/null \
+      | awk '/^worktree /{print $2; exit}')
+    if [[ -z "$primary" ]]; then
+      print -u2 "wtc: not inside a git repository"
+      return 1
+    fi
+    wt switch --create "$@" || return $?
+    # We're now cd'd into the new worktree (via wt shell integration).
+    if [[ ! -f .config/wt.toml ]] && [[ -f "$primary/.config/wt.toml" ]]; then
+      mkdir -p .config
+      cp "$primary/.config/wt.toml" .config/wt.toml
+      print "wn: seeded .config/wt.toml from $primary"
+    fi
+    wt warm
+  }
+
+  alias wts='wt switch'
+  alias wtla='wt list --full'
+  alias wtls='wt list'
+  alias wtm='wt merge'
+  alias wtr='wt remove'
+  alias wtcl='wt clean'
+  alias wtd='wt step diff'
+  alias wtX='wt prune'
 
 # kubernetes
 # alias kdhm='kubectl describe HelmChart'

@@ -5,21 +5,63 @@ default_target_type = "symbolic"
 
 [common]
 depends = [
-  "alacritty", "atuin", "bat", "bottom", "claude", "codex", "delta", "docker", "ghostty",
-  "git", "glab-cli", "k9s", "kitty", "lazygit", "lnav", "luarocks",
-  "mpv", "nvim", "opencode", "ripgrep", "ssh", "starship", "tealdeer",
-  "tmux", "keyboards", "yazi", "zsh", "markdownlint",
+  "alacritty",
+  "atuin",
+  "bat",
+  "bottom",
+  "claude",
+  "codex",
+  "delta",
+  "docker",
+  "ghostty",
+  "git",
+  "glab-cli",
+  "k9s",
+  "kitty",
+  "lazygit",
+  "lnav",
+  "luarocks",
+  "mpv",
+  "nvim",
+  "opencode",
+  "ripgrep",
+  "ssh",
+  "starship",
+  "tealdeer",
+  "tmux",
+  "worktrunk",
+  "keyboards",
+  "yazi",
+  "zsh",
+  "markdownlint",
   "bin-common",
 ]
 
 [linux]
 depends = [
   "common",
-  "hypr", "rofi", "shikane", "swappy", "swaync", "waybar", "wlogout",
-  "uwsm", "udiskie", "pipewire", "easyeffects", "qt5ct", "qt6ct",
-  "tridactyl", "voxtype", "systemd-user",
-  "1password-linux", "chrome-flags", "electron-flags", "iwgtk",
-  "mimeapps", "desktop-entries",
+  "hypr",
+  "rofi",
+  "shikane",
+  "swappy",
+  "swaync",
+  "waybar",
+  "wlogout",
+  "uwsm",
+  "udiskie",
+  "pipewire",
+  "easyeffects",
+  "qt5ct",
+  "qt6ct",
+  "tridactyl",
+  "voxtype",
+  "systemd-user",
+  "1password-linux",
+  "chrome-flags",
+  "electron-flags",
+  "iwgtk",
+  "mimeapps",
+  "desktop-entries",
   "bin-linux",
 ]
 
@@ -135,6 +177,8 @@ tpm_path = "/usr/share/tmux-plugin-manager/tpm"
 [markdownlint.files]
 "config/.markdownlint.jsonc" = "~/.markdownlint.jsonc"
 
+[worktrunk.files]
+"config/worktrunk" = "~/.config/worktrunk"
 # ─── User scripts ─────────────────────────────────────────────
 
 [bin-common.files]

@@ -31,7 +31,7 @@ height = 1200
 
 [renderer]
 performance = "High"
-backend = "Automatic"
+backend = "Webgpu"
 disable-unfocused-render = false
 # Built-in: NewPixieCrt, fubax_vr (case-sensitive); GL backend doesn't support filters
 # Custom .slangp paths also supported: "/path/to/shader.slangp"

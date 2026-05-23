@@ -57,3 +57,4 @@ znap eval basic-memory 'basic-memory --show-completion'
 export COMPOSIO_INSTALL_DIR="/Users/kuba.gaj/.composio"
 export PATH="$COMPOSIO_INSTALL_DIR:$PATH"
 
+export LINEAR_TEAM_ID=62f87de9-2d7b-401d-8bbd-749477d7a773
