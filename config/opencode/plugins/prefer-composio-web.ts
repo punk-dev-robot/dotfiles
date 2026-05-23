@@ -1,5 +1,6 @@
 const SEARCH_TOOLS = new Set(["WebSearch", "websearch"])
 const FETCH_TOOLS = new Set(["WebFetch", "webfetch"])
+const CODE_SEARCH_TOOLS = new Set(["Grep", "grep", "Glob", "glob"])
 
 function buildMessage(tool: string): string {
   if (SEARCH_TOOLS.has(tool)) {
@@ -12,13 +13,21 @@ function buildMessage(tool: string): string {
     ].join(" ")
   }
 
-  return [
+  if (FETCH_TOOLS.has(tool)) {
+    return [
     "Use the Composio CLI skill/workflow before built-in web fetch.",
     "If you already have a URL, skip broad discovery and start with `composio execute EXA_GET_CONTENTS_ACTION --get-schema` or `composio execute FIRECRAWL_SCRAPE --get-schema`.",
     "Use `EXA_GET_CONTENTS_ACTION` for fetching page text/highlights from a known URL and `FIRECRAWL_SCRAPE` for scrape-focused page retrieval.",
     "Use `composio search \"<task>\"` only if the right slug is genuinely unclear.",
     "If Composio fails or you run out of third-party credits, retry the built-in tool as fallback.",
-  ].join(" ")
+    ].join(" ")
+  }
+
+  if (tool.toLowerCase() === "glob") {
+    return "Use ChunkHound search tools, Serena search tools, or Bash fd/rg instead of Glob. Retry Glob as fallback if those do not fit."
+  }
+
+  return "Use ChunkHound code_research/search_semantic/search_regex first for code discovery, or Serena search tools when symbol-aware lookup fits. Retry Grep as fallback if needed."
 }
 
 export const PreferComposioWeb = async () => {
@@ -30,7 +39,7 @@ export const PreferComposioWeb = async () => {
       input: { tool: string; sessionID?: string; sessionId?: string },
     ) => {
       const tool = input.tool
-      if (!SEARCH_TOOLS.has(tool) && !FETCH_TOOLS.has(tool)) return
+      if (!SEARCH_TOOLS.has(tool) && !FETCH_TOOLS.has(tool) && !CODE_SEARCH_TOOLS.has(tool)) return
 
       const sessionID = input.sessionID ?? input.sessionId ?? "default"
       const key = `${sessionID}:${tool}`

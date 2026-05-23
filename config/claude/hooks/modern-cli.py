@@ -9,16 +9,9 @@ _MODERN_ALTERNATIVES = {
     "grep": "rg",
     "find": "fd",
     "sed": "sd",
-    "du": "dust",
     "df": "duf",
-    "ps": "procs",
-    "top": "btm",
-    "htop": "btm",
     "dig": "dog",
     "nslookup": "dog",
-    "curl": "xh",
-    "watch": "viddy",
-    "cut": "choose",
     "cloc": "tokei",
 }
 
@@ -60,4 +53,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

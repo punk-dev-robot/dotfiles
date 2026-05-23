@@ -95,3 +95,4 @@ arch.pacman-list.pkg
 /.chunkhound/db
 /.claude/skills
 /.tessl/tiles/tessl-labs/intent-integrity-kit
+/.codex/skills

@@ -37,7 +37,7 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [marketplaces.openai-bundled]
-last_updated = "2026-04-23T23:11:38Z"
+last_updated = "2026-05-07T16:16:30Z"
 source_type = "local"
 source = "/Users/kuba.gaj/.config/codex/.tmp/bundled-marketplaces/openai-bundled"
 

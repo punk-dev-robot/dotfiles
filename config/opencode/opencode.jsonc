@@ -1,7 +1,7 @@
 {
   "mcp": {
     "logfire": {
-      "enabled": true,
+      "enabled": false,
       "type": "remote",
       "url": "https://logfire-eu.pydantic.dev/mcp",
     },
@@ -10,40 +10,9 @@
       "type": "local",
       "command": ["tessl", "mcp", "start"],
     },
-    "basic-memory": {
-      "enabled": false,
+    "ChunkHound": {
       "type": "local",
-      "command": ["uvx", "basic-memory", "mcp"],
-      "environment": {
-        "LOG_LEVEL": "warn",
-      },
-    },
-    "context7": {
-      "type": "local",
-      "command": ["npx", "-y", "@upstash/context7-mcp"],
-    },
-    "exa": {
-      "enabled": false,
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "exa-mcp-server",
-        "--tools=web_search_exa,research_paper_search,company_research,crawling,competitor_finder,linkedin_search,wikipedia_search_exa,github_search",
-      ],
-    },
-    "firecrawl": {
-      "enabled": false,
-      "type": "local",
-      "command": ["npx", "-y", "firecrawl-mcp"],
-      "environment": {
-        "FIRECRAWL_API_URL": "http://10.10.10.51:3002",
-      },
-    },
-    "augment-context-engine": {
-      "type": "local",
-      "command": ["auggie", "--mcp", "--mcp-auto-workspace"],
-      "enabled": true,
+      "command": ["chunkhound", "mcp"],
     },
     "serena": {
       "type": "local",
@@ -61,31 +30,22 @@
       "type": "remote",
       "url": "https://connect.composio.dev/mcp",
     },
-    "notion": {
-      "enabled": true,
-      "type": "remote",
-      "url": "https://mcp.notion.com/mcp",
-    },
   },
   "$schema": "https://opencode.ai/config.json",
   "model": "openai/gpt-5.5",
-  "instructions": ["./instructions.md"],
   "plugin": [
     "@plannotator/opencode@latest",
     "./plugins/modern-cli-warn.ts",
     "./plugins/prefer-composio-web.ts",
-    "./plugins/spec-kit-plannotator.ts",
+    "./plugins/linear-agent-workflow.ts",
   ],
+  "skills": {
+    "paths": ["/Users/kuba.gaj/.config/opencode/skills"],
+  },
   "permission": {
     "bash": {
       "nx run deploy:*": "deny",
       "nx deploy:*": "deny",
     },
   },
-  // "agent": {
-  //   "yolo": {
-  //     "description": "Skip permissions",
-  //     "permission": "allow",
-  //   },
-  // },
 }

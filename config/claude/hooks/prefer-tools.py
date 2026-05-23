@@ -14,13 +14,17 @@ from pathlib import Path
 
 _PREFERRED_TOOLS = {
     "WebSearch": (
-        "the Composio CLI workflow first: run `composio search \"<task>\"` to discover the right slug, "
+        'the Composio CLI workflow first: run `composio search "<task>"` to discover the right slug, '
         "then use `composio execute <SLUG> --get-schema` or `--dry-run` before execution. "
         "Common search slugs are `EXA_SEARCH`, `EXA_ANSWER`, and `FIRECRAWL_SEARCH`."
     ),
     "WebFetch": (
         "the Composio CLI workflow first: discover or confirm the slug, then use `composio execute <SLUG> --get-schema` "
         "or `--dry-run` before execution. Common fetch/scrape slugs are `FIRECRAWL_SCRAPE` and `EXA_GET_CONTENTS_ACTION`."
+    ),
+    "Glob": ("the Chunkhound search tool, as well as bash rg and fd tools instead"),
+    "Grep": (
+        "the Chunkhound search and research are preferred tools and great replacement. Alternatively search tools provided by serena"
     ),
 }
 

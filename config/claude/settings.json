@@ -1,5 +1,6 @@
 {
   "cleanupPeriodDays": 3,
+  "skillListingBudgetFraction": 0.02,
   "env": {
     "BASH_DEFAULT_TIMEOUT_MS": "60000",
     "BASH_MAX_TIMEOUT_MS": "500000",
@@ -7,36 +8,37 @@
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "0",
     "CLAUDE_CODE_DISABLE_GIT_INSTRUCTIWONS": "1",
     "CLAUDE_CODE_DISABLE_LEGACY_MODEL_REMAP": "1",
-    "CLAUDE_CODE_DISABLE_VIRTUAL_SCROLL": "0",
+    "CLAUDE_CODE_DISABLE_VIRTUAL_SCROLL": "1",
     "CLAUDE_CODE_FORCE_SYNC_OUTPUT": "1",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "0",
     "CLAUDE_CODE_DISABLE_MOUSE": "0",
     "CLAUDE_CODE_SCROLL_SPEED": "3",
     "CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT": "1",
     "CLAUDE_CODE_TMUX_TRUECOLOR": "1",
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-    "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA": "1",
-    "DISABLE_TELEMETRY": "1",
     "ENABLE_CLAUDEAI_MCP_SERVERS": "0",
     "ENABLE_PROMPT_CACHING_1H": "1",
     "ENABLE_TOOL_SEARCH": "false",
     "MAX_MCP_OUTPUT_TOKENS": "50000",
     "MCP_TIMEOUT": "180000",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA": "0",
+    "DISABLE_TELEMETRY": "1",
     "OTEL_TRACES_EXPORTER": "otlp",
-    "OTEL_LOGS_EXPORTER": "none",
+    "OTEL_LOGS_EXPORTER": "otlp",
     "OTEL_METRICS_EXPORTER": "otlp",
-    "OTEL_EXPORTER_OTLP_PROTOCOL": "http/protobuf",
-    "OTEL_EXPORTER_OTLP_ENDPOINT": "https://logfire-eu.pydantic.dev",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "grpc",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "https://ingest.eu2.signoz.cloud:443",
+    "OTEL_METRIC_EXPORT_INTERVAL": "10000",
+    "OTEL_LOGS_EXPORT_INTERVAL": "5000",
     "OTEL_SERVICE_NAME": "claude-code",
-    "OTEL_LOG_USER_PROMPTS": "0",
+    "OTEL_LOG_USER_PROMPTS": "1",
     "OTEL_LOG_TOOL_DETAILS": "1",
-    "OTEL_LOG_TOOL_CONTENT": "0"
+    "OTEL_LOG_TOOL_CONTENT": "1"
   },
   "permissions": {
     "allow": [
       "Read",
       "Bash(git *)",
-      "Bash(dotter *)",
       "Bash(ls *)",
       "Bash(which *)",
       "Bash(cat *)",
@@ -50,10 +52,6 @@
       "Bash(npm test *)",
       "Bash(npm list *)",
       "Bash(npx *)",
-      "Bash(paru -Qi *)",
-      "Bash(paru -Qs *)",
-      "Bash(paru -Si *)",
-      "Bash(paru -Ss *)",
       "Bash(systemctl status *)",
       "Bash(systemctl is-active *)",
       "Bash(journalctl *)",
@@ -91,7 +89,11 @@
       "mcp__basic-memory*",
       "mcp__firecrawl-lab*",
       "mcp__firecrawl-cloud*",
-      "mcp__plugin_context7*"
+      "mcp__plugin_context7*",
+      "Bash(curl -sS -X POST https://firestore.googleapis.com/v1/projects/swap-cloud-uat/databases/*)",
+      "Bash(curl -sS https://firestore.googleapis.com/v1/projects/swap-cloud-uat/databases/*)",
+      "Bash(gcloud firestore databases list --project swap-cloud-uat:*)",
+      "Bash(gcloud auth print-access-token:*)"
     ],
     "deny": [
       "Bash(pip install *)",
@@ -107,7 +109,19 @@
       "Bash(sudo rm *)",
       "Bash(reboot *)",
       "Bash(shutdown *)",
-      "Bash(poweroff *)"
+      "Bash(poweroff *)",
+      "Bash(grep *)",
+      "Bash(grep)",
+      "Bash(egrep *)",
+      "Bash(fgrep *)",
+      "Bash(find *)",
+      "Bash(find)",
+      "Bash(sed *)",
+      "Bash(sed)",
+      "Glob",
+      "Grep",
+      "WebFetch",
+      "WebSearch"
     ],
     "defaultMode": "plan",
     "additionalDirectories": [
@@ -127,11 +141,15 @@
           {
             "type": "command",
             "command": "~/.config/claude/hooks/block-danger.py"
+          },
+          {
+            "type": "command",
+            "command": "~/.config/claude/hooks/suggest-chunkhound.py"
           }
         ]
       },
       {
-        "matcher": "WebSearch",
+        "matcher": "Glob|Grep|WebSearch|WebFetch",
         "hooks": [
           {
             "type": "command",
@@ -140,16 +158,7 @@
         ]
       },
       {
-        "matcher": "WebFetch",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/prefer-tools.py"
-          }
-        ]
-      },
-      {
-        "matcher": "Edit|Write_DISABLED",
+        "matcher": "DISABLED_Edit|Write_DISABLED",
         "hooks": [
           {
             "type": "command",
@@ -185,6 +194,24 @@
             "command": "serena-hooks activate --client=claude-code"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/kuba.gaj/.config/claude/hooks/task-observer-start.sh",
+            "timeout": 2
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/kuba.gaj/.config/claude/hooks/linear-agent-workflow.sh",
+            "timeout": 2
+          }
+        ]
       }
     ],
     "Stop": [
@@ -194,6 +221,15 @@
           {
             "type": "command",
             "command": "serena-hooks cleanup --client=claude-code"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/kuba.gaj/.config/claude/hooks/task-observer-stop.sh",
+            "timeout": 2
           }
         ]
       }
@@ -207,16 +243,26 @@
           }
         ]
       }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/kuba.gaj/.config/claude/hooks/linear-agent-workflow.sh",
+            "timeout": 2
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
     "type": "command",
-    "command": "bash \"/Users/kuba.gaj/.config/claude/hooks/statusline-combined.sh\""
+    "command": "ccline"
   },
   "enabledPlugins": {
-    "context7@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": false,
-    "explanatory-output-style@claude-plugins-official": true,
+    "explanatory-output-style@claude-plugins-official": false,
     "plannotator@plannotator": true,
     "agent-skills@addy-agent-skills": false,
     "skill-codex@skill-codex": true,
@@ -225,7 +271,8 @@
     "caveman@caveman": true,
     "skill-creator@claude-plugins-official": false,
     "logfire-session-capture@pydantic-claude-code-logfire-plugin": false,
-    "clangd-lsp@claude-plugins-official": true
+    "clangd-lsp@claude-plugins-official": false,
+    "plugin-setup@shopware-ai-coding-tools": false
   },
   "extraKnownMarketplaces": {
     "plannotator": {
@@ -284,6 +331,13 @@
         "repo": "czlonkowski/n8n-skills"
       },
       "autoUpdate": true
+    },
+    "shopware-ai-coding-tools": {
+      "source": {
+        "source": "github",
+        "repo": "shopwareLabs/ai-coding-tools"
+      },
+      "autoUpdate": true
     }
   },
   "otelHeadersHelper": "/Users/kuba.gaj/dotfiles/local/bin/claude-otel-headers",
@@ -292,8 +346,10 @@
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
+  "editorMode": "vim",
   "teammateMode": "auto",
   "skipAutoPermissionPrompt": true,
+  "defaultTranscriptMode": "verbose",
   "permissionMode": "auto",
   "respectGitIgnore": false
 }
