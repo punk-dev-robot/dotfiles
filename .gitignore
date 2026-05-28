@@ -92,8 +92,7 @@ arch.aur-list.pkg
 arch.pacman-list.pkg
 
 /.claude/worktrees
-/.chunkhound/db
 /.claude/skills
-/.tessl/tiles/tessl-labs/intent-integrity-kit
 /.codex/skills
 /.github/skills
+/.vscode/skills
