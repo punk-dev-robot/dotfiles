@@ -14,6 +14,21 @@
       "type": "local",
       "command": ["chunkhound", "mcp"],
     },
+    "vexp": {
+      "type": "local",
+      "command": ["vexp", "mcp"],
+    },
+    "filesystem": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/kuba.gaj/dotfiles",
+        "/Users/kuba.gaj/dev",
+        "/Users/kuba.gaj/Documents/notes",
+      ],
+    },
     "serena": {
       "type": "local",
       "enabled": true,
@@ -26,7 +41,7 @@
       ],
     },
     "composio": {
-      "enabled": true,
+      "enabled": false,
       "type": "remote",
       "url": "https://connect.composio.dev/mcp",
     },

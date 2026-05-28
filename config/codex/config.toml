@@ -1,31 +1,46 @@
-[mcp_servers.basic-memory]
-command = "uvx"
-args = ["basic-memory", "mcp"]
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
+personality = "pragmatic"
 
-[mcp_servers.basic-memory.env]
-LOG_LEVEL = "warn"
+[mcp_servers.tessl]
+command = "tessl"
+args = ["mcp", "start"]
 
-[mcp_servers.exa]
+[mcp_servers.ChunkHound]
+command = "chunkhound"
+args = ["mcp"]
+
+[mcp_servers.vexp]
+command = "vexp"
+args = ["mcp"]
+
+[mcp_servers.vexp.tools.run_pipeline]
+approval_mode = "approve"
+
+[mcp_servers.filesystem]
 command = "npx"
-args = ["-y", "exa-mcp-server@latest", "--tools=web_search_exa,research_paper_search,company_research,crawling,competitor_finder,linkedin_search,wikipedia_search_exa,github_search"]
-
-[mcp_servers.exa.env]
-EXA_API_KEY = "PLACEHOLDER_!op read 'op://Homelab/Exa-MCP/password'"
-
-[mcp_servers.firecrawl]
-command = "npx"
-args = ["-y", "firecrawl-mcp"]
-
-[mcp_servers.firecrawl.env]
-FIRECRAWL_API_URL = "http://10.10.10.51:3002"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "/Users/kuba.gaj/dotfiles", "/Users/kuba.gaj/dev", "/Users/kuba.gaj/Documents/notes"]
 
 [mcp_servers.serena]
 command = "serena"
 args = ["start-mcp-server", "--context=codex", "--project-from-cwd"]
 
-[mcp_servers.codebase-retrieval]
-command = "auggie"
-args = ["--mcp", "--mcp-auto-workspace"]
+[mcp_servers.node_repl]
+args = []
+command = "/Applications/Codex.app/Contents/Resources/node_repl"
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = ""
+NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/kuba.gaj/.config/codex"
+CODEX_HOME = "/Users/kuba.gaj/.config/codex"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "496c7b3cb95b4bc20cff49b513150606e0da0000c92bf752206bee5a6c248423"
+BROWSER_USE_AVAILABLE_BACKENDS = "iab"
+BROWSER_USE_MARKETPLACE_NAME = "openai-bundled"
+NODE_REPL_UNTRUSTED_ENV_ALLOWLIST = "BROWSER_USE_MARKETPLACE_NAME"
+CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
 
 [projects."/Users/kuba.gaj/swapc/window-shop-monorepo"]
 trust_level = "trusted"
@@ -36,10 +51,35 @@ trust_level = "trusted"
 [projects."/Users/kuba.gaj/dev/swapc/window-shop-monorepo"]
 trust_level = "trusted"
 
+[projects."/Users/kuba.gaj/Documents/Codex/2026-05-27/i-want-to-set-up-a"]
+trust_level = "trusted"
+
+[projects."/Users/kuba.gaj/dev/swapc/shopai"]
+trust_level = "trusted"
+
+[desktop]
+conversationDetailMode = "STEPS_COMMANDS"
+default-service-tier = "priority"
+
+[features]
+hooks = true
+js_repl = false
+
 [marketplaces.openai-bundled]
-last_updated = "2026-05-07T16:16:30Z"
+last_updated = "2026-05-27T21:35:12Z"
 source_type = "local"
 source = "/Users/kuba.gaj/.config/codex/.tmp/bundled-marketplaces/openai-bundled"
 
-[plugins."browser-use@openai-bundled"]
+[hooks.state]
+
+[hooks.state."/Users/kuba.gaj/.config/codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:a69432c39471bacb24dbef7d59ef4a8ca451184d096b6588c41f7e70d825c011"
+
+[hooks.state."/Users/kuba.gaj/dev/swapc/shopai/.codex/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:9080e32b83e1cac643899f11433f5b9ea6a5c03cfdde013224c00150eb95eca8"
+
+[hooks.state."/Users/kuba.gaj/dev/swapc/shopai/.codex/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:d129010a9a28e70c18ff4d6e66becfd1be79046483c5afdd518abfe4156286b6"
+
+[plugins."browser@openai-bundled"]
 enabled = true

@@ -118,16 +118,11 @@
       "Bash(find)",
       "Bash(sed *)",
       "Bash(sed)",
-      "Glob",
-      "Grep",
-      "WebFetch",
-      "WebSearch"
+      "mcp__composio*",
+      "mcp__serena*"
     ],
     "defaultMode": "plan",
-    "additionalDirectories": [
-      "~/dotfiles",
-      "~/Pictures/Screenshots"
-    ]
+    "additionalDirectories": ["~/dotfiles", "~/Pictures/Screenshots"]
   },
   "hooks": {
     "PreToolUse": [
@@ -141,15 +136,21 @@
           {
             "type": "command",
             "command": "~/.config/claude/hooks/block-danger.py"
-          },
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/suggest-chunkhound.py"
           }
         ]
       },
       {
-        "matcher": "Glob|Grep|WebSearch|WebFetch",
+        "matcher": "Grep|Glob|Regex",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/claude/hooks/vexp-guard.sh",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "WebSearch|WebFetch",
         "hooks": [
           {
             "type": "command",
@@ -167,7 +168,7 @@
         ]
       },
       {
-        "matcher": "",
+        "matcher": "DISABLED",
         "hooks": [
           {
             "type": "command",
@@ -187,7 +188,7 @@
     ],
     "SessionStart": [
       {
-        "matcher": "",
+        "matcher": "DISABLE",
         "hooks": [
           {
             "type": "command",

@@ -105,7 +105,7 @@ This format is optional. Do not comment on every state transition.
 
 ## Composio Linear Rules
 
-- Use `LINEAR_LIST_LINEAR_TEAMS` before team/state/label-sensitive writes unless IDs are already confirmed.
+- Use `LINEAR_LIST_LINEAR_TEAMS` before team/state/label-sensitive writes unless IDs are already confirmed. Keep pages small; `first:250` can exceed Linear complexity limits in large workspaces.
 - Use `LINEAR_LIST_LINEAR_STATES` for workflow states; state IDs are team-scoped.
 - Use `LINEAR_LIST_LINEAR_LABELS` for labels; avoid group/container labels.
 - Use `LINEAR_LIST_LINEAR_ISSUES` with pagination for broad reads.

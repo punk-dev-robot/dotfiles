@@ -1,0 +1,16 @@
+[mcp_servers.filesystem]
+command = "npx"
+args = [
+    "-y",
+    "@modelcontextprotocol/server-filesystem",
+    "/Users/kuba.gaj/dotfiles",
+    "/Users/kuba.gaj/dev",
+    "/Users/kuba.gaj/Documents/notes",
+]
+
+[mcp_servers.tessl]
+command = "tessl"
+args = [
+    "mcp",
+    "start",
+]
