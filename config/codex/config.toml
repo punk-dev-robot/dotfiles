@@ -6,24 +6,15 @@ personality = "pragmatic"
 command = "tessl"
 args = ["mcp", "start"]
 
-[mcp_servers.ChunkHound]
-command = "chunkhound"
-args = ["mcp"]
-
-[mcp_servers.vexp]
-command = "vexp"
-args = ["mcp"]
-
-[mcp_servers.vexp.tools.run_pipeline]
-approval_mode = "approve"
-
 [mcp_servers.filesystem]
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-filesystem", "/Users/kuba.gaj/dotfiles", "/Users/kuba.gaj/dev", "/Users/kuba.gaj/Documents/notes"]
-
-[mcp_servers.serena]
-command = "serena"
-args = ["start-mcp-server", "--context=codex", "--project-from-cwd"]
+args = [
+  "-y",
+  "@modelcontextprotocol/server-filesystem",
+  "/Users/kuba.gaj/dotfiles",
+  "/Users/kuba.gaj/dev",
+  "/Users/kuba.gaj/Documents/notes",
+]
 
 [mcp_servers.node_repl]
 args = []

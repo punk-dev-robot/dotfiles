@@ -10,14 +10,6 @@
       "type": "local",
       "command": ["tessl", "mcp", "start"],
     },
-    "ChunkHound": {
-      "type": "local",
-      "command": ["chunkhound", "mcp"],
-    },
-    "vexp": {
-      "type": "local",
-      "command": ["vexp", "mcp"],
-    },
     "filesystem": {
       "type": "local",
       "command": [
@@ -29,22 +21,6 @@
         "/Users/kuba.gaj/Documents/notes",
       ],
     },
-    "serena": {
-      "type": "local",
-      "enabled": true,
-      "command": [
-        "serena",
-        "start-mcp-server",
-        "--context=oaicompat-agent",
-        "--project-from-cwd",
-        "--open-web-dashboard=False",
-      ],
-    },
-    "composio": {
-      "enabled": false,
-      "type": "remote",
-      "url": "https://connect.composio.dev/mcp",
-    },
   },
   "$schema": "https://opencode.ai/config.json",
   "model": "openai/gpt-5.5",
@@ -53,6 +29,7 @@
     "./plugins/modern-cli-warn.ts",
     "./plugins/prefer-composio-web.ts",
     "./plugins/linear-agent-workflow.ts",
+    "./plugins/cupcake.js",
   ],
   "skills": {
     "paths": ["/Users/kuba.gaj/.config/opencode/skills"],

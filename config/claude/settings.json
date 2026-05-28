@@ -86,10 +86,7 @@
       "Bash(pytest *)",
       "Bash(ruff *)",
       "ToolSearch",
-      "mcp__basic-memory*",
-      "mcp__firecrawl-lab*",
-      "mcp__firecrawl-cloud*",
-      "mcp__plugin_context7*",
+      "mcp__*",
       "Bash(curl -sS -X POST https://firestore.googleapis.com/v1/projects/swap-cloud-uat/databases/*)",
       "Bash(curl -sS https://firestore.googleapis.com/v1/projects/swap-cloud-uat/databases/*)",
       "Bash(gcloud firestore databases list --project swap-cloud-uat:*)",
@@ -117,14 +114,23 @@
       "Bash(find *)",
       "Bash(find)",
       "Bash(sed *)",
-      "Bash(sed)",
-      "mcp__composio*",
-      "mcp__serena*"
+      "Bash(sed)"
     ],
     "defaultMode": "plan",
-    "additionalDirectories": ["~/dotfiles", "~/Pictures/Screenshots"]
+    "additionalDirectories": ["~/dotfiles", "~/Pictures/Screenshots"],
+    "skipDengerousModePermissionPrompt": true
   },
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "cupcake eval --harness claude --policy-dir /Users/kuba.gaj/Library/Application Support/cupcake",
+            "type": "command"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -136,16 +142,6 @@
           {
             "type": "command",
             "command": "~/.config/claude/hooks/block-danger.py"
-          }
-        ]
-      },
-      {
-        "matcher": "Grep|Glob|Regex",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/vexp-guard.sh",
-            "timeout": 3000
           }
         ]
       },
@@ -177,19 +173,34 @@
         ]
       },
       {
-        "matcher": "mcp__serena__*",
+        "matcher": "",
         "hooks": [
           {
-            "type": "command",
-            "command": "serena-hooks auto-approve --client=claude-code"
+            "command": "cupcake eval --harness claude --policy-dir /Users/kuba.gaj/Library/Application Support/cupcake",
+            "type": "command"
           }
         ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "cupcake eval --harness claude --policy-dir /Users/kuba.gaj/Library/Application Support/cupcake",
+            "type": "command"
+          }
+        ],
+        "matcher": "Edit|MultiEdit|Write"
       }
     ],
     "SessionStart": [
       {
         "matcher": "DISABLE",
         "hooks": [
+          {
+            "command": "cupcake eval --harness claude --policy-dir /Users/kuba.gaj/Library/Application Support/cupcake",
+            "type": "command"
+          },
           {
             "type": "command",
             "command": "serena-hooks activate --client=claude-code"
