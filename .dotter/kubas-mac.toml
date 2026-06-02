@@ -1,7 +1,7 @@
 packages = ["macos"]
 
 [files]
-"config/cupcake" = "~/Library/Application Support/cupcake"
+"config/shared/cupcake" = "~/Library/Application Support/cupcake"
 
 [variables]
 gh_binary = "/opt/homebrew/bin/gh"

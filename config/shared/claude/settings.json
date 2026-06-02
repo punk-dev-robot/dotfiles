@@ -8,31 +8,31 @@
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "0",
     "CLAUDE_CODE_ALT_SCREEN_FULL_REPAINT": "1",
     "CLAUDE_CODE_DISABLE_VIRTUAL_SCROLL": "0",
-    "CLAUDE_CODE_FORCE_SYNC_OUTPUT": "0",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA": "0",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_FORCE_SYNC_OUTPUT": "0",
     "CLAUDE_CODE_SCROLL_SPEED": "3",
     "CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT": "1",
     "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
     "CLAUDE_CODE_TMUX_TRUECOLOR": "1",
+    "DISABLE_TELEMETRY": "1",
     "ENABLE_CLAUDEAI_MCP_SERVERS": "0",
     "ENABLE_PROMPT_CACHING_1H": "1",
     "ENABLE_TOOL_SEARCH": "false",
     "MAX_MCP_OUTPUT_TOKENS": "10000",
     "MCP_TIMEOUT": "60000",
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
-    "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA": "0",
-    "DISABLE_TELEMETRY": "1",
-    "OTEL_TRACES_EXPORTER": "otlp",
-    "OTEL_LOGS_EXPORTER": "otlp",
-    "OTEL_METRICS_EXPORTER": "otlp",
-    "OTEL_EXPORTER_OTLP_PROTOCOL": "grpc",
     "OTEL_EXPORTER_OTLP_ENDPOINT": "https://ingest.eu2.signoz.cloud:443",
-    "OTEL_METRIC_EXPORT_INTERVAL": "10000",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "grpc",
+    "OTEL_LOGS_EXPORTER": "otlp",
     "OTEL_LOGS_EXPORT_INTERVAL": "5000",
-    "OTEL_SERVICE_NAME": "claude-code",
-    "OTEL_LOG_USER_PROMPTS": "1",
+    "OTEL_LOG_TOOL_CONTENT": "1",
     "OTEL_LOG_TOOL_DETAILS": "1",
-    "OTEL_LOG_TOOL_CONTENT": "1"
+    "OTEL_LOG_USER_PROMPTS": "1",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "OTEL_METRIC_EXPORT_INTERVAL": "10000",
+    "OTEL_SERVICE_NAME": "claude-code",
+    "OTEL_TRACES_EXPORTER": "otlp"
   },
   "includeGitInstructions": false,
   "permissions": {
@@ -117,16 +117,49 @@
       "Bash(sed)"
     ],
     "defaultMode": "auto",
-    "additionalDirectories": ["~/dotfiles", "~/Pictures/Screenshots"],
+    "additionalDirectories": [
+      "~/dotfiles",
+      "~/Pictures/Screenshots"
+    ],
     "skipDengerousModePermissionPrompt": true
   },
   "hooks": {
-    "UserPromptSubmit": [
+    "Notification": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "cupcake eval --harness claude"
+            "command": "~/.config/claude/hooks/notify.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/claude/hooks/cbm-mcp-marker"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cupcake eval --harness claude --policy-dir $CLAUDE_PROJECT_DIR/.cupcake"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/claude/hooks/linear-agent-workflow.sh",
+            "timeout": 2
           }
         ]
       }
@@ -137,19 +170,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "context-mode hook claude-code pretooluse"
-          },
-          {
-            "type": "command",
             "command": "~/.config/claude/hooks/bash-ban-raw-tools.sh"
-          },
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/modern-cli.py"
-          },
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/block-danger.py"
           },
           {
             "type": "command",
@@ -162,7 +183,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude/hooks/prefer-tools.py"
+            "command": "~/.config/claude/hooks/prefer-web-tools.py"
           }
         ]
       },
@@ -179,7 +200,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cupcake eval --harness claude"
+            "command": "cupcake eval --harness claude --policy-dir $CLAUDE_PROJECT_DIR/.cupcake"
           }
         ]
       },
@@ -188,30 +209,16 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude/hooks/cbm-code-discovery-gate.sh"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "context-mode hook claude-code posttooluse"
-          },
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/cbm-mcp-marker.sh"
+            "command": "~/.config/claude/hooks/cbm-code-discovery-gate"
           }
         ]
       },
       {
-        "matcher": "Edit|MultiEdit|Write",
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
-            "command": "cupcake eval --harness claude"
+            "command": "cupcake eval --harness claude --policy-dir $CLAUDE_PROJECT_DIR/.cupcake"
           }
         ]
       }
@@ -222,7 +229,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cupcake eval --harness claude"
+            "command": "cupcake eval --harness claude --policy-dir $CLAUDE_PROJECT_DIR/.cupcake"
           }
         ]
       },
@@ -240,7 +247,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude/hooks/cbm-session-reminder.sh"
+            "command": "~/.config/claude/hooks/cbm-session-reminder"
           }
         ]
       },
@@ -249,7 +256,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude/hooks/cbm-session-reminder.sh"
+            "command": "~/.config/claude/hooks/cbm-session-reminder"
           }
         ]
       },
@@ -258,7 +265,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude/hooks/cbm-session-reminder.sh"
+            "command": "~/.config/claude/hooks/cbm-session-reminder"
           }
         ]
       },
@@ -267,7 +274,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude/hooks/cbm-session-reminder.sh"
+            "command": "~/.config/claude/hooks/cbm-session-reminder"
           }
         ]
       },
@@ -276,6 +283,14 @@
           {
             "type": "command",
             "command": "~/.config/claude/hooks/context-mode-cache-heal.mjs"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cupcake eval --harness claude --policy-dir $CLAUDE_PROJECT_DIR/.cupcake"
           }
         ]
       }
@@ -291,27 +306,12 @@
         ]
       }
     ],
-    "Notification": [
+    "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude/hooks/notify.py"
-          }
-        ]
-      }
-    ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/linear-agent-workflow.sh",
-            "timeout": 2
-          },
-          {
-            "type": "command",
-            "command": "context-mode hook claude-code precompact"
+            "command": "cupcake eval --harness claude --policy-dir $CLAUDE_PROJECT_DIR/.cupcake"
           }
         ]
       }
@@ -322,21 +322,51 @@
     "command": "ccline"
   },
   "enabledPlugins": {
-    "security-guidance@claude-plugins-official": false,
-    "explanatory-output-style@claude-plugins-official": false,
-    "plannotator@plannotator": true,
     "agent-skills@addy-agent-skills": false,
-    "skill-codex@skill-codex": true,
-    "superpowers@claude-plugins-official": false,
-    "punkfl0w@punkfl0w-development": false,
     "caveman@caveman": true,
-    "skill-creator@claude-plugins-official": false,
-    "logfire-session-capture@pydantic-claude-code-logfire-plugin": false,
     "clangd-lsp@claude-plugins-official": false,
+    "context-mode@context-mode": true,
+    "explanatory-output-style@claude-plugins-official": false,
+    "logfire-session-capture@pydantic-claude-code-logfire-plugin": false,
+    "plannotator@plannotator": true,
     "plugin-setup@shopware-ai-coding-tools": false,
-    "context-mode@context-mode": true
+    "security-guidance@claude-plugins-official": false,
+    "skill-codex@skill-codex": true,
+    "skill-creator@claude-plugins-official": false,
+    "superpowers@claude-plugins-official": false
   },
   "extraKnownMarketplaces": {
+    "addy-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "addyosmani/agent-skills"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    },
+    "context-engine-skills": {
+      "source": {
+        "source": "github",
+        "repo": "Context-Engine-AI/Context-Engine"
+      }
+    },
+    "context-mode": {
+      "source": {
+        "source": "github",
+        "repo": "mksglu/context-mode"
+      }
+    },
+    "n8n-mcp-skills": {
+      "source": {
+        "source": "github",
+        "repo": "czlonkowski/n8n-skills"
+      },
+      "autoUpdate": true
+    },
     "plannotator": {
       "source": {
         "source": "github",
@@ -344,11 +374,19 @@
       },
       "autoUpdate": true
     },
-    "addy-agent-skills": {
+    "pydantic-claude-code-logfire-plugin": {
       "source": {
         "source": "github",
-        "repo": "addyosmani/agent-skills"
-      }
+        "repo": "pydantic/claude-code-logfire-plugin"
+      },
+      "autoUpdate": true
+    },
+    "shopware-ai-coding-tools": {
+      "source": {
+        "source": "github",
+        "repo": "shopwareLabs/ai-coding-tools"
+      },
+      "autoUpdate": true
     },
     "skill-codex": {
       "source": {
@@ -360,51 +398,6 @@
       "source": {
         "source": "github",
         "repo": "thedotmack/claude-mem"
-      }
-    },
-    "context-engine-skills": {
-      "source": {
-        "source": "github",
-        "repo": "Context-Engine-AI/Context-Engine"
-      }
-    },
-    "punkfl0w-development": {
-      "source": {
-        "source": "directory",
-        "path": "/Users/kuba.gaj/dev/oss/punkfl0w"
-      }
-    },
-    "caveman": {
-      "source": {
-        "source": "github",
-        "repo": "JuliusBrussee/caveman"
-      }
-    },
-    "pydantic-claude-code-logfire-plugin": {
-      "source": {
-        "source": "github",
-        "repo": "pydantic/claude-code-logfire-plugin"
-      },
-      "autoUpdate": true
-    },
-    "n8n-mcp-skills": {
-      "source": {
-        "source": "github",
-        "repo": "czlonkowski/n8n-skills"
-      },
-      "autoUpdate": true
-    },
-    "shopware-ai-coding-tools": {
-      "source": {
-        "source": "github",
-        "repo": "shopwareLabs/ai-coding-tools"
-      },
-      "autoUpdate": true
-    },
-    "context-mode": {
-      "source": {
-        "source": "github",
-        "repo": "mksglu/context-mode"
       }
     }
   },

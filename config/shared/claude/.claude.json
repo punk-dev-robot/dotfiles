@@ -1,0 +1,2135 @@
+{
+  "numStartups": 341,
+  "installMethod": "native",
+  "autoUpdates": false,
+  "hasSeenTasksHint": true,
+  "tipsHistory": {
+    "new-user-warmup": 7,
+    "color-when-multi-clauding": 333,
+    "terminal-setup": 210,
+    "memory-command": 334,
+    "theme-command": 322,
+    "status-line": 51,
+    "prompt-queue": 1,
+    "enter-to-steer-in-relatime": 323,
+    "todo-list": 325,
+    "ide-upsell-external-terminal": 341,
+    "install-github-app": 339,
+    "install-slack-app": 339,
+    "drag-and-drop-images": 332,
+    "paste-images-mac": 332,
+    "double-esc-code-restore": 333,
+    "continue": 333,
+    "shift-tab": 333,
+    "image-paste": 325,
+    "desktop-app": 139,
+    "web-app": 333,
+    "mobile-app": 80,
+    "voice-mode": 333,
+    "custom-agents": 332,
+    "agent-flag": 145,
+    "feedback-command": 339,
+    "permissions": 338,
+    "rename-conversation": 330,
+    "custom-commands": 153,
+    "git-worktrees": 339,
+    "auto-copy-config-hint": 333,
+    "frontend-design-plugin": 229,
+    "subagent-fanout-nudge": 250
+  },
+  "promptQueueUseCount": 490,
+  "btwUseCount": 5,
+  "cachedGrowthBookFeatures": {
+    "tengu_bridge_poll_interval_config": {
+      "poll_interval_ms_not_at_capacity": 2000,
+      "poll_interval_ms_at_capacity": 600000,
+      "heartbeat_interval_ms": 0,
+      "multisession_poll_interval_ms_not_at_capacity": 5000,
+      "multisession_poll_interval_ms_at_capacity": 60000,
+      "multisession_poll_interval_ms_partial_capacity": 5000,
+      "non_exclusive_heartbeat_interval_ms": 180000,
+      "session_keepalive_interval_ms": 0,
+      "session_keepalive_interval_v2_ms": 0
+    },
+    "tengu_sotto_voce": true,
+    "tengu_disable_bypass_permissions_mode": false,
+    "tengu_compact_cache_prefix": true,
+    "tengu_bad_survey_transcript_ask_config": {
+      "probability": 0
+    },
+    "tengu_birthday_hat": false,
+    "tengu_red_coaster": false,
+    "tengu_scratch": false,
+    "tengu_harbor_ledger": [
+      {
+        "marketplace": "claude-plugins-official",
+        "plugin": "discord"
+      },
+      {
+        "marketplace": "claude-plugins-official",
+        "plugin": "telegram"
+      },
+      {
+        "marketplace": "claude-plugins-official",
+        "plugin": "fakechat"
+      },
+      {
+        "marketplace": "claude-plugins-official",
+        "plugin": "imessage"
+      }
+    ],
+    "tengu_amber_lark": false,
+    "tengu_shining_fractals": false,
+    "tengu_claudeai_mcp_connectors": true,
+    "tengu_auto_mode_config": {
+      "enabled": "enabled",
+      "twoStageClassifier": true
+    },
+    "tengu_desktop_upsell": {
+      "enable_shortcut_tip": true,
+      "enable_startup_dialog": false
+    },
+    "tengu_blue_coaster": false,
+    "tengu_amber_sentinel": true,
+    "tengu_sage_compass2": {
+      "enabled": true
+    },
+    "tengu_crimson_vector": false,
+    "tengu_kairos_cron": true,
+    "tengu_fennel_kite": false,
+    "tengu_slate_wren": false,
+    "tengu_moss_anchor": false,
+    "tengu_loggia_carousel": false,
+    "tengu_prompt_cache_diagnostics": true,
+    "tengu_pewter_kestrel": {
+      "global": 50000,
+      "Bash": 30000,
+      "PowerShell": 30000,
+      "Grep": 20000,
+      "Snip": 1000,
+      "StrReplaceBasedEditTool": 30000,
+      "BashSearchTool": 20000
+    },
+    "tengu_anchor_tide": false,
+    "tengu_crystal_beam": {
+      "budgetTokens": 0
+    },
+    "tengu_amber_lattice": {
+      "plugins": [
+        "security-guidance",
+        "code-review",
+        "commit-commands",
+        "code-simplifier",
+        "hookify",
+        "feature-dev",
+        "frontend-design",
+        "pr-review-toolkit",
+        "skill-creator",
+        "plugin-dev",
+        "agent-sdk-dev",
+        "mcp-server-dev",
+        "claude-code-setup",
+        "claude-md-management",
+        "playground",
+        "ralph-loop",
+        "explanatory-output-style",
+        "learning-output-style",
+        "clangd-lsp",
+        "csharp-lsp",
+        "gopls-lsp",
+        "jdtls-lsp",
+        "kotlin-lsp",
+        "lua-lsp",
+        "php-lsp",
+        "pyright-lsp",
+        "ruby-lsp",
+        "rust-analyzer-lsp",
+        "swift-lsp",
+        "typescript-lsp"
+      ]
+    },
+    "tengu_slate_ribbon": true,
+    "tengu_ccr_bridge_multi_session": true,
+    "tengu_shale_finch": true,
+    "tengu_ashen_kelp": true,
+    "tengu_amber_rokovoko": 0.2,
+    "tengu_hawthorn_window": 200000,
+    "tengu_chomp_inflection": true,
+    "tengu_willow_refresh_ttl_hours": 0,
+    "tengu_flint_harbor": true,
+    "tengu_hawthorn_steeple": false,
+    "tengu_cobalt_heron": false,
+    "tengu_ccr_bridge": true,
+    "tengu_bridge_poll_interval_ms": 0,
+    "tengu_walrus_canteen": false,
+    "tengu_collage_kaleidoscope": true,
+    "tengu_jade_anvil_4": false,
+    "tengu_mcp_subagent_prompt": true,
+    "tengu_drift_lantern": false,
+    "tengu_copper_fox": false,
+    "tengu_plank_river_frost": "user_intent",
+    "tengu_classifier_summary_llm_emit": true,
+    "tengu_kairos_loop_dynamic": true,
+    "tengu_birch_kettle": false,
+    "tengu_gha_plugin_code_review": false,
+    "tengu_chair_sermon": false,
+    "tengu_cobalt_raccoon": true,
+    "tengu_tool_search_unsupported_models": [
+      "haiku"
+    ],
+    "tengu_fennel_kite_model": "",
+    "tengu_streaming_tool_execution2": true,
+    "tengu_slate_nexus": true,
+    "tengu_fg_left_arrow_agents": true,
+    "tengu_orchid_trellis": false,
+    "tengu_slate_kestrel": true,
+    "tengu_marble_whisper": true,
+    "tengu_classifier_disabled_surfaces": "",
+    "tengu_1p_event_batch_config": {
+      "scheduledDelayMillis": 10000,
+      "maxExportBatchSize": 400,
+      "maxQueueSize": 8192,
+      "path": "/api/event_logging/v2/batch"
+    },
+    "tengu_desktop_upsell_v2": {
+      "enabled": false
+    },
+    "tengu_feature_template": false,
+    "tengu_satin_quoll": {},
+    "tengu_velvet_moth": 0.2,
+    "tengu_lapis_thicket": false,
+    "tengu_canary": {},
+    "tengu_xterm_atlas_reset": true,
+    "tengu_ccr_bundle_max_bytes": 104857600,
+    "tengu_immediate_model_command": false,
+    "tengu_copper_wren": false,
+    "tengu_cinder_plover": "",
+    "tengu_cobalt_thicket": false,
+    "tengu_surreal_dali": true,
+    "tengu_silk_hinge": false,
+    "tengu_snippet_save": false,
+    "tengu_react_vulnerability_warning": false,
+    "tengu_maple_pier": false,
+    "tengu_plum_vx3": true,
+    "tengu_workout2": true,
+    "tengu_harbor": true,
+    "tengu_coral_fern": false,
+    "tengu_orford_ness": false,
+    "tengu_pewter_lark": "copy_orig",
+    "tengu_amber_flint": true,
+    "tengu_flint_harbor_share": true,
+    "tengu_ultraplan_prompt_identifier": "visual_plan",
+    "tengu_slate_harbor_experiment": false,
+    "tengu_slate_moth": false,
+    "tengu_quartz_vireo": "",
+    "tengu_feedback_survey_config": {
+      "minTimeBeforeFeedbackMs": 600000,
+      "minTimeBetweenFeedbackMs": 43200000,
+      "minTimeBetweenGlobalFeedbackMs": 43200000,
+      "minUserTurnsBeforeFeedback": 5,
+      "minUserTurnsBetweenFeedback": 25,
+      "hideThanksAfterMs": 3000,
+      "onForModels": [
+        "*"
+      ],
+      "probability": 0
+    },
+    "tengu_harbor_prism": false,
+    "tengu_pewter_summit": true,
+    "tengu_loud_sugary_rock": false,
+    "tengu_amber_redwood2": "",
+    "tengu_skills_dashboard_enabled": false,
+    "tengu_bridge_repl_v2": true,
+    "tengu_negative_interaction_transcript_ask_config": {
+      "probability": 0
+    },
+    "tengu_timber_lark": "copy_a",
+    "tengu_noreread_q7m_velvet": false,
+    "tengu_moth_copse": false,
+    "tengu_velvet_cascade": {},
+    "tengu_amber_prism": false,
+    "tengu_ccr_bundle_seed_enabled": true,
+    "tengu_sage_compass": {},
+    "tengu_read_dedup_killswitch": true,
+    "tengu_quiet_slate_wren": false,
+    "tengu_passport_quail": false,
+    "tengu_sepia_cormorant": [],
+    "tengu_tussock_oriole": true,
+    "tengu_herring_clock": false,
+    "tengu_ladder_mq7": false,
+    "tengu_chert_bezel": true,
+    "tengu_sedge_lantern": true,
+    "tengu_gypsum_kite": false,
+    "tengu_cobalt_lantern": true,
+    "tengu_cinder_almanac": true,
+    "tengu_lichen_compass": false,
+    "tengu_harbor_permissions": true,
+    "tengu_ember_latch": false,
+    "tengu_max_version_config": {},
+    "tengu_bramble_lintel": 7,
+    "tengu_onyx_plover": {
+      "enabled": false,
+      "minHours": 24,
+      "minSessions": 3,
+      "remoteEnabled": false
+    },
+    "tengu_ultraplan_timeout_seconds": 5400,
+    "tengu_marble_whisper2": true,
+    "tengu_amber_wren": {
+      "targetedRangeNudge": true,
+      "maxTokens": 25000
+    },
+    "tengu_cobalt_ridge": true,
+    "tengu_maple_tide": false,
+    "tengu_plugin_official_mkt_git_fallback": true,
+    "tengu_birch_compass": false,
+    "tengu_tern_alloy": "copy_a",
+    "tengu_agent_list_attach": false,
+    "tengu_cobalt_wren": false,
+    "tengu_willow_census_ttl_hours": 24,
+    "tengu_startup_notice": "",
+    "tengu_vscode_review_upsell": false,
+    "tengu_porch_bell_9f": "",
+    "tengu_team_discovery": false,
+    "tengu_kairos_cron_durable": false,
+    "tengu_kairos_input_needed_push": true,
+    "tengu_basalt_meadow": true,
+    "tengu_scarf_coffee": false,
+    "tengu_event_sampling_config": {},
+    "tengu_classifier_summary_heuristic_emit": true,
+    "tengu_willow_sentinel_ttl_hours": 1,
+    "tengu_bridge_requires_action_details": true,
+    "tengu_lapis_finch": true,
+    "tengu_kairos_loop_prompt": true,
+    "tengu_slate_harrier": "off",
+    "tengu_basalt_spur": false,
+    "tengu_workflows_enabled": false,
+    "tengu_tangerine_ladder_boost": true,
+    "tengu_ultraplan_config": {
+      "enabled": true
+    },
+    "tengu_mocha_barista": true,
+    "tengu_version_config": {
+      "minVersion": "1.0.24"
+    },
+    "tengu_c4w_usage_limit_notifications_enabled": true,
+    "tengu_vellum_siding": false,
+    "tengu_coral_beacon": false,
+    "tengu_quartz_heron": false,
+    "tengu_mcp_singleton_unwrap": true,
+    "tengu_cobalt_compass": true,
+    "tengu_ochre_hollow": false,
+    "tengu_vscode_onboarding": false,
+    "tengu_bridge_attestation_enforce": false,
+    "tengu_sepia_moth": false,
+    "tengu_cork_m4q": true,
+    "tengu_pewter_lantern": false,
+    "tengu_slate_siskin": {
+      "enabled": false,
+      "timeoutMs": 8000,
+      "throttleMs": 30000,
+      "summaryLineThreshold": 5
+    },
+    "tengu_osprey_lantern": false,
+    "tengu_kestrel_arch": "OFF",
+    "tengu_sm_config": {
+      "minimumMessageTokensToInit": 150000,
+      "minimumTokensBetweenUpdate": 40000,
+      "toolCallsBetweenUpdates": 10
+    },
+    "tengu_prism_ledger": false,
+    "tengu_quiet_basalt_echo": false,
+    "tengu_gleaming_fair": false,
+    "tengu_marble_sandcastle": false,
+    "tengu_cedar_inlet": "banner",
+    "tengu_velvet_ibis": {},
+    "tengu_trace_lantern": false,
+    "tengu_session_memory": false,
+    "tengu_crimson_echo": {},
+    "tengu_worktree_mode": true,
+    "tengu_file_write_optimization": true,
+    "tengu_permission_friction": true,
+    "tengu_ember_trail": "0",
+    "tengu_frond_boric": {},
+    "tengu_flint_harbor_prompt": {
+      "prompt": "You are helping a power user generate an onboarding guide for teammates who are new to Claude Code. The guide will live in the team's onboarding docs and can be pasted into Claude for an interactive walkthrough.\n\nYou're co-authoring this with them — collaborative and helpful, like a teammate who's done this before and is happy to share.\n\n## Usage data (last {{WINDOW_DAYS}} days)\n\nThis was scanned from the guide creator's local Claude Code transcripts:\n\n```json\n{{USAGE_DATA}}\n```\n\n## Your task\n\nBefore anything else — including before thinking through the classification — output exactly this line as your first visible text:\n\n> Looking at how you've used Claude over the last {{WINDOW_DAYS}} days to put together an onboarding guide for teammates new to Claude Code.\n\nThis must come before any extended thinking about session descriptors. The guide creator is staring at a blank screen until you do. Classification is step 2, not step 1.\n\nGenerate the guide immediately, then ask for revisions. Don't wait for answers first — it's easier for the guide creator to edit a concrete draft than answer abstract questions.\n\n1. **Output the acknowledgment line above.** No thinking, no classification, no tool calls before this. One line, then move on.\n\n2. **Derive the work-type breakdown.** Read the `sessionDescriptors` array — each entry describes one session via its title, any linked code reviews (`prNumbers`), and first user message. Classify each session into one of these task types:\n\n   - **build_feature** — new functionality, scripts, tools, config/CI/env setup\n   - **debug_fix** — investigating and fixing bugs\n   - **improve_quality** — refactoring, tests, cleanup, code review\n   - **analyze_data** — queries, metrics, number crunching\n   - **plan_design** — architecture, approach, strategy, understanding unfamiliar code, design review\n   - **prototype** — spikes, POCs, throwaway exploration\n   - **write_docs** — PRDs, RFCs, READMEs, design docs, copy/doc review\n\n   Categories describe the *type of task*, not the project or domain — a teammate on any project should recognize them. Review sessions belong with whatever's being reviewed: code review is improve_quality, doc review is write_docs, design review is plan_design. Most sessions fit the list; only invent a new category if it's genuinely a different type of task. Pick the top 3-5 with rough percentages. First messages alone are usually enough; titles and code-review links are enrichment. If first messages are uninformative, use tool and MCP counts as a weak hint. If there are ~0 sessions, leave the breakdown as a TODO.\n\n   In the rendered guide, display categories with spaces and title case (e.g. \"Build Feature\" not \"build_feature\").\n\n3. **Gather the remaining pieces.** For repos, start with `currentRepo` and check the workspace for sibling repo directories. For MCP server setup, use each entry's `name` (and `urlOrigin` where present) to infer what the server does and how a teammate would get access. Leave the Team Tips and Get Started sections as TODO placeholders — you'll ask for these in Review and fill them in after.\n\n4. **Write the guide to `ONBOARDING.md`** following this template:\n\n```\n{{GUIDE_TEMPLATE}}\n```\n\n   Fill in real numbers from the usage data (not placeholders). Use `generatedBy` for the name; if it's missing, omit the name. Ascii bar charts: `█` for filled, `░` for empty, 20 chars wide. Keep the HTML comment instruction at the bottom exactly as shown.\n\n5. **Render the guide in a code block, then close out the first turn.** You're co-authoring this guide with the guide creator — frame the follow-up as collaboration, not corrections.\n\n   After the code block, add a `---` horizontal rule and a `**Review**` heading so the guide is visually separated from your questions. Under the heading, number these three questions:\n\n   1. \"I went with '[X]' for the team name — let me know if that sounds right.\" (or if you couldn't tell: \"What's the team name? I'll add it in.\")\n   2. Is there a starter task for someone new to Claude Code? (ticket or doc link — optional)\n   3. Any team tips you'd tell a new teammate that aren't already in CLAUDE.md?\n\n   After they answer, update `ONBOARDING.md` with their team name, tips, and starter task. Then close with this exact line (not numbered, not paraphrased):\n\n   Saved to `ONBOARDING.md`. Drop it in your team docs and channels — when a new teammate pastes it into Claude Code, they get a guided onboarding tour from there.\n\n   Apply any edits they come back with to the file.",
+      "guideTemplate": "# Welcome to [Team Name]\n\n## How We Use Claude\n\nBased on [name]'s usage over the last [N] days:\n\nWork Type Breakdown:\n  [Category 1]  [ascii bar]  [N]%\n  [Category 2]  [ascii bar]  [N]%\n  [Category 3]  [ascii bar]  [N]%\n  ...\n\nTop Skills & Commands:\n  [/command]  [ascii bar]  [N]x/month\n  ...\n\nTop MCP Servers:\n  [Server]  [ascii bar]  [N] calls\n  ...\n\n## Your Setup Checklist\n\n### Codebases\n- [ ] [repo-name] — [repo url]\n...\n\n### MCP Servers to Activate\n- [ ] [Server] — [what it's for]. [How to get access]\n...\n\n### Skills to Know About\n- [/command] — [what it does, when the team uses it]\n...\n\n## Team Tips\n\n_TODO_\n\n## Get Started\n\n_TODO_\n\n<!-- INSTRUCTION FOR CLAUDE: A new teammate just pasted this guide for how the\nteam uses Claude Code. You're their onboarding buddy — warm, conversational,\nnot lecture-y.\n\nOpen with a warm welcome — include the team name from the title. Then: \"Your\nteammate uses Claude Code for [list all the work types]. Let's get you started.\"\n\nCheck what's already in place against everything under Setup Checklist\n(including skills), using markdown checkboxes — [x] done, [ ] not yet. Lead\nwith what they already have. One sentence per item, all in one message.\n\nTell them you'll help with setup, cover the actionable team tips, then the\nstarter task (if there is one). Offer to start with the first unchecked item,\nget their go-ahead, then work through the rest one by one.\n\nAfter setup, walk them through the remaining sections — offer to help where you\ncan (e.g. link to channels), and just surface the purely informational bits.\n\nDon't invent sections or summaries that aren't in the guide. The stats are the\nguide creator's personal usage data — don't extrapolate them into a \"team\nworkflow\" narrative. -->",
+      "windowDays": 30
+    },
+    "tengu_umber_petrel": false,
+    "tengu_good_survey_transcript_ask_config": {
+      "probability": 0
+    },
+    "tengu_billiard_aviary": false,
+    "tengu_slate_meadow": true,
+    "tengu_slim_subagent_claudemd": true,
+    "tengu_system_prompt_global_cache": true,
+    "tengu_steady_lantern": false,
+    "tengu_marble_lark": false,
+    "tengu_prompt_cache_1h_config": {
+      "allowlist": [
+        "repl_main_thread*",
+        "sdk",
+        "auto_mode",
+        "rolling_compact",
+        "memdir_relevance",
+        "agent_classifier",
+        "prompt_suggestion",
+        "away_summary",
+        "extract_memories",
+        "compact"
+      ]
+    },
+    "tengu-top-of-feed-tip": {
+      "tip": "",
+      "color": ""
+    },
+    "tengu_miraculo_the_bard": false,
+    "tengu_pewter_brook": false,
+    "tengu_vellum_lantern": false,
+    "tengu_sessions_elevated_auth_enforcement": false,
+    "tengu_willow_mode": "hint_v2",
+    "tengu_dunwich_bell": false,
+    "tengu_amber_lynx": false,
+    "tengu_garnet_finch": false,
+    "claude_code_skills_dashboard_enabled_cli": false,
+    "tengu_swann_brevity": "focused",
+    "tengu_keybinding_customization_release": true,
+    "tengu_cedar_halo": false,
+    "tengu_sparrow_ledger": false,
+    "tengu_bridge_min_version": {
+      "minVersion": "2.1.70"
+    },
+    "tengu_penguin_mode_promo": {
+      "discountPercent": 0,
+      "endDate": "Feb 16"
+    },
+    "tengu_harbor_willow": false,
+    "tengu_olive_hinge": "",
+    "tengu_destructive_command_warning": false,
+    "tengu_malort_pedway": {
+      "enabled": false,
+      "pixelValidation": false,
+      "clipboardPasteMultiline": true,
+      "screenshotFilter": true,
+      "mouseAnimation": true,
+      "hideBeforeAction": true,
+      "autoTargetDisplay": true,
+      "coordinateMode": "pixels"
+    },
+    "tengu_amber_anchor": false,
+    "tengu_grey_step2": {
+      "enabled": true,
+      "dialogTitle": "We recommend medium effort for Opus",
+      "dialogDescription": "Effort determines how long Claude thinks for when completing your task. We recommend medium effort for most tasks to balance speed and intelligence and maximize rate limits. Use ultrathink to trigger high effort when needed."
+    },
+    "tengu-off-switch": {
+      "activated": false
+    },
+    "tengu_code_diff_cli": true,
+    "tengu_pewter_ledger": "OFF",
+    "tengu_quiet_harbor": false,
+    "tengu_idle_amber_finch": false,
+    "tengu_orchid_mantis_v2": true,
+    "tengu_fgts": true,
+    "tengu_tide_elm": "off",
+    "tengu_marble_anvil": true,
+    "tengu_auto_mode_default_on": false,
+    "tengu_review_bughunter_config": {
+      "fleet_size": 5,
+      "max_duration_minutes": 10,
+      "agent_timeout_seconds": 600,
+      "total_wallclock_minutes": 22,
+      "model": "claude-opus-4-7",
+      "cost_note": "$5-$25",
+      "duration_note": "~5-10 min",
+      "enabled": true
+    },
+    "tengu_slate_finch": false,
+    "tengu_copper_bridge": true,
+    "tengu_auto_notice_once": true,
+    "tengu_brick_follow": false,
+    "tengu_tool_pear": false,
+    "tengu_doorbell_agave": false,
+    "tengu_mcp_retry_failed_remote": false,
+    "tengu_hazel_osprey_floor": 75000,
+    "tengu_bg_attach_stall_ms": 5000,
+    "tengu_log_datadog_events": true,
+    "tengu_prompt_suggestion": true,
+    "tengu_kairos_push_notifications": true,
+    "tengu_nimble_amber_prose": false,
+    "tengu_hazel_osprey": false,
+    "tengu_amber_heron": false,
+    "tengu_cork_lantern": false,
+    "tengu_mcp_elicitation": true,
+    "tengu_slate_thimble": false,
+    "tengu_sedge_lantern_holdback": false,
+    "tengu_bridge_repl_v2_config": {
+      "init_retry_max_attempts": 3,
+      "init_retry_base_delay_ms": 500,
+      "init_retry_jitter_fraction": 0.25,
+      "init_retry_max_delay_ms": 4000,
+      "http_timeout_ms": 10000,
+      "uuid_dedup_buffer_size": 2000,
+      "heartbeat_interval_ms": 20000,
+      "heartbeat_jitter_fraction": 0.1,
+      "token_refresh_buffer_ms": 600000,
+      "teardown_archive_timeout_ms": 1500,
+      "connect_timeout_ms": 15000,
+      "min_version": "2.1.70",
+      "should_show_app_upgrade_message": false
+    },
+    "tengu_penguins_enabled": true,
+    "tengu_ccr_post_turn_summary": false,
+    "tengu_sub_nomdrep_q7k": true,
+    "tengu_gouda_loop": true,
+    "tengu_turtle_carbon": true,
+    "tengu_lilac_loom": {},
+    "tengu_otk_slot_v1": false,
+    "tengu_post_compact_survey": false,
+    "tengu_orchid_mantis": false,
+    "tengu_ccr_v2_send_events_cli": false,
+    "tengu_dune_wren": false,
+    "tengu_velvet_static": true,
+    "tengu_tab_read_sep": false,
+    "tengu_loud_sugary_rock2": false,
+    "tengu_feature_claudified_template": false,
+    "tengu_windows_credman": false,
+    "tengu_lantern_hearth": "off",
+    "tengu_basalt_tern": false,
+    "tengu_quill_harbor": "acceptEdits"
+  },
+  "unpinOpus47LaunchEffort": true,
+  "unpinOpus48LaunchEffort": true,
+  "firstStartTime": "2026-04-22T09:45:37.241Z",
+  "opusProMigrationComplete": true,
+  "sonnet1m45MigrationComplete": true,
+  "migrationVersion": 13,
+  "changelogLastFetched": 1780357141304,
+  "projects": {
+    "/Users/kuba.gaj/dotfiles": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "exampleFiles": [
+        "opencode.jsonc",
+        "062-dev.zsh",
+        "aerospace-toggle",
+        "config",
+        "gitconfig"
+      ],
+      "exampleFilesGeneratedAt": 1780048785803,
+      "hasCompletedProjectOnboarding": true,
+      "lastCost": 0.28623,
+      "lastAPIDuration": 8034,
+      "lastAPIDurationWithoutRetries": 8022,
+      "lastToolDuration": 0,
+      "lastDuration": 1506475,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 10796,
+      "lastTotalOutputTokens": 35,
+      "lastTotalCacheCreationInputTokens": 37020,
+      "lastTotalCacheReadInputTokens": 0,
+      "lastTotalWebSearchRequests": 0,
+      "lastModelUsage": {
+        "claude-opus-4-8[1m]": {
+          "inputTokens": 10796,
+          "outputTokens": 35,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 37020,
+          "webSearchRequests": 0,
+          "costUSD": 0.28623
+        }
+      },
+      "lastSessionId": "5bf57341-0859-4430-8a74-dd73003c22ce",
+      "lastSessionMetrics": {
+        "frame_duration_ms_count": 16538,
+        "frame_duration_ms_min": 0.02512499992735684,
+        "frame_duration_ms_max": 19.38904200028628,
+        "frame_duration_ms_avg": 0.737823617610558,
+        "frame_duration_ms_p50": 0.5576460000011139,
+        "frame_duration_ms_p95": 1.564272398152386,
+        "frame_duration_ms_p99": 7.359897319949229,
+        "hook_duration_ms_count": 117,
+        "hook_duration_ms_min": 50,
+        "hook_duration_ms_max": 49846314,
+        "hook_duration_ms_avg": 845027.2136752136,
+        "hook_duration_ms_p50": 113,
+        "hook_duration_ms_p95": 369.2,
+        "hook_duration_ms_p99": 41015170.16000017,
+        "pre_tool_hook_duration_ms_count": 53,
+        "pre_tool_hook_duration_ms_min": 66,
+        "pre_tool_hook_duration_ms_max": 343,
+        "pre_tool_hook_duration_ms_avg": 143.56603773584905,
+        "pre_tool_hook_duration_ms_p50": 122,
+        "pre_tool_hook_duration_ms_p95": 305.79999999999995,
+        "pre_tool_hook_duration_ms_p99": 337.28
+      },
+      "disabledMcpServers": [
+        "claude.ai Canva",
+        "claude.ai Cloudflare Developer Platform",
+        "claude.ai Figma",
+        "claude.ai Gmail",
+        "claude.ai Google Calendar",
+        "claude.ai Google Drive",
+        "claude.ai HubSpot",
+        "claude.ai Intercom",
+        "claude.ai Linear",
+        "claude.ai Miro",
+        "claude.ai n8n",
+        "claude.ai n8n-dev",
+        "claude.ai New Relic",
+        "claude.ai Sentry",
+        "claude.ai Slack",
+        "claude.ai ZoomInfo",
+        "claude.ai Notion"
+      ],
+      "lastGracefulShutdown": false,
+      "lastHintSessionId": "c843dcdf-5d13-4194-b7ef-7985a3057aed",
+      "lastSessionFirstPrompt": "earlier today my system ran out of disk space and when we investigated we found the culprit was in the git repos in ~/dev/swapc we thought it was lazygit pulling and changed it's settings but it happe",
+      "lastSessionModified": 1778639342081,
+      "lastVersionBase": "2.1.159",
+      "mcpServers": {},
+      "lastFpsAverage": 0.16,
+      "lastFpsLow1Pct": 161.07
+    },
+    "/Users/kuba.gaj/dotfiles/.claude/worktrees/stupefied-bhabha-143181": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false
+    },
+    "/Users/kuba.gaj": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": false,
+      "projectOnboardingSeenCount": 1,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "exampleFiles": [],
+      "lastGracefulShutdown": true,
+      "lastCost": 0,
+      "lastAPIDuration": 0,
+      "lastAPIDurationWithoutRetries": 0,
+      "lastToolDuration": 0,
+      "lastDuration": 11317,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 0,
+      "lastTotalOutputTokens": 0,
+      "lastTotalCacheCreationInputTokens": 0,
+      "lastTotalCacheReadInputTokens": 0,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 2.25,
+      "lastFpsLow1Pct": 30.45,
+      "lastModelUsage": {},
+      "lastSessionId": "61381e20-64cc-450e-86c4-fa1615028021",
+      "lastSessionMetrics": {
+        "frame_duration_ms_count": 24,
+        "frame_duration_ms_min": 0.06912499999998545,
+        "frame_duration_ms_max": 32.84458399999994,
+        "frame_duration_ms_avg": 2.944314291666641,
+        "frame_duration_ms_p50": 0.25491649999980837,
+        "frame_duration_ms_p95": 7.751098200000133,
+        "frame_duration_ms_p99": 27.151959339999983,
+        "hook_duration_ms_count": 1,
+        "hook_duration_ms_min": 3297,
+        "hook_duration_ms_max": 3297,
+        "hook_duration_ms_avg": 3297,
+        "hook_duration_ms_p50": 3297,
+        "hook_duration_ms_p95": 3297,
+        "hook_duration_ms_p99": 3297
+      }
+    },
+    "/Users/kuba.gaj/dev/swapc/window-shop-monorepo": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "exampleFiles": [
+        "agent.service.ts",
+        "chat.service.ts",
+        "checkouts.service.ts",
+        "index.ts",
+        "nudge-tick-handler.service.ts"
+      ],
+      "exampleFilesGeneratedAt": 1778768152204,
+      "hasCompletedProjectOnboarding": true,
+      "lastCost": 0.7584497500000001,
+      "lastAPIDuration": 124555,
+      "lastAPIDurationWithoutRetries": 123562,
+      "lastToolDuration": 21907,
+      "lastDuration": 106200388,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 547,
+      "lastTotalOutputTokens": 6866,
+      "lastTotalCacheCreationInputTokens": 75711,
+      "lastTotalCacheReadInputTokens": 1236035,
+      "lastTotalWebSearchRequests": 0,
+      "lastModelUsage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 364,
+          "outputTokens": 18,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.00045400000000000003
+        },
+        "claude-sonnet-4-6[1m]": {
+          "inputTokens": 183,
+          "outputTokens": 6848,
+          "cacheReadInputTokens": 1236035,
+          "cacheCreationInputTokens": 75711,
+          "webSearchRequests": 0,
+          "costUSD": 0.7579957500000001
+        }
+      },
+      "lastSessionId": "a949dd0a-1736-4744-9dbc-133c95251afa",
+      "lastSessionMetrics": {
+        "frame_duration_ms_count": 69877,
+        "frame_duration_ms_min": 0.04329099995084107,
+        "frame_duration_ms_max": 141.99366699997336,
+        "frame_duration_ms_avg": 0.6553725082501426,
+        "frame_duration_ms_p50": 0.39956200029700994,
+        "frame_duration_ms_p95": 1.827779449897934,
+        "frame_duration_ms_p99": 5.642782319977412,
+        "hook_duration_ms_count": 169,
+        "hook_duration_ms_min": 0,
+        "hook_duration_ms_max": 764596,
+        "hook_duration_ms_avg": 6354.585798816568,
+        "hook_duration_ms_p50": 1854,
+        "hook_duration_ms_p95": 3832.7999999999997,
+        "hook_duration_ms_p99": 5319.999999999996,
+        "pre_tool_hook_duration_ms_count": 118,
+        "pre_tool_hook_duration_ms_min": 580,
+        "pre_tool_hook_duration_ms_max": 5731,
+        "pre_tool_hook_duration_ms_avg": 2344.7542372881358,
+        "pre_tool_hook_duration_ms_p50": 2300,
+        "pre_tool_hook_duration_ms_p95": 3908.1499999999983,
+        "pre_tool_hook_duration_ms_p99": 5014.69
+      },
+      "disabledMcpServers": [
+        "claude.ai Canva",
+        "claude.ai Cloudflare Developer Platform",
+        "claude.ai Figma",
+        "claude.ai Gmail",
+        "claude.ai Google Calendar",
+        "claude.ai Google Drive",
+        "claude.ai HubSpot",
+        "claude.ai Intercom",
+        "claude.ai Linear",
+        "claude.ai Miro",
+        "claude.ai n8n",
+        "claude.ai n8n-dev",
+        "claude.ai New Relic",
+        "claude.ai Notion",
+        "claude.ai Sentry",
+        "claude.ai Slack",
+        "claude.ai ZoomInfo"
+      ],
+      "lastHintSessionId": "a981f0ba-ab12-4ae6-b253-901a931d4f9d",
+      "lastSessionFirstPrompt": "find out how do we control allowed/blocked product categories for live-vto feature",
+      "lastSessionModified": 1778870417800,
+      "lastFpsAverage": 0.03,
+      "lastFpsLow1Pct": 157.92
+    },
+    "/Users/kuba.gaj/dev/oss/cc-spex": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "lastGracefulShutdown": true,
+      "exampleFiles": [
+        "sdd-traits.sh",
+        "spex-init.sh",
+        "context-hook.py",
+        "Makefile",
+        ".superpowers-sync"
+      ],
+      "exampleFilesGeneratedAt": 1776991406550,
+      "hasCompletedProjectOnboarding": true,
+      "lastCost": 28.104792100000026,
+      "lastAPIDuration": 2725256,
+      "lastAPIDurationWithoutRetries": 2722790,
+      "lastToolDuration": 1307138,
+      "lastDuration": 18479343,
+      "lastLinesAdded": 1639,
+      "lastLinesRemoved": 190,
+      "lastTotalInputTokens": 148889,
+      "lastTotalOutputTokens": 150228,
+      "lastTotalCacheCreationInputTokens": 2243426,
+      "lastTotalCacheReadInputTokens": 34838786,
+      "lastTotalWebSearchRequests": 7,
+      "lastFpsAverage": 2.72,
+      "lastFpsLow1Pct": 239.7,
+      "lastModelUsage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 130177,
+          "outputTokens": 68244,
+          "cacheReadInputTokens": 6384151,
+          "cacheCreationInputTokens": 693382,
+          "webSearchRequests": 7,
+          "costUSD": 2.0465396
+        },
+        "claude-opus-4-6[1m]": {
+          "inputTokens": 18712,
+          "outputTokens": 81984,
+          "cacheReadInputTokens": 28454635,
+          "cacheCreationInputTokens": 1550044,
+          "webSearchRequests": 0,
+          "costUSD": 26.05825250000002
+        }
+      },
+      "lastSessionId": "98cd83f5-9e37-40cb-b222-e1daa953197d",
+      "lastSessionMetrics": {
+        "hook_duration_ms_count": 175,
+        "hook_duration_ms_min": 50,
+        "hook_duration_ms_max": 809,
+        "hook_duration_ms_avg": 148.88571428571427,
+        "hook_duration_ms_p50": 153,
+        "hook_duration_ms_p95": 299.89999999999964,
+        "hook_duration_ms_p99": 621.0799999999999,
+        "frame_duration_ms_count": 12402,
+        "frame_duration_ms_min": 0.11008299980312586,
+        "frame_duration_ms_max": 80.4206670000001,
+        "frame_duration_ms_avg": 1.1369345112891005,
+        "frame_duration_ms_p50": 0.959229500265792,
+        "frame_duration_ms_p95": 2.1608874500423543,
+        "frame_duration_ms_p99": 4.380939839949707,
+        "pre_tool_hook_duration_ms_count": 82,
+        "pre_tool_hook_duration_ms_min": 51,
+        "pre_tool_hook_duration_ms_max": 810,
+        "pre_tool_hook_duration_ms_avg": 96.7439024390244,
+        "pre_tool_hook_duration_ms_p50": 66,
+        "pre_tool_hook_duration_ms_p95": 187.8,
+        "pre_tool_hook_duration_ms_p99": 600.2099999999994
+      }
+    },
+    "/Users/kuba.gaj/dev/oss/punkfl0w": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "lastGracefulShutdown": true,
+      "exampleFiles": [
+        "context-hook.py",
+        "Makefile",
+        "spex-init.sh",
+        "test_marketplace_install.sh",
+        "install.sh"
+      ],
+      "exampleFilesGeneratedAt": 1777011718354,
+      "hasCompletedProjectOnboarding": true,
+      "lastCost": 5.0245408000000005,
+      "lastAPIDuration": 615070,
+      "lastAPIDurationWithoutRetries": 614282,
+      "lastToolDuration": 160755,
+      "lastDuration": 44010010,
+      "lastLinesAdded": 82,
+      "lastLinesRemoved": 59,
+      "lastTotalInputTokens": 1939,
+      "lastTotalOutputTokens": 31074,
+      "lastTotalCacheCreationInputTokens": 354162,
+      "lastTotalCacheReadInputTokens": 5921757,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 0.25,
+      "lastFpsLow1Pct": 167.14,
+      "lastModelUsage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 380,
+          "outputTokens": 5429,
+          "cacheReadInputTokens": 1458863,
+          "cacheCreationInputTokens": 48550,
+          "webSearchRequests": 0,
+          "costUSD": 0.2340988
+        },
+        "claude-opus-4-6[1m]": {
+          "inputTokens": 1559,
+          "outputTokens": 25645,
+          "cacheReadInputTokens": 4462894,
+          "cacheCreationInputTokens": 305612,
+          "webSearchRequests": 0,
+          "costUSD": 4.790442000000001
+        }
+      },
+      "lastSessionId": "3989ae0e-1e54-407b-92df-ee129d74081b",
+      "lastSessionMetrics": {
+        "hook_duration_ms_count": 203,
+        "hook_duration_ms_min": 51,
+        "hook_duration_ms_max": 742,
+        "hook_duration_ms_avg": 172.9704433497537,
+        "hook_duration_ms_p50": 161,
+        "hook_duration_ms_p95": 480.79999999999995,
+        "hook_duration_ms_p99": 665.8,
+        "frame_duration_ms_count": 12897,
+        "frame_duration_ms_min": 0.04100000000107684,
+        "frame_duration_ms_max": 45.37899999995716,
+        "frame_duration_ms_avg": 0.80363186857345,
+        "frame_duration_ms_p50": 0.6324169994331896,
+        "frame_duration_ms_p95": 1.716060700267553,
+        "frame_duration_ms_p99": 3.579176070361861,
+        "pre_tool_hook_duration_ms_count": 94,
+        "pre_tool_hook_duration_ms_min": 51,
+        "pre_tool_hook_duration_ms_max": 516,
+        "pre_tool_hook_duration_ms_avg": 103.96808510638297,
+        "pre_tool_hook_duration_ms_p50": 73.5,
+        "pre_tool_hook_duration_ms_p95": 199.89999999999992,
+        "pre_tool_hook_duration_ms_p99": 481.58999999999975
+      }
+    },
+    "/Users/kuba.gaj/dev/oss/cc2oc": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "lastCost": 2.54557415,
+      "lastAPIDuration": 283640,
+      "lastAPIDurationWithoutRetries": 269266,
+      "lastToolDuration": 71343,
+      "lastDuration": 40621844,
+      "lastLinesAdded": 145,
+      "lastLinesRemoved": 30,
+      "lastTotalInputTokens": 6862,
+      "lastTotalOutputTokens": 16521,
+      "lastTotalCacheCreationInputTokens": 236907,
+      "lastTotalCacheReadInputTokens": 2204734,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 0.33,
+      "lastFpsLow1Pct": 118.75,
+      "lastModelUsage": {
+        "claude-opus-4-7[1m]": {
+          "inputTokens": 4346,
+          "outputTokens": 13085,
+          "cacheReadInputTokens": 1723440,
+          "cacheCreationInputTokens": 194208,
+          "webSearchRequests": 0,
+          "costUSD": 2.424375
+        },
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 2516,
+          "outputTokens": 3436,
+          "cacheReadInputTokens": 481294,
+          "cacheCreationInputTokens": 42699,
+          "webSearchRequests": 0,
+          "costUSD": 0.12119915000000002
+        }
+      },
+      "lastSessionId": "21c730d6-e0f3-44b7-a171-718a6305ae51",
+      "hasCompletedProjectOnboarding": true,
+      "lastSessionMetrics": {
+        "frame_duration_ms_count": 7867,
+        "frame_duration_ms_min": 0.03683300002012402,
+        "frame_duration_ms_max": 37.46324999991339,
+        "frame_duration_ms_avg": 0.6081981850771372,
+        "frame_duration_ms_p50": 0.3765620000194758,
+        "frame_duration_ms_p95": 1.4586418500053668,
+        "frame_duration_ms_p99": 7.040121749916573,
+        "hook_duration_ms_count": 75,
+        "hook_duration_ms_min": 0,
+        "hook_duration_ms_max": 22838,
+        "hook_duration_ms_avg": 1875.6,
+        "hook_duration_ms_p50": 767,
+        "hook_duration_ms_p95": 6561.399999999998,
+        "hook_duration_ms_p99": 15467.600000000051,
+        "pre_tool_hook_duration_ms_count": 45,
+        "pre_tool_hook_duration_ms_min": 442,
+        "pre_tool_hook_duration_ms_max": 12880,
+        "pre_tool_hook_duration_ms_avg": 2352.5555555555557,
+        "pre_tool_hook_duration_ms_p50": 983,
+        "pre_tool_hook_duration_ms_p95": 6996.599999999998,
+        "pre_tool_hook_duration_ms_p99": 11631.280000000006
+      }
+    },
+    "/Users/kuba.gaj/dev/swapc/window-shop-ai": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {
+        "ChunkHound": {
+          "type": "stdio",
+          "command": "chunkhound",
+          "args": [
+            "mcp"
+          ],
+          "env": {}
+        }
+      },
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "exampleFiles": [
+        "storage_stage.py",
+        "pipeline_state_machine.py",
+        "product.py",
+        "test_discovery_service.py",
+        "discovery_service.py"
+      ],
+      "exampleFilesGeneratedAt": 1778768085929,
+      "hasCompletedProjectOnboarding": true,
+      "lastCost": 0.6349839999999999,
+      "lastAPIDuration": 85505,
+      "lastAPIDurationWithoutRetries": 84066,
+      "lastToolDuration": 12119,
+      "lastDuration": 106263666,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 475,
+      "lastTotalOutputTokens": 4075,
+      "lastTotalCacheCreationInputTokens": 68856,
+      "lastTotalCacheReadInputTokens": 1050600,
+      "lastTotalWebSearchRequests": 0,
+      "lastModelUsage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 383,
+          "outputTokens": 19,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.000478
+        },
+        "claude-sonnet-4-6[1m]": {
+          "inputTokens": 92,
+          "outputTokens": 4056,
+          "cacheReadInputTokens": 1050600,
+          "cacheCreationInputTokens": 68856,
+          "webSearchRequests": 0,
+          "costUSD": 0.6345059999999999
+        }
+      },
+      "lastSessionId": "9b2f3b3a-1a08-494c-94e9-d2d2b2e3ed2a",
+      "lastFpsAverage": 0.02,
+      "lastFpsLow1Pct": 139.43,
+      "lastHintSessionId": "b7f7bb82-25a0-4038-9fe0-4c451538d72b",
+      "lastSessionFirstPrompt": "what are the default values for allowed/disallowed categories for live-vto, which is same thing as realtime-vto?",
+      "lastSessionModified": 1778871275429,
+      "lastSessionMetrics": {
+        "frame_duration_ms_count": 48592,
+        "frame_duration_ms_min": 0.03729100013151765,
+        "frame_duration_ms_max": 117.41075000003912,
+        "frame_duration_ms_avg": 0.6094315663690284,
+        "frame_duration_ms_p50": 0.46972949989140034,
+        "frame_duration_ms_p95": 1.1085204501403492,
+        "frame_duration_ms_p99": 4.8542612493457025,
+        "hook_duration_ms_count": 351,
+        "hook_duration_ms_min": 0,
+        "hook_duration_ms_max": 6091,
+        "hook_duration_ms_avg": 854.5185185185185,
+        "hook_duration_ms_p50": 743,
+        "hook_duration_ms_p95": 2109.5,
+        "hook_duration_ms_p99": 3927,
+        "pre_tool_hook_duration_ms_count": 192,
+        "pre_tool_hook_duration_ms_min": 165,
+        "pre_tool_hook_duration_ms_max": 6094,
+        "pre_tool_hook_duration_ms_avg": 1068.390625,
+        "pre_tool_hook_duration_ms_p50": 807,
+        "pre_tool_hook_duration_ms_p95": 2561.1999999999953,
+        "pre_tool_hook_duration_ms_p99": 5831.000000000001
+      }
+    },
+    "/Users/kuba.gaj/dev/swapc/n8n-integrations": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {
+        "n8n": {
+          "type": "stdio",
+          "command": "npx",
+          "args": [
+            "n8n-mcp"
+          ],
+          "env": {
+            "MCP_MODE": "stdio",
+            "LOG_LEVEL": "error",
+            "DISABLE_CONSOLE_OUTPUT": "true",
+            "N8N_MODE": "true",
+            "N8N_API_URL": "http://127.0.0.1:8001",
+            "WEBHOOK_SECURITY_MODE": "permissive"
+          }
+        }
+      },
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 1,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "lastCost": 23.054637249999992,
+      "lastAPIDuration": 1714491,
+      "lastAPIDurationWithoutRetries": 1712789,
+      "lastToolDuration": 50954,
+      "lastDuration": 55130257,
+      "lastLinesAdded": 1291,
+      "lastLinesRemoved": 140,
+      "lastTotalInputTokens": 1764,
+      "lastTotalOutputTokens": 109863,
+      "lastTotalCacheCreationInputTokens": 1317867,
+      "lastTotalCacheReadInputTokens": 24133419,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 0.23,
+      "lastFpsLow1Pct": 236.55,
+      "lastModelUsage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 949,
+          "outputTokens": 17,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.001034
+        },
+        "claude-opus-4-7[1m]": {
+          "inputTokens": 815,
+          "outputTokens": 109846,
+          "cacheReadInputTokens": 24133419,
+          "cacheCreationInputTokens": 1317867,
+          "webSearchRequests": 0,
+          "costUSD": 23.05360324999999
+        }
+      },
+      "lastSessionId": "ee73989d-a513-44da-aae5-07f248224c23"
+    },
+    "/Users/kuba.gaj/dev/swapc/agentic-ai-coding-skills": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "lastCost": 38.494719550000006,
+      "lastAPIDuration": 2761991,
+      "lastAPIDurationWithoutRetries": 2607768,
+      "lastToolDuration": 965469,
+      "lastDuration": 15906074,
+      "lastLinesAdded": 1521,
+      "lastLinesRemoved": 74,
+      "lastTotalInputTokens": 1799,
+      "lastTotalOutputTokens": 159552,
+      "lastTotalCacheCreationInputTokens": 983003,
+      "lastTotalCacheReadInputTokens": 61694390,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 4.38,
+      "lastFpsLow1Pct": 94.4,
+      "lastModelUsage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 1165,
+          "outputTokens": 10992,
+          "cacheReadInputTokens": 4313423,
+          "cacheCreationInputTokens": 108834,
+          "webSearchRequests": 0,
+          "costUSD": 0.6235098
+        },
+        "claude-opus-4-7[1m]": {
+          "inputTokens": 634,
+          "outputTokens": 148560,
+          "cacheReadInputTokens": 57380967,
+          "cacheCreationInputTokens": 874169,
+          "webSearchRequests": 0,
+          "costUSD": 37.87120975000001
+        }
+      },
+      "lastSessionId": "727e0e76-4cb8-4429-9f0c-053fc9018d14"
+    },
+    "/Users/kuba.gaj/dev/oss/kit": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "exampleFiles": [
+        "run-source-tests.sh",
+        "common.bats",
+        "generate-dashboard.test.js",
+        "dashboard.dom-structure.spec.js",
+        "setup-plan.sh"
+      ],
+      "exampleFilesGeneratedAt": 1778137431099,
+      "hasCompletedProjectOnboarding": true,
+      "lastCost": 12.369402250000004,
+      "lastAPIDuration": 1183606,
+      "lastAPIDurationWithoutRetries": 1114374,
+      "lastToolDuration": 472817,
+      "lastDuration": 282699827,
+      "lastLinesAdded": 51,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 4558,
+      "lastTotalOutputTokens": 58891,
+      "lastTotalCacheCreationInputTokens": 568847,
+      "lastTotalCacheReadInputTokens": 20494264,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 0.02,
+      "lastFpsLow1Pct": 202.73,
+      "lastModelUsage": {
+        "claude-opus-4-7[1m]": {
+          "inputTokens": 2288,
+          "outputTokens": 36386,
+          "cacheReadInputTokens": 11344794,
+          "cacheCreationInputTokens": 221790,
+          "webSearchRequests": 0,
+          "costUSD": 7.979674500000002
+        },
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 381,
+          "outputTokens": 20,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.000481
+        },
+        "claude-sonnet-4-6": {
+          "inputTokens": 1889,
+          "outputTokens": 22485,
+          "cacheReadInputTokens": 9149470,
+          "cacheCreationInputTokens": 347057,
+          "webSearchRequests": 0,
+          "costUSD": 4.38924675
+        }
+      },
+      "lastSessionId": "9bd3648a-7bc1-4728-bb0f-b2dc5b338b47",
+      "lastSessionMetrics": {
+        "frame_duration_ms_count": 34284,
+        "frame_duration_ms_min": 0.033042000024579465,
+        "frame_duration_ms_max": 211.82887500000652,
+        "frame_duration_ms_avg": 0.7138778472471622,
+        "frame_duration_ms_p50": 0.4862710000015795,
+        "frame_duration_ms_p95": 1.5439954999834298,
+        "frame_duration_ms_p99": 5.849535589877036,
+        "hook_duration_ms_count": 165,
+        "hook_duration_ms_min": 0,
+        "hook_duration_ms_max": 12805,
+        "hook_duration_ms_avg": 3671.860606060606,
+        "hook_duration_ms_p50": 3652,
+        "hook_duration_ms_p95": 6947.999999999998,
+        "hook_duration_ms_p99": 9942.079999999964,
+        "pre_tool_hook_duration_ms_count": 129,
+        "pre_tool_hook_duration_ms_min": 1186,
+        "pre_tool_hook_duration_ms_max": 12807,
+        "pre_tool_hook_duration_ms_avg": 4366.860465116279,
+        "pre_tool_hook_duration_ms_p50": 4182,
+        "pre_tool_hook_duration_ms_p95": 7237.999999999997,
+        "pre_tool_hook_duration_ms_p99": 10817.159999999996
+      }
+    },
+    "/Users/kuba.gaj/dev/oss/LazyDev": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "lastCost": 15.334753749999999,
+      "lastAPIDuration": 1910097,
+      "lastAPIDurationWithoutRetries": 1909230,
+      "lastToolDuration": 2258434,
+      "lastDuration": 238870485,
+      "lastLinesAdded": 2838,
+      "lastLinesRemoved": 8,
+      "lastTotalInputTokens": 45672,
+      "lastTotalOutputTokens": 127911,
+      "lastTotalCacheCreationInputTokens": 812455,
+      "lastTotalCacheReadInputTokens": 13898550,
+      "lastTotalWebSearchRequests": 4,
+      "lastFpsAverage": 0.13,
+      "lastFpsLow1Pct": 142.38,
+      "lastModelUsage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 28750,
+          "outputTokens": 2175,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.039625
+        },
+        "claude-opus-4-7[1m]": {
+          "inputTokens": 16922,
+          "outputTokens": 125736,
+          "cacheReadInputTokens": 13898550,
+          "cacheCreationInputTokens": 812455,
+          "webSearchRequests": 4,
+          "costUSD": 15.295128749999998
+        }
+      },
+      "lastSessionId": "6bb1075a-f2b7-43de-96ab-719be59ea1f9"
+    },
+    "/Users/kuba.gaj/tmp/ai-native-eng-swap": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "lastCost": 0,
+      "lastAPIDuration": 0,
+      "lastAPIDurationWithoutRetries": 0,
+      "lastToolDuration": 0,
+      "lastDuration": 13838992,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 0,
+      "lastTotalOutputTokens": 0,
+      "lastTotalCacheCreationInputTokens": 0,
+      "lastTotalCacheReadInputTokens": 0,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 0.02,
+      "lastFpsLow1Pct": 14.14,
+      "lastModelUsage": {},
+      "lastSessionId": "c00695bb-2b2c-4ae2-a967-85b8081ddeea"
+    },
+    "/Users/kuba.gaj/dev/swapc": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "lastHintSessionId": "a19e4483-431f-4ae1-b71d-5d3635b172cd",
+      "lastSessionFirstPrompt": "~/dev/swapc/window-shop-ai.AGI-3473-live-vto-ingestion on  AGI-3473-live-vto-ingestion [$?] is 📦 v0.1.0 via 🐍 v3.14.4 on ☁️  kuba.gaj@swap-commerce.com took 1h55m40s ❯ /allowlist bash \"gh api graph",
+      "lastSessionModified": 1778646860162,
+      "hasCompletedProjectOnboarding": true,
+      "lastCost": 5.379026250000002,
+      "lastAPIDuration": 743244,
+      "lastAPIDurationWithoutRetries": 740324,
+      "lastToolDuration": 528461,
+      "lastDuration": 31943675,
+      "lastLinesAdded": 30,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 7633,
+      "lastTotalOutputTokens": 40380,
+      "lastTotalCacheCreationInputTokens": 221013,
+      "lastTotalCacheReadInputTokens": 13641081,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 1.03,
+      "lastFpsLow1Pct": 349.6,
+      "lastModelUsage": {
+        "claude-sonnet-4-6": {
+          "inputTokens": 1096,
+          "outputTokens": 36689,
+          "cacheReadInputTokens": 13497947,
+          "cacheCreationInputTokens": 184179,
+          "webSearchRequests": 0,
+          "costUSD": 5.293678350000002
+        },
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 6537,
+          "outputTokens": 3691,
+          "cacheReadInputTokens": 143134,
+          "cacheCreationInputTokens": 36834,
+          "webSearchRequests": 0,
+          "costUSD": 0.0853479
+        }
+      },
+      "lastSessionId": "a19e4483-431f-4ae1-b71d-5d3635b172cd"
+    },
+    "/Users/kuba.gaj/dev/swapc/shopmr": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": false,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "lastVersionBase": "2.1.156",
+      "exampleFiles": [
+        "agent.service.ts",
+        "index.ts",
+        "nudge-tick-handler.service.ts",
+        "firebase-store.repository.ts",
+        "chat.service.ts"
+      ],
+      "exampleFilesGeneratedAt": 1780030353403,
+      "hasCompletedProjectOnboarding": true,
+      "lastCost": 5.382830749999998,
+      "lastAPIDuration": 333890,
+      "lastAPIDurationWithoutRetries": 315832,
+      "lastToolDuration": 161667,
+      "lastDuration": 2138348,
+      "lastLinesAdded": 20,
+      "lastLinesRemoved": 1,
+      "lastTotalInputTokens": 34055,
+      "lastTotalOutputTokens": 18512,
+      "lastTotalCacheCreationInputTokens": 427131,
+      "lastTotalCacheReadInputTokens": 4160374,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 6.82,
+      "lastFpsLow1Pct": 104.34,
+      "lastModelUsage": {
+        "claude-opus-4-8[1m]": {
+          "inputTokens": 34055,
+          "outputTokens": 18512,
+          "cacheReadInputTokens": 4160374,
+          "cacheCreationInputTokens": 427131,
+          "webSearchRequests": 0,
+          "costUSD": 5.382830749999998
+        }
+      },
+      "lastSessionId": "f1119271-f35c-4109-a568-f18f7b30bae6",
+      "lastHintSessionId": "e450943a-e6c6-4f93-a362-e85a7f9d0ea1",
+      "lastSessionFirstPrompt": "1. first make sure we are on latest develop here",
+      "lastSessionModified": 1779481327608,
+      "lastSessionMetrics": {
+        "frame_duration_ms_count": 14562,
+        "frame_duration_ms_min": 0.30037499999889405,
+        "frame_duration_ms_max": 245.36287500000617,
+        "frame_duration_ms_avg": 1.8167445629725725,
+        "frame_duration_ms_p50": 1.4731249999895226,
+        "frame_duration_ms_p95": 3.299239399979706,
+        "frame_duration_ms_p99": 8.250911230047913,
+        "hook_duration_ms_count": 78,
+        "hook_duration_ms_min": 1341,
+        "hook_duration_ms_max": 10233,
+        "hook_duration_ms_avg": 4653.2307692307695,
+        "hook_duration_ms_p50": 4224.5,
+        "hook_duration_ms_p95": 8057.949999999999,
+        "hook_duration_ms_p99": 9577.730000000003,
+        "pre_tool_hook_duration_ms_count": 39,
+        "pre_tool_hook_duration_ms_min": 1546,
+        "pre_tool_hook_duration_ms_max": 10240,
+        "pre_tool_hook_duration_ms_avg": 5166.153846153846,
+        "pre_tool_hook_duration_ms_p50": 5456,
+        "pre_tool_hook_duration_ms_p95": 8365.000000000002,
+        "pre_tool_hook_duration_ms_p99": 9917.379999999997
+      }
+    },
+    "/Users/kuba.gaj/dev/swapc/shopai": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": false,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "lastVersionBase": "2.1.157",
+      "exampleFiles": [
+        "storage_stage.py",
+        "test_discovery_service.py",
+        "discovery_service.py",
+        "pipeline_state_machine.py",
+        "product.py"
+      ],
+      "exampleFilesGeneratedAt": 1779980887586,
+      "hasCompletedProjectOnboarding": true,
+      "lastCost": 9.319219750000004,
+      "lastAPIDuration": 929341,
+      "lastAPIDurationWithoutRetries": 928409,
+      "lastToolDuration": 87355,
+      "lastDuration": 4544402,
+      "lastLinesAdded": 88,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 18273,
+      "lastTotalOutputTokens": 54239,
+      "lastTotalCacheCreationInputTokens": 669039,
+      "lastTotalCacheReadInputTokens": 7380772,
+      "lastTotalWebSearchRequests": 0,
+      "lastModelUsage": {
+        "claude-opus-4-8[1m]": {
+          "inputTokens": 18273,
+          "outputTokens": 54239,
+          "cacheReadInputTokens": 7380772,
+          "cacheCreationInputTokens": 669039,
+          "webSearchRequests": 0,
+          "costUSD": 9.319219750000004
+        }
+      },
+      "lastSessionId": "a7d4d50c-680e-4dd4-9a2a-542d98e79fdd",
+      "lastHintSessionId": "b76f6d7b-4e71-4dd0-a939-533271f9535a",
+      "lastSessionFirstPrompt": "@/tmp/handoff-customAttributes-empty-on-canonical.md",
+      "lastSessionModified": 1779487087028,
+      "lastSessionMetrics": {
+        "frame_duration_ms_count": 19225,
+        "frame_duration_ms_min": 0.32479199999943376,
+        "frame_duration_ms_max": 220.61349999997765,
+        "frame_duration_ms_avg": 2.109973857634152,
+        "frame_duration_ms_p50": 1.738145499755774,
+        "frame_duration_ms_p95": 3.667710750011607,
+        "frame_duration_ms_p99": 7.2001212507206915,
+        "hook_duration_ms_count": 110,
+        "hook_duration_ms_min": 1345,
+        "hook_duration_ms_max": 8327,
+        "hook_duration_ms_avg": 4487.454545454545,
+        "hook_duration_ms_p50": 4194,
+        "hook_duration_ms_p95": 7647.15,
+        "hook_duration_ms_p99": 8307.099999999999,
+        "pre_tool_hook_duration_ms_count": 53,
+        "pre_tool_hook_duration_ms_min": 467,
+        "pre_tool_hook_duration_ms_max": 8332,
+        "pre_tool_hook_duration_ms_avg": 4732.226415094339,
+        "pre_tool_hook_duration_ms_p50": 4547,
+        "pre_tool_hook_duration_ms_p95": 7865.4,
+        "pre_tool_hook_duration_ms_p99": 8221.76
+      },
+      "lastFpsAverage": 4.6,
+      "lastFpsLow1Pct": 148.65
+    },
+    "/Users/kuba.gaj/dev/oss/cupcake": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "lastVersionBase": "2.1.156",
+      "exampleFiles": [
+        "main.rs",
+        "init_command_test.rs",
+        "mod.rs",
+        "justfile",
+        "builtin_integration.rs"
+      ],
+      "exampleFilesGeneratedAt": 1780036975315,
+      "hasCompletedProjectOnboarding": true,
+      "lastCost": 5.062291,
+      "lastAPIDuration": 396478,
+      "lastAPIDurationWithoutRetries": 367046,
+      "lastToolDuration": 400887,
+      "lastDuration": 10875900,
+      "lastLinesAdded": 31,
+      "lastLinesRemoved": 3,
+      "lastTotalInputTokens": 24330,
+      "lastTotalOutputTokens": 22501,
+      "lastTotalCacheCreationInputTokens": 266222,
+      "lastTotalCacheReadInputTokens": 5432905,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 2.04,
+      "lastFpsLow1Pct": 110.82,
+      "lastModelUsage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 476,
+          "outputTokens": 16,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.0005560000000000001
+        },
+        "claude-opus-4-8[1m]": {
+          "inputTokens": 23854,
+          "outputTokens": 22485,
+          "cacheReadInputTokens": 5432905,
+          "cacheCreationInputTokens": 266222,
+          "webSearchRequests": 0,
+          "costUSD": 5.061735
+        }
+      },
+      "lastSessionId": "780db672-a012-454b-a10f-ec7333d02a3a",
+      "lastSessionMetrics": {
+        "frame_duration_ms_count": 22143,
+        "frame_duration_ms_min": 0.35429099993780255,
+        "frame_duration_ms_max": 223.99804200045764,
+        "frame_duration_ms_avg": 2.4366797698167204,
+        "frame_duration_ms_p50": 1.5869374996982515,
+        "frame_duration_ms_p95": 4.386235700012169,
+        "frame_duration_ms_p99": 15.798369840858498,
+        "hook_duration_ms_count": 93,
+        "hook_duration_ms_min": 1307,
+        "hook_duration_ms_max": 10796,
+        "hook_duration_ms_avg": 4898.860215053764,
+        "hook_duration_ms_p50": 4516,
+        "hook_duration_ms_p95": 9499.199999999993,
+        "hook_duration_ms_p99": 10688.36,
+        "pre_tool_hook_duration_ms_count": 44,
+        "pre_tool_hook_duration_ms_min": 1479,
+        "pre_tool_hook_duration_ms_max": 10684,
+        "pre_tool_hook_duration_ms_avg": 5485.227272727273,
+        "pre_tool_hook_duration_ms_p50": 5609.5,
+        "pre_tool_hook_duration_ms_p95": 10295.050000000001,
+        "pre_tool_hook_duration_ms_p99": 10583.38
+      }
+    },
+    "/Users/kuba.gaj/dev/swapc/ingest": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": false,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "lastVersionBase": "2.1.156",
+      "lastCost": 0,
+      "lastAPIDuration": 0,
+      "lastAPIDurationWithoutRetries": 0,
+      "lastToolDuration": 0,
+      "lastDuration": 27254,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 0,
+      "lastTotalOutputTokens": 0,
+      "lastTotalCacheCreationInputTokens": 0,
+      "lastTotalCacheReadInputTokens": 0,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 2.53,
+      "lastFpsLow1Pct": 133.77,
+      "lastModelUsage": {},
+      "lastSessionId": "2df464d0-e71e-4bb8-8049-82ec66587fc5"
+    },
+    "/Users/kuba.gaj/Documents/courses/matt_ai_eng": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 1,
+      "hasClaudeMdExternalIncludesApproved": true,
+      "hasClaudeMdExternalIncludesWarningShown": true,
+      "lastGracefulShutdown": true,
+      "lastVersionBase": "2.1.159",
+      "lastCost": 0,
+      "lastAPIDuration": 0,
+      "lastAPIDurationWithoutRetries": 0,
+      "lastToolDuration": 0,
+      "lastDuration": 1852380,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 0,
+      "lastTotalOutputTokens": 0,
+      "lastTotalCacheCreationInputTokens": 0,
+      "lastTotalCacheReadInputTokens": 0,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 0.18,
+      "lastFpsLow1Pct": 76.82,
+      "lastModelUsage": {},
+      "lastSessionId": "e67f5ef1-db76-42d5-b4f7-7e59f7da6f02"
+    }
+  },
+  "userID": "5ca96593d0443e02533e0dd34c745a54c04588c56a5db702b09ff2b0d27f71be",
+  "cachedExtraUsageDisabledReason": null,
+  "claudeCodeFirstTokenDate": "2026-04-08T16:08:56.688023Z",
+  "hasCompletedOnboarding": true,
+  "lastOnboardingVersion": "2.1.104",
+  "effortCalloutV2Dismissed": true,
+  "lastReleaseNotesSeen": "2.1.159",
+  "githubRepoPaths": {
+    "punk-dev-robot/dotfiles": [
+      "/Users/kuba.gaj/dotfiles"
+    ],
+    "swapcommerce/window-shop-monorepo": [
+      "/Users/kuba.gaj/dev/swapc/shopmr.AGI-4071-compare-at-price",
+      "/Users/kuba.gaj/dev/swapc/shopmr.chore-lint-staged",
+      "/Users/kuba.gaj/dev/swapc/shopmr",
+      "/Users/kuba.gaj/dev/swapc/shopmr.AGI-3959-pdp-observability",
+      "/Users/kuba.gaj/dev/swapc/shopmr.AGI-4027-fix-custom-attributes-full-endpoint",
+      "/Users/kuba.gaj/dev/swapc/shopmr.AGI-3950-add-bff-endpoint",
+      "/Users/kuba.gaj/dev/swapc/shopmr.AGI-3950-bff-endpoint",
+      "/Users/kuba.gaj/dev/swapc/shopmr.AGI-3950-getFullProduct",
+      "/Users/kuba.gaj/dev/swapc/shopmr.AGI-3957-test-pdp-data-ingestion",
+      "/Users/kuba.gaj/dev/swapc/shopmr.AGI-3903-ingest-shopify-metaobjects",
+      "/Users/kuba.gaj/dev/swapc/shopmr.AGI-3906-ingest-shopify-metafields",
+      "/Users/kuba.gaj/dev/swapc/window-shop-monorepo",
+      "/Users/kuba.gaj/dev/swapc/window-shop-monorepo.feat-AGI-3649-live-vto-ingest-fe",
+      "/Users/kuba.gaj/dev/swapc/window-shop-monorepo.AGI-2590-move-vto-to-agents-app",
+      "/Users/kuba.gaj/dev/swapc/window-shop-monorepo-bug-uat-product-relevance",
+      "/Users/kuba.gaj/intent/workspaces/disappointed-boa/window-shop-monorepo"
+    ],
+    "punk-dev-robot/cc-spex": [
+      "/Users/kuba.gaj/dev/oss/punkfl0w",
+      "/Users/kuba.gaj/dev/oss/cc-spex"
+    ],
+    "punk-dev-robot/punkfl0w": [
+      "/Users/kuba.gaj/dev/oss/punkfl0w"
+    ],
+    "swapcommerce/window-shop-ai": [
+      "/Users/kuba.gaj/dev/swapc/shopai",
+      "/Users/kuba.gaj/dev/swapc/shopai.play_ingest",
+      "/Users/kuba.gaj/dev/swapc/shopai.AGI-4070-customAttributes-search-api",
+      "/Users/kuba.gaj/dev/swapc/shopai.AGI-4071-compare-and-original-prices",
+      "/Users/kuba.gaj/dev/swapc/shopai.AGI-4027-fix-custom-attributes-full-endpoint",
+      "/Users/kuba.gaj/dev/swapc/shopai.AGI-3906-ingest-shopify-metafields",
+      "/Users/kuba.gaj/dev/swapc/window-shop-ai",
+      "/Users/kuba.gaj/dev/swapc/window-shop-ai.AGI-3473-live-vto-ingestion",
+      "/Users/kuba.gaj/dev/swapc/window-shop-ai.AGI-3543-select-model",
+      "/Users/kuba.gaj/dev/swapc/window-shop-ai.feat-AGI-3394-emit-ingest-events-sync-monitor"
+    ],
+    "swapcommerce/agentic-ai-coding-skills": [
+      "/Users/kuba.gaj/dev/swapc/agentic-ai-coding-skills"
+    ],
+    "punk-dev-robot/kit": [
+      "/Users/kuba.gaj/dev/oss/kit"
+    ],
+    "punk-dev-robot/cupcake": [
+      "/Users/kuba.gaj/dev/oss/cupcake"
+    ]
+  },
+  "officialMarketplaceAutoInstallAttempted": true,
+  "officialMarketplaceAutoInstalled": true,
+  "clientDataCache": null,
+  "additionalModelOptionsCache": [],
+  "additionalModelCostsCache": {},
+  "penguinModeOrgEnabled": true,
+  "overageCreditGrantCache": {
+    "4d35695d-287b-4ff8-8bb3-b0a456f1aae6": {
+      "info": {
+        "available": false,
+        "eligible": false,
+        "granted": false,
+        "amount_minor_units": null,
+        "currency": null
+      },
+      "timestamp": 1778800697352
+    }
+  },
+  "autoPermissionsNotificationCount": 3,
+  "lastPlanModeUse": 1780363121088,
+  "metricsStatusCache": {
+    "enabled": true,
+    "timestamp": 1779931625683
+  },
+  "deepLinkTerminal": "Ghostty",
+  "hasVisitedExtraUsage": true,
+  "mcpServers": {
+    "filesystem": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/kuba.gaj/dotfiles",
+        "/Users/kuba.gaj/dev",
+        "/Users/kuba.gaj/Documents/notes"
+      ],
+      "env": {}
+    },
+    "tessl": {
+      "type": "stdio",
+      "command": "tessl",
+      "args": [
+        "mcp",
+        "start"
+      ],
+      "env": {}
+    },
+    "codebase-memory-mcp": {
+      "type": "stdio",
+      "command": "codebase-memory-mcp",
+      "args": [],
+      "env": {}
+    }
+  },
+  "skillUsage": {
+    "speckit-critique-run": {
+      "usageCount": 1,
+      "lastUsedAt": 1776960582251
+    },
+    "speckit-taskstoissues": {
+      "usageCount": 1,
+      "lastUsedAt": 1776962702846
+    },
+    "speckit-tasks": {
+      "usageCount": 2,
+      "lastUsedAt": 1778075548613
+    },
+    "speckit-implement": {
+      "usageCount": 2,
+      "lastUsedAt": 1778076339363
+    },
+    "plannotator-review": {
+      "usageCount": 58,
+      "lastUsedAt": 1780065603678
+    },
+    "running-dev-server": {
+      "usageCount": 4,
+      "lastUsedAt": 1778079921739
+    },
+    "brainstorming": {
+      "usageCount": 1,
+      "lastUsedAt": 1776995066449
+    },
+    "punkfl0w:traits": {
+      "usageCount": 6,
+      "lastUsedAt": 1777015496123
+    },
+    "punkfl0w:review-code": {
+      "usageCount": 3,
+      "lastUsedAt": 1777420904665
+    },
+    "punkfl0w:deep-review": {
+      "usageCount": 6,
+      "lastUsedAt": 1777421639578
+    },
+    "using-superpowers": {
+      "usageCount": 1,
+      "lastUsedAt": 1777012525762
+    },
+    "punkfl0w:init": {
+      "usageCount": 1,
+      "lastUsedAt": 1777014381607
+    },
+    "skill-codex:codex": {
+      "usageCount": 7,
+      "lastUsedAt": 1779407881228
+    },
+    "superpowers:systematic-debugging": {
+      "usageCount": 4,
+      "lastUsedAt": 1778040081186
+    },
+    "superpowers:receiving-code-review": {
+      "usageCount": 1,
+      "lastUsedAt": 1777183381515
+    },
+    "caveman:caveman-help": {
+      "usageCount": 4,
+      "lastUsedAt": 1778629729780
+    },
+    "caveman:caveman": {
+      "usageCount": 6,
+      "lastUsedAt": 1780016813440
+    },
+    "update-config": {
+      "usageCount": 5,
+      "lastUsedAt": 1780013251125
+    },
+    "skill-creator:skill-creator": {
+      "usageCount": 1,
+      "lastUsedAt": 1777235619567
+    },
+    "init": {
+      "usageCount": 1,
+      "lastUsedAt": 1777291795869
+    },
+    "simplify": {
+      "usageCount": 4,
+      "lastUsedAt": 1778625109221
+    },
+    "superpowers:brainstorming": {
+      "usageCount": 1,
+      "lastUsedAt": 1777993493845
+    },
+    "superpowers:using-superpowers": {
+      "usageCount": 1,
+      "lastUsedAt": 1778048626842
+    },
+    "speckit-specify": {
+      "usageCount": 1,
+      "lastUsedAt": 1778070893632
+    },
+    "speckit-clarify": {
+      "usageCount": 2,
+      "lastUsedAt": 1778073922112
+    },
+    "speckit-plan": {
+      "usageCount": 1,
+      "lastUsedAt": 1778074679670
+    },
+    "speckit-analyze": {
+      "usageCount": 3,
+      "lastUsedAt": 1780086304554
+    },
+    "tessl__codebase-onboarding": {
+      "usageCount": 3,
+      "lastUsedAt": 1778098527920
+    },
+    "tessl__skill-discovery": {
+      "usageCount": 1,
+      "lastUsedAt": 1778105517565
+    },
+    "tessl__hello": {
+      "usageCount": 1,
+      "lastUsedAt": 1778116354434
+    },
+    "tessl__worktrunk": {
+      "usageCount": 4,
+      "lastUsedAt": 1779346906593
+    },
+    "tessl__iikit-core": {
+      "usageCount": 6,
+      "lastUsedAt": 1779328567322
+    },
+    "plannotator-annotate": {
+      "usageCount": 14,
+      "lastUsedAt": 1780028202275
+    },
+    "tessl__iikit-00-constitution": {
+      "usageCount": 3,
+      "lastUsedAt": 1779329170154
+    },
+    "tessl__iikit-01-specify": {
+      "usageCount": 8,
+      "lastUsedAt": 1779384805487
+    },
+    "tessl__iikit-02-plan": {
+      "usageCount": 9,
+      "lastUsedAt": 1779388895347
+    },
+    "tessl__iikit-bugfix": {
+      "usageCount": 1,
+      "lastUsedAt": 1778153454769
+    },
+    "tessl__iikit-05-tasks": {
+      "usageCount": 7,
+      "lastUsedAt": 1779391102492
+    },
+    "tessl__iikit-07-implement": {
+      "usageCount": 11,
+      "lastUsedAt": 1779399905424
+    },
+    "tessl__pr-evidence-builder": {
+      "usageCount": 2,
+      "lastUsedAt": 1778542066349
+    },
+    "plannotator:plannotator-last": {
+      "usageCount": 2,
+      "lastUsedAt": 1778533049388
+    },
+    "tessl__fresh-eyes-review": {
+      "usageCount": 3,
+      "lastUsedAt": 1778544366904
+    },
+    "tessl__finding-synthesizer": {
+      "usageCount": 2,
+      "lastUsedAt": 1778550169825
+    },
+    "tessl__propose": {
+      "usageCount": 1,
+      "lastUsedAt": 1778193356109
+    },
+    "tessl__iikit-06-analyze": {
+      "usageCount": 4,
+      "lastUsedAt": 1779391510255
+    },
+    "tessl__iikit-clarify": {
+      "usageCount": 3,
+      "lastUsedAt": 1779352259799
+    },
+    "tessl__iikit-03-checklist": {
+      "usageCount": 1,
+      "lastUsedAt": 1778520458081
+    },
+    "tessl__human-review-handoff": {
+      "usageCount": 1,
+      "lastUsedAt": 1778550420435
+    },
+    "plugin-setup:chunkhound-integration-setting-up": {
+      "usageCount": 1,
+      "lastUsedAt": 1778561357133
+    },
+    "tessl__logfire-query": {
+      "usageCount": 1,
+      "lastUsedAt": 1778570590433
+    },
+    "tessl__notion": {
+      "usageCount": 4,
+      "lastUsedAt": 1778673459674
+    },
+    "chunkhound-integration:chunkhound-status": {
+      "usageCount": 2,
+      "lastUsedAt": 1778596276137
+    },
+    "tessl__self-review": {
+      "usageCount": 1,
+      "lastUsedAt": 1778597828293
+    },
+    "caveman:caveman-commit": {
+      "usageCount": 7,
+      "lastUsedAt": 1778633198737
+    },
+    "caveman:compress": {
+      "usageCount": 2,
+      "lastUsedAt": 1778630427626
+    },
+    "local-stack-compose": {
+      "usageCount": 3,
+      "lastUsedAt": 1780039122035
+    },
+    "create-pull-request": {
+      "usageCount": 5,
+      "lastUsedAt": 1780035629133
+    },
+    "create-alembic-migration": {
+      "usageCount": 2,
+      "lastUsedAt": 1780066340650
+    },
+    "pre-commit-fix": {
+      "usageCount": 1,
+      "lastUsedAt": 1778640652060
+    },
+    "loop": {
+      "usageCount": 4,
+      "lastUsedAt": 1780049446881
+    },
+    "tessl__gap-analysis": {
+      "usageCount": 1,
+      "lastUsedAt": 1778706704183
+    },
+    "plannotator:plannotator-annotate": {
+      "usageCount": 4,
+      "lastUsedAt": 1779324910600
+    },
+    "tessl__audit-logs": {
+      "usageCount": 1,
+      "lastUsedAt": 1779410361402
+    },
+    "review-architecture": {
+      "usageCount": 1,
+      "lastUsedAt": 1779441834527
+    },
+    "plannotator-last": {
+      "usageCount": 1,
+      "lastUsedAt": 1779463360056
+    },
+    "connecting-to-swap-db": {
+      "usageCount": 2,
+      "lastUsedAt": 1780040454289
+    },
+    "tessl__handoff": {
+      "usageCount": 8,
+      "lastUsedAt": 1780056393562
+    },
+    "task-observer": {
+      "usageCount": 5,
+      "lastUsedAt": 1780089205305
+    },
+    "tessl__grill-with-docs": {
+      "usageCount": 1,
+      "lastUsedAt": 1780026309141
+    },
+    "speckit-tinyspec-tinyspec": {
+      "usageCount": 2,
+      "lastUsedAt": 1780035819518
+    },
+    "speckit-tinyspec-implement": {
+      "usageCount": 1,
+      "lastUsedAt": 1780028312260
+    },
+    "linear-agent-workflow": {
+      "usageCount": 1,
+      "lastUsedAt": 1780028769319
+    },
+    "speckit-punk-01-specify": {
+      "usageCount": 1,
+      "lastUsedAt": 1780082485646
+    },
+    "speckit-punk-02-plan": {
+      "usageCount": 1,
+      "lastUsedAt": 1780083202586
+    },
+    "speckit-punk-clarify": {
+      "usageCount": 1,
+      "lastUsedAt": 1780084866770
+    },
+    "speckit-punk-05-tasks": {
+      "usageCount": 1,
+      "lastUsedAt": 1780085875382
+    },
+    "speckit-punk-07-implement": {
+      "usageCount": 1,
+      "lastUsedAt": 1780089315695
+    },
+    "context-mode:ctx-doctor": {
+      "usageCount": 1,
+      "lastUsedAt": 1780364810890
+    },
+    "context-mode:ctx-upgrade": {
+      "usageCount": 1,
+      "lastUsedAt": 1780364961643
+    }
+  },
+  "showSpinnerTree": false,
+  "seenNotifications": {},
+  "oauthAccount": {
+    "accountUuid": "5ed99ea9-85b0-47b6-b00a-408a3eb8bc6b",
+    "emailAddress": "kuba.gaj@swap-commerce.com",
+    "organizationUuid": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6",
+    "hasExtraUsageEnabled": true,
+    "billingType": "stripe_subscription_contracted",
+    "accountCreatedAt": "2026-04-08T09:55:13.365708Z",
+    "subscriptionCreatedAt": "2026-03-13T07:00:20.208242Z",
+    "ccOnboardingFlags": {},
+    "claudeCodeTrialEndsAt": null,
+    "claudeCodeTrialDurationDays": null,
+    "seatTier": "enterprise_usage_based",
+    "displayName": "Kuba",
+    "organizationRole": "user",
+    "workspaceRole": null,
+    "organizationName": "Swap Commerce Ltd",
+    "organizationType": "claude_enterprise",
+    "organizationRateLimitTier": "default_raven_enterprise",
+    "userRateLimitTier": "default_claude_zero"
+  },
+  "cachedExperimentFeatures": [
+    "tengu_amber_prism",
+    "tengu_cedar_inlet",
+    "tengu_dune_wren",
+    "tengu_mcp_subagent_prompt",
+    "tengu_orchid_mantis_v2",
+    "tengu_pewter_lark",
+    "tengu_plank_river_frost",
+    "tengu_read_dedup_killswitch",
+    "tengu_tussock_oriole"
+  ],
+  "claudeAiMcpEverConnected": [
+    "claude.ai Granola",
+    "claude.ai Intuit QuickBooks"
+  ],
+  "autoUpdatesProtectedForNative": true,
+  "opus48LaunchSeenCount": 8,
+  "hasUsedBackslashReturn": true
+}
