@@ -1,26 +1,26 @@
 [settings]
 default_target_type = "symbolic"
 
-# Plain configs are grouped on disk so dotter maps each group with one line:
-#   config/shared/* → ~/.config/*   (every host)
-#   config/linux/*  → ~/.config/*   (Arch only)
-#   config/mac/*    → ~/.config/*   (macOS only)
-# Add a plain config = drop the dir into the right group, no edit here.
-# The entries below need special handling (templating, single-dir symlink, or
-# a target outside ~/.config) so they stay at config/ root and are listed.
+# config/ holds exactly four dirs:
+#   shared/  → ~/.config/*   plain configs, every host   (one-line recursive map)
+#   linux/   → ~/.config/*   plain Arch-only configs     (one-line recursive map)
+#   mac/     → ~/.config/*   plain macOS-only configs    (one-line recursive map)
+#   custom/  → configs needing special handling (templating, single-dir symlink,
+#              or a target outside ~/.config); listed individually below.
+# Add a plain config = drop the dir into shared/linux/mac, no edit here.
 # Hosts pick packages in .dotter/<hostname>.toml: macOS=["macos"], Arch=["arch"].
 [base.files]
 "local"          = "~/.local"
 "config/shared"  = "~/.config"
-"config/ghostty" = { target = "~/.config/ghostty", type = "template" }
-"config/tmux"    = { target = "~/.config/tmux", type = "template" }
-"config/nvim"    = { target = "~/.config/nvim", type = "symbolic", recurse = false }
-"config/git/gitconfig" = { target = "~/.gitconfig", type = "template" }
-"config/git/gitignore" = "~/.gitignore"
-"config/ssh"     = { target = "~/.ssh", type = "template" }
-"config/zsh"     = "~/.config/zsh"
-"config/zsh/.zshenv" = "~/.zshenv"
-"config/.markdownlint.jsonc" = "~/.markdownlint.jsonc"
+"config/custom/ghostty" = { target = "~/.config/ghostty", type = "template" }
+"config/custom/tmux"    = { target = "~/.config/tmux", type = "template" }
+"config/custom/nvim"    = { target = "~/.config/nvim", type = "symbolic", recurse = false }
+"config/custom/git/gitconfig" = { target = "~/.gitconfig", type = "template" }
+"config/custom/git/gitignore" = "~/.gitignore"
+"config/custom/ssh"     = { target = "~/.ssh", type = "template" }
+"config/custom/zsh"     = "~/.config/zsh"
+"config/custom/zsh/.zshenv" = "~/.zshenv"
+"config/custom/.markdownlint.jsonc" = "~/.markdownlint.jsonc"
 
 # ─── Linux desktop (Hyprland stack) ───
 [linux.files]
@@ -31,13 +31,13 @@ default_target_type = "symbolic"
 depends = ["base"]
 
 [macos.files]
-"config/mac"         = "~/.config"
-"config/karabiner"   = { target = "~/.config/karabiner", type = "symbolic", recurse = false }
-"config/a-bar/a-barrc" = "~/.a-barrc"
-"config/hammerspoon"   = { target = "~/.hammerspoon", type = "symbolic", recurse = false }
-"config/launchagents/com.user.borders.plist" = { target = "~/Library/LaunchAgents/com.user.borders.plist", type = "template" }
-"config/launchagents/com.user.colima.plist"  = { target = "~/Library/LaunchAgents/com.user.colima.plist",  type = "template" }
-"config/launchagents/com.user.tmux.plist"    = { target = "~/Library/LaunchAgents/com.user.tmux.plist",    type = "template" }
+"config/mac"                 = "~/.config"
+"config/custom/karabiner"    = { target = "~/.config/karabiner", type = "symbolic", recurse = false }
+"config/custom/a-bar/a-barrc" = "~/.a-barrc"
+"config/custom/hammerspoon"   = { target = "~/.hammerspoon", type = "symbolic", recurse = false }
+"config/custom/launchagents/com.user.borders.plist" = { target = "~/Library/LaunchAgents/com.user.borders.plist", type = "template" }
+"config/custom/launchagents/com.user.colima.plist"  = { target = "~/Library/LaunchAgents/com.user.colima.plist",  type = "template" }
+"config/custom/launchagents/com.user.tmux.plist"    = { target = "~/Library/LaunchAgents/com.user.tmux.plist",    type = "template" }
 
 # ─── Arch = base + linux + system files (/etc, root) ───
 [arch]
