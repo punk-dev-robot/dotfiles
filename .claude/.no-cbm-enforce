@@ -1,0 +1,3 @@
+# Presence of this file makes the global Claude enforcement hooks skip this repo:
+#   bash-ban-raw-tools.sh, cbm-code-discovery-gate, cbm-mcp-marker
+# All other hooks stay active. See config/shared/claude/hooks/.

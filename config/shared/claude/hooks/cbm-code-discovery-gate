@@ -2,6 +2,8 @@
 # Gate hook: nudges Claude toward codebase-memory-mcp for code discovery.
 # First Grep/Glob/Read/Search per session -> block. Subsequent -> allow.
 # PPID = Claude Code process PID, unique per session.
+# Per-repo opt-out: skip enforcement when project marks itself exempt.
+[ -f "${CLAUDE_PROJECT_DIR:-}/.claude/.no-cbm-enforce" ] && exit 0
 GATE=/tmp/cbm-code-discovery-gate-$PPID
 find /tmp -name 'cbm-code-discovery-gate-*' -mtime +1 -delete 2>/dev/null
 if [ -f "$GATE" ]; then

@@ -2,6 +2,8 @@
 # PostToolUse: touch the marker whenever a codebase-memory-mcp tool runs.
 # Paired with cbm-code-discovery-gate, which checks the marker's freshness.
 set -euo pipefail
+# Per-repo opt-out: skip enforcement when project marks itself exempt.
+[ -f "${CLAUDE_PROJECT_DIR:-}/.claude/.no-cbm-enforce" ] && exit 0
 INPUT=$(cat)
 TOOL=$(echo "$INPUT" | jq -r '.tool_name // empty')
 if [[ "$TOOL" == mcp__codebase-memory-mcp__* ]]; then

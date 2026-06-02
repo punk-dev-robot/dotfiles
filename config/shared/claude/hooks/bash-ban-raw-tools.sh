@@ -3,6 +3,8 @@
 # Global CLAUDE.md bans these in favour of Read/Grep/Glob/rtk. RTK wrappers pass.
 # Escape hatch: touch /tmp/bash-raw-unlock-$PPID.
 set -uo pipefail
+# Per-repo opt-out: skip enforcement when project marks itself exempt.
+[ -f "${CLAUDE_PROJECT_DIR:-}/.claude/.no-cbm-enforce" ] && exit 0
 # NOTE: deliberately NOT using `set -e`. Malformed JSON on stdin would make jq
 # exit non-zero; with -e the whole hook would exit 1, which Claude Code may
 # interpret as a tool block (false positive). Without -e, jq returns empty

@@ -82,16 +82,8 @@ If you can't be sure something worked, say so explicitly. "Migration completed" 
 
 ## Prefer improved built-in tools
 
-- `exa` instead of `WebSearch`
-- `firecrawl or exa` instead of `WebFetch`
-
-## Prefer modern cli tools
-
-- `rg` instead of `grep`
-- `fd` instead of `find`
-- `sd` instead of `sed`
-- `duf` instead of `df`
-- `dog` instead of `dig`
+- `exa` (using composio) instead of `WebSearch`
+- `firecrawl or exa` (using composio) instead of `WebFetch`
 
 <!-- codebase-memory-mcp:start -->
 
@@ -141,7 +133,7 @@ ALWAYS prefer MCP graph tools over grep/glob/file-search for code discovery.
 
 ### Banned Bash
 
-`cat`/`head`/`tail`/`grep`/`find`.
+`cat`/`head`/`tail`/`grep`/`find`/`rg`.
 
 ### Quickref
 
