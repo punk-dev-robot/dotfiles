@@ -1,5 +1,8 @@
 packages = ["macos"]
 
+[files]
+"config/cupcake" = "~/Library/Application Support/cupcake"
+
 [variables]
 gh_binary = "/opt/homebrew/bin/gh"
 delta_theme_path = "~/.config/delta/catppuccin.gitconfig"

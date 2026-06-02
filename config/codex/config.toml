@@ -16,6 +16,9 @@ args = [
   "/Users/kuba.gaj/Documents/notes",
 ]
 
+[mcp_servers.codebase-memory-mcp]
+command = "/Users/kuba.gaj/.local/bin/codebase-memory-mcp"
+
 [mcp_servers.node_repl]
 args = []
 command = "/Applications/Codex.app/Contents/Resources/node_repl"
@@ -57,7 +60,7 @@ hooks = true
 js_repl = false
 
 [marketplaces.openai-bundled]
-last_updated = "2026-05-27T21:35:12Z"
+last_updated = "2026-05-29T18:06:45Z"
 source_type = "local"
 source = "/Users/kuba.gaj/.config/codex/.tmp/bundled-marketplaces/openai-bundled"
 

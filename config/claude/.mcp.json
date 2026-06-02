@@ -1,0 +1,7 @@
+{
+    "mcpServers": {
+        "codebase-memory-mcp": {
+            "command": "/Users/kuba.gaj/.local/bin/codebase-memory-mcp"
+        }
+    }
+}

@@ -1,7 +1,7 @@
 # METADATA
 # scope: package
 # description: Helper functions for secure command analysis
-package cupcake.system.commands
+package cupcake.helpers.commands
 
 import rego.v1
 

@@ -1,0 +1,10 @@
+#!/bin/bash
+# PostToolUse: touch the marker whenever a codebase-memory-mcp tool runs.
+# Paired with cbm-code-discovery-gate, which checks the marker's freshness.
+set -euo pipefail
+INPUT=$(cat)
+TOOL=$(echo "$INPUT" | jq -r '.tool_name // empty')
+if [[ "$TOOL" == mcp__codebase-memory-mcp__* ]]; then
+  touch /tmp/cbm-mcp-used-$PPID
+fi
+exit 0

@@ -8,19 +8,24 @@ depends = [
   "alacritty",
   "atuin",
   "bat",
+  "bin-common",
   "bottom",
   "claude",
   "codex",
+  "cupcake",
   "delta",
+  "direnv",
   "docker",
   "ghostty",
   "git",
   "glab-cli",
   "k9s",
+  "keyboards",
   "kitty",
   "lazygit",
   "lnav",
   "luarocks",
+  "markdownlint",
   "mpv",
   "nvim",
   "opencode",
@@ -30,39 +35,36 @@ depends = [
   "tealdeer",
   "tmux",
   "worktrunk",
-  "keyboards",
   "yazi",
   "zsh",
-  "markdownlint",
-  "bin-common",
 ]
 
 [linux]
 depends = [
+  "1password-linux",
+  "bin-linux",
+  "chrome-flags",
   "common",
+  "desktop-entries",
+  "easyeffects",
+  "electron-flags",
   "hypr",
+  "iwgtk",
+  "mimeapps",
+  "pipewire",
+  "qt5ct",
+  "qt6ct",
   "rofi",
   "shikane",
   "swappy",
   "swaync",
+  "systemd-user",
+  "tridactyl",
+  "udiskie",
+  "uwsm",
+  "voxtype",
   "waybar",
   "wlogout",
-  "uwsm",
-  "udiskie",
-  "pipewire",
-  "easyeffects",
-  "qt5ct",
-  "qt6ct",
-  "tridactyl",
-  "voxtype",
-  "systemd-user",
-  "1password-linux",
-  "chrome-flags",
-  "electron-flags",
-  "iwgtk",
-  "mimeapps",
-  "desktop-entries",
-  "bin-linux",
 ]
 
 [macos]
@@ -102,8 +104,14 @@ depends = ["linux", "system"]
 [codex.files]
 "config/codex" = "~/.config/codex"
 
+[cupcake.files]
+"config/cupcake" = "~/.config/cupcake"
+
 [delta.files]
 "config/delta" = "~/.config/delta"
+
+[direnv.files]
+"config/direnv" = "~/.config/direnv"
 
 [ghostty.files]
 "config/ghostty" = { target = "~/.config/ghostty", type = "template" }

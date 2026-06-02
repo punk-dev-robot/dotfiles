@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-# Outputs OTLP Authorization header for Claude Code → Logfire EU.
+# Outputs OTLP ingestion-key header for Claude Code → SigNoz Cloud (EU).
 # Called by Claude Code when otelHeadersHelper is set in settings.json.
-# LOGFIRE_TOKEN is injected into the env by `op run --env-file` via the cld() wrapper.
-# Currently inert: native OTel export is broken upstream until anthropics/claude-code#50567 ships.
+# SIGNOZ_TOKEN is injected into the env by `op run --env-file` via the cld() wrapper.
+# SigNoz Cloud authenticates via the 'signoz-ingestion-key' header, not 'Authorization'.
+# ('signoz-access-token' is deprecated and rejected with: 5 NOT_FOUND: No key found in request)
+# Output MUST be a JSON header map; dynamic headers only fire on http/protobuf|http/json
+# (grpc ignores otelHeadersHelper and uses static OTEL_EXPORTER_OTLP_HEADERS instead).
 set -eu
-: "${LOGFIRE_TOKEN:?LOGFIRE_TOKEN is unset; run Claude Code via 'cld' so 1Password resolves secrets.env}"
-printf 'Authorization=%s\n' "$LOGFIRE_TOKEN"
+: "${SIGNOZ_TOKEN:?SIGNOZ_TOKEN is unset; run Claude Code via 'cld' so 1Password resolves secrets.env}"
+printf '{"signoz-ingestion-key":"%s"}' "$SIGNOZ_TOKEN"
