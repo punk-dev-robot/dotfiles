@@ -96,3 +96,4 @@ arch.pacman-list.pkg
 /.codex/skills
 /.github/skills
 /.vscode/skills
+/config/shared/claude/.claude.json

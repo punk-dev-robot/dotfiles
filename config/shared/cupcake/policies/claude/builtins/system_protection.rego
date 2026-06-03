@@ -11,9 +11,19 @@ package cupcake.global.policies.builtins.system_protection
 
 import rego.v1
 
+# Per-project loosening: the dotfiles repo manages system configs (/etc,
+# LaunchAgents, brew paths) and is a trusted workspace, so the broad system-path
+# block (which otherwise trips on every `2>/dev/null`, `/etc/...` reference, etc.)
+# is relaxed when the active session cwd is inside the dotfiles repo. Every other
+# project on the machine is unaffected.
+trusted_workspace if {
+	contains(lower(input.cwd), "/dotfiles")
+}
+
 # Block ANY file operations on critical system paths
 halt contains decision if {
 	input.hook_event_name == "PreToolUse"
+	not trusted_workspace
 
 	# Check for ANY file operation tools
 	file_operation_tools := {
@@ -44,6 +54,7 @@ halt contains decision if {
 halt contains decision if {
 	input.hook_event_name == "PreToolUse"
 	input.tool_name == "Bash"
+	not trusted_workspace
 
 	# Check if command references protected system paths
 	command := lower(input.tool_input.command)

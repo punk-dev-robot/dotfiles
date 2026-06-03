@@ -106,21 +106,10 @@
       "Bash(sudo rm *)",
       "Bash(reboot *)",
       "Bash(shutdown *)",
-      "Bash(poweroff *)",
-      "Bash(grep *)",
-      "Bash(grep)",
-      "Bash(egrep *)",
-      "Bash(fgrep *)",
-      "Bash(find *)",
-      "Bash(find)",
-      "Bash(sed *)",
-      "Bash(sed)"
+      "Bash(poweroff *)"
     ],
     "defaultMode": "auto",
-    "additionalDirectories": [
-      "~/dotfiles",
-      "~/Pictures/Screenshots"
-    ],
+    "additionalDirectories": ["~/dotfiles", "~/Pictures/Screenshots"],
     "skipDengerousModePermissionPrompt": true
   },
   "hooks": {
