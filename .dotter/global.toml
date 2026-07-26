@@ -21,6 +21,7 @@ default_target_type = "symbolic"
 "config/custom/zsh"     = "~/.config/zsh"
 "config/custom/zsh/.zshenv" = "~/.zshenv"
 "config/custom/.markdownlint.jsonc" = "~/.markdownlint.jsonc"
+"config/custom/pi/agent" = "~/.config/pi/agent"
 
 # ─── Linux desktop (Hyprland stack) ───
 [linux.files]

@@ -1,0 +1,22 @@
+{
+  "settings": {
+    "toolPrefix": "server",
+    "hostConfigDiscovery": "off",
+    "outputGuard": true
+  },
+  "mcpServers": {
+    "context-mode": {
+      "command": "context-mode",
+      "lifecycle": "lazy"
+    },
+    "codebase-memory-mcp": {
+      "command": "codebase-memory-mcp",
+      "lifecycle": "lazy",
+      "directTools": false
+    },
+    "logfire": {
+      "url": "https://logfire-eu.pydantic.dev/mcp",
+      "lifecycle": "lazy"
+    }
+  }
+}

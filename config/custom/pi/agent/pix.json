@@ -1,0 +1,9 @@
+{
+  "$version": 1,
+  "optimizer": {
+    "caveman": "full",
+    "rtk": true,
+    "toon": false,
+    "ponytail": "full"
+  }
+}
