@@ -241,62 +241,40 @@
     "command": "ccline"
   },
   "enabledPlugins": {
-    "agent-skills@addy-agent-skills": false,
     "caveman@caveman": true,
-    "clangd-lsp@claude-plugins-official": false,
     "claude-notifications-go@claude-notifications-go": true,
     "context-mode@context-mode": true,
-    "explanatory-output-style@claude-plugins-official": false,
     "linear-cli@linear-cli": true,
     "logfire-session-capture@pydantic-claude-code-logfire-plugin": false,
     "plannotator@plannotator": true,
-    "plugin-setup@shopware-ai-coding-tools": false,
-    "security-guidance@claude-plugins-official": false,
-    "skill-codex@skill-codex": false,
-    "skill-creator@claude-plugins-official": false,
-    "superpowers@claude-plugins-official": false
+    "security-guidance@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
-    "addy-agent-skills": {
-      "source": {
-        "source": "github",
-        "repo": "addyosmani/agent-skills"
-      }
-    },
     "caveman": {
       "source": {
         "source": "github",
         "repo": "JuliusBrussee/caveman"
-      }
+      },
+      "autoUpdate": true
     },
     "claude-notifications-go": {
       "source": {
         "source": "github",
         "repo": "777genius/claude-notifications-go"
-      }
-    },
-    "context-engine-skills": {
-      "source": {
-        "source": "github",
-        "repo": "Context-Engine-AI/Context-Engine"
-      }
+      },
+      "autoUpdate": true
     },
     "context-mode": {
       "source": {
         "source": "github",
         "repo": "mksglu/context-mode"
-      }
+      },
+      "autoUpdate": true
     },
     "linear-cli": {
       "source": {
         "source": "github",
         "repo": "schpet/linear-cli"
-      }
-    },
-    "n8n-mcp-skills": {
-      "source": {
-        "source": "github",
-        "repo": "czlonkowski/n8n-skills"
       },
       "autoUpdate": true
     },
@@ -313,25 +291,6 @@
         "repo": "pydantic/claude-code-logfire-plugin"
       },
       "autoUpdate": true
-    },
-    "shopware-ai-coding-tools": {
-      "source": {
-        "source": "github",
-        "repo": "shopwareLabs/ai-coding-tools"
-      },
-      "autoUpdate": true
-    },
-    "skill-codex": {
-      "source": {
-        "source": "github",
-        "repo": "skills-directory/skill-codex"
-      }
-    },
-    "thedotmack": {
-      "source": {
-        "source": "github",
-        "repo": "thedotmack/claude-mem"
-      }
     }
   },
   "otelHeadersHelper": "/Users/kuba.gaj/dotfiles/local/bin/claude-otel-headers",

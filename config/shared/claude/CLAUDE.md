@@ -53,10 +53,11 @@ If you can't be sure something worked, say so explicitly. "Migration completed" 
 
 ### External services
 
-1. Always use /notion skill for interacting with Notion
-2. For anything else, use `composio-cli`, including:
+1. Always use `notion` skill for interacting with Notion
+2. Always use `linear-cli` skill for interacting with Linear
+3. Always use `logfire` skills for interacting with Logfire
+4. For anything else, use `composio-cli`, including:
 
-- linear
 - slack
 - gmail
 - google calendar
@@ -70,12 +71,14 @@ If you can't be sure something worked, say so explicitly. "Migration completed" 
 - use `exa` and `firecrawl` through `composio-cli` instead of default `WebSearch` and `WebFetch`
 
 <!-- codebase-memory-mcp:start -->
+
 # Codebase Knowledge Graph (codebase-memory-mcp)
 
 This project uses codebase-memory-mcp to maintain a knowledge graph of the codebase.
 ALWAYS prefer MCP graph tools over grep/glob/file-search for code discovery.
 
 ## Priority Order
+
 1. `search_graph` — find functions, classes, routes, variables by pattern
 2. `trace_path` — trace who calls a function or what it calls
 3. `get_code_snippet` — read specific function/class source code
@@ -83,11 +86,13 @@ ALWAYS prefer MCP graph tools over grep/glob/file-search for code discovery.
 5. `get_architecture` — high-level project summary
 
 ## When to fall back to grep/glob
+
 - Searching for string literals, error messages, config values
 - Searching non-code files (Dockerfiles, shell scripts, configs)
 - When MCP tools return insufficient results
 
 ## Examples
+
 - Find a handler: `search_graph(name_pattern=".*OrderHandler.*")`
 - Who calls it: `trace_path(function_name="OrderHandler", direction="inbound")`
 - Read source: `get_code_snippet(qualified_name="pkg/orders.OrderHandler")`
@@ -138,7 +143,7 @@ Delegate default. Main = coordinator.
 - **Type**: `general-purpose` (edits), `Plan` (read-only arch), `Explore` (read-only nav).
 - **Prompt**: self-contained, <500 tok. Goal + context + constraint + return format.
 - **Return**: "report <200 words".
-- **Model**: default sonnet via env. Override `model: claude-opus-4-7` for refactor/audit/multi-file impact/edge-case-hunter/staff-engineer.
+- **Model**: default sonnet via env. Override `model: claude-opus-5-0` for refactor/audit/multi-file impact/edge-case-hunter/staff-engineer.
 - Big task → advisor after.
 
 ## RTK - Rust Token Killer
@@ -168,12 +173,5 @@ which rtk             # Verify correct binary
 
 All other commands are automatically rewritten by the Claude Code hook.
 Example: `git status` → `rtk git status` (transparent, 0 tokens overhead)
-
-Refer to CLAUDE.md for full command reference.
-
-- At the start of any task-oriented session — any interaction where you will use tools and produce deliverables — invoke the `task-observer` skill before beginning work. This ensures skill improvement opportunities are captured throughout the session.
-- When loading any skill, check the observation log for OPEN observations tagged to that skill. Apply their insights to the current work, even if the skill file hasn't been updated yet.
-- Workspace folder for `task-observer` is `~/Documents/notes/` — write `skill-observations/` and `skill-updates/` there, never to the current project cwd. The notes vault is the single cross-project skill library and observations must not fragment across per-project folders.
-- At the end of each session, if the user asks "Any observations logged?" produce the structured summary defined by the skill body.
 
 @../.tessl/RULES.md
