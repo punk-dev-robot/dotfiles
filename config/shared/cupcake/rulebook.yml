@@ -67,7 +67,7 @@ builtins:
   # code quality and prevents broken commits from entering the repository.
 
   git_pre_check:
-    enabled: true
+    enabled: false
     checks:
       - command: "echo Validation passed"
         message: "Basic validation check"
@@ -112,7 +112,7 @@ builtins:
   # This ensures code quality checks, linting, and security scans always run.
 
   git_block_no_verify:
-    enabled: true
+    enabled: false
     message: "Git operations with --no-verify are not permitted"
     # Optional: Add exceptions for specific environments
     # exceptions:
@@ -139,7 +139,7 @@ builtins:
   # approach for bash commands - only known-safe read operations are allowed.
 
   protected_paths:
-    enabled: true
+    enabled: false
     message: "System path modification blocked by policy"
     paths:
       - "/etc/"
@@ -157,13 +157,13 @@ builtins:
   # BOTH read and write operations. Essential for protecting Cupcake's own
   # configuration and sensitive system files.
 
-  rulebook_security_guardrails:
-    message: "Cupcake configuration files are protected from modification"
-    # Protected paths (defaults to [".cupcake/"] if not specified)
-    protected_paths:
-      - ".cupcake/"
-      - ".git/hooks/"
-      # - "secrets/"  # Add your own sensitive directories
+  # rulebook_security_guardrails:
+  #   message: "Cupcake configuration files are protected from modification"
+  #   # Protected paths (defaults to [".cupcake/"] if not specified)
+  #   protected_paths:
+  #     - ".cupcake/"
+  #     - ".git/hooks/"
+  # - "secrets/"  # Add your own sensitive directories
 
   # ===========================================================================
   # GLOBAL-TIER BUILTINS (machine-wide; only these ship .rego in global config)
@@ -173,16 +173,16 @@ builtins:
 
   # SYSTEM_PROTECTION - block modification of OS paths (/etc, /bin, /usr, ...)
   system_protection:
-    enabled: true
+    enabled: false
     # additional_paths:
     #   - "/opt/company/"
 
   # SENSITIVE_DATA_PROTECTION - block reading credentials/secrets (SSH keys, ...)
   sensitive_data_protection:
-    enabled: true
+    enabled: false
     # additional_patterns:
     #   - "*.myorg-secret"
 
   # CUPCAKE_EXEC_PROTECTION - block agents invoking the cupcake binary directly
   cupcake_exec_protection:
-    enabled: true
+    enabled: false

@@ -15,7 +15,7 @@ clipboard-write = allow
 
 {{#if is_macos}}
 # Auto-attach to tmux main session (escape hatch: ghostty -e /bin/zsh)
-command = /opt/homebrew/bin/tmux new-session -A -s main
+# command = /opt/homebrew/bin/tmux new-session -A -s main
 
 # Quick terminal (drop-down, Quake-style)
 # position change requires Ghostty restart; global keybind needs Accessibility permission

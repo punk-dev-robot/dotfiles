@@ -1,0 +1,11 @@
+#!/bin/bash
+# Restart AeroSpace to clear accumulated server-side CLI latency. Over days of
+# uptime the AeroSpace server's per-request round-trip grows (~0.3s fresh →
+# ~1s aged), which multiplies across the scratchpad-toggle path and makes
+# show/hide feel like a 3-4s lag. A restart resets it to the ~0.27s binary
+# floor. Scheduled daily via the com.user.aerospace-restart LaunchAgent.
+# killall misses because the process 'comm' is the full executable path, so
+# match on the argument instead.
+pkill -f 'AeroSpace.app/Contents/MacOS/AeroSpace'
+sleep 2
+open -a AeroSpace

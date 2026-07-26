@@ -167,13 +167,14 @@ alias lg='lazygit'
     wt warm
   }
 
+  alias wtcc='wtc --execute=claude'
   alias wts='wt switch'
   alias wtla='wt list --full'
   alias wtls='wt list'
   alias wtm='wt merge'
-  alias wtr='wt remove'
   alias wtcl='wt clean'
   alias wtd='wt step diff'
+  alias wtx='wt remove -f -D'
   alias wtX='wt prune'
 
 # kubernetes
@@ -284,4 +285,22 @@ oc() {
     fi
 }
 alias mem='basic-memory'
+
+# oh-my-pi with 1Password secret injection (same pattern as cld/oc)
+om() {
+    if [[ "$OSTYPE" == darwin* ]]; then
+        OP_SERVICE_ACCOUNT_TOKEN= op run --account my.1password.com --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null omp "$@"
+    else
+        OP_SERVICE_ACCOUNT_TOKEN= op run --account my.1password.com --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "omp $*"
+    fi
+}
+
+# Pi coding agent with 1Password secret injection (same pattern as cld/oc)
+pai() {
+    if [[ "$OSTYPE" == darwin* ]]; then
+        OP_SERVICE_ACCOUNT_TOKEN= op run --account my.1password.com --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null pi "$@"
+    else
+        OP_SERVICE_ACCOUNT_TOKEN= op run --account my.1password.com --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "pi $*"
+    fi
+}
 

@@ -48,22 +48,30 @@ center_scratchpad() {
   "$FRAME_HELPER" "$APP" "$target_monitor" >/dev/null 2>&1 &
 }
 
-find_tiled_instance() {
-  local target normalized workspace window_id app_name window_layout
-  target="$1"
-  normalized=$(normalize_name "$target")
+# Single list-windows pass: find the app's pinned/tiled instance AND the
+# current workspace of its floating (scratchpad) instance. Sets globals
+# TILED_ID and FLOATING_WS. Avoids a second server round-trip (previously a
+# `summon --dry-run` probe) — list-windows already reports each window's
+# workspace, so we derive show/hide/launch from this one call.
+TILED_ID=""
+FLOATING_WS=""
+scan_target() {
+  local normalized workspace window_id app_name window_layout
+  normalized=$(normalize_name "$APP")
 
   while IFS=$'\t' read -r workspace window_id app_name window_layout; do
     [ -z "$app_name" ] && continue
-    [[ "$workspace" == .scratchpad* ]] && continue
-    # Pinned = anything not floating; skip macos hidden-app marker.
-    [ "$window_layout" = "floating" ] && continue
     [ "$window_layout" = "macos_native_window_of_hidden_app" ] && continue
     [ "$(normalize_name "$app_name")" = "$normalized" ] || continue
-    printf '%s' "$window_id"
-    return 0
+
+    if [ "$window_layout" = "floating" ]; then
+      # Floating instance — its workspace decides show vs hide.
+      FLOATING_WS="$workspace"
+    elif [[ "$workspace" != .scratchpad* ]]; then
+      # Non-floating on a real workspace = user-pinned/tiled instance.
+      TILED_ID="$window_id"
+    fi
   done < <(/opt/homebrew/bin/aerospace list-windows --all --format '%{workspace}	%{window-id}	%{app-name}	%{window-layout}' 2>/dev/null)
-  return 1
 }
 
 hide_other_floating_scratchpads() {
@@ -90,30 +98,32 @@ hide_other_floating_scratchpads() {
   done < <(/opt/homebrew/bin/aerospace list-windows --all --format '%{workspace}	%{window-id}	%{app-name}	%{window-layout}' 2>/dev/null)
 }
 
+# Two server round-trips, done sequentially: the AeroSpace CLI server
+# serializes requests, so backgrounding one to "parallelize" saves nothing and
+# just adds fork cost. The real win is dropping the old `summon --dry-run`
+# probe — scan_target derives the floating window's workspace from the same
+# list-windows call, so this path is 3 round-trips (scan + focused + action)
+# instead of the previous 4.
+scan_target
+FOCUSED_WS=$(/opt/homebrew/bin/aerospace list-workspaces --focused 2>/dev/null)
+
 # Tiled instance pinned by user — focus only, never toggle to scratchpad.
-if tiled_id=$(find_tiled_instance "$APP"); then
-  /opt/homebrew/bin/aerospace focus --window-id "$tiled_id" >/dev/null 2>&1
+if [ -n "$TILED_ID" ]; then
+  /opt/homebrew/bin/aerospace focus --window-id "$TILED_ID" >/dev/null 2>&1
   disown -a 2>/dev/null || true
   exit 0
 fi
 
-result=$($SCRATCHPAD summon --output json "$APP" 2>&1)
-action=""
-[[ "$result" =~ \"result\":\"([a-z_]+)\" ]] && action="${BASH_REMATCH[1]}"
-
-case "$action" in
-  ok)
-    # Window summoned — cleanup other visible scratchpads + frame in background
-    { hide_other_floating_scratchpads "$APP"; center_scratchpad; } &
-    ;;
-  skipped)
-    # Already on current workspace — move to scratchpad (must block: user wants it gone)
-    $SCRATCHPAD move "$APP"
-    ;;
-  *)
-    # Not found — launch the app, then async cleanup + frame
-    eval "$LAUNCH"
-    { hide_other_floating_scratchpads "$APP"; center_scratchpad; } &
-    ;;
-esac
+if [ -z "$FLOATING_WS" ]; then
+  # No matching window exists — launch the app, then async cleanup + frame
+  eval "$LAUNCH"
+  { hide_other_floating_scratchpads "$APP"; center_scratchpad; } &
+elif [ -n "$FOCUSED_WS" ] && [ "$FLOATING_WS" = "$FOCUSED_WS" ]; then
+  # Already visible on the focused workspace — move to scratchpad (block: user wants it gone)
+  $SCRATCHPAD move "$APP"
+else
+  # Hidden in scratchpad (or on another workspace) — summon here, then async cleanup + frame
+  $SCRATCHPAD summon "$APP" >/dev/null 2>&1
+  { hide_other_floating_scratchpads "$APP"; center_scratchpad; } &
+fi
 disown -a 2>/dev/null || true

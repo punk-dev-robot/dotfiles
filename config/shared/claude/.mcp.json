@@ -1,5 +1,9 @@
 {
     "mcpServers": {
+        "logfire": {
+            "type": "http",
+            "url": "https://logfire-eu.pydantic.dev/mcp"
+        },
         "codebase-memory-mcp": {
             "command": "/Users/kuba.gaj/.local/bin/codebase-memory-mcp"
         }

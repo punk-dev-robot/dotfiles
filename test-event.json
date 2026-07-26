@@ -1,0 +1,8 @@
+{
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "tool_input": { "command": "echo 'Hello from Cupcake!'" },
+  "session_id": "test",
+  "cwd": "/tmp",
+  "transcript_path": "/tmp/transcript.md"
+}

@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# SessionStart hook: keep the CBM index of the current Window Shop platform repo
+# fresh, and prune dead worktree projects. Emits nothing to stdout (no context
+# noise). All real work is backgrounded so session start is never blocked.
+#
+# Freshness: index_repository(mode=fast) is incremental — its internal
+# file_hashes table skips unchanged files, so an unconditional background
+# reindex self-noops when nothing changed. That is the correct staleness
+# signal (detect_changes reports git-diff-vs-base, not index-vs-disk).
+#
+# Reconcile: any CBM project whose root_path no longer exists on disk is a dead
+# worktree left over from `wt remove --no-hooks`, a manual rm, or a crash.
+set -uo pipefail
+command -v codebase-memory-mcp >/dev/null 2>&1 || exit 0
+
+cwd="$(pwd)"
+base="$HOME/dev/swapc"
+case "$cwd" in
+  "$base"/*) : ;;
+  *) exit 0 ;;
+esac
+
+# Resolve the platform-repo root: the first path segment under ~/dev/swapc
+# (handles being deep inside, e.g. .../shopai/apps/search-api).
+rel="${cwd#"$base"/}"
+top="${rel%%/*}"
+root="$base/$top"
+[ -d "$root" ] || exit 0
+
+# 1. Background incremental reindex of the cwd repo.
+( codebase-memory-mcp cli index_repository \
+    "{\"repo_path\":\"$root\",\"mode\":\"fast\"}" >/dev/null 2>&1 & ) >/dev/null 2>&1
+
+# 2. Background reconcile sweep: delete projects with a missing root_path.
+( python3 - <<'PY' >/dev/null 2>&1 &
+import json, os, subprocess
+base = os.path.expanduser("~/dev/swapc") + "/"
+def cli(tool, payload):
+    r = subprocess.run(["codebase-memory-mcp", "cli", tool, json.dumps(payload)],
+                        capture_output=True, text=True, timeout=120)
+    o = r.stdout
+    i = o.find("{")
+    return json.loads(o[i:]) if i >= 0 else {}
+try:
+    data = cli("list_projects", {})
+    for p in data.get("projects", []):
+        rp = p.get("root_path", "")
+        # Only prune dead projects under ~/dev/swapc (avoids deleting repos on
+        # a temporarily-unmounted drive elsewhere).
+        if rp.startswith(base) and not os.path.isdir(rp):
+            cli("delete_project", {"project": p["name"]})
+except Exception:
+    pass
+PY
+) >/dev/null 2>&1
+
+exit 0

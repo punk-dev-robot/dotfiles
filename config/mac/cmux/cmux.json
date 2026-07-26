@@ -1,0 +1,88 @@
+{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
+  "schemaVersion": 1,
+
+  // "app": {
+  //   "appearance": "dark",
+  //   "menuBarOnly": false,
+  //   "newWorkspacePlacement": "afterCurrent",
+  //   "windowTitleTemplate": "[cmux:{windowToken}] {activeWorkspace}",
+  //   "confirmQuit": "always",
+  //   "openSupportedFilesInCmux": true,
+  //   "workspaceInheritWorkingDirectory": true,
+  //   "iMessageMode": true
+  // },
+
+  "terminal": {
+  //   "showScrollBar": false,
+  //   "copyOnSelect": true,
+  //   "autoResumeAgentSessions": true,
+     "showTextBoxOnNewTerminals": true,
+  //   "focusTextBoxOnNewTerminals": false,
+  //   "agentHibernation": {
+  //     "enabled": false,
+  //     "idleSeconds": 5,
+  //     "maxLiveTerminals": 12
+  //   },
+  //   "textBoxMaxLines": 10
+  },
+
+   "browser": {
+  //   "defaultSearchEngine": "kagi",
+  //   // For an unlisted provider, set "defaultSearchEngine": "custom" and fill these:
+  //   "customSearchEngineName": "My Search",
+  //   "customSearchEngineURLTemplate": "https://search.example.com/?q={query}",
+     "openTerminalLinksInCmuxBrowser": true,
+  //   "hostsToOpenInEmbeddedBrowser": ["localhost", "*.internal.example"]
+   },
+
+  // "markdown": {
+  //   // Default body font size (points) for newly opened markdown viewers.
+  //   // Zoom a viewer live with Cmd-+ / Cmd-- / Cmd-0.
+  //   "fontSize": 15,
+  //   // Default body font family. Empty keeps the system markdown font stack.
+  //   "fontFamily": "",
+  //   // Default maximum reading column width, in CSS pixels.
+  //   "maxWidth": 980
+  // },
+
+  // "fileEditor": {
+  //   // Wrap long lines at the editor's right edge instead of scrolling horizontally.
+  //   "wordWrap": false
+  // },
+
+  // "fileExplorer": {
+  //   // Double-click a file: preview (default), defaultEditor (macOS default app), or preferredEditor (the app.preferredEditor command).
+  //   "doubleClickAction": "preview"
+  // },
+
+  // "automation": {
+  //   "suppressSubagentNotifications": true
+  // },
+
+  // "workspaceColors": {
+  //   "colors": {
+  //     "Red": "#C0392B",
+  //     "Blue": "#1565C0",
+  //     "Neon Mint": "#00F5D4"
+  //   }
+  // },
+
+  // "workspaceGroups": {
+  //   "newWorkspacePlacement": "afterCurrent"
+  // },
+
+  // "agentChat": {
+  //   "url": "http://127.0.0.1:7739",
+  //   "startCommand": "cmux-chat"
+  // },
+
+  // "shortcuts": {
+  //   "bindings": {
+  //     "toggleSidebar": "cmd+b",
+  //     "toggleFileExplorer": "cmd+opt+b",
+  //     "newTab": ["ctrl+b", "c"],
+  //     "commandPalettePrevious": null
+  //   }
+  // },
+}

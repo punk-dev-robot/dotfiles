@@ -1,14 +1,9 @@
 #!/bin/bash
-# Gate hook: nudges Claude toward codebase-memory-mcp for code discovery.
-# First Grep/Glob/Read/Search per session -> block. Subsequent -> allow.
-# PPID = Claude Code process PID, unique per session.
-# Per-repo opt-out: skip enforcement when project marks itself exempt.
-[ -f "${CLAUDE_PROJECT_DIR:-}/.claude/.no-cbm-enforce" ] && exit 0
-GATE=/tmp/cbm-code-discovery-gate-$PPID
-find /tmp -name 'cbm-code-discovery-gate-*' -mtime +1 -delete 2>/dev/null
-if [ -f "$GATE" ]; then
-    exit 0
-fi
-touch "$GATE"
-echo 'BLOCKED: For code discovery, use codebase-memory-mcp tools first: search_graph(name_pattern) to find functions/classes, trace_path() for call chains, get_code_snippet(qualified_name) to read source. If the graph is not indexed yet, call index_repository first. Fall back to Grep/Glob/Read only for text content search. If you need Grep, retry.' >&2
-exit 2
+# codebase-memory-mcp search augmenter (Claude Code PreToolUse).
+# NOTE: the legacy filename is kept for zero-migration upgrades.
+# Despite the name this NEVER blocks a tool call - it only adds
+# graph context. Any failure is silent (exit 0, no output).
+BIN="/Users/kuba.gaj/.local/bin/codebase-memory-mcp"
+[ -x "$BIN" ] || exit 0
+"$BIN" hook-augment 2>/dev/null
+exit 0

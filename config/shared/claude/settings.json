@@ -14,7 +14,7 @@
     "CLAUDE_CODE_FORCE_SYNC_OUTPUT": "0",
     "CLAUDE_CODE_SCROLL_SPEED": "3",
     "CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT": "1",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-6",
     "CLAUDE_CODE_TMUX_TRUECOLOR": "1",
     "DISABLE_TELEMETRY": "1",
     "ENABLE_CLAUDEAI_MCP_SERVERS": "0",
@@ -86,7 +86,6 @@
       "Bash(pytest *)",
       "Bash(ruff *)",
       "ToolSearch",
-      "mcp__*",
       "Bash(curl -sS -X POST https://firestore.googleapis.com/v1/projects/swap-cloud-uat/databases/*)",
       "Bash(curl -sS https://firestore.googleapis.com/v1/projects/swap-cloud-uat/databases/*)",
       "Bash(gcloud firestore databases list --project swap-cloud-uat:*)",
@@ -109,46 +108,20 @@
       "Bash(poweroff *)"
     ],
     "defaultMode": "auto",
-    "additionalDirectories": ["~/dotfiles", "~/Pictures/Screenshots"],
+    "additionalDirectories": [
+      "~/dotfiles",
+      "~/Pictures/Screenshots"
+    ],
     "skipDengerousModePermissionPrompt": true
   },
+  "model": "opus[1m]",
   "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/notify.py"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "hooks": [
           {
             "type": "command",
             "command": "~/.config/claude/hooks/cbm-mcp-marker"
-          }
-        ]
-      },
-      {
-        "matcher": "Edit|MultiEdit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cupcake eval --harness claude --policy-dir $CLAUDE_PROJECT_DIR/.cupcake"
-          }
-        ]
-      }
-    ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/linear-agent-workflow.sh",
-            "timeout": 2
           }
         ]
       }
@@ -177,62 +150,19 @@
         ]
       },
       {
-        "matcher": "DISABLED_Edit|Write_DISABLED",
+        "matcher": "Grep|Glob",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude/hooks/spec-kit-plannotator.py"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cupcake eval --harness claude --policy-dir $CLAUDE_PROJECT_DIR/.cupcake"
-          }
-        ]
-      },
-      {
-        "matcher": "Grep|Glob|Read|Search",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/cbm-code-discovery-gate"
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cupcake eval --harness claude --policy-dir $CLAUDE_PROJECT_DIR/.cupcake"
+            "command": "~/.claude/hooks/cbm-code-discovery-gate",
+            "timeout": 5
           }
         ]
       }
     ],
     "SessionStart": [
       {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cupcake eval --harness claude --policy-dir $CLAUDE_PROJECT_DIR/.cupcake"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/task-observer-start.sh",
-            "timeout": 3
-          }
-        ]
-      },
-      {
-        "matcher": "startup",
+        "matcher": "startup|resume|clear|compact",
         "hooks": [
           {
             "type": "command",
@@ -241,29 +171,12 @@
         ]
       },
       {
-        "matcher": "resume",
+        "matcher": "startup|resume",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude/hooks/cbm-session-reminder"
-          }
-        ]
-      },
-      {
-        "matcher": "clear",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/cbm-session-reminder"
-          }
-        ]
-      },
-      {
-        "matcher": "compact",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/cbm-session-reminder"
+            "command": "/Users/kuba.gaj/dotfiles/config/shared/claude/hooks/cbm-freshness",
+            "timeout": 5
           }
         ]
       },
@@ -276,31 +189,48 @@
         ]
       },
       {
+        "matcher": "startup",
         "hooks": [
           {
             "type": "command",
-            "command": "cupcake eval --harness claude --policy-dir $CLAUDE_PROJECT_DIR/.cupcake"
+            "command": "~/.claude/hooks/cbm-session-reminder"
           }
         ]
-      }
-    ],
-    "Stop": [
+      },
       {
+        "matcher": "resume",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude/hooks/task-observer-stop.sh",
-            "timeout": 2
+            "command": "~/.claude/hooks/cbm-session-reminder"
           }
         ]
-      }
-    ],
-    "UserPromptSubmit": [
+      },
       {
+        "matcher": "clear",
         "hooks": [
           {
             "type": "command",
-            "command": "cupcake eval --harness claude --policy-dir $CLAUDE_PROJECT_DIR/.cupcake"
+            "command": "~/.claude/hooks/cbm-session-reminder"
+          }
+        ]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/cbm-session-reminder"
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/kuba.gaj/.config/claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
           }
         ]
       }
@@ -314,13 +244,15 @@
     "agent-skills@addy-agent-skills": false,
     "caveman@caveman": true,
     "clangd-lsp@claude-plugins-official": false,
+    "claude-notifications-go@claude-notifications-go": true,
     "context-mode@context-mode": true,
     "explanatory-output-style@claude-plugins-official": false,
+    "linear-cli@linear-cli": true,
     "logfire-session-capture@pydantic-claude-code-logfire-plugin": false,
     "plannotator@plannotator": true,
     "plugin-setup@shopware-ai-coding-tools": false,
     "security-guidance@claude-plugins-official": false,
-    "skill-codex@skill-codex": true,
+    "skill-codex@skill-codex": false,
     "skill-creator@claude-plugins-official": false,
     "superpowers@claude-plugins-official": false
   },
@@ -337,6 +269,12 @@
         "repo": "JuliusBrussee/caveman"
       }
     },
+    "claude-notifications-go": {
+      "source": {
+        "source": "github",
+        "repo": "777genius/claude-notifications-go"
+      }
+    },
     "context-engine-skills": {
       "source": {
         "source": "github",
@@ -347,6 +285,12 @@
       "source": {
         "source": "github",
         "repo": "mksglu/context-mode"
+      }
+    },
+    "linear-cli": {
+      "source": {
+        "source": "github",
+        "repo": "schpet/linear-cli"
       }
     },
     "n8n-mcp-skills": {
@@ -391,7 +335,7 @@
     }
   },
   "otelHeadersHelper": "/Users/kuba.gaj/dotfiles/local/bin/claude-otel-headers",
-  "effortLevel": "high",
+  "effortLevel": "medium",
   "advisorModel": "opus",
   "showClearContextOnPlanAccept": true,
   "tui": "fullscreen",

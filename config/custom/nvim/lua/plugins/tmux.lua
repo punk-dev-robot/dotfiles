@@ -1,4 +1,4 @@
-if not vim.env.TMUX or vim.env.TMUX == "" then
+if vim.env.HERDR_ENV == "1" or not vim.env.TMUX or vim.env.TMUX == "" then
   return {}
 end
 
