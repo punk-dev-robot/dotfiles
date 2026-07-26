@@ -14,7 +14,7 @@
     "CLAUDE_CODE_FORCE_SYNC_OUTPUT": "0",
     "CLAUDE_CODE_SCROLL_SPEED": "3",
     "CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT": "1",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-4-6",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "claude-sonnet-5",
     "CLAUDE_CODE_TMUX_TRUECOLOR": "1",
     "DISABLE_TELEMETRY": "1",
     "ENABLE_CLAUDEAI_MCP_SERVERS": "0",
@@ -114,7 +114,7 @@
     ],
     "skipDengerousModePermissionPrompt": true
   },
-  "model": "opus[1m]",
+  "model": "sonnet",
   "hooks": {
     "PostToolUse": [
       {
@@ -294,7 +294,7 @@
     }
   },
   "otelHeadersHelper": "/Users/kuba.gaj/dotfiles/local/bin/claude-otel-headers",
-  "effortLevel": "medium",
+  "effortLevel": "high",
   "advisorModel": "opus",
   "showClearContextOnPlanAccept": true,
   "tui": "fullscreen",

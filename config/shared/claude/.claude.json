@@ -1,53 +1,53 @@
 {
-  "numStartups": 469,
+  "numStartups": 479,
   "installMethod": "native",
   "autoUpdates": false,
   "hasSeenTasksHint": true,
   "tipsHistory": {
     "new-user-warmup": 7,
-    "color-when-multi-clauding": 458,
+    "color-when-multi-clauding": 476,
     "terminal-setup": 210,
-    "memory-command": 457,
+    "memory-command": 472,
     "theme-command": 462,
     "status-line": 51,
     "prompt-queue": 1,
     "enter-to-steer-in-relatime": 463,
     "todo-list": 466,
-    "ide-upsell-external-terminal": 464,
-    "install-github-app": 460,
+    "ide-upsell-external-terminal": 475,
+    "install-github-app": 470,
     "install-slack-app": 464,
-    "drag-and-drop-images": 458,
-    "paste-images-mac": 464,
-    "double-esc-code-restore": 458,
-    "continue": 458,
-    "shift-tab": 458,
+    "drag-and-drop-images": 470,
+    "paste-images-mac": 474,
+    "double-esc-code-restore": 470,
+    "continue": 470,
+    "shift-tab": 470,
     "image-paste": 467,
     "desktop-app": 139,
     "web-app": 467,
     "mobile-app": 80,
     "voice-mode": 464,
-    "custom-agents": 454,
+    "custom-agents": 470,
     "agent-flag": 145,
     "feedback-command": 467,
-    "permissions": 458,
+    "permissions": 470,
     "rename-conversation": 469,
     "custom-commands": 153,
-    "git-worktrees": 460,
-    "auto-copy-config-hint": 455,
+    "git-worktrees": 470,
+    "auto-copy-config-hint": 478,
     "frontend-design-plugin": 404,
-    "subagent-fanout-nudge": 469,
+    "subagent-fanout-nudge": 473,
     "agents-view-multiclauding": 389,
-    "plan-mode-for-complex-tasks": 467,
-    "dynamic-workflows": 467,
+    "plan-mode-for-complex-tasks": 472,
+    "dynamic-workflows": 477,
     "plugin-disuse-review": 438,
-    "code-review-low-fast": 462,
-    "workflow-size-prompting-ambient": 463,
+    "code-review-low-fast": 478,
+    "workflow-size-prompting-ambient": 475,
     "c4e-desktop": 455,
-    "loop-command-nudge": 468,
+    "loop-command-nudge": 471,
     "c4e-remote-sessions": 469,
-    "goal-command-nudge": 469
+    "goal-command-nudge": 473
   },
-  "promptQueueUseCount": 730,
+  "promptQueueUseCount": 752,
   "btwUseCount": 8,
   "cachedGrowthBookFeatures": {
     "tengu_bridge_poll_interval_config": {
@@ -540,7 +540,7 @@
       "lastAPIDuration": 0,
       "lastAPIDurationWithoutRetries": 0,
       "lastToolDuration": 0,
-      "lastDuration": 230236,
+      "lastDuration": 43094,
       "lastLinesAdded": 0,
       "lastLinesRemoved": 0,
       "lastTotalInputTokens": 0,
@@ -549,7 +549,7 @@
       "lastTotalCacheReadInputTokens": 0,
       "lastTotalWebSearchRequests": 0,
       "lastModelUsage": {},
-      "lastSessionId": "9d63ec97-e613-4b54-9f61-ffe6c27ec239",
+      "lastSessionId": "ef21ca28-8ec5-4abf-88bb-58aca205e7a1",
       "lastSessionMetrics": {
         "hook_duration_ms_count": 12,
         "hook_duration_ms_min": 1061,
@@ -596,11 +596,11 @@
       "lastHintSessionId": "c843dcdf-5d13-4194-b7ef-7985a3057aed",
       "lastSessionFirstPrompt": "earlier today my system ran out of disk space and when we investigated we found the culprit was in the git repos in ~/dev/swapc we thought it was lazygit pulling and changed it's settings but it happe",
       "lastSessionModified": 1778639342081,
-      "lastVersionBase": "2.1.218",
+      "lastVersionBase": "2.1.220",
       "mcpServers": {},
-      "lastStartTime": 1785032174507,
-      "lastFpsAverage": 1.7,
-      "lastFpsLow1Pct": 129.65
+      "lastStartTime": 1785043319325,
+      "lastFpsAverage": 3.49,
+      "lastFpsLow1Pct": 131.14
     },
     "/Users/kuba.gaj/dotfiles/.claude/worktrees/stupefied-bhabha-143181": {
       "allowedTools": [],
@@ -1391,31 +1391,40 @@
       "projectOnboardingSeenCount": 0,
       "hasClaudeMdExternalIncludesApproved": true,
       "hasClaudeMdExternalIncludesWarningShown": true,
-      "lastGracefulShutdown": true,
-      "lastVersionBase": "2.1.217",
+      "lastGracefulShutdown": false,
+      "lastVersionBase": "2.1.220",
       "exampleFiles": [
-        "agent.service.ts",
-        "stores.service.ts",
+        "feature-flags.type.ts",
         "index.ts",
         "feature-flag-defaults.const.ts",
-        "feature-flag-key.enum.ts"
+        "feature-flag-key.enum.ts",
+        "stores.service.ts"
       ],
-      "exampleFilesGeneratedAt": 1784165325413,
+      "exampleFilesGeneratedAt": 1785056852181,
       "hasCompletedProjectOnboarding": true,
-      "lastCost": 0,
-      "lastAPIDuration": 0,
-      "lastAPIDurationWithoutRetries": 0,
-      "lastToolDuration": 0,
-      "lastDuration": 36711,
-      "lastLinesAdded": 0,
-      "lastLinesRemoved": 0,
-      "lastTotalInputTokens": 0,
-      "lastTotalOutputTokens": 0,
-      "lastTotalCacheCreationInputTokens": 0,
-      "lastTotalCacheReadInputTokens": 0,
+      "lastCost": 28.271701000000004,
+      "lastAPIDuration": 728269,
+      "lastAPIDurationWithoutRetries": 727142,
+      "lastToolDuration": 312466,
+      "lastDuration": 4322704,
+      "lastLinesAdded": 268,
+      "lastLinesRemoved": 65,
+      "lastTotalInputTokens": 1102,
+      "lastTotalOutputTokens": 41055,
+      "lastTotalCacheCreationInputTokens": 525552,
+      "lastTotalCacheReadInputTokens": 15696891,
       "lastTotalWebSearchRequests": 0,
-      "lastModelUsage": {},
-      "lastSessionId": "d352b1b4-12d0-4730-9be7-e06cff26810e",
+      "lastModelUsage": {
+        "claude-fable-5[1m]": {
+          "inputTokens": 1102,
+          "outputTokens": 41055,
+          "cacheReadInputTokens": 15696891,
+          "cacheCreationInputTokens": 525552,
+          "webSearchRequests": 0,
+          "costUSD": 28.271701000000004
+        }
+      },
+      "lastSessionId": "fcfd0bf4-a516-4ac3-ac76-e08e88e82548",
       "lastHintSessionId": "e450943a-e6c6-4f93-a362-e85a7f9d0ea1",
       "lastSessionFirstPrompt": "1. first make sure we are on latest develop here",
       "lastSessionModified": 1779481327608,
@@ -1442,9 +1451,9 @@
         "pre_tool_hook_duration_ms_p95": 818.1499999999994,
         "pre_tool_hook_duration_ms_p99": 1195.6100000000006
       },
-      "lastStartTime": 1784744015549,
-      "lastFpsAverage": 0.67,
-      "lastFpsLow1Pct": 89.67
+      "lastStartTime": 1785088230389,
+      "lastFpsAverage": 1.27,
+      "lastFpsLow1Pct": 69.48
     },
     "/Users/kuba.gaj/dev/swapc/shopai": {
       "allowedTools": [],
@@ -1457,55 +1466,39 @@
       "hasClaudeMdExternalIncludesApproved": true,
       "hasClaudeMdExternalIncludesWarningShown": true,
       "lastGracefulShutdown": true,
-      "lastVersionBase": "2.1.216",
+      "lastVersionBase": "2.1.220",
       "exampleFiles": [
         "storage_stage.py",
         "product.py",
-        "test_discovery_service.py",
-        "product_repository.py",
-        "Makefile"
+        "pipeline_state_machine.py",
+        "Makefile",
+        "test_discovery_service.py"
       ],
-      "exampleFilesGeneratedAt": 1784281317537,
+      "exampleFilesGeneratedAt": 1785067067064,
       "hasCompletedProjectOnboarding": true,
-      "lastCost": 544.3688766999999,
-      "lastAPIDuration": 6482709,
-      "lastAPIDurationWithoutRetries": 6301304,
-      "lastToolDuration": 5637715,
-      "lastDuration": 34131726,
-      "lastLinesAdded": 1334,
-      "lastLinesRemoved": 134,
-      "lastTotalInputTokens": 354390,
-      "lastTotalOutputTokens": 275724,
-      "lastTotalCacheCreationInputTokens": 22293666,
-      "lastTotalCacheReadInputTokens": 91132960,
+      "lastCost": 43.34287100000001,
+      "lastAPIDuration": 1381752,
+      "lastAPIDurationWithoutRetries": 1380750,
+      "lastToolDuration": 417378,
+      "lastDuration": 3827076,
+      "lastLinesAdded": 181,
+      "lastLinesRemoved": 29,
+      "lastTotalInputTokens": 1349,
+      "lastTotalOutputTokens": 81254,
+      "lastTotalCacheCreationInputTokens": 601641,
+      "lastTotalCacheReadInputTokens": 27233861,
       "lastTotalWebSearchRequests": 0,
       "lastModelUsage": {
-        "claude-opus-4-8[1m]": {
-          "inputTokens": 955,
-          "outputTokens": 19733,
-          "cacheReadInputTokens": 1191902,
-          "cacheCreationInputTokens": 273838,
-          "webSearchRequests": 0,
-          "costUSD": 3.8324310000000006
-        },
-        "claude-sonnet-4-6": {
-          "inputTokens": 7098,
-          "outputTokens": 16079,
-          "cacheReadInputTokens": 1145499,
-          "cacheCreationInputTokens": 337198,
-          "webSearchRequests": 0,
-          "costUSD": 2.6293166999999995
-        },
         "claude-fable-5[1m]": {
-          "inputTokens": 346337,
-          "outputTokens": 239912,
-          "cacheReadInputTokens": 88795559,
-          "cacheCreationInputTokens": 21682630,
+          "inputTokens": 1349,
+          "outputTokens": 81254,
+          "cacheReadInputTokens": 27233861,
+          "cacheCreationInputTokens": 601641,
           "webSearchRequests": 0,
-          "costUSD": 537.9071289999998
+          "costUSD": 43.34287100000001
         }
       },
-      "lastSessionId": "de651314-4d41-46e5-bac3-fd01b9baf3a9",
+      "lastSessionId": "9ceed9d0-cbca-43c7-b230-16cf39f7d182",
       "lastHintSessionId": "b76f6d7b-4e71-4dd0-a939-533271f9535a",
       "lastSessionFirstPrompt": "@/tmp/handoff-customAttributes-empty-on-canonical.md",
       "lastSessionModified": 1779487087028,
@@ -1532,9 +1525,9 @@
         "pre_tool_hook_duration_ms_p95": 5784.399999999999,
         "pre_tool_hook_duration_ms_p99": 6558.49
       },
-      "lastFpsAverage": 0.76,
-      "lastFpsLow1Pct": 33.15,
-      "lastStartTime": 1784609269930
+      "lastFpsAverage": 3.13,
+      "lastFpsLow1Pct": 246.67,
+      "lastStartTime": 1785067065765
     },
     "/Users/kuba.gaj/dev/oss/cupcake": {
       "allowedTools": [],
@@ -1846,12 +1839,12 @@
     }
   },
   "userID": "5ca96593d0443e02533e0dd34c745a54c04588c56a5db702b09ff2b0d27f71be",
-  "cachedExtraUsageDisabledReason": "org_spend_cap_reached",
+  "cachedExtraUsageDisabledReason": null,
   "claudeCodeFirstTokenDate": "2026-04-08T16:08:56.688023Z",
   "hasCompletedOnboarding": true,
   "lastOnboardingVersion": "2.1.104",
   "effortCalloutV2Dismissed": true,
-  "lastReleaseNotesSeen": "2.1.218",
+  "lastReleaseNotesSeen": "2.1.220",
   "githubRepoPaths": {
     "punk-dev-robot/dotfiles": [
       "/Users/kuba.gaj/dotfiles"
@@ -1889,6 +1882,7 @@
       "/Users/kuba.gaj/dev/oss/punkfl0w"
     ],
     "swapcommerce/window-shop-ai": [
+      "/Users/kuba.gaj/dev/swapc/shopai.AGI-5861-pipeline-stage-vocabulary",
       "/Users/kuba.gaj/dev/swapc/shopai.AGI-5861-ingestion-observability",
       "/Users/kuba.gaj/dev/swapc/shopai",
       "/Users/kuba.gaj/dev/swapc/shopai.AGI-5100-ingestion-otel",
@@ -1921,7 +1915,7 @@
   },
   "officialMarketplaceAutoInstallAttempted": true,
   "officialMarketplaceAutoInstalled": true,
-  "penguinModeOrgEnabled": true,
+  "penguinModeOrgEnabled": false,
   "overageCreditGrantCache": {
     "4d35695d-287b-4ff8-8bb3-b0a456f1aae6": {
       "info": {
@@ -1935,7 +1929,7 @@
     }
   },
   "autoPermissionsNotificationCount": 3,
-  "lastPlanModeUse": 1783999145477,
+  "lastPlanModeUse": 1785085475604,
   "metricsStatusCache": {
     "enabled": true,
     "timestamp": 1779931625683
@@ -1981,8 +1975,8 @@
       "lastUsedAt": 1778076339363
     },
     "plannotator-review": {
-      "usageCount": 66,
-      "lastUsedAt": 1784618284963
+      "usageCount": 70,
+      "lastUsedAt": 1785091675593
     },
     "running-dev-server": {
       "usageCount": 4,
@@ -2165,8 +2159,8 @@
       "lastUsedAt": 1778570590433
     },
     "tessl__notion": {
-      "usageCount": 15,
-      "lastUsedAt": 1784216255214
+      "usageCount": 17,
+      "lastUsedAt": 1785067424535
     },
     "chunkhound-integration:chunkhound-status": {
       "usageCount": 2,
@@ -2189,8 +2183,8 @@
       "lastUsedAt": 1780039122035
     },
     "create-pull-request": {
-      "usageCount": 13,
-      "lastUsedAt": 1784621549485
+      "usageCount": 14,
+      "lastUsedAt": 1785069961350
     },
     "create-alembic-migration": {
       "usageCount": 2,
@@ -2221,8 +2215,8 @@
       "lastUsedAt": 1779441834527
     },
     "plannotator-last": {
-      "usageCount": 1,
-      "lastUsedAt": 1779463360056
+      "usageCount": 2,
+      "lastUsedAt": 1785067906871
     },
     "connecting-to-swap-db": {
       "usageCount": 6,
@@ -2341,8 +2335,8 @@
       "lastUsedAt": 1784296285490
     },
     "linear-cli:linear-cli": {
-      "usageCount": 3,
-      "lastUsedAt": 1784332059067
+      "usageCount": 7,
+      "lastUsedAt": 1785088947561
     }
   },
   "showSpinnerTree": false,
@@ -2366,46 +2360,46 @@
   "hasUsedBackslashReturn": true,
   "hasSeenAutoModeEntryWarning": true,
   "tipLifetimeShownCounts": {
-    "shift-tab": 11,
+    "shift-tab": 12,
     "voice-mode": 7,
     "todo-list": 7,
     "image-paste": 7,
     "rename-conversation": 9,
-    "ide-upsell-external-terminal": 25,
-    "custom-agents": 8,
-    "permissions": 11,
-    "color-when-multi-clauding": 10,
-    "memory-command": 8,
-    "drag-and-drop-images": 11,
-    "paste-images-mac": 11,
-    "double-esc-code-restore": 10,
-    "continue": 10,
-    "auto-copy-config-hint": 9,
+    "ide-upsell-external-terminal": 27,
+    "custom-agents": 9,
+    "permissions": 12,
+    "color-when-multi-clauding": 11,
+    "memory-command": 9,
+    "drag-and-drop-images": 12,
+    "paste-images-mac": 12,
+    "double-esc-code-restore": 11,
+    "continue": 11,
+    "auto-copy-config-hint": 10,
     "theme-command": 6,
     "enter-to-steer-in-relatime": 6,
     "web-app": 6,
-    "git-worktrees": 6,
-    "install-github-app": 6,
+    "git-worktrees": 7,
+    "install-github-app": 7,
     "install-slack-app": 6,
     "feedback-command": 5,
     "agents-view-multiclauding": 5,
-    "plan-mode-for-complex-tasks": 6,
-    "dynamic-workflows": 19,
+    "plan-mode-for-complex-tasks": 7,
+    "dynamic-workflows": 22,
     "plugin-disuse-review": 2,
     "frontend-design-plugin": 1,
-    "code-review-low-fast": 7,
-    "workflow-size-prompting-ambient": 5,
+    "code-review-low-fast": 9,
+    "workflow-size-prompting-ambient": 6,
     "c4e-desktop": 1,
-    "loop-command-nudge": 1,
+    "loop-command-nudge": 2,
     "c4e-remote-sessions": 1,
-    "goal-command-nudge": 1,
-    "subagent-fanout-nudge": 1
+    "goal-command-nudge": 2,
+    "subagent-fanout-nudge": 2
   },
   "pluginUsage": {
     "caveman@caveman": {
-      "usageCount": 825,
-      "lastUsedAt": 1785032175527,
-      "lastUsedNumStartups": 469
+      "usageCount": 898,
+      "lastUsedAt": 1785092561189,
+      "lastUsedNumStartups": 479
     },
     "context-mode@context-mode": {
       "usageCount": 9542,
@@ -2417,48 +2411,84 @@
       "lastUsedAt": 1784610420327,
       "lastUsedNumStartups": 456
     },
-    "skill-codex@skill-codex": {
-      "usageCount": 0,
-      "lastUsedAt": 1780615923071,
-      "lastUsedNumStartups": 363
-    },
     "claude-notifications-go@claude-notifications-go": {
-      "usageCount": 1096,
-      "lastUsedAt": 1784676296850,
-      "lastUsedNumStartups": 467
+      "usageCount": 1191,
+      "lastUsedAt": 1785092307064,
+      "lastUsedNumStartups": 478
     },
     "linear-cli@linear-cli": {
-      "usageCount": 3,
-      "lastUsedAt": 1784332059068,
-      "lastUsedNumStartups": 449
+      "usageCount": 7,
+      "lastUsedAt": 1785088947561,
+      "lastUsedNumStartups": 478
+    },
+    "security-guidance@claude-plugins-official": {
+      "usageCount": 404,
+      "lastUsedAt": 1785092561189,
+      "lastUsedNumStartups": 479
     }
   },
   "machineID": "3650676dbf463c23d31f4e9d20f81eecbb0e6228c78a00e679e3bb2c506b44c0",
+  "cachedChromeExtensionInstalled": true,
   "oauthAccount": {
-    "accountUuid": "5ed99ea9-85b0-47b6-b00a-408a3eb8bc6b",
-    "emailAddress": "kuba.gaj@swap-commerce.com",
-    "organizationUuid": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6",
-    "hasExtraUsageEnabled": true,
-    "billingType": "stripe_subscription_contracted",
-    "accountCreatedAt": "2026-04-08T09:55:13.365708Z",
-    "subscriptionCreatedAt": "2026-03-13T07:00:20.208242Z",
+    "accountUuid": "bec0f6bb-7527-4199-ad47-77831fc24ccc",
+    "emailAddress": "kuba.gaj@gmail.com",
+    "organizationUuid": "923787e0-18e0-4f56-906d-abe2b0ef6be5",
+    "hasExtraUsageEnabled": false,
+    "billingType": "stripe_subscription",
+    "accountCreatedAt": "2025-05-17T23:33:28.769350Z",
+    "subscriptionCreatedAt": "2025-05-22T03:01:55.271969Z",
     "ccOnboardingFlags": {},
     "claudeCodeTrialEndsAt": null,
     "claudeCodeTrialDurationDays": null,
-    "seatTier": "enterprise_usage_based",
+    "seatTier": null,
     "displayName": "Kuba",
-    "organizationRole": "user",
+    "profileFetchedAt": 1785056899209,
+    "organizationRole": "admin",
     "workspaceRole": null,
-    "organizationName": "Swap Commerce Ltd",
-    "organizationType": "claude_enterprise",
-    "organizationRateLimitTier": "default_raven_enterprise",
-    "userRateLimitTier": "default_claude_zero",
-    "profileFetchedAt": 1784595041216
+    "organizationName": "kuba.gaj@gmail.com's Organization",
+    "organizationType": "claude_max",
+    "organizationRateLimitTier": "default_claude_max_20x",
+    "userRateLimitTier": null
   },
-  "clientDataCache": {
-    "cedar_lagoon": {
-      "claude-fable": true,
-      "claude-mythos": true
+  "clientDataCacheSlots": {
+    "bi1-bbf62059092b9380": {
+      "data": {
+        "cedar_lagoon": {
+          "claude-fable": true,
+          "claude-mythos": true
+        },
+        "cedar_basin": "2026-08-31"
+      },
+      "at": 1785092551050,
+      "entrypoint": "cli",
+      "model": "claude-sonnet-5",
+      "org": "923787e0-18e0-4f56-906d-abe2b0ef6be5"
+    },
+    "bi1-0d2ed22f3e75987e": {
+      "data": {
+        "cedar_lagoon": {
+          "claude-fable": true,
+          "claude-mythos": true
+        },
+        "cedar_basin": "2026-08-31"
+      },
+      "at": 1785083903425,
+      "entrypoint": "cli",
+      "model": "claude-fable-5",
+      "org": "923787e0-18e0-4f56-906d-abe2b0ef6be5"
+    },
+    "bi1-cb31202d6f4996ae": {
+      "data": {
+        "cedar_lagoon": {
+          "claude-fable": true,
+          "claude-mythos": true
+        },
+        "cedar_basin": "2026-08-31"
+      },
+      "at": 1785056899786,
+      "entrypoint": "cli",
+      "model": "claude-opus-5",
+      "org": "923787e0-18e0-4f56-906d-abe2b0ef6be5"
     }
   },
   "additionalModelOptionsCache": [
@@ -2469,211 +2499,131 @@
     }
   ],
   "additionalModelCostsCache": {},
+  "modelAccessCache": [],
+  "orgModelDefaultCache": null,
   "autoCompactWindowsCache": null,
-  "clientDataCacheSlots": {
-    "bi1-31f563bcf0f62616": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1784675139270,
-      "entrypoint": "cli",
-      "model": "claude-fable-5",
-      "org": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6"
-    },
-    "bi1-50ffe14329787176": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1784674811538,
-      "entrypoint": "cli",
-      "model": "claude-opus-4-8",
-      "org": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6"
-    },
-    "bi1-980066cde2be693e": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1784610565197,
-      "entrypoint": "cli",
-      "model": "claude-fable-5",
-      "org": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6"
-    },
-    "bi1-cb179aef0ecf47e0": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1784609273178,
-      "entrypoint": "cli",
-      "model": "claude-opus-4-8",
-      "org": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6"
-    },
-    "bi1-33fc97bbfccc6ac4": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1784508935033,
-      "entrypoint": "cli",
-      "model": "claude-sonnet-4-6",
-      "org": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6"
-    },
-    "bi1-d1743475e09caf4c": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1784503972650,
-      "entrypoint": "cli",
-      "model": "claude-fable-5",
-      "org": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6"
-    },
-    "bi1-63ed1e2ea0abf18b": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1784257819682,
-      "entrypoint": "cli",
-      "model": "claude-sonnet-4-6",
-      "org": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6"
-    },
-    "bi1-b35586b0d548ce56": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1784255314768,
-      "entrypoint": "cli",
-      "model": "claude-fable-5",
-      "org": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6"
-    },
-    "bi1-31fb2b80f3705d3e": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1784215760227,
-      "entrypoint": "cli",
-      "model": "claude-fable-5",
-      "org": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6"
-    },
-    "bi1-7846bfba7f4c2b5d": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1784176850762,
-      "entrypoint": "cli",
-      "model": "claude-opus-4-8",
-      "org": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6"
-    },
-    "bi1-b73a78a47f8ba2f6": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1784165325296,
-      "entrypoint": "cli",
-      "model": "claude-opus-4-8",
-      "org": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6"
-    },
-    "bi1-8a9172e67081f536": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1784164776557,
-      "entrypoint": "cli",
-      "model": "claude-opus-4-8",
-      "org": "4d35695d-287b-4ff8-8bb3-b0a456f1aae6"
+  "groveConfigCache": {
+    "bec0f6bb-7527-4199-ad47-77831fc24ccc": {
+      "grove_enabled": true,
+      "timestamp": 1785057390989
     }
   },
-  "modelAccessCache": [
-    {
-      "apiName": "claude-3-opus-20240229",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-fable-5",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-haiku-4-5-20251001",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-opus-4-1-20250805-claude-ai",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-opus-4-5-20251101",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-opus-4-6",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-opus-4-7",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-opus-4-8",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-sonnet-4-5-20250929",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-sonnet-4-6",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-sonnet-5",
-      "entitled": true
+  "passesEligibilityCache": {
+    "923787e0-18e0-4f56-906d-abe2b0ef6be5": {
+      "eligible": true,
+      "referral_code_details": {
+        "code": "DPnIuaP7dw",
+        "campaign": "claude_code_guest_pass",
+        "referral_link": "https://claude.ai/referral/DPnIuaP7dw"
+      },
+      "referrer_reward": null,
+      "remaining_passes": 3,
+      "limit": 3,
+      "share_link": "https://claude.ai/referral/DPnIuaP7dw",
+      "terms_url": "https://support.claude.com/en/articles/12875061-claude-code-guest-passes",
+      "timestamp": 1785057391789
     }
-  ],
-  "orgModelDefaultCache": null,
-  "cachedChromeExtensionInstalled": true
+  },
+  "passesUpsellSeenCount": 3,
+  "hasVisitedPasses": false,
+  "passesLastSeenRemaining": 3,
+  "cachedUsageUtilization": {
+    "fetchedAtMs": 1785083573229,
+    "accountUuid": "bec0f6bb-7527-4199-ad47-77831fc24ccc",
+    "utilization": {
+      "five_hour": {
+        "utilization": 40,
+        "resets_at": "2026-07-26T18:20:00.177825+00:00",
+        "limit_dollars": null,
+        "used_dollars": null,
+        "remaining_dollars": null
+      },
+      "seven_day": {
+        "utilization": 8,
+        "resets_at": "2026-07-29T12:00:00.177846+00:00",
+        "limit_dollars": null,
+        "used_dollars": null,
+        "remaining_dollars": null
+      },
+      "seven_day_oauth_apps": null,
+      "seven_day_opus": null,
+      "seven_day_sonnet": null,
+      "seven_day_cowork": null,
+      "seven_day_omelette": null,
+      "tangelo": null,
+      "iguana_necktie": null,
+      "omelette_promotional": null,
+      "nimbus_quill": null,
+      "cinder_cove": null,
+      "amber_ladder": null,
+      "extra_usage": {
+        "is_enabled": false,
+        "monthly_limit": null,
+        "used_credits": null,
+        "utilization": null,
+        "currency": null,
+        "decimal_places": null,
+        "disabled_reason": null,
+        "user_disabled": false,
+        "spend_limit_reached": false,
+        "credits_ever_enabled": false,
+        "daily": null,
+        "weekly": null
+      },
+      "limits": [
+        {
+          "kind": "session",
+          "group": "session",
+          "percent": 40,
+          "severity": "normal",
+          "resets_at": "2026-07-26T18:20:00.177825+00:00",
+          "scope": null,
+          "is_active": true
+        },
+        {
+          "kind": "weekly_all",
+          "group": "weekly",
+          "percent": 8,
+          "severity": "normal",
+          "resets_at": "2026-07-29T12:00:00.177846+00:00",
+          "scope": null,
+          "is_active": false
+        },
+        {
+          "kind": "weekly_scoped",
+          "group": "weekly",
+          "percent": 16,
+          "severity": "normal",
+          "resets_at": "2026-07-29T12:00:00.178120+00:00",
+          "scope": {
+            "model": {
+              "id": null,
+              "display_name": "Fable"
+            },
+            "surface": null
+          },
+          "is_active": false
+        }
+      ],
+      "spend": {
+        "used": {
+          "amount_minor": 0,
+          "currency": "USD",
+          "exponent": 2
+        },
+        "limit": null,
+        "percent": 0,
+        "severity": "normal",
+        "enabled": false,
+        "disabled_reason": null,
+        "cap": null,
+        "balance": null,
+        "auto_reload": null,
+        "disclaimer": "Usage credits cover you when you hit your plan limits. [Learn more](https://support.claude.com/articles/12429409)",
+        "can_purchase_credits": false,
+        "can_toggle": false
+      },
+      "member_dashboard_available": false
+    }
+  }
 }
