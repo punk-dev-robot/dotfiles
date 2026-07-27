@@ -114,7 +114,7 @@
     ],
     "skipDengerousModePermissionPrompt": true
   },
-  "model": "sonnet",
+  "model": "opus[1m]",
   "hooks": {
     "PostToolUse": [
       {

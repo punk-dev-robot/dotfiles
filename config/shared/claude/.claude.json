@@ -1,5 +1,5 @@
 {
-  "numStartups": 479,
+  "numStartups": 480,
   "installMethod": "native",
   "autoUpdates": false,
   "hasSeenTasksHint": true,
@@ -15,7 +15,7 @@
     "todo-list": 466,
     "ide-upsell-external-terminal": 475,
     "install-github-app": 470,
-    "install-slack-app": 464,
+    "install-slack-app": 480,
     "drag-and-drop-images": 470,
     "paste-images-mac": 474,
     "double-esc-code-restore": 470,
@@ -25,14 +25,14 @@
     "desktop-app": 139,
     "web-app": 467,
     "mobile-app": 80,
-    "voice-mode": 464,
+    "voice-mode": 480,
     "custom-agents": 470,
     "agent-flag": 145,
     "feedback-command": 467,
     "permissions": 470,
     "rename-conversation": 469,
     "custom-commands": 153,
-    "git-worktrees": 470,
+    "git-worktrees": 480,
     "auto-copy-config-hint": 478,
     "frontend-design-plugin": 404,
     "subagent-fanout-nudge": 473,
@@ -45,7 +45,8 @@
     "c4e-desktop": 455,
     "loop-command-nudge": 471,
     "c4e-remote-sessions": 469,
-    "goal-command-nudge": 473
+    "goal-command-nudge": 473,
+    "guest-passes": 480
   },
   "promptQueueUseCount": 752,
   "btwUseCount": 8,
@@ -536,20 +537,37 @@
       ],
       "exampleFilesGeneratedAt": 1785032175507,
       "hasCompletedProjectOnboarding": true,
-      "lastCost": 0,
-      "lastAPIDuration": 0,
-      "lastAPIDurationWithoutRetries": 0,
-      "lastToolDuration": 0,
-      "lastDuration": 43094,
-      "lastLinesAdded": 0,
+      "lastCost": 4.803168000000001,
+      "lastAPIDuration": 399615,
+      "lastAPIDurationWithoutRetries": 393594,
+      "lastToolDuration": 656604,
+      "lastDuration": 1645252,
+      "lastLinesAdded": 75,
       "lastLinesRemoved": 0,
-      "lastTotalInputTokens": 0,
-      "lastTotalOutputTokens": 0,
-      "lastTotalCacheCreationInputTokens": 0,
-      "lastTotalCacheReadInputTokens": 0,
+      "lastTotalInputTokens": 671,
+      "lastTotalOutputTokens": 24255,
+      "lastTotalCacheCreationInputTokens": 162531,
+      "lastTotalCacheReadInputTokens": 5141744,
       "lastTotalWebSearchRequests": 0,
-      "lastModelUsage": {},
-      "lastSessionId": "ef21ca28-8ec5-4abf-88bb-58aca205e7a1",
+      "lastModelUsage": {
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 601,
+          "outputTokens": 17,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.000686
+        },
+        "claude-opus-5[1m]": {
+          "inputTokens": 70,
+          "outputTokens": 24238,
+          "cacheReadInputTokens": 5141744,
+          "cacheCreationInputTokens": 162531,
+          "webSearchRequests": 0,
+          "costUSD": 4.802482000000001
+        }
+      },
+      "lastSessionId": "db6a4aa7-025a-42e9-a5dd-96be0cf9a8e4",
       "lastSessionMetrics": {
         "hook_duration_ms_count": 12,
         "hook_duration_ms_min": 1061,
@@ -598,9 +616,9 @@
       "lastSessionModified": 1778639342081,
       "lastVersionBase": "2.1.220",
       "mcpServers": {},
-      "lastStartTime": 1785043319325,
-      "lastFpsAverage": 3.49,
-      "lastFpsLow1Pct": 131.14
+      "lastStartTime": 1785182287899,
+      "lastFpsAverage": 3.02,
+      "lastFpsLow1Pct": 78.01
     },
     "/Users/kuba.gaj/dotfiles/.claude/worktrees/stupefied-bhabha-143181": {
       "allowedTools": [],
@@ -1839,7 +1857,7 @@
     }
   },
   "userID": "5ca96593d0443e02533e0dd34c745a54c04588c56a5db702b09ff2b0d27f71be",
-  "cachedExtraUsageDisabledReason": null,
+  "cachedExtraUsageDisabledReason": "org_level_disabled",
   "claudeCodeFirstTokenDate": "2026-04-08T16:08:56.688023Z",
   "hasCompletedOnboarding": true,
   "lastOnboardingVersion": "2.1.104",
@@ -1915,7 +1933,7 @@
   },
   "officialMarketplaceAutoInstallAttempted": true,
   "officialMarketplaceAutoInstalled": true,
-  "penguinModeOrgEnabled": true,
+  "penguinModeOrgEnabled": false,
   "overageCreditGrantCache": {
     "4d35695d-287b-4ff8-8bb3-b0a456f1aae6": {
       "info": {
@@ -2361,7 +2379,7 @@
   "hasSeenAutoModeEntryWarning": true,
   "tipLifetimeShownCounts": {
     "shift-tab": 12,
-    "voice-mode": 7,
+    "voice-mode": 8,
     "todo-list": 7,
     "image-paste": 7,
     "rename-conversation": 9,
@@ -2378,9 +2396,9 @@
     "theme-command": 6,
     "enter-to-steer-in-relatime": 6,
     "web-app": 6,
-    "git-worktrees": 7,
+    "git-worktrees": 8,
     "install-github-app": 7,
-    "install-slack-app": 6,
+    "install-slack-app": 7,
     "feedback-command": 5,
     "agents-view-multiclauding": 5,
     "plan-mode-for-complex-tasks": 7,
@@ -2393,13 +2411,14 @@
     "loop-command-nudge": 2,
     "c4e-remote-sessions": 1,
     "goal-command-nudge": 2,
-    "subagent-fanout-nudge": 2
+    "subagent-fanout-nudge": 2,
+    "guest-passes": 1
   },
   "pluginUsage": {
     "caveman@caveman": {
-      "usageCount": 900,
-      "lastUsedAt": 1785122167909,
-      "lastUsedNumStartups": 479
+      "usageCount": 904,
+      "lastUsedAt": 1785183818902,
+      "lastUsedNumStartups": 480
     },
     "context-mode@context-mode": {
       "usageCount": 9542,
@@ -2412,9 +2431,9 @@
       "lastUsedNumStartups": 456
     },
     "claude-notifications-go@claude-notifications-go": {
-      "usageCount": 1191,
-      "lastUsedAt": 1785092307064,
-      "lastUsedNumStartups": 478
+      "usageCount": 1194,
+      "lastUsedAt": 1785183866002,
+      "lastUsedNumStartups": 480
     },
     "linear-cli@linear-cli": {
       "usageCount": 7,
@@ -2422,9 +2441,9 @@
       "lastUsedNumStartups": 478
     },
     "security-guidance@claude-plugins-official": {
-      "usageCount": 406,
-      "lastUsedAt": 1785122167909,
-      "lastUsedNumStartups": 479
+      "usageCount": 417,
+      "lastUsedAt": 1785183866002,
+      "lastUsedNumStartups": 480
     }
   },
   "machineID": "3650676dbf463c23d31f4e9d20f81eecbb0e6228c78a00e679e3bb2c506b44c0",
@@ -2442,7 +2461,7 @@
     "claudeCodeTrialDurationDays": null,
     "seatTier": null,
     "displayName": "Kuba",
-    "profileFetchedAt": 1785056899209,
+    "profileFetchedAt": 1785182288650,
     "organizationRole": "admin",
     "workspaceRole": null,
     "organizationName": "kuba.gaj@gmail.com's Organization",
@@ -2451,7 +2470,7 @@
     "userRateLimitTier": null
   },
   "clientDataCacheSlots": {
-    "bi1-45400898313a0ece": {
+    "bi1-cb31202d6f4996ae": {
       "data": {
         "cedar_lagoon": {
           "claude-fable": true,
@@ -2459,9 +2478,9 @@
         },
         "cedar_basin": "2026-08-31"
       },
-      "at": 1785122167781,
-      "entrypoint": "claude-desktop",
-      "model": "claude-sonnet-5",
+      "at": 1785182434974,
+      "entrypoint": "cli",
+      "model": "claude-opus-5",
       "org": "923787e0-18e0-4f56-906d-abe2b0ef6be5"
     },
     "bi1-bbf62059092b9380": {
@@ -2472,8 +2491,21 @@
         },
         "cedar_basin": "2026-08-31"
       },
-      "at": 1785092551050,
+      "at": 1785182289035,
       "entrypoint": "cli",
+      "model": "claude-sonnet-5",
+      "org": "923787e0-18e0-4f56-906d-abe2b0ef6be5"
+    },
+    "bi1-45400898313a0ece": {
+      "data": {
+        "cedar_lagoon": {
+          "claude-fable": true,
+          "claude-mythos": true
+        },
+        "cedar_basin": "2026-08-31"
+      },
+      "at": 1785122167781,
+      "entrypoint": "claude-desktop",
       "model": "claude-sonnet-5",
       "org": "923787e0-18e0-4f56-906d-abe2b0ef6be5"
     },
@@ -2489,19 +2521,6 @@
       "entrypoint": "cli",
       "model": "claude-fable-5",
       "org": "923787e0-18e0-4f56-906d-abe2b0ef6be5"
-    },
-    "bi1-cb31202d6f4996ae": {
-      "data": {
-        "cedar_lagoon": {
-          "claude-fable": true,
-          "claude-mythos": true
-        },
-        "cedar_basin": "2026-08-31"
-      },
-      "at": 1785056899786,
-      "entrypoint": "cli",
-      "model": "claude-opus-5",
-      "org": "923787e0-18e0-4f56-906d-abe2b0ef6be5"
     }
   },
   "additionalModelOptionsCache": [
@@ -2512,62 +2531,13 @@
     }
   ],
   "additionalModelCostsCache": {},
-  "modelAccessCache": [
-    {
-      "apiName": "claude-3-opus-20240229",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-fable-5",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-haiku-4-5-20251001",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-opus-4-1-20250805-claude-ai",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-opus-4-5-20251101",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-opus-4-6",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-opus-4-7",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-opus-4-8",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-opus-5",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-sonnet-4-5-20250929",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-sonnet-4-6",
-      "entitled": true
-    },
-    {
-      "apiName": "claude-sonnet-5",
-      "entitled": true
-    }
-  ],
+  "modelAccessCache": [],
   "orgModelDefaultCache": null,
   "autoCompactWindowsCache": null,
   "groveConfigCache": {
     "bec0f6bb-7527-4199-ad47-77831fc24ccc": {
       "grove_enabled": true,
-      "timestamp": 1785057390989
+      "timestamp": 1785182288650
     }
   },
   "passesEligibilityCache": {
@@ -2579,11 +2549,11 @@
         "referral_link": "https://claude.ai/referral/DPnIuaP7dw"
       },
       "referrer_reward": null,
-      "remaining_passes": 3,
+      "remaining_passes": 0,
       "limit": 3,
       "share_link": "https://claude.ai/referral/DPnIuaP7dw",
       "terms_url": "https://support.claude.com/en/articles/12875061-claude-code-guest-passes",
-      "timestamp": 1785057391789
+      "timestamp": 1785182289906
     }
   },
   "passesUpsellSeenCount": 3,
