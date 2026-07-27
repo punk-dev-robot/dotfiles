@@ -31,9 +31,11 @@
     "npm:pi-rtk-optimizer",
     "npm:pi-ponytail",
     "npm:pi-powerline-footer",
+    "npm:pi-claude-code-tui",
     "npm:pi-lens",
     "npm:pi-image-tools",
-    "npm:pi-copy-message"
+    "npm:pi-copy-message",
+    "npm:pi-cc-header"
   ],
   "powerline": {
     "preset": "default",
@@ -84,5 +86,7 @@
     "showWorkerNotifications": false,
     "passive": false,
     "debugLog": false
-  }
+  },
+  "quietStartup": true,
+  "clearOnStart": true
 }
