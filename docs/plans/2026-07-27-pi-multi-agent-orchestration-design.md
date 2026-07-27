@@ -196,12 +196,19 @@ manager → specialist → review → ship.
 - **Agent profiles are discovered at `session_start`.** New/edited `agents/*.md` require a
   fresh Pi session before `Task(agent_type=...)` sees them (same as package installs).
 - **pi-subagents runtime self-wires** via the package `pi.extensions` (`dist/task-runtime.js`);
-  `task_control` confirmed live. Do **not** hand-create `.pi/extensions/task.ts` — it would
-  double-load. The `task_control doctor` `runtime-wrapper-missing` / `packaged-runtime-drift`
-  errors target the *build-your-own-package* path, not plain `pi install` consumers; confirm
-  they are non-blocking on the first fresh-session delegation.
-- Validate delegation in a fresh session: delegate a trivial read-only task to `recon` and
-  confirm it spawns a Herdr pane, writes its findings file, and reports back.
+  it registers the lowercase `task` + `task_control` tools. Do **not** hand-create
+  `.pi/extensions/task.ts` — it conflicts (double-registers `task`/`task_control`) and can't
+  bare-import the package anyway (managed pkgs live in `npm/node_modules`, off the default
+  resolver). The `doctor` `runtime-wrapper-missing` / `packaged-runtime-drift` errors are
+  **confirmed non-blocking** package-author advisories — delegation works without a wrapper.
+- **CRITICAL profile gotcha:** an `agents/*.md` file must start with `---` on **line 1**.
+  A leading `<!-- ... -->` comment (e.g. copied from the README's path annotation) pushes
+  `---` off line 1, breaks the YAML frontmatter parser, and pi-subagents silently discovers
+  **zero** profiles (`task` → "no agents available"). Fixed 2026-07-27; all 7 profiles now
+  discover: `ai-eng, be-eng, devops, fe-eng, observability, recon, reviewer`.
+- Discovery validated via `pi -p` (lists all 7 agent_types). A full spawn (recon writing its
+  findings file in a Herdr pane) is best confirmed in a normal interactive session — nested
+  `pi -p` foreground delegation hangs on the pane spawn and is not a valid test harness.
 
 ## 14. Decisions log
 
