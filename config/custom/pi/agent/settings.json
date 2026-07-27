@@ -33,9 +33,9 @@
     "npm:pi-powerline-footer",
     "npm:pi-lens",
     "npm:pi-image-tools",
-    "npm:pi-copy-message",
     "npm:pi-cc-header",
-    "npm:pi-atuin"
+    "npm:pi-atuin",
+    "npm:pi-vim"
   ],
   "powerline": {
     "preset": "default",
