@@ -38,8 +38,9 @@
     "npm:pi-vim"
   ],
   "powerline": {
-    "preset": "default",
+    "preset": "nerd",
     "fixedEditor": true,
+    "mouseScroll": false,
     "disabledSegments": [
       "cost",
       "token_total",
