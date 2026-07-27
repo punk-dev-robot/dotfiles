@@ -7,7 +7,14 @@
   "mcpServers": {
     "context-mode": {
       "command": "context-mode",
-      "lifecycle": "lazy"
+      "lifecycle": "lazy",
+      "directTools": [
+        "ctx_execute",
+        "ctx_batch_execute",
+        "ctx_search",
+        "ctx_fetch_and_index",
+        "ctx_execute_file"
+      ]
     },
     "codebase-memory-mcp": {
       "command": "codebase-memory-mcp",

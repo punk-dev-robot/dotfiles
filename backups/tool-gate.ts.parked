@@ -1,0 +1,111 @@
+/**
+ * Keeps rarely-used tool schemas out of the system prompt until asked for.
+ *
+ * Measured 2026-07-27: 45 extension tools = ~17.6k prompt tokens, of which every
+ * name below had ZERO calls across 31 sessions (~12k tokens of dead schema).
+ * Pi's deferred tool loading (docs/extensions.md "Dynamic Tool Loading") lets an
+ * additive pi.setActiveTools() land at the tool-result position, so re-enabling
+ * mid-session does not invalidate the Anthropic prompt-cache prefix.
+ *
+ * ponytail: one literal array + one loader tool. No config file, no per-tool
+ * registry, no scoring — the list changes about as often as the extension list.
+ * Ceiling: the loader only re-adds, it never re-gates; a session that loads
+ * everything ends up where it started. Add a `drop` param if that ever matters.
+ */
+
+import { Type } from "typebox";
+
+/** name -> one-line hint shown in the loader's description (~12 tokens each). */
+const COLD: Record<string, string> = {
+	lens_diagnostics: "pi-lens: all runner diagnostics (LSP, lint, security, complexity)",
+	lsp_diagnostics: "pi-lens: LSP errors/warnings for a file or dir",
+	symbol_search: "pi-lens: ranked identifier search across the repo",
+	project_report: "pi-lens: project orientation (hubs, entry points, cycles)",
+	module_report: "pi-lens: file outline instead of a full read",
+	read_symbol: "pi-lens: read one symbol body",
+	read_enclosing: "pi-lens: read the symbol enclosing a line",
+	pi_lens_activate_tools: "pi-lens: unlock ast-grep / lsp_navigation tools",
+	subagent: "spawn a sub-agent in its own pane (async, result arrives as a steer)",
+	subagent_resume: "resume a previous sub-agent session",
+	subagent_interrupt: "escape the active turn of a running sub-agent",
+	subagents_list: "list available sub-agent definitions",
+	herdr_agent: "start/prompt/read a coding agent inside a Herdr pane",
+	herdr_start_worktree: "continue this session in a new git worktree pane",
+	workflow: "fan work out across many subagents via a JS workflow script",
+	workflow_control: "list/pause/resume/stop workflow runs",
+	perf_profile: "profile a pi tool's execution",
+	perf_bench: "run a pi benchmark suite",
+	perf_report: "render a perf report",
+	preview_export: "render markdown/LaTeX to PDF/HTML/PNG",
+	source_check: "verify a claim with passage-level web citations",
+	get_search_content: "retrieve stored content from a previous web_search/fetch",
+	recall: "recover source context behind a compacted memory id",
+	record_advisor_outcome: "log adoption/validation for an advisor adviceId",
+};
+
+const catalog = Object.entries(COLD)
+	.map(([name, hint]) => `- ${name}: ${hint}`)
+	.join("\n");
+
+export const gate = (active: string[], cold: Record<string, unknown>): string[] =>
+	active.filter((name) => !(name in cold));
+
+export const resolve = (
+	names: string[],
+	active: string[],
+	cold: Record<string, unknown>,
+): { added: string[]; unknown: string[] } => {
+	const added: string[] = [];
+	const unknown: string[] = [];
+	for (const n of names) {
+		if (!(n in cold)) unknown.push(n);
+		else if (!active.includes(n)) added.push(n);
+	}
+	return { added: [...new Set(added)], unknown };
+};
+
+export default function (pi: any) {
+	pi.registerTool({
+		name: "load_tools",
+		label: "Load Tools",
+		description:
+			`Activate gated tools by name so their full schemas become callable. They are kept out of the prompt because they are rarely used; call this the moment a task needs one, then call the tool itself on the next step.\n\nAvailable:\n${catalog}`,
+		parameters: Type.Object({
+			names: Type.Array(Type.String(), {
+				description: "Exact tool names from the list above",
+			}),
+		}),
+		async execute(_id: string, params: { names: string[] }) {
+			const active = pi.getActiveTools();
+			const { added, unknown } = resolve(params.names ?? [], active, COLD);
+			if (added.length) pi.setActiveTools([...new Set([...active, ...added])]);
+			const parts = [
+				added.length ? `Loaded: ${added.join(", ")}` : "Nothing new to load",
+				unknown.length ? `Not gated/unknown: ${unknown.join(", ")}` : "",
+			].filter(Boolean);
+			return {
+				content: [{ type: "text", text: parts.join(". ") }],
+				details: { added, unknown },
+			};
+		},
+	});
+
+	pi.on("session_start", () => {
+		pi.setActiveTools([...gate(pi.getActiveTools(), COLD), "load_tools"]);
+	});
+}
+
+// ponytail: self-check — `node --experimental-strip-types tool-gate.ts`
+if (process.argv[1]?.endsWith("tool-gate.ts")) {
+	const cold = { a: "", b: "" };
+	const eq = (got: unknown, want: unknown, m: string) => {
+		if (JSON.stringify(got) !== JSON.stringify(want))
+			throw new Error(`${m}: got ${JSON.stringify(got)}, want ${JSON.stringify(want)}`);
+	};
+	eq(gate(["read", "a", "b"], cold), ["read"], "cold names dropped, others kept");
+	eq(resolve(["a", "b"], ["read", "b"], cold), { added: ["a"], unknown: [] }, "already-active skipped");
+	eq(resolve(["read", "zz"], ["read"], cold), { added: [], unknown: ["read", "zz"] }, "non-gated reported");
+	eq(resolve(["a", "a"], ["read"], cold), { added: ["a"], unknown: [] }, "dupes collapse");
+	if (Object.keys(COLD).some((n) => !/^[a-z_0-9]+$/.test(n))) throw new Error("bad tool name");
+	console.log("ok", Object.keys(COLD).length, "gated");
+}

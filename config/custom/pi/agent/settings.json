@@ -1,58 +1,47 @@
 {
   "packages": [
-    "npm:context-mode",
-    "npm:@plannotator/pi-extension",
-    "npm:pi-mcp-adapter",
-    "npm:pine-of-glass",
-    "npm:pi-observational-memory",
-    "npm:pi-claude-auth",
-    "npm:pi-web-access",
-    "npm:pi-simplify",
-    "npm:@spences10/pi-telemetry",
-    "npm:@spences10/pi-observability",
-    "npm:@minhduydev/pi-subagents",
-    "npm:pi-advisor-flow",
+    "npm:@dietrichgebert/ponytail",
     "npm:@ogulcancelik/pi-herdr",
-    "npm:pi-rename-pane",
-    "npm:@tmustier/pi-usage-extension",
-    "npm:pi-herdr-btw",
-    "npm:@zhcsyncer/pi-recap",
-    "npm:@yassimba/pi-herdr-worktree",
+    "npm:@pi-kaush/pi-double-paste@0.1.0",
+    "npm:@pi-kaush/pi-tool-call-markers",
+    "npm:@plannotator/pi-extension",
+    "npm:@spences10/pi-observability",
+    "npm:@spences10/pi-telemetry",
     "npm:@tifan/pi-rename",
-    "npm:pi-mermaid",
-    "npm:pi-markdown-preview",
-    "npm:pi-ask-herdr",
+    "npm:@tmustier/pi-usage-extension",
     "npm:@xynogen/pix-data",
     "npm:@xynogen/pix-models",
-    "npm:@xynogen/pix-update",
     "npm:@xynogen/pix-nudge",
-    "npm:pi-tool-display",
-    "npm:pi-caveman",
-    "npm:pi-rtk-optimizer",
-    "npm:pi-ponytail",
-    "npm:pi-powerline-footer",
-    "npm:pi-lens",
-    "npm:pi-image-tools",
-    "npm:pi-cc-header",
+    "npm:@yassimba/pi-herdr-worktree",
+    "npm:@zhcsyncer/pi-recap",
+    "npm:context-mode",
+    "npm:pi-advisor-flow",
+    "npm:pi-ask-herdr",
     "npm:pi-atuin",
-    "npm:pi-vim"
+    "npm:pi-caveman",
+    "npm:pi-claude-auth",
+    "npm:pi-claude-code-ui",
+    "npm:pi-fancy-footer",
+    "npm:pi-herdr-subagents",
+    "npm:pi-image-tools",
+    "npm:pi-lens",
+    "npm:pi-markdown-preview",
+    "npm:pi-mcp-adapter",
+    "npm:pi-mermaid",
+    "npm:pi-observational-memory",
+    "npm:pi-perf",
+    "npm:pi-rename-pane",
+    "npm:pi-rtk-optimizer",
+    "npm:pi-skill-gate",
+    "npm:pi-terminal-theme",
+    "npm:pi-vim",
+    "npm:pi-web-access",
+    "npm:pine-of-glass",
+    "npm:@quintinshaw/pi-dynamic-workflows",
+    "npm:pi-cc-header",
+    "npm:pi-oc-style-agent-switcher"
   ],
-  "powerline": {
-    "preset": "default",
-    "fixedEditor": true,
-    "mouseScroll": false,
-    "disabledSegments": [
-      "cost",
-      "token_total",
-      "context_total",
-      "cache_read",
-      "cache_write",
-      "hostname"
-    ],
-    "placement": "above"
-  },
-  "lastChangelogVersion": "0.82.0",
-  "theme": "catppuccin-black-mocha",
+  "lastChangelogVersion": "0.82.1",
   "showCacheMissNotices": true,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-5",
@@ -65,7 +54,6 @@
   "warnings": {
     "anthropicExtraUsage": false
   },
-  "hideThinkingBlock": true,
   "compaction": {
     "enabled": true,
     "reserveTokens": 100000,
@@ -89,6 +77,67 @@
     "passive": false,
     "debugLog": false
   },
-  "quietStartup": true,
-  "clearOnStart": true
+  "powerline": {
+    "preset": "default",
+    "placement": "below",
+    "layout": {
+      "left": [
+        "model",
+        "thinking",
+        "path",
+        "git",
+        "context_pct"
+      ],
+      "right": [],
+      "secondary": [
+        "extension_statuses",
+        "custom:lens",
+        "custom:mcp",
+        "custom:ponytail",
+        "custom:caveman"
+      ]
+    },
+    "customItems": [
+      {
+        "id": "lens",
+        "statusKey": "pi-lens-lsp",
+        "position": "secondary"
+      },
+      {
+        "id": "mcp",
+        "statusKey": "mcp",
+        "position": "secondary"
+      },
+      {
+        "id": "ponytail",
+        "statusKey": "ponytail",
+        "position": "secondary"
+      },
+      {
+        "id": "caveman",
+        "statusKey": "caveman",
+        "position": "secondary"
+      }
+    ],
+    "disabledSegments": [
+      "cache_read",
+      "shell_mode",
+      "cost"
+    ],
+    "path": {
+      "mode": "basename"
+    },
+    "model": {
+      "display": "name"
+    }
+  },
+  "hideThinkingBlock": true,
+  "quietStartup": false,
+  "collapseChangelog": true,
+  "clearOnStart": false,
+  "theme": "terminal",
+  "rsl": false,
+  "ccHeader": {
+    "pkg": true
+  }
 }

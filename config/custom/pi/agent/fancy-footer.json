@@ -1,0 +1,60 @@
+{
+  "refreshMs": 2000,
+  "iconFamily": "nerd",
+  "gaugeStyle": "parallelograms",
+  "gaugeWidth": 6,
+  "defaultTextColor": "dim",
+  "defaultIconColor": "text",
+  "gaugeColors": {
+    "ok": "success",
+    "warning": "warning",
+    "error": "error"
+  },
+  "providerStatus": {
+    "refreshMs": 60000,
+    "cacheTtlMs": 60000,
+    "providers": [
+      "openai-codex",
+      "anthropic"
+    ],
+    "display": "gauge",
+    "showCredits": false,
+    "showReset": "primary"
+  },
+  "widgets": {
+    "model": {
+      "iconColor": "accent",
+      "textColor": "text"
+    },
+    "thinking": {
+      "iconColor": "accent",
+      "textColor": "accent"
+    },
+    "total-cost": {
+      "iconColor": "success",
+      "textColor": "muted"
+    },
+    "cache-hit-rate": {
+      "iconColor": "success"
+    },
+    "location": {
+      "iconColor": "accent",
+      "textColor": "text"
+    },
+    "branch": {
+      "iconColor": "success",
+      "textColor": "success"
+    },
+    "diff-added": {
+      "iconColor": "success",
+      "textColor": "success"
+    },
+    "diff-removed": {
+      "iconColor": "error",
+      "textColor": "error"
+    },
+    "git-status": {
+      "textColor": "warning"
+    }
+  }
+}

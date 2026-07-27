@@ -10,18 +10,20 @@ default_target_type = "symbolic"
 # Add a plain config = drop the dir into shared/linux/mac, no edit here.
 # Hosts pick packages in .dotter/<hostname>.toml: macOS=["macos"], Arch=["arch"].
 [base.files]
-"local"          = "~/.local"
-"config/shared"  = "~/.config"
+"local" = "~/.local"
+"config/shared" = "~/.config"
 "config/custom/ghostty" = { target = "~/.config/ghostty", type = "template" }
-"config/custom/tmux"    = { target = "~/.config/tmux", type = "template" }
-"config/custom/nvim"    = { target = "~/.config/nvim", type = "symbolic", recurse = false }
+"config/custom/tmux" = { target = "~/.config/tmux", type = "template" }
+"config/custom/nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }
 "config/custom/git/gitconfig" = { target = "~/.gitconfig", type = "template" }
 "config/custom/git/gitignore" = "~/.gitignore"
-"config/custom/ssh"     = { target = "~/.ssh", type = "template" }
-"config/custom/zsh"     = "~/.config/zsh"
+"config/custom/ssh" = { target = "~/.ssh", type = "template" }
+"config/custom/zsh" = "~/.config/zsh"
 "config/custom/zsh/.zshenv" = "~/.zshenv"
 "config/custom/.markdownlint.jsonc" = "~/.markdownlint.jsonc"
 "config/custom/pi/agent" = "~/.config/pi/agent"
+# pi-claude-code-ui reads its own settings from ~/.pi/settings.json (~/.pi == ~/.config/pi)
+"config/custom/pi/settings.json" = "~/.config/pi/settings.json"
 
 # ─── Linux desktop (Hyprland stack) ───
 [linux.files]
@@ -32,13 +34,13 @@ default_target_type = "symbolic"
 depends = ["base"]
 
 [macos.files]
-"config/mac"                 = "~/.config"
-"config/custom/karabiner"    = { target = "~/.config/karabiner", type = "symbolic", recurse = false }
+"config/mac" = "~/.config"
+"config/custom/karabiner" = { target = "~/.config/karabiner", type = "symbolic", recurse = false }
 "config/custom/a-bar/a-barrc" = "~/.a-barrc"
-"config/custom/hammerspoon"   = { target = "~/.hammerspoon", type = "symbolic", recurse = false }
+"config/custom/hammerspoon" = { target = "~/.hammerspoon", type = "symbolic", recurse = false }
 "config/custom/launchagents/com.user.borders.plist" = { target = "~/Library/LaunchAgents/com.user.borders.plist", type = "template" }
-"config/custom/launchagents/com.user.colima.plist"  = { target = "~/Library/LaunchAgents/com.user.colima.plist",  type = "template" }
-"config/custom/launchagents/com.user.tmux.plist"    = { target = "~/Library/LaunchAgents/com.user.tmux.plist",    type = "template" }
+"config/custom/launchagents/com.user.colima.plist" = { target = "~/Library/LaunchAgents/com.user.colima.plist", type = "template" }
+"config/custom/launchagents/com.user.tmux.plist" = { target = "~/Library/LaunchAgents/com.user.tmux.plist", type = "template" }
 "config/custom/launchagents/com.user.aerospace-restart.plist" = { target = "~/Library/LaunchAgents/com.user.aerospace-restart.plist", type = "template" }
 
 # ─── Arch = base + linux + system files (/etc, root) ───
