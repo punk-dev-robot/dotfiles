@@ -5,5 +5,16 @@
     "rtk": true,
     "toon": false,
     "ponytail": "full"
+  },
+  "pretty": {
+    "icons": "nerd",
+    "maxPreviewLines": 80,
+    "maxRenderLines": 150,
+    "maxHighlightChars": 80000,
+    "cacheLimit": 128,
+    "diff": {
+      "splitMinWidth": 150,
+      "splitMinCodeWidth": 60
+    }
   }
 }

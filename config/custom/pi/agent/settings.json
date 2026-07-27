@@ -19,7 +19,6 @@
     "npm:@tmustier/pi-usage-extension",
     "npm:pi-herdr-btw",
     "npm:@zhcsyncer/pi-recap",
-    "npm:pi-ask-herdr",
     "npm:@yassimba/pi-herdr-worktree",
     "npm:@tifan/pi-rename"
   ],
