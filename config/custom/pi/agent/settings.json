@@ -38,8 +38,15 @@
   ],
   "powerline": {
     "preset": "default",
-    "fixedEditor": false,
-    "disabledSegments": ["cost", "token_total", "context_total"]
+    "fixedEditor": true,
+    "disabledSegments": [
+      "cost",
+      "token_total",
+      "context_total",
+      "cache_read",
+      "cache_write"
+    ],
+    "placement": "above"
   },
   "lastChangelogVersion": "0.82.0",
   "theme": "catppuccin-black-mocha",
