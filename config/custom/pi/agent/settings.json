@@ -15,7 +15,13 @@
     "npm:@minhduydev/pi-subagents",
     "npm:pi-advisor-flow",
     "npm:@ogulcancelik/pi-herdr",
-    "npm:pi-rename-pane"
+    "npm:pi-rename-pane",
+    "npm:@tmustier/pi-usage-extension",
+    "npm:pi-herdr-btw",
+    "npm:@zhcsyncer/pi-recap",
+    "npm:pi-ask-herdr",
+    "npm:@yassimba/pi-herdr-worktree",
+    "npm:@tifan/pi-rename"
   ],
   "lastChangelogVersion": "0.82.0",
   "theme": "catppuccin-black-mocha",
