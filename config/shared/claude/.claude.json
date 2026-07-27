@@ -1915,7 +1915,7 @@
   },
   "officialMarketplaceAutoInstallAttempted": true,
   "officialMarketplaceAutoInstalled": true,
-  "penguinModeOrgEnabled": false,
+  "penguinModeOrgEnabled": true,
   "overageCreditGrantCache": {
     "4d35695d-287b-4ff8-8bb3-b0a456f1aae6": {
       "info": {
@@ -2397,8 +2397,8 @@
   },
   "pluginUsage": {
     "caveman@caveman": {
-      "usageCount": 898,
-      "lastUsedAt": 1785092561189,
+      "usageCount": 900,
+      "lastUsedAt": 1785122167909,
       "lastUsedNumStartups": 479
     },
     "context-mode@context-mode": {
@@ -2422,8 +2422,8 @@
       "lastUsedNumStartups": 478
     },
     "security-guidance@claude-plugins-official": {
-      "usageCount": 404,
-      "lastUsedAt": 1785092561189,
+      "usageCount": 406,
+      "lastUsedAt": 1785122167909,
       "lastUsedNumStartups": 479
     }
   },
@@ -2451,6 +2451,19 @@
     "userRateLimitTier": null
   },
   "clientDataCacheSlots": {
+    "bi1-45400898313a0ece": {
+      "data": {
+        "cedar_lagoon": {
+          "claude-fable": true,
+          "claude-mythos": true
+        },
+        "cedar_basin": "2026-08-31"
+      },
+      "at": 1785122167781,
+      "entrypoint": "claude-desktop",
+      "model": "claude-sonnet-5",
+      "org": "923787e0-18e0-4f56-906d-abe2b0ef6be5"
+    },
     "bi1-bbf62059092b9380": {
       "data": {
         "cedar_lagoon": {
@@ -2499,7 +2512,56 @@
     }
   ],
   "additionalModelCostsCache": {},
-  "modelAccessCache": [],
+  "modelAccessCache": [
+    {
+      "apiName": "claude-3-opus-20240229",
+      "entitled": true
+    },
+    {
+      "apiName": "claude-fable-5",
+      "entitled": true
+    },
+    {
+      "apiName": "claude-haiku-4-5-20251001",
+      "entitled": true
+    },
+    {
+      "apiName": "claude-opus-4-1-20250805-claude-ai",
+      "entitled": true
+    },
+    {
+      "apiName": "claude-opus-4-5-20251101",
+      "entitled": true
+    },
+    {
+      "apiName": "claude-opus-4-6",
+      "entitled": true
+    },
+    {
+      "apiName": "claude-opus-4-7",
+      "entitled": true
+    },
+    {
+      "apiName": "claude-opus-4-8",
+      "entitled": true
+    },
+    {
+      "apiName": "claude-opus-5",
+      "entitled": true
+    },
+    {
+      "apiName": "claude-sonnet-4-5-20250929",
+      "entitled": true
+    },
+    {
+      "apiName": "claude-sonnet-4-6",
+      "entitled": true
+    },
+    {
+      "apiName": "claude-sonnet-5",
+      "entitled": true
+    }
+  ],
   "orgModelDefaultCache": null,
   "autoCompactWindowsCache": null,
   "groveConfigCache": {
