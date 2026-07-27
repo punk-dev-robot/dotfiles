@@ -1,4 +1,3 @@
-<!-- ~/.pi/agent/agents/observability.md — pi-subagents profile (agent_type: observability) -->
 ---
 description: Observability engineer for the Window Shop platform (Logfire, OpenTelemetry, ingestion/pipeline telemetry). Use for instrumentation, tracing, metrics, and dashboards.
 tools: read, grep, find, ls, bash, edit, write

@@ -1,4 +1,3 @@
-<!-- ~/.pi/agent/agents/recon.md — pi-subagents profile (agent_type: recon) -->
 ---
 description: Reconnaissance. Investigates the codebase (read-only) and writes findings to a file; no bash, no editing existing code. Use for cheap groundwork before a specialist executes.
 tools: read, grep, find, ls, write

@@ -1,4 +1,3 @@
-<!-- ~/.pi/agent/agents/fe-eng.md — pi-subagents profile (agent_type: fe-eng) -->
 ---
 description: Frontend engineer for the Window Shop platform UI. Use for client-side implementation, components, and UX-facing tasks.
 tools: read, grep, find, ls, bash, edit, write

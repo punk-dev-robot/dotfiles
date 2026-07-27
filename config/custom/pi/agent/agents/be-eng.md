@@ -1,4 +1,3 @@
-<!-- ~/.pi/agent/agents/be-eng.md — pi-subagents profile (agent_type: be-eng) -->
 ---
 description: Backend engineer for the shopmr NestJS/Node commerce monorepo (integrations, pre-ingestion, checkouts, orders, stores). Use for server-side implementation tasks.
 tools: read, grep, find, ls, bash, edit, write

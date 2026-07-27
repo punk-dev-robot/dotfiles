@@ -1,4 +1,3 @@
-<!-- ~/.pi/agent/agents/devops.md — pi-subagents profile (agent_type: devops) -->
 ---
 description: DevOps/IaC engineer for shopiac (Terraform dev-platform) and shopargo (ArgoCD/GitOps manifests). Use for infrastructure, deployment, and CI/CD changes.
 tools: read, grep, find, ls, bash, edit, write

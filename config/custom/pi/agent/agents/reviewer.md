@@ -1,4 +1,3 @@
-<!-- ~/.pi/agent/agents/reviewer.md — pi-subagents profile (agent_type: reviewer) -->
 ---
 description: Independent reviewer/QA for delegated work. Read-only plus test execution; never edits. Use as the review gate before ship. For cross-family review (GPT-5.6-Sol), launch `piqa` via Herdr instead, since a task-delegated child inherits the parent's model.
 tools: read, grep, find, ls, bash
