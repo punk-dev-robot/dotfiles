@@ -1,4 +1,6 @@
 {
+  "executor": "anthropic/claude-sonnet-5",
+  "executorEffort": "medium",
   "advisor": "anthropic/claude-fable-5",
   "advisorEffort": "high",
   "contextMaxChars": 25000,
