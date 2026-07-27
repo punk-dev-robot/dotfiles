@@ -191,6 +191,18 @@ manager → specialist → review → ship.
 - **Model budget** — keep GPT usage sparing; Anthropic-first.
 - Herdr 0.7.5 vs package expectations: acceptable (bleeding edge, expected).
 
+## 15. Operational notes (from P1 spike)
+
+- **Agent profiles are discovered at `session_start`.** New/edited `agents/*.md` require a
+  fresh Pi session before `Task(agent_type=...)` sees them (same as package installs).
+- **pi-subagents runtime self-wires** via the package `pi.extensions` (`dist/task-runtime.js`);
+  `task_control` confirmed live. Do **not** hand-create `.pi/extensions/task.ts` — it would
+  double-load. The `task_control doctor` `runtime-wrapper-missing` / `packaged-runtime-drift`
+  errors target the *build-your-own-package* path, not plain `pi install` consumers; confirm
+  they are non-blocking on the first fresh-session delegation.
+- Validate delegation in a fresh session: delegate a trivial read-only task to `recon` and
+  confirm it spawns a Herdr pane, writes its findings file, and reports back.
+
 ## 14. Decisions log
 
 - Composable stack on `pi-subagents` (not agent-fleet, not minimal DIY).
