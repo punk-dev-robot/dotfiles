@@ -99,7 +99,8 @@ arch.pacman-list.pkg
 /config/shared/claude/.claude.json
 
 # Pix Agent
+.pi/
 .pi-lens/
 
-# Tessl-generated agent rules
-/.tessl/
+# Agent scratch
+/HANDOFF.md
