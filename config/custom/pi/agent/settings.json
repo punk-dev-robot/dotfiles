@@ -33,8 +33,14 @@
     "npm:pi-powerline-footer",
     "npm:pi-claude-code-tui",
     "npm:pi-lens",
-    "npm:pi-image-tools"
+    "npm:pi-image-tools",
+    "npm:pi-copy-message"
   ],
+  "powerline": {
+    "preset": "default",
+    "fixedEditor": false,
+    "disabledSegments": ["cost", "token_total", "context_total"]
+  },
   "lastChangelogVersion": "0.82.0",
   "theme": "catppuccin-black-mocha",
   "showCacheMissNotices": true,
