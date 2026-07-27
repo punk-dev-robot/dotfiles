@@ -3,55 +3,84 @@
 # Pi coding-agent session launchers — multi-agent orchestration roles.
 #
 # Design: docs/plans/2026-07-27-pi-multi-agent-orchestration-design.md
+# Runbook: docs/reference/agent-epic-runbook.md
 #
-# `pi` itself is left FULL (default model, all tools + skills); skill curation
-# is deferred (P1). These launch role-flavored sessions. Anthropic tier ladder
-# (cheap -> expensive): haiku-4-5 < sonnet-5 < opus-5 < fable-5 (ceiling).
-# The principal/advisor is also borrowable on demand via pi-advisor-flow
-# (`/advisor`), independent of these launchers.
-#
-# `command pi` bypasses any alias, so nothing recurses. Functions forward "$@",
-# so you can still append a prompt or flags, e.g. `pim "start epic AGI-5099"`.
+# Pattern (borrowed from disler/fusion-harness): models + thinking live in the
+# tier registry below (env-overridable, `PI_TIER_DEEP=... pim` for a one-off);
+# role prompts are dotter-managed files under ~/.config/pi/agent/prompts/.
+# `command pi` bypasses any alias, so nothing recurses; functions forward "$@".
 ##
 
-# Full / unrestricted escape hatch — current default model, all tools + skills.
+# ── Tier registry (cheap → expensive: haiku < sonnet < opus < fable) ──────────
+: ${PI_TIER_FAST:=anthropic/claude-haiku-4-5}
+: ${PI_TIER_WORKHORSE:=anthropic/claude-sonnet-5}
+: ${PI_TIER_DEEP:=anthropic/claude-opus-5}
+: ${PI_TIER_SOTA:=anthropic/claude-fable-5}
+
+# Cross-family (GPT) seats — sparingly, budget-bound.
+: ${PI_XFAM_CRITIC:=openai-codex/gpt-5.6-sol}    # reviewer / big-context critic
+: ${PI_XFAM_DEV:=openai-codex/gpt-5.6-terra}     # cheap codegen alternate
+: ${PI_XFAM_FAST:=openai-codex/gpt-5.6-luna}     # cheap recon alternate
+
+_pi_prompts="$HOME/.config/pi/agent/prompts"
+
+# ── Launchers ─────────────────────────────────────────────────────────────────
+
+# Full / unrestricted escape hatch — settings default model, all tools + skills.
 alias pif='command pi'
 
-# Recon — read-only, cheapest tier. Primary haiku-4-5, Ctrl+P alt gpt-5.6-luna.
-# No skills, read-only native tools only.
-alias pir='command pi --model anthropic/claude-haiku-4-5 --thinking low --models anthropic/claude-haiku-4-5,openai-codex/gpt-5.6-luna --no-skills --tools read,grep,find,ls'
+# Recon — read-only, cheapest tier, no skills.
+pir() {
+  command pi --model $PI_TIER_FAST --thinking low \
+    --models $PI_TIER_FAST,$PI_XFAM_FAST \
+    --no-skills --tools read,grep,find,ls "$@"
+}
 
-# Principal / architect — ceiling model (fable-5). Deep design partner to the
-# manager; allocates tiers, adjudicates specialist disagreements. To make it your
-# default: alias pi=pip.
+# Principal / architect — ceiling model, deep design partner.
 pip() {
-  command pi --model anthropic/claude-fable-5 --thinking high \
-    --append-system-prompt "You are the principal engineer/architect. Partner with the manager on hard design decisions, allocate model tiers per task (default cheap, escalate only when consequential), resolve cross-cutting architecture, and adjudicate specialist disagreements. Reason deeply and delegate execution rather than implementing yourself." \
-    "$@"
+  command pi --model $PI_TIER_SOTA --thinking high \
+    --append-system-prompt "$_pi_prompts/principal.md" "$@"
 }
 
-# Manager / orchestrator — delegation-focused (enforced by the brief; a --tools allowlist
-# is deferred until exact registered tool names are verified live). Primary opus-5,
-# Ctrl+P alt gpt-5.6-sol.
+# Manager / orchestrator — delegation-focused; Ctrl+P alt cross-family.
 pim() {
-  command pi --model anthropic/claude-opus-5 --thinking medium --models anthropic/claude-opus-5,openai-codex/gpt-5.6-sol \
-    --append-system-prompt "You are the orchestration manager. Keep your context on the big picture: decompose the epic, track dependencies, remove duplicates, and delegate work to specialist subagents via the task tool. Avoid doing implementation yourself; borrow deep reasoning via /advisor only when a decision is consequential." \
-    "$@"
+  command pi --model $PI_TIER_DEEP --thinking medium \
+    --models $PI_TIER_DEEP,$PI_XFAM_CRITIC \
+    --append-system-prompt "$_pi_prompts/manager.md" "$@"
 }
 
-# Dev / implementer — opus-5 (good taste, esp. FE). Primary opus-5, Ctrl+P alt
-# gpt-5.6-terra. Full tools (skill curation: P1).
+# Dev / implementer.
 pid() {
-  command pi --model anthropic/claude-opus-5 --thinking medium --models anthropic/claude-opus-5,openai-codex/gpt-5.6-terra \
-    --append-system-prompt "You are a hands-on implementation specialist: execute the delegated task within its focused scope, then verify it. You do not review or sign off on your own work. Report changed files, evidence, caveats, and next steps." \
-    "$@"
+  command pi --model $PI_TIER_DEEP --thinking medium \
+    --models $PI_TIER_DEEP,$PI_XFAM_DEV \
+    --append-system-prompt "$_pi_prompts/implementer.md" "$@"
 }
 
-# Reviewer / QA — cross-family GPT-5.6-Sol (big context, strong critic, browser QA
-# via agent-browser). MUST get an explicit risk threshold + stop condition in its
-# brief, or edge-case diligence loops forever and burns budget.
+# Reviewer / QA — cross-family critic. Brief MUST carry a risk threshold +
+# stop condition, or edge-case diligence loops forever and burns budget.
 piqa() {
-  command pi --model openai-codex/gpt-5.6-sol --thinking high \
-    --append-system-prompt "You are an independent reviewer/QA and never review your own work. Do thorough code review and, when applicable, browser QA via agent-browser (screenshots, repro). Report findings by severity. Honor the risk threshold and stop condition in your brief: once met, STOP and report — do not keep surfacing lower-severity edge cases." \
-    "$@"
+  command pi --model $PI_XFAM_CRITIC --thinking high \
+    --append-system-prompt "$_pi_prompts/reviewer.md" "$@"
+}
+
+# Workflow launcher — manager + a workflow brief.
+#   piw <workflow> [prompt...]   e.g. piw 2-level "Epic AGI-5099: ..."
+#   piw                          lists available workflows
+piw() {
+  local wf_dir="$_pi_prompts/workflows"
+  if [[ -z "$1" ]]; then
+    echo "usage: piw <workflow> [prompt...]  — available:"
+    command ls "$wf_dir" 2>/dev/null | sed -n 's/\.md$//p' | sed 's/^/  /'
+    return 1
+  fi
+  local wf="$wf_dir/$1.md"
+  if [[ ! -f "$wf" ]]; then
+    echo "piw: no workflow '$1' in $wf_dir" >&2
+    return 1
+  fi
+  shift
+  command pi --model $PI_TIER_DEEP --thinking medium \
+    --models $PI_TIER_DEEP,$PI_XFAM_CRITIC \
+    --append-system-prompt "$_pi_prompts/manager.md" \
+    --append-system-prompt "$wf" "$@"
 }
