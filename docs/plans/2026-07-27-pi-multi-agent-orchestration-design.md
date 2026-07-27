@@ -210,6 +210,31 @@ manager → specialist → review → ship.
   findings file in a Herdr pane) is best confirmed in a normal interactive session — nested
   `pi -p` foreground delegation hangs on the pane spawn and is not a valid test harness.
 
+## 16. P2 — Advisor + review gate
+
+**Advisor (`pi-advisor-flow`).** Config: Dotter-managed `~/.pi/agent/advisor.json`.
+- `executor` **omitted** on purpose — each launcher's `--model` stays the executor; only the
+  advisor + gates are global.
+- `advisor: anthropic/claude-fable-5` (ceiling), `advisorEffort: high`. Cross-family option:
+  switch to GPT-5.6-Sol via `/advisor-models` (confirm the exact provider id there).
+- Gates: plan + failure + completion on; **auto-loop consult at 3** (matches escalate-after-N),
+  **budget 5 calls/session** (cost guard), block-on-blocked, `gateFailureMode: block-session`.
+- Privacy: `advisorRedactSecrets: true`, `advisorGitContext: summary` (never file contents),
+  `deploy` tool output excluded.
+- **`alwaysOn: false`** — opt-in per session with `/advisor` (avoids executor drift and advisor
+  overhead on delegated children). Flip to `true` later if you want it always active.
+- Enable per session: `/advisor` (uses the launcher model as executor). Principal sessions
+  (`pip`, already fable) should override with a cross-family advisor: `/advisor advisor=<gpt-sol>`.
+
+**Review gate.** Two paths:
+- Same-family: delegate to the `reviewer` profile via `task`; gate with `task_control` `verify`
+  → `review` (`reviewer_task_id`) → `ship`. Reviewer inherits the delegator's model.
+- Cross-family (recommended for real critique): launch `piqa` (GPT-5.6-Sol) in its own Herdr
+  pane, feed it the diff/worktree, and treat its verdict as the gate. Nobody reviews own work.
+
+**Escalation.** Advisor auto-loop gate (3) + manager brief; on unresolved disagreement the
+manager summarizes both positions with attribution and asks you (Herdr notification).
+
 ## 14. Decisions log
 
 - Composable stack on `pi-subagents` (not agent-fleet, not minimal DIY).

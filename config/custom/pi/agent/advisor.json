@@ -1,0 +1,30 @@
+{
+  "advisor": "anthropic/claude-fable-5",
+  "advisorEffort": "high",
+  "contextMaxChars": 25000,
+
+  "advisorPlanGate": true,
+  "advisorFailureGate": true,
+  "advisorCompletionGate": true,
+  "advisorCollapseResponses": false,
+
+  "advisorAutoLoopGate": true,
+  "advisorLoopThreshold": 3,
+  "advisorMaxCallsPerSession": 5,
+  "advisorBlockOnBlocked": true,
+  "gateFailureMode": "block-session",
+
+  "advisorSessionSummary": false,
+  "advisorGitContext": "summary",
+  "advisorGitContextMaxChars": 20000,
+  "simpleMode": false,
+  "alwaysOn": false,
+  "advisorHerdrIntegration": true,
+
+  "advisorRedactSecrets": true,
+  "advisorUntrackedContent": false,
+  "advisorOutcomeLogging": false,
+  "advisorToolPolicies": {
+    "deploy": "exclude"
+  }
+}
