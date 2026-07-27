@@ -55,7 +55,7 @@
   "theme": "catppuccin-black-mocha",
   "showCacheMissNotices": true,
   "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-4-8",
+  "defaultModel": "claude-opus-5",
   "defaultThinkingLevel": "high",
   "enabledModels": [
     "anthropic/claude-fable-5",

@@ -19,30 +19,30 @@ alias pif='command pi'
 
 # Recon — read-only, cheapest tier. Primary haiku-4-5, Ctrl+P alt gpt-5.6-luna.
 # No skills, read-only native tools only.
-alias pir='command pi --model anthropic/claude-haiku-4-5 --models anthropic/claude-haiku-4-5,openai-codex/gpt-5.6-luna --no-skills --tools read,grep,find,ls'
+alias pir='command pi --model anthropic/claude-haiku-4-5 --thinking low --models anthropic/claude-haiku-4-5,openai-codex/gpt-5.6-luna --no-skills --tools read,grep,find,ls'
 
 # Principal / architect — ceiling model (fable-5). Deep design partner to the
 # manager; allocates tiers, adjudicates specialist disagreements. To make it your
 # default: alias pi=pip.
 pip() {
-  command pi --model anthropic/claude-fable-5 \
+  command pi --model anthropic/claude-fable-5 --thinking high \
     --append-system-prompt "You are the principal engineer/architect. Partner with the manager on hard design decisions, allocate model tiers per task (default cheap, escalate only when consequential), resolve cross-cutting architecture, and adjudicate specialist disagreements. Reason deeply and delegate execution rather than implementing yourself." \
     "$@"
 }
 
 # Manager / orchestrator — delegation-focused (enforced by the brief; a --tools allowlist
-# is deferred until exact registered tool names are verified live). Primary opus-4-8,
+# is deferred until exact registered tool names are verified live). Primary opus-5,
 # Ctrl+P alt gpt-5.6-sol.
 pim() {
-  command pi --model anthropic/claude-opus-4-8 --models anthropic/claude-opus-4-8,openai-codex/gpt-5.6-sol \
+  command pi --model anthropic/claude-opus-5 --thinking medium --models anthropic/claude-opus-5,openai-codex/gpt-5.6-sol \
     --append-system-prompt "You are the orchestration manager. Keep your context on the big picture: decompose the epic, track dependencies, remove duplicates, and delegate work to specialist subagents via the task tool. Avoid doing implementation yourself; borrow deep reasoning via /advisor only when a decision is consequential." \
     "$@"
 }
 
-# Dev / implementer — opus-4-8 (good taste, esp. FE). Primary opus-4-8, Ctrl+P alt
+# Dev / implementer — opus-5 (good taste, esp. FE). Primary opus-5, Ctrl+P alt
 # gpt-5.6-terra. Full tools (skill curation: P1).
 pid() {
-  command pi --model anthropic/claude-opus-4-8 --models anthropic/claude-opus-4-8,openai-codex/gpt-5.6-terra \
+  command pi --model anthropic/claude-opus-5 --thinking medium --models anthropic/claude-opus-5,openai-codex/gpt-5.6-terra \
     --append-system-prompt "You are a hands-on implementation specialist: execute the delegated task within its focused scope, then verify it. You do not review or sign off on your own work. Report changed files, evidence, caveats, and next steps." \
     "$@"
 }
@@ -51,7 +51,7 @@ pid() {
 # via agent-browser). MUST get an explicit risk threshold + stop condition in its
 # brief, or edge-case diligence loops forever and burns budget.
 piqa() {
-  command pi --model openai-codex/gpt-5.6-sol \
+  command pi --model openai-codex/gpt-5.6-sol --thinking high \
     --append-system-prompt "You are an independent reviewer/QA and never review your own work. Do thorough code review and, when applicable, browser QA via agent-browser (screenshots, repro). Report findings by severity. Honor the risk threshold and stop condition in your brief: once met, STOP and report — do not keep surfacing lower-severity edge cases." \
     "$@"
 }
