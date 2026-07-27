@@ -38,7 +38,7 @@
     "npm:pi-vim"
   ],
   "powerline": {
-    "preset": "nerd",
+    "preset": "default",
     "fixedEditor": true,
     "mouseScroll": false,
     "disabledSegments": [
@@ -46,7 +46,8 @@
       "token_total",
       "context_total",
       "cache_read",
-      "cache_write"
+      "cache_write",
+      "hostname"
     ],
     "placement": "above"
   },
