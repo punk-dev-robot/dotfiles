@@ -6,7 +6,7 @@ name = "catppuccin"
 auto_switch = false
 [theme.custom]
 panel_bg = "reset"
-accent = "#cba6f7"
+accent = "#fab387"
 
 [terminal]
 shell_mode = "auto"
