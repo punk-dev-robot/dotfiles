@@ -11,10 +11,14 @@
     "npm:pi-web-access",
     "npm:pi-simplify",
     "npm:@spences10/pi-telemetry",
-    "npm:@spences10/pi-observability"
+    "npm:@spences10/pi-observability",
+    "npm:@minhduydev/pi-subagents",
+    "npm:pi-advisor-flow",
+    "npm:@ogulcancelik/pi-herdr",
+    "npm:pi-rename-pane"
   ],
   "lastChangelogVersion": "0.82.0",
-  "theme": "dark",
+  "theme": "catppuccin-black-mocha",
   "showCacheMissNotices": true,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-4-8",

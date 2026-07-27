@@ -50,15 +50,38 @@ manager / epic-owner   (tab 1, you talk to it) — fast/workhorse, thin context:
 
 The cost lever is **not** a fixed model-per-role. It is: **default to cheap, and the
 principal (or you) escalates only when a decision is consequential.** From experience,
-most epics run at fable/sonnet; opus/sota is earned, not assumed.
+most work runs at haiku/sonnet; opus/fable is earned, not assumed.
 
 | Tier | Model | When |
 |---|---|---|
-| **fast** | `claude-fable-5` | recon, groundwork, routine coordination |
+| **fast** | `claude-haiku-4-5` | recon, groundwork, routine coordination |
 | **workhorse** | `claude-sonnet-5` | most specialist execution, most epic coordination |
-| **deep** | `claude-opus-5` | hard design calls, review gate |
-| **sota** (rare) | current best available Anthropic model | final architecture sign-off, deadlocks |
+| **deep** | `claude-opus-5` / `opus-4-8` | hard design calls, review gate, interactive default (`pi`) |
+| **sota / ceiling** | `claude-fable-5` | **top Anthropic model, most expensive — above opus.** Principal, final architecture sign-off, deadlocks. Use sparingly. |
 | _cross-model_ | `gpt-5.6-sol` | _sparingly_ — a different family's second opinion only |
+
+Note: `claude-fable-5` is Anthropic's ceiling (not a cheap/fast model). Ladder cheap→expensive: `haiku-4-5` < `sonnet-5` < `opus-5` < `fable-5`.
+
+### Role → model mapping (from community + our own use; tunable)
+
+Philosophy the community converged on: **"best orchestration > best model."** Fable
+plans/arbitrates with taste; cheaper models do the volume; a strong independent
+critic loop catches bugs. Our mapping (jinn split is a *hint*, not a spec — we run
+it Pi-native):
+
+| Role | Launcher | Model | Why |
+|---|---|---|---|
+| orchestrator / principal / arbitrator | `pip` | `claude-fable-5` | plans, reads whole diffs, product/UI taste, breaks ties |
+| manager / coordination | `pim` | `claude-opus-4-8` ↔ `gpt-5.6-sol` | delegation + board; Ctrl+P cycles to the GPT family |
+| implementer / dev | `pid` | `claude-opus-4-8` ↔ `gpt-5.6-terra` | follows instructions, good FE taste; Ctrl+P alt for cheap codegen |
+| reviewer / QA | `piqa` | `openai-codex/gpt-5.6-sol` | cross-family critic, 1.1M context, browser QA via agent-browser |
+| recon | `pir` | `claude-haiku-4-5` ↔ `gpt-5.6-luna` | cheapest read-only groundwork; Ctrl+P alt |
+
+(↔ = primary model + a Ctrl+P-cyclable alternate via `--models`, for mid-session family switching.)
+| default | `pi` / `pif` | settings default (`opus-4-8`) | full session |
+
+Budget: ~$2k Anthropic vs ~$400–500 GPT — GPT-Sol is the reviewer seat (bounded by
+risk threshold/stop condition), not the volume worker, to keep GPT spend contained.
 
 - **Budget bias:** ~$2,000 Anthropic (often extendable) vs ~$400–500 GPT → lean Anthropic;
   reserve `gpt-5.6-sol` for occasional cross-family review, not routine work.
@@ -69,10 +92,14 @@ most epics run at fable/sonnet; opus/sota is earned, not assumed.
 
 - **Global:** `~/.pi/agent/agents/*.md` · **Per-repo:** `.pi/agents/*.md` (both read by
   `pi-subagents`; profiles are owned by us, additive, no parent-prompt pollution).
-- Each profile = **default model tier + escalation ceiling + tool allowlist + skill set +
-  prompt** — this *is* the diet (§6) applied per role.
-- **Exact frontmatter keys + `task_control` semantics are TBD** — confirm from
-  `@minhduydev/pi-subagents` docs/examples during P1 (do not assume).
+- **Confirmed schema (pi-subagents):** frontmatter is minimal — `description` + `tools`
+  (comma-separated allowlist); filename = `agent_type`; body = the agent's brief.
+  Example: `.pi/agents/general.md` with `tools: read, grep, find, ls, bash, edit, write`.
+- **Model tiering is NOT a profile field.** pi-subagents has no `model:` — a child inherits
+  the parent's model. So horizontal tiering comes from **Herdr-direct `agent start -- --model <id>`**
+  launches (or inheritance), and vertical tiering from **`pi-advisor-flow`** (executor/advisor
+  models). The extension-diet lever is **`PI_TASK_CHILD_NO_EXTENSIONS=1`**.
+- So a profile encodes **tools + prompt** (+ diet); model tier is layered at launch.
 
 Proposed profiles: `manager`, `principal`, `specialist-devops`, `specialist-observability`,
 `specialist-ai-eng`, `specialist-be-eng`, `specialist-fe-eng`, `recon`, `reviewer`.
@@ -102,10 +129,15 @@ a fresh `shopmr` start via Contextimate. Per-profile scoping targets:
 
 - **Advisor (vertical):** manager/specialist call `ask_advisor` on consequential calls;
   advisor reviews, does not run tools. Cheap-by-default, frontier-on-demand.
-- **Review gate (horizontal):** `reviewer` (cross-model — e.g. opus reviewing sonnet's
-  work) must pass before `task_control` ship.
-- **Escalation:** disagreement after N turns → escalate to you with **both positions +
-  attribution** (Herdr notification / `pi-ask-herdr`), so budget isn't burned looping.
+- **Critic loop (the core win):** Fable plans → implementer (`opus-4-8`/`luna`) builds
+  → **`gpt-5.6-sol` reviews** (code + browser QA), optionally a second pass. A strong
+  independent critic is what makes idea→polished-feature work with little babysitting.
+- **Nobody signs off on their own work.** Implementer implements, GPT-Sol reviews,
+  Fable arbitrates disagreement. The reviewer must pass before `task_control` ship.
+- **Reviewer needs an explicit risk threshold + stop condition** in its brief, or
+  GPT-Sol's edge-case diligence loops forever and burns budget. Stop when met; report.
+- **Escalation:** if Fable can't resolve a disagreement within N turns → escalate to you
+  with **both positions + attribution** (Herdr notification / `pi-ask-herdr`).
 
 ## 9. punkfl0w / Linear integration (opt-in, per-phase)
 
@@ -149,7 +181,10 @@ manager → specialist → review → ship.
 
 ## 13. Risks & open questions
 
-- **`pi-subagents` profile schema + `task_control` semantics** — confirm from docs in P1.
+- **`task_control` semantics** — lifecycle (`status/handoff/verify/review/ship/metrics`)
+  confirmed present; exercise them in P1/P2. Profile schema confirmed (§5).
+- **Model tiering is not native to pi-subagents** (§5) — horizontal tiering needs
+  Herdr-direct `--model` launches; validate the mechanism in P1.
 - **Extension interplay / harness creep** — `pi-subagents` + `pi-advisor-flow` +
   context-mode/OM/Pix tool overlap could re-inflate the harness. *This is the learning part;*
   measure per profile.
