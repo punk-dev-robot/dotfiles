@@ -30,11 +30,11 @@ pip() {
     "$@"
 }
 
-# Manager / orchestrator — delegation-only (no edit/write/bash; can't implement, only
-# orchestrate). Primary opus-4-8, Ctrl+P alt gpt-5.6-sol.
+# Manager / orchestrator — delegation-focused (enforced by the brief; a --tools allowlist
+# is deferred until exact registered tool names are verified live). Primary opus-4-8,
+# Ctrl+P alt gpt-5.6-sol.
 pim() {
   command pi --model anthropic/claude-opus-4-8 --models anthropic/claude-opus-4-8,openai-codex/gpt-5.6-sol \
-    --tools read,grep,find,ls,todo,ask_user,mcp,ask_advisor,task,task_control,herdr_layout,herdr_pane,herdr_agent \
     --append-system-prompt "You are the orchestration manager. Keep your context on the big picture: decompose the epic, track dependencies, remove duplicates, and delegate work to specialist subagents via the task tool. Avoid doing implementation yourself; borrow deep reasoning via /advisor only when a decision is consequential." \
     "$@"
 }
