@@ -7,13 +7,17 @@
     "npm:pine-of-glass",
     "npm:@xynogen/pix-themes",
     "npm:pi-observational-memory",
-    "npm:pi-claude-auth"
+    "npm:pi-claude-auth",
+    "npm:pi-web-access",
+    "npm:pi-simplify",
+    "npm:@spences10/pi-telemetry",
+    "npm:@spences10/pi-observability"
   ],
   "lastChangelogVersion": "0.82.0",
   "theme": "dark",
   "showCacheMissNotices": true,
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-sol",
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-opus-4-8",
   "defaultThinkingLevel": "high",
   "enabledModels": [
     "anthropic/claude-fable-5",
@@ -39,8 +43,8 @@
     "observationsPoolTargetTokens": 10000,
     "agentMaxTurns": 16,
     "model": {
-      "provider": "openai-codex",
-      "id": "gpt-5.6-luna",
+      "provider": "anthropic",
+      "id": "claude-sonnet-5",
       "thinking": "low"
     },
     "showWorkerNotifications": false,
