@@ -1,12 +1,27 @@
 # Font
 font-family = MesloLGL Nerd Font Mono
-font-size = 16
+font-size = 18
+adjust-icon-height=10%
 
 # Theme
 theme = Catppuccin Mocha
 
+# Palette slots 16-23: pi's `terminal-tinted` theme (pi-terminal-theme) reads these
+# as UI colors - selected/message/tool backgrounds and tool title/output text.
+# Values are Catppuccin Mocha surfaces plus hue tints over base #1e1e2e.
+# Trade-off: any app addressing xterm-cube indices 16-23 directly gets these
+# instead of the stock cube (16=black, 17-21 dark blues, 22-23 dark greens).
+palette = 16=#585b70
+palette = 17=#45293a
+palette = 18=#26402f
+palette = 19=#453b26
+palette = 20=#313244
+palette = 21=#3b2f4d
+palette = 22=#89b4fa
+palette = 23=#a6adc8
+
 # Window
-background-opacity = 0.95
+background-opacity = 0.90
 # window-decoration = false
 
 # Terminal
