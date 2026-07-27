@@ -213,8 +213,10 @@ manager → specialist → review → ship.
 ## 16. P2 — Advisor + review gate
 
 **Advisor (`pi-advisor-flow`).** Config: Dotter-managed `~/.pi/agent/advisor.json`.
-- `executor` **omitted** on purpose — each launcher's `--model` stays the executor; only the
-  advisor + gates are global.
+- `executor` **must be explicit** — advisor-flow's `FALLBACK_EXECUTOR` is `aikeys/claude-sonnet-5`
+  (the package author's personal provider), so omitting it errors with "Executor model not
+  found: aikeys/claude-sonnet-5." Set `executor: anthropic/claude-sonnet-5` (workhorse),
+  `executorEffort: medium`.
 - `advisor: anthropic/claude-fable-5` (ceiling), `advisorEffort: high`. Cross-family option:
   switch to GPT-5.6-Sol via `/advisor-models` (confirm the exact provider id there).
 - Gates: plan + failure + completion on; **auto-loop consult at 3** (matches escalate-after-N),
