@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Delete the cymbal SQLite index for the current worktree.
+# Wired to worktrunk's pre-remove hook, which runs inside the worktree being deleted.
+#
+# Mirrors cymbal v0.14.0's key derivation (index/index.go). If a future cymbal
+# changes the cache layout or hash scheme, this silently stops matching.
+#   dir  = $CYMBAL_CACHE_DIR/cymbal | os.UserCacheDir()/cymbal
+#   hash = sha256(canonical abs worktree root)[:16 hex]
+#   db   = <dir>/repos/<hash>/index.db
+set -euo pipefail
+
+root=$(pwd -P)
+
+# Safety: only ever prune a LINKED worktree. A linked worktree's .git is a file;
+# the primary checkout's is a directory. Guards against the hook running from the
+# wrong cwd and deleting the primary repo's index.
+if [[ ! -f "$root/.git" ]]; then
+  echo "cymbal-prune-index: $root is not a linked worktree, refusing to prune" >&2
+  exit 0
+fi
+
+if [[ -n "${CYMBAL_CACHE_DIR:-}" ]]; then
+  cache="$CYMBAL_CACHE_DIR/cymbal"
+elif [[ "$(uname)" == Darwin ]]; then
+  # Go's os.UserCacheDir ignores XDG_CACHE_HOME on darwin.
+  cache="$HOME/Library/Caches/cymbal"
+else
+  cache="${XDG_CACHE_HOME:-$HOME/.cache}/cymbal"
+fi
+
+if command -v sha256sum >/dev/null 2>&1; then
+  hash=$(printf '%s' "$root" | sha256sum | cut -c1-16)
+else
+  hash=$(printf '%s' "$root" | shasum -a 256 | cut -c1-16)
+fi
+
+dir="$cache/repos/$hash"
+[[ -d "$dir" ]] || exit 0
+rm -rf "$dir"
+echo "cymbal-prune-index: removed $dir ($root)"
