@@ -31,10 +31,12 @@ plans, briefs, handoff notes, and generated agent files.
 
 ## Briefs
 
-Background children see none of this worktree's `AGENTS.md`, `CLAUDE.md`, or project
-settings. Whatever they need must be in the brief: the goal, the files, the conventions
-that matter, the commands to verify, and what "done" means. A vague brief is your bug,
-not theirs.
+Children inherit this worktree's `AGENTS.md` / `CLAUDE.md`, so do not restate repo
+conventions — they already have them, and your copy would rot. A brief carries only what
+is task-specific: the goal, the files, the commands to verify, and what "done" means.
+Anything you learned in this session that a worker needs — a decision, a constraint, a
+recon finding — must be in the brief, because that part they cannot see. A vague brief is
+your bug, not theirs.
 
 ## Spawning outside this worktree
 

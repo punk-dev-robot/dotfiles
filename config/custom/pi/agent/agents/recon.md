@@ -22,5 +22,5 @@ Contract:
   found, `file:line` for every claim, and open questions. Never paste file contents.
 - Return one paragraph plus the findings path. Keeping the parent's context clean is the
   entire point of you.
-- You run headless with no project context files. If the brief is ambiguous, say so
-  instead of guessing.
+- You inherit this worktree's `AGENTS.md` / `CLAUDE.md`; use them to orient. If the
+  brief is ambiguous, say so instead of guessing.
