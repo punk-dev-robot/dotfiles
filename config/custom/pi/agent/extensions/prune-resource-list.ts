@@ -7,6 +7,10 @@
  * anchor and contextimate never installs. So: let pi render the list, let contextimate
  * anchor, then drop the rows.
  *
+ * pi-cc-header fights this: since it dropped /hrl it forces `quietStartup: true` into
+ * settings.json on every session_start (configStartupEnabled). Left alone that starves
+ * contextimate of its anchor from the next boot onward, so we write the flag back.
+ *
  * ponytail: reuse contextimate's own `globalThis.__piContextimateChat` rather than walking
  * the TUI tree. A tree walk has to render-probe every component to find the rows, which
  * perturbs pi's layout caches and broke the listing outright. The global is the exact same
@@ -15,6 +19,23 @@
  *
  * Diagnostics ([Skill conflicts], [Prompt conflicts], ...) are deliberately kept.
  */
+
+import { readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+
+const SETTINGS = join(process.env.HOME ?? "", ".pi", "agent", "settings.json");
+
+/** Undo pi-cc-header's unconditional `quietStartup: true`. */
+const unquietStartup = (): void => {
+	try {
+		const s = JSON.parse(readFileSync(SETTINGS, "utf-8"));
+		if (s.quietStartup === false) return;
+		s.quietStartup = false;
+		writeFileSync(SETTINGS, `${JSON.stringify(s, null, 2)}\n`, "utf-8");
+	} catch {
+		/* settings unreadable or mid-write; next session retries */
+	}
+};
 
 const RESOURCE_HEADER_RE =
 	/^\s*\[(Context|Skills|Prompts|Extensions|Themes)\]/m;
@@ -65,6 +86,9 @@ export default function (pi: {
 	on: (e: string, h: (event: unknown, ctx: any) => unknown) => void;
 }) {
 	pi.on("session_start", async (_event, ctx) => {
+		// ponytail: setTimeout(0) — session_start handlers run to completion synchronously,
+		// so this lands after pi-cc-header's write whatever the extension load order is.
+		setTimeout(unquietStartup, 0).unref?.();
 		if (!ctx.hasUI) return;
 		// ponytail: only re-probe when the child count moved. isResourceRow render-probes
 		// each child, and doing that every frame forever is what broke the first attempt.
@@ -96,11 +120,13 @@ export default function (pi: {
 		}));
 
 		// Fail loudly instead of silently leaving the full listing on screen: this breaks
-		// whenever contextimate can't anchor (pine-of-glass gone, or cc-header's /hrl
-		// flipping rsl back to true, which re-forces quietStartup).
+		// whenever contextimate can't anchor (pine-of-glass gone, or something re-forced
+		// quietStartup after unquietStartup ran).
 		// ponytail: 10s, not 5 — contextimate retries its install every 50ms and a heavy
 		// cwd anchors after 5s, which fired this warning while pruning still succeeded.
 		setTimeout(() => {
+			// Second pass: covers cc-header writing after our setTimeout(0) fired.
+			unquietStartup();
 			if (!anchored) {
 				ctx.ui.notify(
 					"prune-resource-list: contextimate never anchored; check quietStartup is false and pine-of-glass is loaded",
