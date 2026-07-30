@@ -5,22 +5,6 @@
     "outputGuard": true
   },
   "mcpServers": {
-    "context-mode": {
-      "command": "context-mode",
-      "lifecycle": "lazy",
-      "directTools": [
-        "ctx_execute",
-        "ctx_batch_execute",
-        "ctx_search",
-        "ctx_fetch_and_index",
-        "ctx_execute_file"
-      ]
-    },
-    "codebase-memory-mcp": {
-      "command": "codebase-memory-mcp",
-      "lifecycle": "lazy",
-      "directTools": false
-    },
     "logfire": {
       "url": "https://logfire-eu.pydantic.dev/mcp",
       "lifecycle": "lazy"
