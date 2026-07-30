@@ -5,7 +5,7 @@ model: anthropic/claude-sonnet-5
 thinking: medium
 tools: read,write,web_search,fetch_content,get_search_content,source_check
 skills: none
-extensions: npm:pi-web-access
+extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-caveman, npm:pi-web-access
 mode: background
 auto-exit: true
 system-prompt: append
