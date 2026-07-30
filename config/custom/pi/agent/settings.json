@@ -1,51 +1,102 @@
 {
   "packages": [
-    "npm:@dietrichgebert/ponytail",
-    "npm:@ogulcancelik/pi-herdr",
-    "npm:@pi-kaush/pi-double-paste@0.1.0",
-    "npm:@pi-kaush/pi-tool-call-markers",
-    "npm:@plannotator/pi-extension",
-    "npm:@spences10/pi-observability",
-    "npm:@spences10/pi-telemetry",
-    "npm:@tifan/pi-rename",
-    "npm:@tmustier/pi-usage-extension",
-    "npm:@xynogen/pix-data",
-    "npm:@xynogen/pix-models",
-    "npm:@xynogen/pix-nudge",
-    "npm:@yassimba/pi-herdr-worktree",
-    "npm:@zhcsyncer/pi-recap",
-    "npm:context-mode",
-    "npm:pi-advisor-flow",
-    "npm:pi-ask-herdr",
-    "npm:pi-atuin",
-    "npm:pi-caveman",
+    "npm:@rahularya01/pi-lazy",
     "npm:pi-claude-auth",
-    "npm:pi-claude-code-ui",
-    "npm:pi-fancy-footer",
-    "npm:pi-herdr-subagents",
-    "npm:pi-image-tools",
-    "npm:pi-lens",
-    "npm:pi-markdown-preview",
-    "npm:pi-mcp-adapter",
-    "npm:pi-mermaid",
-    "npm:pi-observational-memory",
-    "npm:pi-perf",
-    "npm:pi-rename-pane",
-    "npm:pi-rtk-optimizer",
-    "npm:pi-skill-gate",
     "npm:pi-terminal-theme",
-    "npm:pi-vim",
-    "npm:pi-web-access",
-    "npm:pine-of-glass",
-    "npm:@quintinshaw/pi-dynamic-workflows",
     "npm:pi-cc-header",
-    "npm:pi-oc-style-agent-switcher"
+    "npm:@raquezha/noheadroom",
+    "npm:pi-vim",
+    "npm:@pi-kaush/pi-double-paste@0.1.0",
+    "npm:pi-tool-display",
+    "npm:pi-fancy-footer",
+    "npm:pi-image-tools",
+    "npm:pi-rtk-optimizer",
+    "npm:pine-of-glass",
+    "npm:pi-observational-memory",
+    "npm:pi-langfuse",
+    "npm:pi-hashline-edit-pro",
+    "npm:@ff-labs/pi-fff",
+    "npm:pi-ask-herdr",
+    "npm:@dietrichgebert/ponytail",
+    "npm:pi-caveman",
+    {
+      "source": "npm:pi-advisor-flow",
+      "extensions": []
+    },
+    {
+      "source": "npm:pi-cymbal",
+      "extensions": []
+    },
+    {
+      "source": "npm:@ogulcancelik/pi-herdr",
+      "extensions": []
+    },
+    {
+      "source": "npm:@yassimba/pi-herdr-worktree",
+      "extensions": []
+    },
+    {
+      "source": "git:github.com/edxeth/pi-subagents",
+      "extensions": []
+    },
+    {
+      "source": "/Users/kuba.gaj/.config/pi/agent/git/github.com/edxeth/pi-subagents",
+      "extensions": []
+    },
+    {
+      "source": "npm:@quintinshaw/pi-dynamic-workflows",
+      "extensions": []
+    },
+    {
+      "source": "npm:pi-web-access",
+      "extensions": []
+    },
+    {
+      "source": "npm:pi-mcp-adapter",
+      "extensions": []
+    },
+    {
+      "source": "npm:context-mode",
+      "extensions": []
+    },
+    {
+      "source": "npm:@plannotator/pi-extension",
+      "extensions": []
+    },
+    {
+      "source": "npm:pi-mermaid",
+      "extensions": []
+    },
+    {
+      "source": "npm:@tmustier/pi-usage-extension",
+      "extensions": []
+    },
+    {
+      "source": "npm:@zhcsyncer/pi-recap",
+      "extensions": []
+    },
+    {
+      "source": "npm:@tifan/pi-rename",
+      "extensions": []
+    },
+    {
+      "source": "npm:pi-rename-pane",
+      "extensions": []
+    }
+  ],
+  "npmCommand": [
+    "fnm",
+    "exec",
+    "--using",
+    "26.5.0",
+    "npm"
   ],
   "lastChangelogVersion": "0.82.1",
+  "cacheRetention": "long",
   "showCacheMissNotices": true,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-5",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "xhigh",
   "enabledModels": [
     "anthropic/claude-fable-5",
     "anthropic/claude-sonnet-5",
@@ -91,18 +142,12 @@
       "right": [],
       "secondary": [
         "extension_statuses",
-        "custom:lens",
         "custom:mcp",
         "custom:ponytail",
         "custom:caveman"
       ]
     },
     "customItems": [
-      {
-        "id": "lens",
-        "statusKey": "pi-lens-lsp",
-        "position": "secondary"
-      },
       {
         "id": "mcp",
         "statusKey": "mcp",
@@ -134,9 +179,8 @@
   "hideThinkingBlock": true,
   "quietStartup": false,
   "collapseChangelog": true,
-  "clearOnStart": false,
+  "clearOnStart": true,
   "theme": "terminal",
-  "rsl": false,
   "ccHeader": {
     "pkg": true
   }

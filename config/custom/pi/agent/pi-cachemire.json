@@ -1,8 +1,8 @@
 {
   "widget": false,
-  "turnSummary": true,
-  "turnSummaryMinCalls": 3,
+  "turnSummary": false,
+  "turnSummaryMinCalls": 1,
   "missWarnings": true,
-  "missWarnUsd": 10,
-  "missWarnTokens": 50000
+  "missWarnUsd": 1,
+  "missWarnTokens": 50000000
 }
