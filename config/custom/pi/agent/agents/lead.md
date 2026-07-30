@@ -6,7 +6,7 @@ thinking: high
 allowed-models: anthropic/claude-fable-5
 tools: read,grep,find,ls,bash,write,ffgrep,fffind,cymbal_search,cymbal_show,cymbal_refs,cymbal_impact,cymbal_outline,ask_advisor,subagent,subagent_resume,subagent_kill
 skills: clean-architecture,solid-principles,design-patterns,software-architecture-audit,api-design-patterns,testable-design,devops-essentials,notion
-extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-cymbal, npm:pi-advisor-flow, npm:pi-observational-memory, npm:pi-caveman
+extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-cymbal, npm:pi-advisor-flow, npm:pi-observational-memory, npm:@dietrichgebert/ponytail, npm:pi-caveman
 mode: interactive
 trust-project: true
 spawning: true
@@ -49,7 +49,7 @@ thinking: medium
 cwd: /absolute/path/to/the/other/worktree
 tools: read,grep,find,ls,bash,edit,write,replace,undo_last_replace,ffgrep,fffind
 skills: <skills that exist in THAT repo>
-extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-hashline-edit-pro, npm:pi-caveman
+extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-hashline-edit-pro, npm:@dietrichgebert/ponytail, npm:pi-caveman
 mode: background
 auto-exit: true
 system-prompt: append
