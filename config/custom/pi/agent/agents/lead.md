@@ -49,6 +49,7 @@ thinking: medium
 cwd: /absolute/path/to/the/other/worktree
 tools: read,grep,find,ls,bash,edit,write,replace,undo_last_replace,ffgrep,fffind
 skills: <skills that exist in THAT repo>
+inject-skills: <the one or two the worker must actually apply>
 extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-hashline-edit-pro, npm:@dietrichgebert/ponytail, npm:pi-caveman
 mode: background
 auto-exit: true
@@ -56,6 +57,10 @@ system-prompt: append
 ---
 <the same contract you would have put in the brief>
 ```
+
+`inject-skills` prepends those SKILL.md bodies straight into the child's opening task,
+so the worker starts holding the skill instead of being told where to find it. Every
+injected skill must also appear in `skills`, or the launch fails.
 
 Rules for generated agents: write them to `.pi/agents/` in your own worktree so they die
 with it. `---` must be the first line or the file is silently ignored. Omit
