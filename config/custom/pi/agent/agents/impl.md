@@ -6,7 +6,7 @@ thinking: medium
 allowed-models: anthropic/claude-opus-5
 tools: read,grep,find,ls,bash,edit,write,replace,undo_last_replace,ffgrep,fffind
 skills: none
-extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-hashline-edit-pro, npm:@dietrichgebert/ponytail, npm:pi-caveman
+extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-hashline-edit-pro, npm:pi-caveman
 mode: background
 auto-exit: true
 system-prompt: append
