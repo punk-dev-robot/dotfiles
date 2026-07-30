@@ -19,34 +19,42 @@ settings = "prefix+s"
 detach = "prefix+d"
 reload_config = "prefix+shift+r"
 open_notification_target = "prefix+shift+o"
+copy_mode = "prefix+enter"
+resize_mode = "prefix+alt+r"
+
 workspace_picker = "prefix+o"
-new_worktree = ""
+navigate_workspace_up = "up"
+navigate_workspace_down = "down"
+switch_workspace = "prefix+shift+1..9"
 close_workspace = "prefix+alt+d"
-new_tab = "prefix+n"
+new_worktree = ""
+
+new_tab = "prefix+t"
 rename_tab = "prefix+r"
 previous_tab = ["prefix+[", "ctrl+shift+["]
 next_tab = ["prefix+]", "ctrl+shift+]"]
+switch_tab = "prefix+1..9"
 close_tab = "prefix+shift+q"
-copy_mode = "prefix+enter"
-focus_pane_left = "prefix+left"
-focus_pane_down = "prefix+down"
-focus_pane_up = "prefix+up"
-focus_pane_right = "prefix+right"
+
+focus_pane_left = ""
+focus_pane_down = ""
+focus_pane_up = ""
+focus_pane_right = ""
+
 swap_pane_left = "prefix+shift+h"
 swap_pane_down = "prefix+shift+j"
 swap_pane_up = "prefix+shift+k"
 swap_pane_right = "prefix+shift+l"
+
 last_pane = "prefix+tab"
-cycle_pane_next = ""
-cycle_pane_previous = ""
 split_vertical = "prefix+|"
 split_horizontal = "prefix+minus"
 close_pane = "prefix+q"
 zoom = "prefix+z"
-resize_mode = "prefix+alt+r"
+cycle_pane_next = ""
+cycle_pane_previous = ""
+
 toggle_sidebar = "prefix+b"
-switch_tab = "prefix+1..9"
-switch_workspace = "prefix+shift+1..9"
 focus_agent = "prefix+alt+1..9"
 
 [[keys.command]]
@@ -162,7 +170,8 @@ height = "80%"
 [ui]
 sidebar_width = 30
 sidebar_min_width = 22
-sidebar_max_width = 40
+sidebar_max_width = 60
+sidebar_start_collapsed = true
 mouse_capture = true
 copy_on_select = true
 confirm_close = true
@@ -173,17 +182,31 @@ show_agent_labels_on_pane_borders = true
 agent_panel_sort = "spaces"
 
 [ui.sidebar.agents]
-row_gap = 0
+row_gap = 1
 rows = [
-  ["state_icon", { token = "agent", bold = true }, "state_text"],
-  ["workspace", "tab", { token = "terminal_title_stripped", fg = "#89b4fa", dim = true }],
+  [
+    "state_icon",
+    { token = "agent", bold = true },
+    "state_text",
+  ],
+  [
+    "workspace",
+    "tab",
+    { token = "terminal_title_stripped", fg = "#89b4fa", dim = true },
+  ],
 ]
 
 [ui.sidebar.spaces]
 row_gap = 0
 rows = [
-  ["state_icon", { token = "workspace", bold = true }],
-  ["branch", "git_status"],
+  [
+    "state_icon",
+    { token = "workspace", bold = true },
+  ],
+  [
+    "branch",
+    "git_status",
+  ],
 ]
 
 [ui.toast]

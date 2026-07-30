@@ -100,7 +100,9 @@ arch.pacman-list.pkg
 
 # Pix Agent
 .pi/
-.pi-lens/
+.cymbal/
 
 # Agent scratch
 /HANDOFF.md
+.tessl
+.agents

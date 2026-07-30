@@ -116,16 +116,6 @@
   },
   "model": "opus[1m]",
   "hooks": {
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/cbm-mcp-marker"
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -148,79 +138,14 @@
             "command": "~/.config/claude/hooks/prefer-web-tools.py"
           }
         ]
-      },
-      {
-        "matcher": "Grep|Glob",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/cbm-code-discovery-gate",
-            "timeout": 5
-          }
-        ]
       }
     ],
     "SessionStart": [
-      {
-        "matcher": "startup|resume|clear|compact",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.config/claude/hooks/cbm-session-reminder"
-          }
-        ]
-      },
-      {
-        "matcher": "startup|resume",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/kuba.gaj/dotfiles/config/shared/claude/hooks/cbm-freshness",
-            "timeout": 5
-          }
-        ]
-      },
       {
         "hooks": [
           {
             "type": "command",
             "command": "~/.config/claude/hooks/context-mode-cache-heal.mjs"
-          }
-        ]
-      },
-      {
-        "matcher": "startup",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/cbm-session-reminder"
-          }
-        ]
-      },
-      {
-        "matcher": "resume",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/cbm-session-reminder"
-          }
-        ]
-      },
-      {
-        "matcher": "clear",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/cbm-session-reminder"
-          }
-        ]
-      },
-      {
-        "matcher": "compact",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/cbm-session-reminder"
           }
         ]
       },

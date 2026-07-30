@@ -3,6 +3,16 @@
 # Scope: personal, never committed.
 
 # ----------------------------------------------------------------------------
+# Cymbal index lifecycle
+# Cymbal keys one SQLite index per worktree (sha256 of its abs path) and
+# federates lookups across all *indexed* sibling worktrees of the same git
+# common dir. So a new worktree only joins the federation once indexed.
+# post-start runs in the background, so worktree creation is never blocked.
+# ----------------------------------------------------------------------------
+post-start = "cymbal index ."
+pre-remove = "cymbal-prune-index"
+
+# ----------------------------------------------------------------------------
 # LLM commit message generation
 # Used by `wt merge`, `wt step commit`, `wt step squash`.
 # Pipes the rendered template to Claude Code (haiku) on stdin.
@@ -73,8 +83,8 @@ Always include body for: breaking changes, security fixes, data migrations, anyt
 
 #
 # Squash template: same rules, summarises N commits into one.
-squash-template = """
-You are squashing {{ commits | length }} commits into ONE Conventional Commits message.
+squash-template = '''
+You are squashing {{ commit_details | length }} commits into ONE Conventional Commits message.
 
 Output format (and nothing else):
   <type>(<scope>): <subject>
@@ -86,7 +96,7 @@ Rules:
 - Subject: imperative mood, lowercase first word, no trailing period, <= 72 chars.
 - type ∈ { feat, fix, docs, style, refactor, perf, test, build, ci, chore }.
 - Scope: extract the ticket id from the branch name "{{ branch }}".
-  - If it matches /agi-\\d+/i, set scope to the uppercased id (e.g. AGI-3420).
+  - If it matches /agi-\d+/i, set scope to the uppercased id (e.g. AGI-3420).
   - Otherwise omit scope entirely: "<type>: <subject>".
 - Body: short bullet list summarising the squashed commits, only if it adds value.
 - Do not invent a co-author trailer, ticket id, or PR number.
@@ -95,14 +105,14 @@ Branch: {{ branch }}
 Target: {{ target_branch }}
 
 Commits being squashed:
-{% for c in commits %}- {{ c }}
+{% for c in commit_details %}- {{ c }}
 {% endfor %}
 Diff stat:
 {{ git_diff_stat }}
 
 Diff:
 {{ git_diff }}
-"""
+'''
 
 [aliases]
 # Drop worktrees + branches integrated into develop (squash-merge aware).
@@ -119,3 +129,6 @@ pr = "wt switch --create pr-{{ args[0] }} --base pr:{{ args[0] }}"
 # Sanity check: shows worktree status + latest origin commit on default branch.
 # Useful before creating a new worktree to confirm origin is fresh.
 status = "wt list --full && git -C {{ primary_worktree_path }} log --oneline -1 origin/{{ default_branch }}"
+
+[list]
+json-schema = 2

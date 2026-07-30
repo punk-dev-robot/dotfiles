@@ -23,11 +23,6 @@
         "/Users/kuba.gaj/Documents/notes",
       ],
     },
-    "codebase-memory-mcp": {
-      "enabled": true,
-      "type": "local",
-      "command": ["codebase-memory-mcp"],
-    },
   },
   "plugin": ["context-mode", "@plannotator/opencode@latest"],
   "skills": {

@@ -18,9 +18,6 @@ args = [
   "/Users/kuba.gaj/Documents/notes",
 ]
 
-[mcp_servers.codebase-memory-mcp]
-command = "/Users/kuba.gaj/.local/bin/codebase-memory-mcp"
-
 [mcp_servers.node_repl]
 args = []
 command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
@@ -81,7 +78,7 @@ source_type = "local"
 source = "/Users/kuba.gaj/.config/codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-07-26T01:56:49Z"
+last_updated = "2026-07-27T22:57:10Z"
 source_type = "local"
 source = "/Users/kuba.gaj/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
