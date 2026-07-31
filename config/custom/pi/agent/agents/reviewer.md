@@ -4,7 +4,7 @@ description: Independent cross-family ship gate; reads and runs tests, never edi
 model: openai-codex/gpt-5.6-sol
 thinking: high
 allowed-models: anthropic/claude-opus-5,anthropic/claude-fable-5
-tools: read,grep,find,ls,bash,ffgrep,fffind,cymbal_search,cymbal_show,cymbal_refs,cymbal_impact
+tools: read,grep,find,ls,bash,cymbal_search,cymbal_show,cymbal_refs,cymbal_impact
 skills: none
 deny-tools: edit,write,replace,undo_last_replace,ask_user
 extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-cymbal, npm:pi-caveman

@@ -4,7 +4,7 @@ description: Turns an idea or ticket into a scoped plan file with phases, files 
 model: anthropic/claude-opus-5
 thinking: high
 allowed-models: anthropic/claude-fable-5
-tools: read,grep,find,ls,write,ffgrep,fffind,cymbal_search,cymbal_show,cymbal_outline
+tools: read,grep,find,ls,write,cymbal_search,cymbal_show,cymbal_outline
 skills: none
 extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-caveman, npm:pi-cymbal
 mode: interactive

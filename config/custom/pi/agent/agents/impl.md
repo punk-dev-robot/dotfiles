@@ -1,10 +1,10 @@
 ---
 name: impl
-description: Implementer for a bounded, well-understood change. Cheap background worker.
+description: Use proactively for bounded edits with a known approach — one file, mechanical, or already specified. Cheapest implementer; prefer over dev whenever the change is obvious.
 model: anthropic/claude-sonnet-5
 thinking: medium
 allowed-models: anthropic/claude-opus-5
-tools: read,grep,find,ls,bash,edit,write,replace,undo_last_replace,ffgrep,fffind
+tools: read,grep,find,ls,bash,edit,write,replace,undo_last_replace
 skills: none
 extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-hashline-edit-pro, npm:@dietrichgebert/ponytail, npm:pi-caveman
 mode: background

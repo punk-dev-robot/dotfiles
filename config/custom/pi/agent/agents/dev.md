@@ -1,10 +1,10 @@
 ---
 name: dev
-description: Implementer for changes that need judgement — multi-file, unclear approach, or shared code. Background worker.
+description: Use proactively for implementation work instead of editing yourself — multi-file changes, unclear approach, or shared code with several callers. Background worker; brief must be self-contained.
 model: anthropic/claude-opus-5
 thinking: medium
 allowed-models: anthropic/claude-sonnet-5
-tools: read,grep,find,ls,bash,edit,write,replace,undo_last_replace,ffgrep,fffind,cymbal_search,cymbal_show,cymbal_refs,cymbal_impact,cymbal_outline
+tools: read,grep,find,ls,bash,edit,write,replace,undo_last_replace,cymbal_search,cymbal_show,cymbal_refs,cymbal_impact,cymbal_outline
 skills: none
 extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-cymbal, npm:pi-hashline-edit-pro, npm:@dietrichgebert/ponytail, npm:pi-caveman
 mode: background

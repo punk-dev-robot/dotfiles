@@ -115,7 +115,7 @@
         "fff-health",
         "fff-rescan"
       ],
-      "description": "ffgrep/fffind \u2014 core search tools"
+      "description": "FFF grep/find (override) \u2014 core search tools"
     },
     {
       "name": "ask-user",
