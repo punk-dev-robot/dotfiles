@@ -17,6 +17,6 @@ model family on purpose: nobody reviews their own work.
    `file:line` — and then act on the blockers.
 
 The child reads and runs tests; it cannot edit. Any fix it recommends is implemented here or by
-`impl` / `dev`, not by the reviewer.
+`impl` / `dev`, not by the code-reviewer.
 
 For a full pre-launch gate with security and coverage passes, use `/ship` instead.
