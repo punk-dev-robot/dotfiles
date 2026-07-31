@@ -12,7 +12,6 @@
     "npm:pi-rtk-optimizer",
     "npm:pine-of-glass",
     "npm:pi-observational-memory",
-    "npm:pi-langfuse",
     "npm:pi-hashline-edit-pro",
     "npm:@ff-labs/pi-fff",
     "npm:pi-ask-herdr",
@@ -85,7 +84,9 @@
     "npm:pi-skill-gate",
     "npm:@firstpick/pi-extension-tools",
     "npm:pi-cc-header",
-    "git:github.com/addyosmani/agent-skills@7829ffd90d973b6325f5f12f1b1226dcace74443"
+    "git:github.com/addyosmani/agent-skills@7829ffd90d973b6325f5f12f1b1226dcace74443",
+    "npm:@spences10/pi-telemetry",
+    "git:github.com/punk-dev-robot/pi-otel@fix/otlp-http-per-signal-paths"
   ],
   "npmCommand": [
     "fnm",
@@ -118,7 +119,7 @@
     "reflectAfterTokens": 20000,
     "compactAfterTokens": 81000,
     "compactAfterTokensMode": "ratio",
-    "compactAfterTokensRatio": 0.5,
+    "compactAfterTokensRatio": 0.63,
     "observationsPoolMaxTokens": 20000,
     "observationsPoolTargetTokens": 10000,
     "agentMaxTurns": 16,
@@ -138,5 +139,19 @@
   "theme": "terminal",
   "ccHeader": {
     "pkg": true
+  },
+  "otel": {
+    "enabled": true,
+    "endpoint": "https://logfire-eu.pydantic.dev",
+    "protocol": "http/protobuf",
+    "serviceName": "pi",
+    "captureContent": "metadata_only",
+    "spanNaming": "genai",
+    "sampleRatio": 1,
+    "signals": {
+      "traces": true,
+      "metrics": true,
+      "logs": true
+    }
   }
 }

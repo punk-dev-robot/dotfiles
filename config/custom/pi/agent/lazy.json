@@ -85,18 +85,6 @@
       "description": "Observational memory \u2014 must observe from turn 1"
     },
     {
-      "name": "langfuse",
-      "source": "npm:pi-langfuse",
-      "lazy": false,
-      "cmd": [
-        "langfuse-status",
-        "langfuse-setup",
-        "langfuse-test",
-        "langfuse-privacy"
-      ],
-      "description": "Tracing \u2014 must wrap the whole session"
-    },
-    {
       "name": "hashline",
       "source": "npm:pi-hashline-edit-pro",
       "lazy": false,
