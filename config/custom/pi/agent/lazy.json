@@ -311,7 +311,7 @@
     {
       "name": "context-mode",
       "source": "npm:context-mode",
-      "lazy": true,
+      "lazy": false,
       "cmd": [
         "ctx-stats",
         "ctx-doctor"

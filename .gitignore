@@ -106,3 +106,6 @@ arch.pacman-list.pkg
 /HANDOFF.md
 .tessl
 .agents
+
+# agent working notes
+.scratch/

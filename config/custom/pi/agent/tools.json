@@ -1,0 +1,43 @@
+{
+  "active": [
+    "ask_advisor",
+    "ask_user",
+    "bash",
+    "ctx_execute",
+    "ctx_index",
+    "ctx_search",
+    "cymbal_impact",
+    "cymbal_refs",
+    "cymbal_search",
+    "cymbal_show",
+    "fetch_content",
+    "fffind",
+    "ffgrep",
+    "find",
+    "get_search_content",
+    "grep",
+    "herdr_agent",
+    "herdr_layout",
+    "herdr_pane",
+    "herdr_start_worktree",
+    "lazy_load",
+    "ls",
+    "read",
+    "recall",
+    "replace",
+    "subagent",
+    "subagent_kill",
+    "subagent_resume",
+    "undo_last_replace",
+    "web_search",
+    "workflow",
+    "workflow_control",
+    "write"
+  ],
+  "inactive": [
+    "cymbal_changed",
+    "edit",
+    "record_advisor_outcome",
+    "source_check"
+  ]
+}
