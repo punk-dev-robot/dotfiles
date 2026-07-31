@@ -1,7 +1,7 @@
 ---
 name: recon
 description: Use proactively before reading source yourself for any "where is X / how does Y work" question. Read-only; writes findings to a file and returns one paragraph plus the path. Cheapest agent, keeps parent context clean.
-model: anthropic/claude-haiku-4-5
+model: anthropic/claude-sonnet-5
 thinking: low
 tools: read,grep,find,ls,write,cymbal_search,cymbal_show,cymbal_refs,cymbal_outline
 skills: none

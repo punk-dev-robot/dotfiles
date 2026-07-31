@@ -216,7 +216,7 @@
     {
       "name": "subagents",
       "source": "/Users/kuba.gaj/.config/pi/agent/git/github.com/edxeth/pi-subagents",
-      "lazy": true,
+      "lazy": false,
       "cmd": [
         "subagents",
         "run",
