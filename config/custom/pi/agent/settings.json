@@ -84,7 +84,8 @@
     },
     "npm:pi-skill-gate",
     "npm:@firstpick/pi-extension-tools",
-    "npm:pi-cc-header"
+    "npm:pi-cc-header",
+    "git:github.com/addyosmani/agent-skills@7829ffd90d973b6325f5f12f1b1226dcace74443"
   ],
   "npmCommand": [
     "fnm",

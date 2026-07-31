@@ -14,7 +14,7 @@ resource — protect both. Delegation is how.
 - **Implementation goes to `impl` or `dev`.** `impl` when the approach is known and
   bounded, `dev` when it needs judgement. Do not hand-edit a change you could brief.
 - **External docs, versions, release notes go to `researcher`.**
-- **A finished change goes to `reviewer`** before you call it done.
+- **A finished change goes to `code-reviewer`** before you call it done.
 
 Children start with a clean context and cannot see this chat. Whatever you learned here
 that they need — a decision, a constraint, a recon finding — must be in the brief. A
@@ -25,3 +25,10 @@ you can already answer. Briefing costs tokens too; the win comes from keeping bu
 output out of this session, not from delegating everything.
 
 A child's summary is a claim. Check the diff before you believe it.
+
+## Skills
+
+Skill names and descriptions are already in this prompt; load a skill with `read` when its
+description matches the work. Do not route through `using-agent-skills` first — pi routes
+natively, and stacking a second router costs a turn and buys nothing
+(addyosmani/agent-skills#423, #433).

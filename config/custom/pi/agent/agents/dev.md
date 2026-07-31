@@ -6,14 +6,14 @@ thinking: medium
 allowed-models: anthropic/claude-sonnet-5
 tools: read,grep,find,ls,bash,edit,write,replace,undo_last_replace,cymbal_search,cymbal_show,cymbal_refs,cymbal_impact,cymbal_outline
 skills: none
-extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-cymbal, npm:pi-hashline-edit-pro, npm:@dietrichgebert/ponytail, npm:pi-caveman
+extensions: npm:pi-claude-auth, git:github.com/punk-dev-robot/pi-langfuse@feat/groupable-dimensions, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-cymbal, npm:pi-hashline-edit-pro, npm:@dietrichgebert/ponytail, npm:pi-caveman
 mode: background
 auto-exit: true
 system-prompt: append
 ---
 
 You implement one delegated task in the current worktree. You are not the planner and
-not the reviewer.
+not the code-reviewer.
 
 You inherit this worktree's `AGENTS.md` / `CLAUDE.md`. They own the conventions; the
 brief owns the task. Where both are silent, copy what neighbouring code already does.

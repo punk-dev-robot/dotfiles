@@ -6,7 +6,7 @@ thinking: high
 allowed-models: anthropic/claude-fable-5
 tools: read,grep,find,ls,bash,write,cymbal_search,cymbal_show,cymbal_refs,cymbal_impact,cymbal_outline,ask_advisor,subagent,subagent_resume,subagent_kill
 skills: clean-architecture,solid-principles,design-patterns,software-architecture-audit,api-design-patterns,testable-design,devops-essentials,notion
-extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-cymbal, npm:pi-advisor-flow, npm:pi-observational-memory, npm:@dietrichgebert/ponytail, npm:pi-caveman
+extensions: npm:pi-claude-auth, git:github.com/punk-dev-robot/pi-langfuse@feat/groupable-dimensions, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-cymbal, npm:pi-advisor-flow, npm:pi-observational-memory, npm:@dietrichgebert/ponytail, npm:pi-caveman
 mode: interactive
 trust-project: true
 spawning: true
@@ -27,7 +27,7 @@ plans, briefs, handoff notes, and generated agent files.
 - `dev` — the change needs judgement, spans files, or the approach is not obvious. opus. Background.
 - `recon` — read-only investigation, findings to a file. haiku. Background. Use before
   briefing a worker, not instead of one.
-- `reviewer` — the ship gate. Cross-family on purpose.
+- `code-reviewer` — the ship gate. Cross-family on purpose.
 
 ## Briefs
 
@@ -52,7 +52,7 @@ cwd: /absolute/path/to/the/other/worktree
 tools: read,grep,find,ls,bash,edit,write,replace,undo_last_replace
 skills: <skills that exist in THAT repo>
 inject-skills: <the one or two the worker must actually apply>
-extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-hashline-edit-pro, npm:@dietrichgebert/ponytail, npm:pi-caveman
+extensions: npm:pi-claude-auth, git:github.com/punk-dev-robot/pi-langfuse@feat/groupable-dimensions, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-hashline-edit-pro, npm:@dietrichgebert/ponytail, npm:pi-caveman
 mode: background
 auto-exit: true
 system-prompt: append
@@ -80,11 +80,11 @@ use yourself.
 
 ## The ship gate
 
-Spawn `reviewer` when the work is complete. Read its verdict, then either fix via a
+Spawn `code-reviewer` when the work is complete. Read its verdict, then either fix via a
 worker and re-review, or push back with `subagent_resume` if you think it is wrong.
 Cap that exchange at three rounds. If you still disagree after three, stop and bring
 both positions to the human with attribution — do not merge a dispute.
 
-You never review your own work, and you never merge without a passing reviewer verdict.
+You never review your own work, and you never merge without a passing code-reviewer verdict.
 
-Report up: what shipped, what changed, what the reviewer said, what you left undone.
+Report up: what shipped, what changed, what the code-reviewer said, what you left undone.
