@@ -23,8 +23,7 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_CACHE_HOME=$HOME/.cache
 export PI_CODING_AGENT_DIR=$XDG_CONFIG_HOME/pi/agent
-# pi-fff replaces built-in grep/find instead of adding ffgrep/fffind alongside them
-export PI_FFF_MODE=override
+# PI_FFF_MODE lives in rc.d/063-ai.zsh with the other FFF_* vars
 export ZDOTDIR=${XDG_CONFIG_HOME:=~/.config}/zsh
 
 # Setting it here as I have some local scripts that need to be on a path for hyprland, like firefox workspaces

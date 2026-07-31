@@ -163,7 +163,7 @@
     {
       "name": "cymbal",
       "source": "npm:pi-cymbal",
-      "lazy": false,
+      "lazy": "after-start",
       "cmd": [
         "cymbal:remind"
       ],
@@ -186,7 +186,7 @@
     {
       "name": "herdr",
       "source": "npm:@ogulcancelik/pi-herdr",
-      "lazy": false,
+      "lazy": "after-start",
       "tools": [
         "herdr_layout",
         "herdr_pane",
@@ -216,7 +216,7 @@
     {
       "name": "subagents",
       "source": "/Users/kuba.gaj/.config/pi/agent/git/github.com/edxeth/pi-subagents",
-      "lazy": false,
+      "lazy": "after-start",
       "cmd": [
         "subagents",
         "run",
@@ -271,7 +271,7 @@
     {
       "name": "web",
       "source": "npm:pi-web-access",
-      "lazy": false,
+      "lazy": "after-start",
       "cmd": [
         "websearch",
         "search",
@@ -311,7 +311,7 @@
     {
       "name": "context-mode",
       "source": "npm:context-mode",
-      "lazy": false,
+      "lazy": "after-start",
       "cmd": [
         "ctx-stats",
         "ctx-doctor"
