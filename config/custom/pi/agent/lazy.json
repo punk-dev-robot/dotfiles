@@ -15,12 +15,6 @@
       "description": "Provider auth \u2014 must exist before first turn"
     },
     {
-      "name": "cc-header",
-      "source": "npm:pi-cc-header",
-      "lazy": false,
-      "description": "Startup header"
-    },
-    {
       "name": "noheadroom",
       "source": "npm:@raquezha/noheadroom",
       "lazy": false,
@@ -407,6 +401,12 @@
         "rename pane"
       ],
       "description": "Duplicate /rename \u2014 no cmd stub, load manually"
+    },
+    {
+      "name": "cc-header",
+      "source": "npm:pi-cc-header",
+      "lazy": false,
+      "description": "Startup header \u2014 MUST stay last: pine-of-glass contextimate calls setHeader(undefined) on session_start, last loaded wins. See docs/troubleshooting/pi-cc-header-clobbered-by-contextimate.md"
     }
   ]
 }

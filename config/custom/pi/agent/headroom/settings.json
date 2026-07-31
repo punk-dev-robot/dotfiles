@@ -4,5 +4,5 @@
   "autoStart": false,
   "mode": "silent",
   "minContextTokens": 10000,
-  "minMessageChars": 1
+  "minMessageChars": 2000
 }

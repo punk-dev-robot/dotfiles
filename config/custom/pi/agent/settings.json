@@ -3,7 +3,6 @@
     "npm:@rahularya01/pi-lazy",
     "npm:pi-claude-auth",
     "npm:pi-terminal-theme",
-    "npm:pi-cc-header",
     "npm:@raquezha/noheadroom",
     "npm:pi-vim",
     "npm:@pi-kaush/pi-double-paste@0.1.0",
@@ -82,7 +81,10 @@
     {
       "source": "npm:pi-rename-pane",
       "extensions": []
-    }
+    },
+    "npm:pi-skill-gate",
+    "npm:@firstpick/pi-extension-tools",
+    "npm:pi-cc-header"
   ],
   "npmCommand": [
     "fnm",
@@ -93,10 +95,10 @@
   ],
   "lastChangelogVersion": "0.82.1",
   "cacheRetention": "long",
-  "showCacheMissNotices": true,
+  "showCacheMissNotices": false,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-5",
-  "defaultThinkingLevel": "xhigh",
+  "defaultThinkingLevel": "high",
   "enabledModels": [
     "anthropic/claude-fable-5",
     "anthropic/claude-sonnet-5",
@@ -127,54 +129,6 @@
     "showWorkerNotifications": false,
     "passive": false,
     "debugLog": false
-  },
-  "powerline": {
-    "preset": "default",
-    "placement": "below",
-    "layout": {
-      "left": [
-        "model",
-        "thinking",
-        "path",
-        "git",
-        "context_pct"
-      ],
-      "right": [],
-      "secondary": [
-        "extension_statuses",
-        "custom:mcp",
-        "custom:ponytail",
-        "custom:caveman"
-      ]
-    },
-    "customItems": [
-      {
-        "id": "mcp",
-        "statusKey": "mcp",
-        "position": "secondary"
-      },
-      {
-        "id": "ponytail",
-        "statusKey": "ponytail",
-        "position": "secondary"
-      },
-      {
-        "id": "caveman",
-        "statusKey": "caveman",
-        "position": "secondary"
-      }
-    ],
-    "disabledSegments": [
-      "cache_read",
-      "shell_mode",
-      "cost"
-    ],
-    "path": {
-      "mode": "basename"
-    },
-    "model": {
-      "display": "name"
-    }
   },
   "hideThinkingBlock": true,
   "quietStartup": false,
