@@ -23,7 +23,14 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_CACHE_HOME=$HOME/.cache
 export PI_CODING_AGENT_DIR=$XDG_CONFIG_HOME/pi/agent
-# PI_FFF_MODE lives in rc.d/063-ai.zsh with the other FFF_* vars
+# Must be here, not rc.d: Claude Code launched non-interactively (IDE, GUI, scripts)
+# otherwise falls back to ~/.claude.json, a separate config with different MCP servers.
+export CLAUDE_CONFIG_DIR=$XDG_CONFIG_HOME/claude
+export CODEX_HOME=$XDG_CONFIG_HOME/codex
+# pi-fff replaces built-in grep/find instead of adding ffgrep/fffind alongside them.
+# Precedence is --fff-mode flag > PI_FFF_MODE > default(tools-and-ui); there is no
+# persistent config key, so the env var is the only route that survives a new session.
+export PI_FFF_MODE=override
 export ZDOTDIR=${XDG_CONFIG_HOME:=~/.config}/zsh
 
 # Setting it here as I have some local scripts that need to be on a path for hyprland, like firefox workspaces

@@ -48,8 +48,7 @@ complete -C aws_completer aws
 # znap eval localstack 'localstack completion zsh'
 
 # ai
-export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
-export CODEX_HOME="$XDG_CONFIG_HOME/codex"
+# CLAUDE_CONFIG_DIR and CODEX_HOME moved to .zshenv — must apply to non-interactive shells too
 znap eval basic-memory 'basic-memory --show-completion'  
 # znap eval thv 'thv completion zsh' 
 
@@ -57,7 +56,6 @@ znap eval basic-memory 'basic-memory --show-completion'
 export COMPOSIO_INSTALL_DIR="/Users/kuba.gaj/.composio"
 export PATH="$COMPOSIO_INSTALL_DIR:$PATH"
 
-export LINEAR_TEAM_ID=62f87de9-2d7b-401d-8bbd-749477d7a773
 
 # Added by Cupcake installer
 export PATH="/Users/kuba.gaj/.cupcake/bin:$PATH"
