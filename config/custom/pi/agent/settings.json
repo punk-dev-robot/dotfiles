@@ -48,7 +48,6 @@
     "npm"
   ],
   "lastChangelogVersion": "0.83.0",
-  "cacheRetention": "long",
   "showCacheMissNotices": false,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-fable-5",
