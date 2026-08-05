@@ -1,6 +1,5 @@
 {
   "packages": [
-    "npm:@rahularya01/pi-lazy",
     "npm:pi-claude-auth",
     "npm:pi-terminal-theme",
     "npm:@raquezha/noheadroom",
@@ -17,59 +16,20 @@
     "npm:@dietrichgebert/ponytail",
     "npm:pi-caveman",
     "npm:pi-mcp-adapter",
-    {
-      "source": "npm:pi-advisor-flow",
-      "extensions": []
-    },
-    {
-      "source": "npm:pi-cymbal",
-      "extensions": []
-    },
-    {
-      "source": "npm:@ogulcancelik/pi-herdr",
-      "extensions": []
-    },
-    {
-      "source": "npm:@yassimba/pi-herdr-worktree",
-      "extensions": []
-    },
-    {
-      "source": "git:github.com/edxeth/pi-subagents",
-      "extensions": []
-    },
-    {
-      "source": "/Users/kuba.gaj/.config/pi/agent/git/github.com/edxeth/pi-subagents",
-      "extensions": []
-    },
-    {
-      "source": "npm:pi-web-access",
-      "extensions": []
-    },
+    "npm:pi-advisor-flow",
+    "npm:pi-cymbal",
+    "npm:@ogulcancelik/pi-herdr",
+    "npm:@yassimba/pi-herdr-worktree",
+    "git:github.com/edxeth/pi-subagents",
+    "/Users/kuba.gaj/.config/pi/agent/git/github.com/edxeth/pi-subagents",
+    "npm:pi-web-access",
     "npm:context-mode",
-    {
-      "source": "npm:@plannotator/pi-extension",
-      "extensions": []
-    },
-    {
-      "source": "npm:pi-mermaid",
-      "extensions": []
-    },
-    {
-      "source": "npm:@tmustier/pi-usage-extension",
-      "extensions": []
-    },
-    {
-      "source": "npm:@zhcsyncer/pi-recap",
-      "extensions": []
-    },
-    {
-      "source": "npm:@tifan/pi-rename",
-      "extensions": []
-    },
-    {
-      "source": "npm:pi-rename-pane",
-      "extensions": []
-    },
+    "npm:@plannotator/pi-extension",
+    "npm:pi-mermaid",
+    "npm:@tmustier/pi-usage-extension",
+    "npm:@zhcsyncer/pi-recap",
+    "npm:@tifan/pi-rename",
+    "npm:pi-rename-pane",
     "npm:@firstpick/pi-extension-tools",
     "git:github.com/punk-dev-robot/pi-otel@fix/otlp-http-per-signal-paths",
     "npm:@juicesharp/rpiv-ask-user-question",
