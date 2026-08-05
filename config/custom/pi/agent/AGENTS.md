@@ -1,3 +1,5 @@
+@~/.config/claude/CLAUDE.md
+
 # Global instructions
 
 ## Delegation
