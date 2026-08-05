@@ -7,7 +7,7 @@
   "mcpServers": {
     "logfire": {
       "url": "https://logfire-eu.pydantic.dev/mcp",
-      "lifecycle": "lazy"
+      "lifecycle": "eager"
     }
   }
 }

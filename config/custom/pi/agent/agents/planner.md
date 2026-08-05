@@ -6,7 +6,7 @@ thinking: high
 allowed-models: anthropic/claude-fable-5
 tools: read,grep,find,ls,write,cymbal_search,cymbal_show,cymbal_outline
 skills: none
-extensions: npm:pi-claude-auth, npm:pi-langfuse, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-caveman, npm:pi-cymbal
+extensions: npm:pi-claude-auth, git:github.com/punk-dev-robot/pi-langfuse@feat/groupable-dimensions, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-caveman, npm:pi-cymbal
 mode: interactive
 trust-project: true
 auto-exit: true

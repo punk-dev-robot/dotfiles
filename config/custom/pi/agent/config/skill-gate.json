@@ -13,7 +13,16 @@
     "notion": "enabled",
     "ponytail": "enabled",
     "pr-comment-resolver": "enabled",
-    "pr-description": "enabled"
+    "pr-description": "enabled",
+    "logfire-instrumentation": "enabled",
+    "logfire-query": "enabled",
+    "logfire-ui": "enabled"
   },
-  "projects": {}
+  "projects": {
+    "/Users/kuba.gaj/dotfiles": {
+      "skills": {
+        "langfuse": "enabled"
+      }
+    }
+  }
 }

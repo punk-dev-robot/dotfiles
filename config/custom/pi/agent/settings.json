@@ -14,9 +14,9 @@
     "npm:pi-observational-memory",
     "npm:pi-hashline-edit-pro",
     "npm:@ff-labs/pi-fff",
-    "npm:pi-ask-herdr",
     "npm:@dietrichgebert/ponytail",
     "npm:pi-caveman",
+    "npm:pi-mcp-adapter",
     {
       "source": "npm:pi-advisor-flow",
       "extensions": []
@@ -42,15 +42,7 @@
       "extensions": []
     },
     {
-      "source": "npm:@quintinshaw/pi-dynamic-workflows",
-      "extensions": []
-    },
-    {
       "source": "npm:pi-web-access",
-      "extensions": []
-    },
-    {
-      "source": "npm:pi-mcp-adapter",
       "extensions": []
     },
     {
@@ -84,9 +76,12 @@
     "npm:pi-skill-gate",
     "npm:@firstpick/pi-extension-tools",
     "npm:pi-cc-header",
-    "git:github.com/addyosmani/agent-skills@7829ffd90d973b6325f5f12f1b1226dcace74443",
-    "npm:@spences10/pi-telemetry",
-    "git:github.com/punk-dev-robot/pi-otel@fix/otlp-http-per-signal-paths"
+    "git:github.com/punk-dev-robot/pi-otel@fix/otlp-http-per-signal-paths",
+    "npm:@narumitw/pi-btw",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:pi-extensible-workflows",
+    "npm:@piewf/cli",
+    "npm:@piewf/herdr"
   ],
   "npmCommand": [
     "fnm",
@@ -95,11 +90,11 @@
     "26.5.0",
     "npm"
   ],
-  "lastChangelogVersion": "0.82.1",
+  "lastChangelogVersion": "0.83.0",
   "cacheRetention": "long",
   "showCacheMissNotices": false,
   "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-5",
+  "defaultModel": "claude-fable-5",
   "defaultThinkingLevel": "high",
   "enabledModels": [
     "anthropic/claude-fable-5",
@@ -133,7 +128,7 @@
     "debugLog": false
   },
   "hideThinkingBlock": true,
-  "quietStartup": false,
+  "quietStartup": true,
   "collapseChangelog": true,
   "clearOnStart": true,
   "theme": "terminal",
@@ -145,7 +140,7 @@
     "endpoint": "https://logfire-eu.pydantic.dev",
     "protocol": "http/protobuf",
     "serviceName": "pi",
-    "captureContent": "metadata_only",
+    "captureContent": "full",
     "spanNaming": "genai",
     "sampleRatio": 1,
     "signals": {
