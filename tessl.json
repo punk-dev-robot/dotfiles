@@ -1,15 +1,5 @@
 {
   "name": "dotfiles",
   "mode": "vendored",
-  "dependencies": {
-    "langfuse/skills": {
-      "version": "cf98ef9b6e154b821012f9773ec9ec3238b3b976",
-      "source": "https://github.com/langfuse/skills",
-      "include": {
-        "skills": [
-          "langfuse"
-        ]
-      }
-    }
-  }
+  "dependencies": {}
 }
