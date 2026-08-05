@@ -1,7 +1,7 @@
 ---
 description: Scouting agent. Use when we need to gather info to solve a task
 model: scout-model
-tools: [read, grep, find, ls, write, cymbal_search, cymbal_show, cymbal_refs]
+tools: [{{pi_tools_core}}, write, {{pi_tools_cymbal}}]
 overrideSystemPrompt: true
 contextFiles: []
 disabledAgentResources:

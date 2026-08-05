@@ -1,7 +1,7 @@
 ---
 description: Developer focused agent
 model: developer-model
-tools: [read, grep, find, ls, bash, write, replace, undo_last_replace, cymbal_search, cymbal_show, cymbal_refs, cymbal_impact]
+tools: [{{pi_tools_core}}, bash, write, replace, undo_last_replace, {{pi_tools_cymbal}}, cymbal_impact]
 disabledAgentResources:
   skills: ["**"]
 ---

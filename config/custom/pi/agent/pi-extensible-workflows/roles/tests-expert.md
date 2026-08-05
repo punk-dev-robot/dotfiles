@@ -1,9 +1,9 @@
 ---
 description: Agent focused in writing/reading tests
 model: tests-expert
-tools: [read, grep, find, ls, bash, cymbal_search, cymbal_show, cymbal_refs]
+tools: [{{pi_tools_core}}, bash, {{pi_tools_cymbal}}]
 disabledAgentResources:
-  skills: ["**", "!test-driven-development"]
+  skills: ["**", "!tdd"]
 ---
 
 # Test Engineer

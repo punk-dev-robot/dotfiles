@@ -1,7 +1,7 @@
 ---
 description: Reviewer. Use when we need to review decisions or code changes
 model: reviewer-model
-tools: [read, grep, find, ls, bash, cymbal_search, cymbal_show, cymbal_refs, cymbal_impact]
+tools: [{{pi_tools_core}}, bash, {{pi_tools_cymbal}}, cymbal_impact]
 overrideSystemPrompt: true
 contextFiles: []
 disabledAgentResources:

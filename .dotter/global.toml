@@ -28,6 +28,15 @@ default_target_type = "symbolic"
 # pi-claude-code-ui reads its own settings from ~/.pi/settings.json (~/.pi == ~/.config/pi)
 "config/custom/pi/settings.json" = "~/.config/pi/settings.json"
 
+# Shared tool groups for piewf role frontmatter (roles/*.md are handlebars templates).
+# piewf roles: `tools:` fully replaces the inherited toolset (no merge), so shared
+# groups live here; `disabledAgentResources` DOES merge (global settings.json first,
+# role patterns appended, last-match-wins). Inspect with: npx -y @piewf/cli doctor --role <role>
+# See docs/reference/piewf-role-config.md.
+[base.variables]
+pi_tools_core = "read, grep, find, ls"
+pi_tools_cymbal = "cymbal_search, cymbal_show, cymbal_refs"
+
 # ─── Linux desktop (Hyprland stack) ───
 [linux.files]
 "config/linux" = "~/.config"
