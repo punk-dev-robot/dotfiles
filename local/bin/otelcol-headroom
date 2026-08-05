@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+# Manual lifecycle for the otelcol-contrib collector that scrapes Headroom
+# (127.0.0.1:8788/metrics) and exports to Logfire EU. No LaunchAgent by design.
+#   otelcol-headroom install|start|stop|status|restart
+set -euo pipefail
+
+VERSION=0.157.0
+BIN="$HOME/.local/bin/otelcol-contrib"
+CONFIG="$HOME/.config/otelcol/config.yaml"
+STATE="$HOME/.local/state/otelcol"
+PIDFILE="$STATE/headroom.pid"
+LOG="$STATE/headroom.log"
+
+die() { printf 'otelcol-headroom: %s\n' "$*" >&2; exit 1; }
+
+install_bin() {
+  case "$(uname -s)/$(uname -m)" in
+    Darwin/arm64) arch=arm64 ;;
+    Darwin/x86_64) arch=amd64 ;;
+    *) die "unsupported platform $(uname -s)/$(uname -m)" ;;
+  esac
+  command -v gh >/dev/null || die "gh not found (needed to download release assets)"
+  local tar="otelcol-contrib_${VERSION}_darwin_${arch}.tar.gz"
+  local sums="opentelemetry-collector-releases_otelcol-contrib_checksums.txt"
+  local tmp; tmp=$(mktemp -d); trap 'rm -rf "$tmp"' RETURN
+  gh release download "v${VERSION}" --repo open-telemetry/opentelemetry-collector-releases \
+    --pattern "$tar" --pattern "$sums" --dir "$tmp"
+  (cd "$tmp" && grep " $tar\$" "$sums" | shasum -a 256 -c -) || die "checksum mismatch for $tar"
+  mkdir -p "$HOME/.local/bin"
+  tar -xzf "$tmp/$tar" -C "$tmp" otelcol-contrib
+  install -m 755 "$tmp/otelcol-contrib" "$BIN"
+  "$BIN" --version
+}
+
+# Extract the Authorization value out of OTEL_EXPORTER_OTLP_HEADERS ("k=v,k=v").
+# Never printed. No eval/source.
+auth_value() {
+  local headers=${OTEL_EXPORTER_OTLP_HEADERS:-} entry key
+  [ -n "$headers" ] || return 1
+  local IFS=,
+  for entry in $headers; do
+    key=${entry%%=*}
+    key=${key#"${key%%[![:space:]]*}"}
+    if [ "$(printf '%s' "$key" | tr '[:upper:]' '[:lower:]')" = authorization ]; then
+      printf '%s' "${entry#*=}"
+      return 0
+    fi
+  done
+  return 1
+}
+
+running_pid() {
+  [ -f "$PIDFILE" ] || return 1
+  local pid command
+  pid=$(cat "$PIDFILE" 2>/dev/null) || return 1
+  [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null || { rm -f "$PIDFILE"; return 1; }
+  command=$(ps -p "$pid" -o command= 2>/dev/null) || { rm -f "$PIDFILE"; return 1; }
+  case "$command" in
+    *"$BIN"*"--config $CONFIG"*) ;;
+    *) rm -f "$PIDFILE"; return 1 ;;
+  esac
+  printf '%s' "$pid"
+}
+
+start() {
+  local pid; if pid=$(running_pid); then echo "already running (pid $pid)"; return 0; fi
+  [ -x "$BIN" ] || die "$BIN not installed; run: otelcol-headroom install"
+  [ -f "$CONFIG" ] || die "$CONFIG missing; run dotter deploy"
+  local token; token=$(auth_value) || die "no Authorization entry in OTEL_EXPORTER_OTLP_HEADERS (unset or missing key)"
+  [ -n "$token" ] || die "Authorization value is empty"
+  mkdir -p "$STATE"
+  LOGFIRE_AUTHORIZATION="$token" "$BIN" validate --config "$CONFIG" >/dev/null \
+    || die "config validation failed: $CONFIG"
+  LOGFIRE_AUTHORIZATION="$token" nohup "$BIN" --config "$CONFIG" >>"$LOG" 2>&1 &
+  pid=$!
+  disown 2>/dev/null || true
+  echo "$pid" > "$PIDFILE"
+  sleep 2
+  kill -0 "$pid" 2>/dev/null || { rm -f "$PIDFILE"; die "collector exited at startup; see $LOG"; }
+  echo "started (pid $pid), log: $LOG"
+}
+
+stop() {
+  local pid; pid=$(running_pid) || { echo "not running"; return 0; }
+  kill "$pid"
+  for _ in {1..20}; do kill -0 "$pid" 2>/dev/null || break; sleep 0.5; done
+  kill -0 "$pid" 2>/dev/null && kill -9 "$pid" 2>/dev/null || true
+  rm -f "$PIDFILE"
+  echo "stopped (pid $pid)"
+}
+
+status() {
+  local pid
+  if pid=$(running_pid); then echo "running (pid $pid), log: $LOG"; else echo "not running"; return 1; fi
+}
+
+case "${1:-}" in
+  install) install_bin ;;
+  start) start ;;
+  stop) stop ;;
+  restart) stop; start ;;
+  status) status ;;
+  *) die "usage: otelcol-headroom install|start|stop|status|restart" ;;
+esac

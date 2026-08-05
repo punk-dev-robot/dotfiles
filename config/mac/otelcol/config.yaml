@@ -1,0 +1,41 @@
+# otelcol-contrib: scrape Headroom /metrics → Logfire (EU) OTLP/HTTP.
+# Lifecycle: ~/.local/bin/otelcol-headroom {install|start|stop|status|restart}
+# LOGFIRE_AUTHORIZATION is injected by that wrapper (extracted from
+# OTEL_EXPORTER_OTLP_HEADERS); never stored here.
+receivers:
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: headroom
+          scrape_interval: 30s
+          metrics_path: /metrics
+          static_configs:
+            - targets: ["127.0.0.1:8788"]
+
+processors:
+  resourcedetection:
+    detectors: [env, system]
+    system:
+      hostname_sources: [os]
+  resource:
+    attributes:
+      - key: service.name
+        value: headroom
+        action: upsert
+      - key: service.namespace
+        value: nothing
+        action: upsert
+  batch: {}
+
+exporters:
+  otlp_http/logfire:
+    endpoint: https://logfire-eu.pydantic.dev
+    headers:
+      Authorization: ${env:LOGFIRE_AUTHORIZATION}
+
+service:
+  pipelines:
+    metrics:
+      receivers: [prometheus]
+      processors: [resourcedetection, resource, batch]
+      exporters: [otlp_http/logfire]
