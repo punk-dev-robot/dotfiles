@@ -38,7 +38,7 @@
     "npm:pi-agent-browser-native",
     "npm:@pi-kaush/pi-btw-with-imports",
     "npm:pi-cc-header",
-    "npm:pi-skill-deck"
+    "npm:pi-skills-manager"
   ],
   "npmCommand": [
     "fnm",
@@ -105,5 +105,10 @@
       "metrics": true,
       "logs": true
     }
-  }
+  },
+  "skills": [
+    "-../../.agents/skills/plannotator-compound/SKILL.md",
+    "-../../.agents/skills/plannotator-setup-goal/SKILL.md",
+    "+../../.agents/skills/tessl__wayfinder/SKILL.md"
+  ]
 }

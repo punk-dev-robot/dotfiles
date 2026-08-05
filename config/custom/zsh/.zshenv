@@ -31,6 +31,8 @@ export CODEX_HOME=$XDG_CONFIG_HOME/codex
 # Precedence is --fff-mode flag > PI_FFF_MODE > default(tools-and-ui); there is no
 # persistent config key, so the env var is the only route that survives a new session.
 export PI_FFF_MODE=override
+# Extended prompt cache: Anthropic 1h, OpenAI 24h. In .zshenv so non-interactive pi gets it too.
+export PI_CACHE_RETENTION=long
 export ZDOTDIR=${XDG_CONFIG_HOME:=~/.config}/zsh
 
 # Setting it here as I have some local scripts that need to be on a path for hyprland, like firefox workspaces
