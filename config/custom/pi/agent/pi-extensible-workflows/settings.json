@@ -1,0 +1,38 @@
+{
+  "concurrency": 8,
+  "modelAliases": {
+    "reviewer-model": "anthropic/claude-fable-5:high",
+    "developer-model": "anthropic/claude-opus-5:medium",
+    "cheap-model": "anthropic/claude-sonnet-5:medium",
+    "scout-model": "cheap-model:low",
+    "tests-expert": "cheap-model"
+  },
+  "disabledAgentResources": {
+    "skills": [
+      "herdr",
+      "logfire-ui",
+      "plannotator-*",
+      "ctx-insight",
+      "ponytail-help",
+      "setup-agent-replay"
+    ],
+    "extensions": [
+      "**",
+      "!**/pi-claude-auth/**",
+      "!**/pi-otel/**",
+      "!**/pi-rtk-optimizer/**",
+      "!**/@ff-labs/pi-fff/**",
+      "!**/noheadroom/**",
+      "!**/pi-caveman/**",
+      "!**/pi-hashline-edit-pro/**",
+      "!**/ponytail/**",
+      "!**/pi-lazy/**",
+      "!**/context-mode/**"
+    ]
+  },
+  "extensions": {
+    "herdr": {
+      "enableFullyInspectableMode": false
+    }
+  }
+}

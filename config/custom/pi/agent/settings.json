@@ -45,10 +45,7 @@
       "source": "npm:pi-web-access",
       "extensions": []
     },
-    {
-      "source": "npm:context-mode",
-      "extensions": []
-    },
+    "npm:context-mode",
     {
       "source": "npm:@plannotator/pi-extension",
       "extensions": []
@@ -73,15 +70,14 @@
       "source": "npm:pi-rename-pane",
       "extensions": []
     },
-    "npm:pi-skill-gate",
     "npm:@firstpick/pi-extension-tools",
-    "npm:pi-cc-header",
     "git:github.com/punk-dev-robot/pi-otel@fix/otlp-http-per-signal-paths",
-    "npm:@narumitw/pi-btw",
     "npm:@juicesharp/rpiv-ask-user-question",
     "npm:pi-extensible-workflows",
-    "npm:@piewf/cli",
-    "npm:@piewf/herdr"
+    "npm:@piewf/herdr",
+    "npm:pi-agent-browser-native",
+    "npm:@pi-kaush/pi-btw-with-imports",
+    "npm:pi-cc-header"
   ],
   "npmCommand": [
     "fnm",

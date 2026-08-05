@@ -12,7 +12,7 @@
       "name": "claude-auth",
       "source": "npm:pi-claude-auth",
       "lazy": false,
-      "description": "Provider auth \u2014 must exist before first turn"
+      "description": "Provider auth — must exist before first turn"
     },
     {
       "name": "noheadroom",
@@ -48,49 +48,68 @@
       "name": "image-tools",
       "source": "npm:pi-image-tools",
       "lazy": false,
-      "cmd": ["paste-image"],
+      "cmd": [
+        "paste-image"
+      ],
       "description": "Image paste/preview pipeline + keybindings"
     },
     {
       "name": "rtk",
       "source": "npm:pi-rtk-optimizer",
       "lazy": false,
-      "cmd": ["rtk"],
-      "description": "Tool output compaction \u2014 must hook from turn 1"
+      "cmd": [
+        "rtk"
+      ],
+      "description": "Tool output compaction — must hook from turn 1"
     },
     {
       "name": "pine",
       "source": "npm:pine-of-glass",
       "lazy": false,
-      "cmd": ["contextimate", "cache", "drill", "pace"],
+      "cmd": [
+        "contextimate",
+        "cache",
+        "drill",
+        "pace"
+      ],
       "description": "contextimate anchor required by prune-resource-list.ts"
     },
     {
       "name": "om",
       "source": "npm:pi-observational-memory",
       "lazy": false,
-      "cmd": ["om:status", "om:view"],
-      "description": "Observational memory \u2014 must observe from turn 1"
+      "cmd": [
+        "om:status",
+        "om:view"
+      ],
+      "description": "Observational memory — must observe from turn 1"
     },
     {
       "name": "hashline",
       "source": "npm:pi-hashline-edit-pro",
       "lazy": false,
-      "cmd": ["toggle-replace-mode", "toggle-auto-read"],
-      "description": "replace/undo_last_replace \u2014 core editing tools"
+      "cmd": [
+        "toggle-replace-mode",
+        "toggle-auto-read"
+      ],
+      "description": "replace/undo_last_replace — core editing tools"
     },
     {
       "name": "fff",
       "source": "npm:@ff-labs/pi-fff",
       "lazy": false,
-      "cmd": ["fff-mode", "fff-health", "fff-rescan"],
-      "description": "FFF grep/find (override) \u2014 core search tools"
+      "cmd": [
+        "fff-mode",
+        "fff-health",
+        "fff-rescan"
+      ],
+      "description": "FFF grep/find (override) — core search tools"
     },
     {
       "name": "ask-user",
       "source": "npm:pi-ask-herdr",
       "lazy": false,
-      "description": "ask_user tool \u2014 needed in any turn"
+      "description": "ask_user tool — needed in any turn"
     },
     {
       "name": "ponytail",
@@ -110,7 +129,9 @@
       "name": "caveman",
       "source": "npm:pi-caveman",
       "lazy": false,
-      "cmd": ["caveman"],
+      "cmd": [
+        "caveman"
+      ],
       "description": "Default-on mode + statusline segment"
     },
     {
@@ -125,13 +146,15 @@
         "advisor-models",
         "advisor-settings"
       ],
-      "description": "ask_advisor \u2014 wanted most sessions, not boot-critical"
+      "description": "ask_advisor — wanted most sessions, not boot-critical"
     },
     {
       "name": "cymbal",
       "source": "npm:pi-cymbal",
       "lazy": "after-start",
-      "cmd": ["cymbal:remind"],
+      "cmd": [
+        "cymbal:remind"
+      ],
       "tools": [
         "cymbal_search",
         "cymbal_show",
@@ -146,23 +169,36 @@
         "find references",
         "impact analysis"
       ],
-      "description": "15 cymbal_* tools \u2014 5 stubs, rest arrive on load"
+      "description": "15 cymbal_* tools — 5 stubs, rest arrive on load"
     },
     {
       "name": "herdr",
       "source": "npm:@ogulcancelik/pi-herdr",
       "lazy": "after-start",
-      "tools": ["herdr_layout", "herdr_pane", "herdr_agent"],
-      "keywords": ["herdr"],
+      "tools": [
+        "herdr_layout",
+        "herdr_pane",
+        "herdr_agent"
+      ],
+      "keywords": [
+        "herdr"
+      ],
       "description": "Terminal multiplexer control"
     },
     {
       "name": "worktree",
       "source": "npm:@yassimba/pi-herdr-worktree",
       "lazy": true,
-      "dependencies": ["herdr"],
-      "tools": ["herdr_start_worktree"],
-      "keywords": ["worktree", "wt switch"],
+      "dependencies": [
+        "herdr"
+      ],
+      "tools": [
+        "herdr_start_worktree"
+      ],
+      "keywords": [
+        "worktree",
+        "wt switch"
+      ],
       "description": "Continue session in a git worktree pane"
     },
     {
@@ -180,8 +216,17 @@
         "subagent-cost",
         "subagents-stop"
       ],
-      "tools": ["subagent", "subagent_kill", "subagent_resume"],
-      "keywords": ["subagent", "delegate to", "spawn agent", "helper agent"],
+      "tools": [
+        "subagent",
+        "subagent_kill",
+        "subagent_resume"
+      ],
+      "keywords": [
+        "subagent",
+        "delegate to",
+        "spawn agent",
+        "helper agent"
+      ],
       "description": "Subagent delegation + roster prompt (~1k tokens saved). pi-lazy 0.2.5 cannot resolve git: sources, so this points at the clone path"
     },
     {
@@ -199,15 +244,28 @@
         "effort",
         "workflows-models"
       ],
-      "tools": ["workflow", "workflow_control"],
-      "keywords": ["workflow", "fan out", "fan this out", "run a workflow"],
-      "description": "Opt-in only per policy \u2014 pure on-demand"
+      "tools": [
+        "workflow",
+        "workflow_control"
+      ],
+      "keywords": [
+        "workflow",
+        "fan out",
+        "fan this out",
+        "run a workflow"
+      ],
+      "description": "Opt-in only per policy — pure on-demand"
     },
     {
       "name": "web",
       "source": "npm:pi-web-access",
       "lazy": "after-start",
-      "cmd": ["websearch", "search", "curator", "google-account"],
+      "cmd": [
+        "websearch",
+        "search",
+        "curator",
+        "google-account"
+      ],
       "tools": [
         "web_search",
         "fetch_content",
@@ -227,18 +285,16 @@
       "name": "mcp",
       "source": "npm:pi-mcp-adapter",
       "lazy": false,
-      "cmd": ["mcp", "mcp-auth"],
-      "keywords": ["mcp", "playwright", "clickup"],
+      "cmd": [
+        "mcp",
+        "mcp-auth"
+      ],
+      "keywords": [
+        "mcp",
+        "playwright",
+        "clickup"
+      ],
       "description": "MCP server bridge"
-    },
-    {
-      "name": "context-mode",
-      "source": "npm:context-mode",
-      "lazy": "after-start",
-      "cmd": ["ctx-stats", "ctx-doctor"],
-      "tools": ["ctx_execute", "ctx_search", "ctx_index"],
-      "keywords": ["context-mode", "ctx_execute"],
-      "description": "Sandboxed large-output processing"
     },
     {
       "name": "plannotator",
@@ -250,52 +306,76 @@
         "plannotator-annotate",
         "plannotator-last"
       ],
-      "keywords": ["plannotator", "plan mode", "review this plan"],
+      "keywords": [
+        "plannotator",
+        "plan mode",
+        "review this plan"
+      ],
       "description": "Interactive plan review"
     },
     {
       "name": "mermaid",
       "source": "npm:pi-mermaid",
       "lazy": true,
-      "cmd": ["pi-mermaid"],
-      "keywords": ["mermaid", "render diagram", "sequence diagram"],
+      "cmd": [
+        "pi-mermaid"
+      ],
+      "keywords": [
+        "mermaid",
+        "render diagram",
+        "sequence diagram"
+      ],
       "description": "Mermaid rendering"
     },
     {
       "name": "usage",
       "source": "npm:@tmustier/pi-usage-extension",
       "lazy": true,
-      "cmd": ["usage"],
-      "keywords": ["token usage", "how much have i spent"],
+      "cmd": [
+        "usage"
+      ],
+      "keywords": [
+        "token usage",
+        "how much have i spent"
+      ],
       "description": "Usage/cost report"
     },
     {
       "name": "recap",
       "source": "npm:@zhcsyncer/pi-recap",
       "lazy": true,
-      "cmd": ["recap", "recap-config"],
-      "keywords": ["recap"],
+      "cmd": [
+        "recap",
+        "recap-config"
+      ],
+      "keywords": [
+        "recap"
+      ],
       "description": "Session recap"
     },
     {
       "name": "rename",
       "source": "npm:@tifan/pi-rename",
       "lazy": true,
-      "cmd": ["rename"],
+      "cmd": [
+        "rename"
+      ],
       "description": "Session rename (owns /rename)"
     },
     {
       "name": "rename-pane",
       "source": "npm:pi-rename-pane",
       "lazy": true,
-      "keywords": ["rename pane"],
-      "description": "Duplicate /rename \u2014 no cmd stub, load manually"
+      "keywords": [
+        "rename pane"
+      ],
+      "description": "Duplicate /rename — no cmd stub, load manually"
     },
     {
       "name": "cc-header",
       "source": "npm:pi-cc-header",
       "lazy": false,
-      "description": "Startup header \u2014 MUST stay last: pine-of-glass contextimate calls setHeader(undefined) on session_start, last loaded wins. See docs/troubleshooting/pi-cc-header-clobbered-by-contextimate.md"
+      "description": "Startup header — MUST stay last: pine-of-glass contextimate calls setHeader(undefined) on session_start, last loaded wins. See docs/troubleshooting/pi-cc-header-clobbered-by-contextimate.md"
     }
   ]
 }
