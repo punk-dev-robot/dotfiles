@@ -1,0 +1,22 @@
+
+Installed Plugins
+
+  ✔ 6 plugins synced
+  Plugin                             Manifest Installed Status  
+  --------------------------------------------------------------
+  nyosegawa/notion-cli               a325ac7  a325ac7   Synced  
+  sharaf/software-architecture-audit 0.2.13   0.2.13    Synced  
+  tessl-labs/devops-essentials       0.1.1    0.1.1     Synced  
+  pantheon-ai/design-principles      1.0.0    1.0.0     Synced  
+  tessl-labs/api-design-patterns     0.1.0    0.1.0     Synced  
+  pantheon-ai/dockerfile-toolkit     0.1.0    0.1.0     Synced  
+  tessl-labs/good-oss-citizen        1.1.10   -         Missing 
+  tessl-labs/pr-review-guardrails    0.1.8    -         Missing 
+  tessl-labs/audit-logs              0.1.11   -         Missing 
+  sahildmk/pr-helpers                1.2.1    -         Missing 
+  mattpocock/skills                  b8be62f  -         Missing 
+  sanjay3290/ai-skills               cde1c83  -         Missing 
+  vercel-labs/agent-browser          4ad2848  -         Missing 
+  ogulcancelik/herdr                 7e821ba  -         Missing 
+  
+Run tessl install --global to sync plugins

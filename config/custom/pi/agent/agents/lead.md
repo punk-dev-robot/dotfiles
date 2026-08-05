@@ -5,7 +5,7 @@ model: anthropic/claude-opus-5
 thinking: high
 allowed-models: anthropic/claude-fable-5
 tools: read,grep,find,ls,bash,write,cymbal_search,cymbal_show,cymbal_refs,cymbal_impact,cymbal_outline,ask_advisor,subagent,subagent_resume,subagent_kill
-skills: clean-architecture,solid-principles,design-patterns,software-architecture-audit,api-design-patterns,testable-design,devops-essentials,notion
+skills: notion
 extensions: npm:pi-claude-auth, git:github.com/punk-dev-robot/pi-langfuse@feat/groupable-dimensions, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-cymbal, npm:pi-advisor-flow, npm:pi-observational-memory, npm:@dietrichgebert/ponytail, npm:pi-caveman
 mode: interactive
 trust-project: true
