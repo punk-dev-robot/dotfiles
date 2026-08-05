@@ -84,7 +84,7 @@
     "debugLog": false
   },
   "hideThinkingBlock": true,
-  "quietStartup": true,
+  "quietStartup": false,
   "collapseChangelog": true,
   "clearOnStart": true,
   "theme": "terminal",
