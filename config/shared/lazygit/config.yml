@@ -168,69 +168,70 @@ gui:
   # One of 'auto' (default) | 'full' | 'short'
   # If 'auto', initials will be shown in small windows, and full names - in larger ones.
   # commitAuthorFormat: auto
+# Length of commit hash in commits view. 0 shows '*' if NF icons aren't on.
+# commitHashLength: 8
 
-  # Length of commit hash in commits view. 0 shows '*' if NF icons aren't on.
-  # commitHashLength: 8
+# If true, show commit hashes alongside branch names in the branches view.
+# showBranchCommitHash: false
 
-  # If true, show commit hashes alongside branch names in the branches view.
-  # showBranchCommitHash: false
+# Whether to show the divergence from the base branch in the branches view.
+# One of: 'none' | 'onlyArrow'  | 'arrowAndNumber'
+# showDivergenceFromBaseBranch: none
 
-  # Whether to show the divergence from the base branch in the branches view.
-  # One of: 'none' | 'onlyArrow'  | 'arrowAndNumber'
-  # showDivergenceFromBaseBranch: none
+# Height of the command log view
+# commandLogSize: 8
 
-  # Height of the command log view
-  # commandLogSize: 8
+# Whether to split the main window when viewing file changes.
+# One of: 'auto' | 'always'
+# If 'auto', only split the main window when a file has both staged and unstaged changes
+# splitDiff: auto
 
-  # Whether to split the main window when viewing file changes.
-  # One of: 'auto' | 'always'
-  # If 'auto', only split the main window when a file has both staged and unstaged changes
-  # splitDiff: auto
+# Default size for focused window. Window size can be changed from within Lazygit with '+' and '_' (but this won't change the default).
+# One of: 'normal' (default) | 'half' | 'full'
+# windowSize: normal
 
-  # Default size for focused window. Window size can be changed from within Lazygit with '+' and '_' (but this won't change the default).
-  # One of: 'normal' (default) | 'half' | 'full'
-  # windowSize: normal
+# Window border style.
+# One of 'rounded' (default) | 'single' | 'double' | 'hidden'
+# border: rounded
 
-  # Window border style.
-  # One of 'rounded' (default) | 'single' | 'double' | 'hidden'
-  # border: rounded
+# If true, show a seriously epic explosion animation when nuking the working tree.
+# animateExplosion: true
 
-  # If true, show a seriously epic explosion animation when nuking the working tree.
-  # animateExplosion: true
+# Whether to stack UI components on top of each other.
+# One of 'auto' (default) | 'always' | 'never'
+# portraitMode: auto
 
-  # Whether to stack UI components on top of each other.
-  # One of 'auto' (default) | 'always' | 'never'
-  # portraitMode: auto
+# How things are filtered when typing '/'.
+# One of 'substring' (default) | 'fuzzy'
+# filterMode: substring
 
-  # How things are filtered when typing '/'.
-  # One of 'substring' (default) | 'fuzzy'
-  # filterMode: substring
+# Config relating to the spinner.
+# spinner:
+# The frames of the spinner animation.
+# frames:
+#   - "|"
+#   - /
+#   - "-"
+#   - \
+#
+# The "speed" of the spinner in milliseconds.
+# rate: 50
 
-  # Config relating to the spinner.
-  # spinner:
-  # The frames of the spinner animation.
-  # frames:
-  #   - "|"
-  #   - /
-  #   - "-"
-  #   - \
-  #
-  # The "speed" of the spinner in milliseconds.
-  # rate: 50
+# Status panel view.
+# One of 'dashboard' (default) | 'allBranchesLog'
+# statusPanelView: dashboard
 
-  # Status panel view.
-  # One of 'dashboard' (default) | 'allBranchesLog'
-  # statusPanelView: dashboard
 # Config relating to git
 git:
   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Custom_Pagers.md
-  pagers:
+  diffRenderers:
     - # Value of the --color arg in the git diff command. Some pagers want this to be set to 'always' and some want it set to 'never'
       # colorArg: always
       # pager: "delta --dark --paging=never"
       # If true, Lazygit will use whatever pager is specified in `$GIT_PAGER`, `$PAGER`, or your *git config*. If the pager ends with something like ` | less` we will strip that part out, because less doesn't play nice with our rendering approach. If the custom pager uses less under the hood, that will also break rendering (hence the `--paging=never` flag for the `delta` pager).
       # useConfig: false
-      externalDiffCommand: "difft --color=always"
+      command: "difft --color=always"
+      type: extDiff
 # Config relating to committing
 # commit:
 # If true, pass '--signoff' flag when committing
@@ -261,10 +262,8 @@ git:
 
 # If true, periodically fetch from remote
 autoFetch: false
-
 # If true, periodically refresh files and submodules
 autoRefresh: false
-
 # If true, pass the --all arg to git fetch
 fetchAll: false
 

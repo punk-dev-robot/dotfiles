@@ -25,11 +25,13 @@ resize_mode = "prefix+alt+r"
 workspace_picker = "prefix+o"
 navigate_workspace_up = "up"
 navigate_workspace_down = "down"
+previous_workspace = "prefix+j"
+next_workspace = "prefix+k"
 switch_workspace = "prefix+shift+1..9"
 close_workspace = "prefix+alt+d"
 new_worktree = ""
 
-new_tab = "prefix+t"
+new_tab = "prefix+n"
 rename_tab = "prefix+r"
 previous_tab = ["prefix+[", "ctrl+shift+["]
 next_tab = ["prefix+]", "ctrl+shift+]"]
@@ -54,7 +56,7 @@ zoom = "prefix+z"
 cycle_pane_next = ""
 cycle_pane_previous = ""
 
-toggle_sidebar = "prefix+b"
+toggle_sidebar = "prefix+shift+s"
 focus_agent = "prefix+alt+1..9"
 
 [[keys.command]]
@@ -82,25 +84,25 @@ command = "herdr-splits.nav-right"
 description = "navigate right (nvim/herdr)"
 
 [[keys.command]]
-key = "ctrl+left"
+key = "ctrl+shift+h"
 type = "plugin_action"
 command = "herdr-splits.resize-left"
 description = "resize left (nvim/herdr)"
 
 [[keys.command]]
-key = "ctrl+down"
+key = "ctrl+shift+j"
 type = "plugin_action"
 command = "herdr-splits.resize-down"
 description = "resize down (nvim/herdr)"
 
 [[keys.command]]
-key = "ctrl+up"
+key = "ctrl+shift+k"
 type = "plugin_action"
 command = "herdr-splits.resize-up"
 description = "resize up (nvim/herdr)"
 
 [[keys.command]]
-key = "ctrl+right"
+key = "ctrl+shift+l"
 type = "plugin_action"
 command = "herdr-splits.resize-right"
 description = "resize right (nvim/herdr)"
@@ -167,6 +169,24 @@ description = "open scratch terminal"
 width = "80%"
 height = "80%"
 
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "herdr-navigator.open"
+description = "jump to anything"
+
+[[keys.command]]
+key = "prefix+b"
+type = "shell"
+command = '"${HERDR_BIN_PATH}" plugin pane open --plugin official.browser --entrypoint browser --placement split --direction right --focus'
+description = "open browser in right split"
+
+[[keys.command]]
+key = "prefix+shift+b"
+type = "shell"
+command = '"${HERDR_BIN_PATH}" plugin pane open --plugin official.browser --entrypoint browser --placement overlay --focus'
+description = "open browser overlay"
+
 [ui]
 sidebar_width = 30
 sidebar_min_width = 22
@@ -221,3 +241,4 @@ enabled = true
 
 [experimental]
 switch_ascii_input_source_in_prefix = false
+kitty_graphics = true

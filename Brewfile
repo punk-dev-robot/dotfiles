@@ -192,7 +192,7 @@ cask "google-chrome"
 cask "claude"
 cask "claude-code"
 cask "codex"
-cask "codex-app"
+cask "chatgpt" # was codex-app, deprecated upstream -> renamed to chatgpt
 cask "gcloud-cli"
 cask "1password-cli"
 
