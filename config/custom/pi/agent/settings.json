@@ -37,7 +37,8 @@
     "npm:@piewf/herdr",
     "npm:pi-agent-browser-native",
     "npm:@pi-kaush/pi-btw-with-imports",
-    "npm:pi-cc-header"
+    "npm:pi-cc-header",
+    "npm:pi-skill-deck"
   ],
   "npmCommand": [
     "fnm",
