@@ -60,18 +60,21 @@ tools: [{{pi_tools_core}}, bash, {{pi_tools_cymbal}}, cymbal_impact, {{pi_tools_
 Role assignment: developer = core+edit+bash+cymbal+impact/impls/importers;
 reviewer = core+bash+cymbal+review; scout = core+write+cymbal+deep+mcp;
 tests-expert = core+edit+bash+cymbal+impact; researcher = read/write/bash+web
-(no repo tools — external evidence only); summarizer = none. All working roles
-get advisor tools.
+(no repo tools — external evidence only); comms = read/write/bash (external
+systems: Linear/Slack via composio, Notion via skill, GitHub via gh — the only
+role allowed to MUTATE external systems; gate public posts behind a workflow
+checkpoint). All roles get advisor tools. summarizer was dropped — no use-case.
 
 Skills (role negations after the `"**"` wipe): developer = `tdd`,
 `codebase-design`; scout = `logfire-query`, `mcp-scripting` (completes the
 `mcp` tool); tests-expert = `tdd`; researcher = `composio-cli`, `research`,
-`notion` (bash-driven skills live here — the bash-less roles can't run them);
-reviewer/summarizer = none.
+`notion`; comms = `composio-cli`, `notion` (bash-driven skills live in
+bash-having roles only); reviewer = none.
 
 researcher is body-synced with the `researcher` subagent (AGENTS.md pairing
 list); its frontmatter re-enables pi-web-access per-role — the pattern for
-role-scoped extension grants.
+role-scoped extension grants. comms has no subagent pair (intel stays
+read-only; comms is its mutating workflow sibling).
 
 Per-role extension refinements (frontmatter `disabledAgentResources.extensions`,
 appended after global so last-match-wins):
