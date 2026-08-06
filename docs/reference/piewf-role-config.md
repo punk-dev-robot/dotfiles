@@ -48,7 +48,6 @@ pi_tools_edit = "write, replace, undo_last_replace"
 pi_tools_cymbal = "cymbal_search, cymbal_show, cymbal_refs"
 pi_tools_cymbal_deep = "cymbal_investigate, cymbal_map, cymbal_outline, cymbal_structure, cymbal_context"
 pi_tools_cymbal_review = "cymbal_diff, cymbal_changed, cymbal_impact"
-pi_tools_web = "web_search, fetch_content, get_search_content"
 pi_tools_advisor = "ask_advisor, record_advisor_outcome"
 ```
 
@@ -59,9 +58,21 @@ tools: [{{pi_tools_core}}, bash, {{pi_tools_cymbal}}, cymbal_impact, {{pi_tools_
 ```
 
 Role assignment: developer = core+edit+bash+cymbal+impact/impls/importers;
-reviewer = core+bash+cymbal+review; scout = core+write+cymbal+deep+web+mcp
+reviewer = core+bash+cymbal+review; scout = core+write+cymbal+deep+mcp
 (+`logfire-query` skill); tests-expert = core+edit+bash+cymbal+impact;
 summarizer = none. All working roles get advisor tools.
+
+Per-role extension refinements (frontmatter `disabledAgentResources.extensions`,
+appended after global so last-match-wins):
+
+- caveman terse mode: ON for developer/tests-expert (code is the artifact),
+  re-disabled (`"**/pi-caveman/**"`) for reviewer/scout/summarizer whose prose
+  IS the product.
+- ponytail: off for agents globally; developer opts back in
+  (`"!**/ponytail/**"`).
+- web access (pi-web-access): not enabled for any role — tool descriptions are
+  heavy and rarely needed; grant per call (below) with
+  `extensions: ["!**/pi-web-access/**"]` plus the web tools in `tools`.
 
 ## Per-call role overrides (one-off capabilities)
 

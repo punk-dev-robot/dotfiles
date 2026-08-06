@@ -1,8 +1,8 @@
 {
-  "executor": "anthropic/claude-fable-5",
+  "executor": "openai-codex/gpt-5.6-luna",
   "executorEffort": "medium",
   "advisor": "anthropic/claude-fable-5",
-  "advisorEffort": "high",
+  "advisorEffort": "xhigh",
   "contextMaxChars": 25000,
   "advisorPlanGate": true,
   "advisorFailureGate": true,
@@ -26,5 +26,6 @@
     "deploy": "exclude"
   },
   "advisorToolResultMaxBytes": 51200,
-  "advisorToolResultMaxLines": 2000
+  "advisorToolResultMaxLines": 2000,
+  "advisorTrackedFileContent": false
 }

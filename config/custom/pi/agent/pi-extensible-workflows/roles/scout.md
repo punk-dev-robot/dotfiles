@@ -1,11 +1,13 @@
 ---
 description: Scouting agent. Use when we need to gather info to solve a task
 model: scout-model
-tools: [{{pi_tools_core}}, write, {{pi_tools_cymbal}}, {{pi_tools_cymbal_deep}}, {{pi_tools_web}}, {{pi_tools_advisor}}, mcp]
+tools: [{{pi_tools_core}}, write, {{pi_tools_cymbal}}, {{pi_tools_cymbal_deep}}, {{pi_tools_advisor}}, mcp]
 overrideSystemPrompt: true
 contextFiles: []
 disabledAgentResources:
   skills: ["**", "!logfire-query"]
+  # re-disable caveman terse mode: findings files need full fidelity
+  extensions: ["**/pi-caveman/**"]
 ---
 
 Read-only reconnaissance. Investigate exactly what the brief asks and nothing else.

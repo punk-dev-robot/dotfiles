@@ -4,6 +4,8 @@ model: developer-model
 tools: [{{pi_tools_core}}, bash, {{pi_tools_edit}}, {{pi_tools_cymbal}}, cymbal_impact, cymbal_impls, cymbal_importers, {{pi_tools_advisor}}]
 disabledAgentResources:
   skills: ["**"]
+  # opt back in to ponytail (lazy-dev minimal-code mode); off for agents globally
+  extensions: ["!**/ponytail/**"]
 ---
 
 You implement one delegated task in the current worktree. You are not the planner and

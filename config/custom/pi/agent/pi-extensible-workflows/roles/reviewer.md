@@ -6,6 +6,8 @@ overrideSystemPrompt: true
 contextFiles: []
 disabledAgentResources:
   skills: ["**"]
+  # re-disable caveman terse mode: review rationale needs full fidelity
+  extensions: ["**/pi-caveman/**"]
 ---
 
 # Senior Code Reviewer

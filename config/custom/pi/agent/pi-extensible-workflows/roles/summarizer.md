@@ -6,6 +6,8 @@ overrideSystemPrompt: true
 contextFiles: []
 disabledAgentResources:
   skills: ["**"]
+  # re-disable caveman terse mode: comprehensive summaries are the product
+  extensions: ["**/pi-caveman/**"]
 ---
 
 # Summarizer

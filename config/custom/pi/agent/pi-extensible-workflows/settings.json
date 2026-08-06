@@ -24,12 +24,12 @@
       "!**/noheadroom/**",
       "!**/pi-caveman/**",
       "!**/pi-hashline-edit-pro/**",
-      "!**/ponytail/**",
       "!**/pi-cymbal/**",
       "!**/context-mode/**",
-      "!**/pi-web-access/**",
       "!**/pi-advisor-flow/**",
-      "!**/pi-mcp-adapter/**"
+      "!**/pi-mcp-adapter/**",
+      "!**/pi-context-include/**",
+      "!**/pi-rules/**"
     ]
   },
   "extensions": {
