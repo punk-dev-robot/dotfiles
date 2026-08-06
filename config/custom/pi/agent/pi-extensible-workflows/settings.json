@@ -5,7 +5,8 @@
     "developer-model": "anthropic/claude-opus-5:medium",
     "cheap-model": "anthropic/claude-sonnet-5:medium",
     "scout-model": "cheap-model:low",
-    "tests-expert": "cheap-model"
+    "tests-expert": "cheap-model",
+    "researcher-model": "anthropic/claude-opus-5:medium"
   },
   "disabledAgentResources": {
     "skills": [

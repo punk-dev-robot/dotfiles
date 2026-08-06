@@ -13,7 +13,7 @@
 
 ## Pi agents / workflow roles sync
 
-- [sync] Subagent definitions (`config/custom/pi/agent/agents/`) and piewf workflow roles (`config/custom/pi/agent/pi-extensible-workflows/roles/`) share prompt bodies for paired workers: `dev↔developer`, `code-reviewer↔reviewer`, `recon↔scout`, `test-engineer↔tests-expert`. When editing one side's prompt body, copy it to the other. Frontmatter stays format-specific (subagent: mode/extensions/deny-tools; role: aliases/overrideSystemPrompt/disabledAgentResources) #workflow
+- [sync] Subagent definitions (`config/custom/pi/agent/agents/`) and piewf workflow roles (`config/custom/pi/agent/pi-extensible-workflows/roles/`) share prompt bodies for paired workers: `dev↔developer`, `code-reviewer↔reviewer`, `recon↔scout`, `test-engineer↔tests-expert`, `researcher↔researcher`. When editing one side's prompt body, copy it to the other. Frontmatter stays format-specific (subagent: mode/extensions/deny-tools; role: aliases/overrideSystemPrompt/disabledAgentResources) #workflow
 
 ## Documentation
 

@@ -1,14 +1,13 @@
 ---
-name: researcher
 description: External research — docs, APIs, versions, release notes; writes a cited brief to a file, no repo changes.
-model: anthropic/claude-sonnet-5
-thinking: medium
-tools: read,write,bash,web_search,fetch_content,get_search_content,source_check
-skills: composio-cli, research, notion
-extensions: npm:pi-claude-auth, git:github.com/punk-dev-robot/pi-langfuse@feat/groupable-dimensions, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-caveman, npm:pi-web-access
-mode: interactive
-auto-exit: true
-system-prompt: append
+model: researcher-model
+tools: [read, write, bash, web_search, fetch_content, get_search_content, {{pi_tools_advisor}}]
+overrideSystemPrompt: true
+contextFiles: []
+disabledAgentResources:
+  skills: ["**", "!composio-cli", "!research", "!notion"]
+  # re-enable web for this role only; re-disable caveman (cited briefs need fidelity)
+  extensions: ["!**/pi-web-access/**", "**/pi-caveman/**"]
 ---
 
 You gather external evidence and write a brief. You do not touch the repository.

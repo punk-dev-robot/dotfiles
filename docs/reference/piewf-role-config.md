@@ -59,14 +59,19 @@ tools: [{{pi_tools_core}}, bash, {{pi_tools_cymbal}}, cymbal_impact, {{pi_tools_
 
 Role assignment: developer = core+edit+bash+cymbal+impact/impls/importers;
 reviewer = core+bash+cymbal+review; scout = core+write+cymbal+deep+mcp;
-tests-expert = core+edit+bash+cymbal+impact; summarizer = none. All working
-roles get advisor tools.
+tests-expert = core+edit+bash+cymbal+impact; researcher = read/write/bash+web
+(no repo tools — external evidence only); summarizer = none. All working roles
+get advisor tools.
 
 Skills (role negations after the `"**"` wipe): developer = `tdd`,
 `codebase-design`; scout = `logfire-query`, `mcp-scripting` (completes the
-`mcp` tool); tests-expert = `tdd`; reviewer/summarizer = none. Skills that
-need bash (e.g. `composio-cli`) don't fit bash-less roles — deliberately
-skipped; use a per-call override or a dedicated role if needed.
+`mcp` tool); tests-expert = `tdd`; researcher = `composio-cli`, `research`,
+`notion` (bash-driven skills live here — the bash-less roles can't run them);
+reviewer/summarizer = none.
+
+researcher is body-synced with the `researcher` subagent (AGENTS.md pairing
+list); its frontmatter re-enables pi-web-access per-role — the pattern for
+role-scoped extension grants.
 
 Per-role extension refinements (frontmatter `disabledAgentResources.extensions`,
 appended after global so last-match-wins):
