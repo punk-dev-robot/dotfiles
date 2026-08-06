@@ -41,6 +41,7 @@ pi_tools_cymbal_deep = "cymbal_investigate, cymbal_map, cymbal_outline, cymbal_s
 pi_tools_cymbal_review = "cymbal_diff, cymbal_changed, cymbal_impact"
 # advisor tools require pi-advisor-flow re-enabled for agents in piewf settings.json extensions
 pi_tools_advisor = "ask_advisor, record_advisor_outcome"
+pi_tools_ctx = "ctx_execute, ctx_batch_execute, ctx_search"
 
 # ─── Linux desktop (Hyprland stack) ───
 [linux.files]

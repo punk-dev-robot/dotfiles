@@ -49,6 +49,7 @@ pi_tools_cymbal = "cymbal_search, cymbal_show, cymbal_refs"
 pi_tools_cymbal_deep = "cymbal_investigate, cymbal_map, cymbal_outline, cymbal_structure, cymbal_context"
 pi_tools_cymbal_review = "cymbal_diff, cymbal_changed, cymbal_impact"
 pi_tools_advisor = "ask_advisor, record_advisor_outcome"
+pi_tools_ctx = "ctx_execute, ctx_batch_execute, ctx_search"
 ```
 
 Used in role frontmatter:
@@ -57,13 +58,21 @@ Used in role frontmatter:
 tools: [{{pi_tools_core}}, bash, {{pi_tools_cymbal}}, cymbal_impact, {{pi_tools_advisor}}]
 ```
 
-Role assignment: developer = core+edit+bash+cymbal+impact/impls/importers;
+Role assignment: developer = core+edit+bash+cymbal+impact/impls/importers+ctx;
 reviewer = core+bash+cymbal+review; scout = core+write+cymbal+deep+mcp;
-tests-expert = core+edit+bash+cymbal+impact; researcher = read/write/bash+web
+tests-expert = core+edit+bash+cymbal+impact+ctx; researcher = read/write/bash+web
 (no repo tools — external evidence only); comms = read/write/bash (external
 systems: Linear/Slack via composio, Notion via skill, GitHub via gh — the only
 role allowed to MUTATE external systems; gate public posts behind a workflow
 checkpoint). All roles get advisor tools. summarizer was dropped — no use-case.
+
+context-mode registers ctx_* tools LAZILY — on a session's first agent turn
+(before_agent_start bootstraps its MCP bridge). Consequences: `/tools` shows no
+ctx_* before the first message, and `piewf doctor` (fresh process, no turn)
+false-flags ctx tools as ROLE_TOOL_INACTIVE / outside the boundary. Real
+dispatch works — verified end-to-end via a tests-expert workflow child running
+ctx_execute. Ignore doctor errors for ctx_* only. Subagents dev/impl/
+test-engineer carry the same trio (tools + npm:context-mode extension).
 
 Skills (role negations after the `"**"` wipe): developer = `tdd`,
 `codebase-design`; scout = `logfire-query`, `mcp-scripting` (completes the

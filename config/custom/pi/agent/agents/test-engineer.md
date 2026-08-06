@@ -4,10 +4,10 @@ description: QA engineer specialized in test strategy, test writing, and coverag
 model: anthropic/claude-sonnet-5
 thinking: medium
 allowed-models: anthropic/claude-opus-5
-tools: read,grep,find,ls,bash,cymbal_search,cymbal_show,cymbal_refs
+tools: read,grep,find,ls,bash,cymbal_search,cymbal_show,cymbal_refs,ctx_execute,ctx_batch_execute,ctx_search
 skills: test-driven-development
 deny-tools: edit,write,replace,undo_last_replace
-extensions: npm:pi-claude-auth, git:github.com/punk-dev-robot/pi-langfuse@feat/groupable-dimensions, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-cymbal, npm:pi-caveman
+extensions: npm:pi-claude-auth, git:github.com/punk-dev-robot/pi-langfuse@feat/groupable-dimensions, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-cymbal, npm:pi-caveman, npm:context-mode
 mode: interactive
 trust-project: true
 auto-exit: true

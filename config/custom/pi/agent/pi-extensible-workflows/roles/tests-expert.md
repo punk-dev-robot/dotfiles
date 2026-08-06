@@ -1,7 +1,7 @@
 ---
 description: Agent focused in writing/reading tests
 model: tests-expert
-tools: [{{pi_tools_core}}, bash, {{pi_tools_edit}}, {{pi_tools_cymbal}}, cymbal_impact, {{pi_tools_advisor}}]
+tools: [{{pi_tools_core}}, bash, {{pi_tools_edit}}, {{pi_tools_cymbal}}, cymbal_impact, {{pi_tools_advisor}}, {{pi_tools_ctx}}]
 disabledAgentResources:
   skills: ["**", "!tdd"]
 ---
