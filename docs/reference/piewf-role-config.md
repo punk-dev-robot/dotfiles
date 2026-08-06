@@ -44,25 +44,65 @@ Since `tools:` doesn't merge, shared groups are dotter handlebars variables in
 ```toml
 [base.variables]
 pi_tools_core = "read, grep, find, ls"
+pi_tools_edit = "write, replace, undo_last_replace"
 pi_tools_cymbal = "cymbal_search, cymbal_show, cymbal_refs"
+pi_tools_cymbal_deep = "cymbal_investigate, cymbal_map, cymbal_outline, cymbal_structure, cymbal_context"
+pi_tools_cymbal_review = "cymbal_diff, cymbal_changed, cymbal_impact"
+pi_tools_web = "web_search, fetch_content, get_search_content"
+pi_tools_advisor = "ask_advisor, record_advisor_outcome"
 ```
 
 Used in role frontmatter:
 
 ```yaml
-tools: [{{pi_tools_core}}, bash, {{pi_tools_cymbal}}, cymbal_impact]
+tools: [{{pi_tools_core}}, bash, {{pi_tools_cymbal}}, cymbal_impact, {{pi_tools_advisor}}]
+```
+
+Role assignment: developer = core+edit+bash+cymbal+impact/impls/importers;
+reviewer = core+bash+cymbal+review; scout = core+write+cymbal+deep+web+mcp
+(+`logfire-query` skill); tests-expert = core+edit+bash+cymbal+impact;
+summarizer = none. All working roles get advisor tools.
+
+## Per-call role overrides (one-off capabilities)
+
+Workflows can grant extra capability for a single `agent()` call instead of
+baking it into the role — `role` accepts an object (`applyRoleOverride`);
+`tools` **replaces** the role list (copy the current one from
+`piewf doctor --role <role>`), and the `disabledAgentResources` override can
+even re-enable an extension just for that call:
+
+```js
+await agent(task, {
+  label: "review-with-telemetry",
+  role: {
+    name: "reviewer",
+    tools: [/* full list from doctor */ "mcp"],
+    disabledAgentResources: {
+      skills: ["**", "!logfire-query"],
+      extensions: ["!**/pi-mcp-adapter/**"],
+    },
+  },
+});
 ```
 
 Notes:
 
+- **A role tool only works if its providing extension is re-enabled for agents**
+  in workflow `settings.json` `disabledAgentResources.extensions` (negation
+  pattern). Web tools need `!**/pi-web-access/**`, advisor tools need
+  `!**/pi-advisor-flow/**`; cymbal/fff/hashline already enabled. Tools from
+  disabled extensions (subagent, herdr_*, mcp, agent_browser, recall,
+  plannotator, ask_user_question, workflow_*) do not exist in role sessions.
+  Tool→provider map: `.scratch/pi-tool-provider-map.md` (regenerate via recon
+  if stale).
 - Package variables merge into one flat namespace for all enabled packages;
   both hosts enable `base` transitively. Host `[variables]` wins on key clash.
 - Dotter disables HTML escaping (`register_escape_fn(str::to_string)`), so
   `{{var}}` renders comma lists verbatim.
 - Dotter runs handlebars in **strict mode**: a typo'd variable fails
   `dotter deploy` loudly instead of rendering blank.
-- Role-specific tools (`bash`, `write`, `replace`, `undo_last_replace`,
-  `cymbal_impact`) stay as literals in each role.
+- One-off tools (`bash`, `cymbal_impact`, `cymbal_impls`, ...) stay as literals
+  in each role.
 
 Workflow: edit role in repo → `dotter deploy` → verify with
 `piewf doctor --role <role>`.

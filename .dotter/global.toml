@@ -36,6 +36,13 @@ default_target_type = "symbolic"
 [base.variables]
 pi_tools_core = "read, grep, find, ls"
 pi_tools_cymbal = "cymbal_search, cymbal_show, cymbal_refs"
+pi_tools_edit = "write, replace, undo_last_replace"
+pi_tools_cymbal_deep = "cymbal_investigate, cymbal_map, cymbal_outline, cymbal_structure, cymbal_context"
+pi_tools_cymbal_review = "cymbal_diff, cymbal_changed, cymbal_impact"
+# web tools require pi-web-access re-enabled for agents in piewf settings.json extensions
+pi_tools_web = "web_search, fetch_content, get_search_content"
+# advisor tools require pi-advisor-flow re-enabled for agents in piewf settings.json extensions
+pi_tools_advisor = "ask_advisor, record_advisor_outcome"
 
 # ─── Linux desktop (Hyprland stack) ───
 [linux.files]

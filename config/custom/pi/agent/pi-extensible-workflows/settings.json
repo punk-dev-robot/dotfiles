@@ -13,8 +13,7 @@
       "logfire-ui",
       "plannotator-*",
       "ctx-insight",
-      "ponytail-help",
-      "setup-agent-replay"
+      "ponytail-help"
     ],
     "extensions": [
       "**",
@@ -27,7 +26,10 @@
       "!**/pi-hashline-edit-pro/**",
       "!**/ponytail/**",
       "!**/pi-cymbal/**",
-      "!**/context-mode/**"
+      "!**/context-mode/**",
+      "!**/pi-web-access/**",
+      "!**/pi-advisor-flow/**",
+      "!**/pi-mcp-adapter/**"
     ]
   },
   "extensions": {
