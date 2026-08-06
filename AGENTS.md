@@ -13,7 +13,7 @@
 
 ## Pi agents / workflow roles sync
 
-- [sync] Subagent definitions (`config/custom/pi/agent/agents/`) and piewf workflow roles (`config/custom/pi/agent/pi-extensible-workflows/roles/`) share prompt bodies for paired workers: `dev↔developer`, `code-reviewer↔reviewer`, `recon↔scout`, `test-engineer↔tests-expert`, `researcher↔researcher`. When editing one side's prompt body, copy it to the other. Frontmatter stays format-specific (subagent: mode/extensions/deny-tools; role: aliases/overrideSystemPrompt/disabledAgentResources) #workflow
+- [sync] Prompt bodies live once, in `config/custom/pi/prompts/<name>.md`. Both the subagent (`config/custom/pi/agent/agents/<name>.md`) and the piewf role (`config/custom/pi/agent/pi-extensible-workflows/roles/<name>.md`) are dotter templates whose body is a single `{{include_template "config/custom/pi/prompts/<name>.md"}}`; model/thinking come from `pi_model_<name>` / `pi_think_<name>` in `.dotter/global.toml`. Names match 1:1 across both surfaces (`recon`, `researcher`, `dev`, `impl`, `reviewer`, `tests`, `comms`); `lead` is subagent-only. Edit the prompt source, then `dotter deploy` — never the deployed copies under `~/.config/pi/agent`. Frontmatter stays format-specific (subagent: mode/extensions/deny-tools; role: overrideSystemPrompt/disabledAgentResources) #workflow
 
 ## Documentation
 

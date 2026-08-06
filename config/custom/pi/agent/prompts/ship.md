@@ -1,11 +1,11 @@
 ---
-description: Pre-launch gate — parallel fan-out to code-reviewer, security-auditor and test-engineer, then a merged go/no-go
+description: Pre-launch gate — parallel fan-out to reviewer and tests, then a merged go/no-go
 argument-hint: "[scope]"
 ---
 
 Invoke the `/skill:shipping-and-launch` skill.
 
-`/ship` is a **fan-out orchestrator**. It runs three specialist personas against the current change
+`/ship` is a **fan-out orchestrator**. It runs two specialist personas against the current change
 in parallel, then merges their reports into a single go/no-go decision with a rollback plan. The
 personas operate independently — no shared state, no ordering — which is what makes parallel
 execution safe here.
@@ -15,36 +15,34 @@ Scope: ${@:-the staged changes, or the most recent commit if nothing is staged}.
 ## Phase A — Parallel fan-out
 
 Establish the exact scope first (`git diff --cached`, `git diff`, `git show`), then issue **one**
-`subagent` call with all three children in the `children` array so they launch together. Each child
+`subagent` call with both children in the `children` array so they launch together. Each child
 starts with a clean context and cannot see this chat — the brief must carry the scope, the intent
 of the change, and any constraint they need.
 
-1. **`code-reviewer`** — five-axis review (correctness, readability, architecture, security,
-   performance) on the named diff. Standard review template, findings graded
+1. **`reviewer`** — five-axis review (correctness, readability, architecture, security,
+   performance) on the named diff. Brief it to go deep on the security axis for this gate:
+   OWASP Top 10, secrets handling, auth/authz, dependency risk. Findings graded
    blocker / should-fix / nit with `file:line`.
-2. **`security-auditor`** — vulnerability and threat-model pass: OWASP Top 10, secrets handling,
-   auth/authz, dependency CVEs and supply-chain risk. Standard audit report.
-3. **`test-engineer`** — coverage analysis for the change: gaps in happy path, edge cases, error
+2. **`tests`** — coverage analysis for the change: gaps in happy path, edge cases, error
    paths, concurrency. Standard coverage analysis.
 
 Constraints:
 
 - Children do not spawn children. If one wants a deeper pass from another persona, it says so in
   its report and this session decides.
-- `code-reviewer` opens in a pane; the other two run headless. All three report back here.
-- None of them can edit. Fixes happen in this session or via `impl` / `dev`.
+- `reviewer` opens in a pane; `tests` runs headless. Both report back here.
+- Neither can edit. Fixes happen in this session or via `impl` / `dev`.
 
 ## Phase B — Merge in this session
 
-Once all three reports are back, synthesize them here (not in a child):
+Once both reports are back, synthesize them here (not in a child):
 
-1. **Code quality** — aggregate Critical/Important findings from `code-reviewer` plus any failing
+1. **Code quality** — aggregate Critical/Important findings from `reviewer` plus any failing
    tests, lint, or build output. Resolve duplicates between reports.
-2. **Security** — promote Critical/High `security-auditor` findings to launch blockers.
-   Cross-reference with `code-reviewer`'s security axis.
-3. **Performance** — pull from `code-reviewer`'s performance axis. For web-facing changes, run
-   `/webperf` separately; it is not part of this fan-out.
-4. **Accessibility** — keyboard nav, screen reader support, contrast. Not covered by the three
+2. **Security** — promote Critical/High findings from `reviewer`'s security axis to launch
+   blockers.
+3. **Performance** — pull from `reviewer`'s performance axis.
+4. **Accessibility** — keyboard nav, screen reader support, contrast. Not covered by the two
    personas — verify directly.
 5. **Infrastructure** — env vars, migrations, monitoring, feature flags. Verify directly.
 6. **Documentation** — README, ADRs, changelog. Verify directly.
@@ -69,14 +67,13 @@ Once all three reports are back, synthesize them here (not in a child):
 - Recovery time objective: [target]
 
 ### Specialist reports (full)
-- [code-reviewer report]
-- [security-auditor report]
-- [test-engineer report]
+- [reviewer report]
+- [tests report]
 ```
 
 ## Rules
 
-1. The three Phase A personas run in parallel — one `subagent` call, never three sequential ones.
+1. The two Phase A personas run in parallel — one `subagent` call, never two sequential ones.
 2. Personas do not call each other. The merge happens in Phase B, here.
 3. The rollback plan is mandatory before any GO decision.
 4. Any Critical finding means NO-GO by default, unless the user explicitly accepts the risk.

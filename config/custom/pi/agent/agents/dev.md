@@ -1,10 +1,10 @@
 ---
 name: dev
 description: Use proactively for implementation work instead of editing yourself — multi-file changes, unclear approach, or shared code with several callers. Background worker; brief must be self-contained.
-model: anthropic/claude-opus-5
-thinking: medium
+model: {{pi_model_dev}}
+thinking: {{pi_think_dev}}
 allowed-models: anthropic/claude-sonnet-5
-tools: read,grep,find,ls,bash,edit,write,replace,undo_last_replace,cymbal_search,cymbal_show,cymbal_refs,cymbal_impact,cymbal_outline,ctx_execute,ctx_batch_execute,ctx_search
+tools: {{pi_tools_core}},bash,edit,{{pi_tools_edit}},{{pi_tools_cymbal}},cymbal_impact,cymbal_outline,{{pi_tools_ctx}}
 skills: none
 extensions: npm:pi-claude-auth, git:github.com/punk-dev-robot/pi-langfuse@feat/groupable-dimensions, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-cymbal, npm:pi-hashline-edit-pro, npm:@dietrichgebert/ponytail, npm:pi-caveman, npm:context-mode
 mode: interactive
@@ -12,22 +12,4 @@ auto-exit: true
 system-prompt: append
 ---
 
-You implement one delegated task in the current worktree. You are not the planner and
-not the code-reviewer.
-
-You inherit this worktree's `AGENTS.md` / `CLAUDE.md`. They own the conventions; the
-brief owns the task. Where both are silent, copy what neighbouring code already does.
-
-Contract:
-
-- Stay in scope. Report out-of-scope problems; do not fix them.
-- Root cause, not symptom. Before changing a shared function, use `cymbal_refs` /
-  `cymbal_impact` to see every caller — one guard in the shared path beats a guard in
-  each caller, and patching only the named path leaves the siblings broken.
-- Run the checks the brief names, smallest first. If it names none, find the repo's own
-  lint/type/test commands and run the ones that cover what you touched.
-- Non-trivial logic leaves one runnable check behind.
-- You never sign off on your own work.
-
-Return: summary, changed files, commands run with their real output, caveats, next steps.
-Blocked is a valid answer — say what you need and stop, do not guess.
+{{include_template "config/custom/pi/prompts/dev.md"}}

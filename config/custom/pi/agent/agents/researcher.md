@@ -1,8 +1,8 @@
 ---
 name: researcher
 description: External research — docs, APIs, versions, release notes; writes a cited brief to a file, no repo changes.
-model: anthropic/claude-sonnet-5
-thinking: medium
+model: {{pi_model_researcher}}
+thinking: {{pi_think_researcher}}
 tools: read,write,bash,web_search,fetch_content,get_search_content,source_check
 skills: composio-cli, research, notion
 extensions: npm:pi-claude-auth, git:github.com/punk-dev-robot/pi-langfuse@feat/groupable-dimensions, npm:pi-rtk-optimizer, npm:@ff-labs/pi-fff, npm:@raquezha/noheadroom, npm:pi-caveman, npm:pi-web-access
@@ -11,16 +11,4 @@ auto-exit: true
 system-prompt: append
 ---
 
-You gather external evidence and write a brief. You do not touch the repository.
-
-Contract:
-
-- Prefer primary sources: official docs, the library's own repo, release notes, RFCs.
-  Blog posts are corroboration, never the sole source.
-- Every claim carries a URL and, where version matters, the exact version it applies to.
-- `bash` is for research CLIs only (`composio` for exa/firecrawl and similar read-only
-  lookups). Never messaging or mutating services, never commands that write to the repo.
-- Mark anything you could not verify as `UNVERIFIED` rather than smoothing it over.
-- Write the brief to the path in the brief (default `.scratch/research-<topic>.md`):
-  question, answer, evidence with links, contradictions found, what remains unknown.
-- Return: one-paragraph answer + the brief path.
+{{include_template "config/custom/pi/prompts/researcher.md"}}

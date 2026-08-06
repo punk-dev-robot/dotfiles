@@ -19,7 +19,8 @@ resource — protect both. Delegation is how.
 - **Implementation goes to `impl` or `dev`.** `impl` when the approach is known and
   bounded, `dev` when it needs judgement. Do not hand-edit a change you could brief.
 - **External docs, versions, release notes go to `researcher`.**
-- **A finished change goes to `code-reviewer`** before you call it done.
+- **External-system reads and updates (Linear, Notion, Slack, GitHub) go to `comms`.**
+- **A finished change goes to `reviewer`** before you call it done.
 
 The third tool call on the same question is the tripwire: you are now doing a
 child's job on the expensive model. Stop, brief, dispatch. Watch for salami
@@ -37,6 +38,12 @@ Do it yourself when a call or two settles it: a one-line fix, a single grep, a
 question you can already answer.
 
 A child's summary is a claim. Check the diff before you believe it.
+
+## Tool economy
+
+Navigate with `read` / `grep` / `find` / `ls` — their output is compacted and cheap.
+`bash` is for running processes (build, test, git, CLIs) and heredoc-scale batch
+edits, not for `cat`/`grep` chains.
 
 ## Skills
 

@@ -43,14 +43,18 @@ Since `tools:` doesn't merge, shared groups are dotter handlebars variables in
 
 ```toml
 [base.variables]
-pi_tools_core = "read, grep, find, ls"
-pi_tools_edit = "write, replace, undo_last_replace"
-pi_tools_cymbal = "cymbal_search, cymbal_show, cymbal_refs"
-pi_tools_cymbal_deep = "cymbal_investigate, cymbal_map, cymbal_outline, cymbal_structure, cymbal_context"
-pi_tools_cymbal_review = "cymbal_diff, cymbal_changed, cymbal_impact"
-pi_tools_advisor = "ask_advisor, record_advisor_outcome"
-pi_tools_ctx = "ctx_execute, ctx_batch_execute, ctx_search"
+pi_tools_core = "read,grep,find,ls"
+pi_tools_edit = "write,replace,undo_last_replace"
+pi_tools_cymbal = "cymbal_search,cymbal_show,cymbal_refs"
+pi_tools_cymbal_deep = "cymbal_investigate,cymbal_map,cymbal_outline,cymbal_structure,cymbal_context"
+pi_tools_cymbal_review = "cymbal_diff,cymbal_changed,cymbal_impact"
+pi_tools_advisor = "ask_advisor,record_advisor_outcome"
+pi_tools_ctx = "ctx_execute,ctx_batch_execute,ctx_search"
 ```
+
+No space after the commas: subagent frontmatter consumes the same variables as a
+bare `tools: a,b,c` list, which may not trim spaces. YAML flow lists tolerate
+either form.
 
 Used in role frontmatter:
 
@@ -58,44 +62,71 @@ Used in role frontmatter:
 tools: [{{pi_tools_core}}, bash, {{pi_tools_cymbal}}, cymbal_impact, {{pi_tools_advisor}}]
 ```
 
-Role assignment: developer = core+edit+bash+cymbal+impact/impls/importers+ctx;
-reviewer = core+bash+cymbal+review; scout = core+write+cymbal+deep+mcp;
-tests-expert = core+edit+bash+cymbal+impact+ctx; researcher = read/write/bash+web
-(no repo tools — external evidence only); comms = read/write/bash (external
+Role assignment: `dev` = core+edit+bash+cymbal+impact/impls/importers+ctx;
+`impl` = core+edit+bash+ctx (bounded edits, no cymbal — the approach is already
+known); `reviewer` = core+bash+cymbal+review; `recon` = core+write+cymbal+deep+mcp;
+`tests` = core+edit+bash+cymbal+impact+ctx; `researcher` = read/write/bash+web
+(no repo tools — external evidence only); `comms` = read/write/bash (external
 systems: Linear/Slack via composio, Notion via skill, GitHub via gh — the only
 role allowed to MUTATE external systems; gate public posts behind a workflow
-checkpoint). All roles get advisor tools. summarizer was dropped — no use-case.
+checkpoint). All roles get advisor tools.
 
 context-mode registers ctx_* tools LAZILY — on a session's first agent turn
 (before_agent_start bootstraps its MCP bridge). Consequences: `/tools` shows no
 ctx_* before the first message, and `piewf doctor` (fresh process, no turn)
 false-flags ctx tools as ROLE_TOOL_INACTIVE / outside the boundary. Real
-dispatch works — verified end-to-end via a tests-expert workflow child running
-ctx_execute. Ignore doctor errors for ctx_* only. Subagents dev/impl/
-test-engineer carry the same trio (tools + npm:context-mode extension).
+dispatch works — verified end-to-end via a `tests` workflow child running
+ctx_execute. Ignore doctor errors for ctx_* only. Subagents dev/impl/tests
+carry the same trio (tools + npm:context-mode extension).
 
-Skills (role negations after the `"**"` wipe): developer = `tdd`,
-`codebase-design`; scout = `logfire-query`, `mcp-scripting` (completes the
-`mcp` tool); tests-expert = `tdd`; researcher = `composio-cli`, `research`,
-`notion`; comms = `composio-cli`, `notion` (bash-driven skills live in
-bash-having roles only); reviewer = none.
+Skills (role negations after the `"**"` wipe): `dev` = `tdd`,
+`codebase-design`; `recon` = `logfire-query`, `mcp-scripting` (completes the
+`mcp` tool); `tests` = `tdd`; `researcher` = `composio-cli`, `research`,
+`notion`; `comms` = `composio-cli`, `notion` (bash-driven skills live in
+bash-having roles only); `impl` = all (`["**"]`); `reviewer` = none.
 
-researcher is body-synced with the `researcher` subagent (AGENTS.md pairing
-list); its frontmatter re-enables pi-web-access per-role — the pattern for
-role-scoped extension grants. comms has no subagent pair (intel stays
-read-only; comms is its mutating workflow sibling).
+`researcher` re-enables pi-web-access per-role — the pattern for role-scoped
+extension grants.
 
 Per-role extension refinements (frontmatter `disabledAgentResources.extensions`,
 appended after global so last-match-wins):
 
-- caveman terse mode: ON for developer/tests-expert (code is the artifact),
-  re-disabled (`"**/pi-caveman/**"`) for reviewer/scout/summarizer whose prose
-  IS the product.
-- ponytail: off for agents globally; developer opts back in
+- caveman terse mode: ON for dev/impl/tests (code is the artifact),
+  re-disabled (`"**/pi-caveman/**"`) for reviewer/recon/researcher/comms whose
+  prose IS the product.
+- ponytail: off for agents globally; dev opts back in
   (`"!**/ponytail/**"`).
 - web access (pi-web-access): not enabled for any role — tool descriptions are
   heavy and rarely needed; grant per call (below) with
   `extensions: ["!**/pi-web-access/**"]` plus the web tools in `tools`.
+
+## Single source of truth: shared prompt bodies
+
+Seven concepts — `recon`, `researcher`, `dev`, `impl`, `reviewer`, `tests`,
+`comms` — exist twice, as a subagent (`config/custom/pi/agent/agents/<name>.md`)
+and as a piewf role (`.../pi-extensible-workflows/roles/<name>.md`). Names match
+1:1; `lead` is the exception (subagent only — it spawns subagents, which roles
+cannot do).
+
+Both files are dotter templates whose entire body is one include of the shared
+prompt:
+
+```handlebars
+{{include_template "config/custom/pi/prompts/dev.md"}}
+```
+
+`include_template` paths resolve from the repo root and render variables inside
+the included file. The shared bodies live in `config/custom/pi/prompts/` —
+deliberately *outside* `config/custom/pi/agent/`, which is mapped wholesale to
+`~/.config/pi/agent`, so prompt sources never deploy as agent resources.
+
+Model and thinking level come from per-concept dotter variables
+(`pi_model_<name>` / `pi_think_<name>` in `.dotter/global.toml`), so both
+surfaces resolve to the same model. Roles no longer use `modelAliases`
+indirection; only `cheap-model` survives for workflow scripts.
+
+Edit the prompt source and `dotter deploy`. Never edit the deployed copies in
+`~/.config/pi/agent` — they are generated and get overwritten.
 
 ## Per-call role overrides (one-off capabilities)
 

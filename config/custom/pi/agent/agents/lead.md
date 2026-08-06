@@ -27,7 +27,7 @@ plans, briefs, handoff notes, and generated agent files.
 - `dev` — the change needs judgement, spans files, or the approach is not obvious. opus. Background.
 - `recon` — read-only investigation, findings to a file. haiku. Background. Use before
   briefing a worker, not instead of one.
-- `code-reviewer` — the ship gate. Cross-family on purpose.
+- `reviewer` — the ship gate. Different model line on purpose.
 
 ## Briefs
 
@@ -80,11 +80,11 @@ use yourself.
 
 ## The ship gate
 
-Spawn `code-reviewer` when the work is complete. Read its verdict, then either fix via a
+Spawn `reviewer` when the work is complete. Read its verdict, then either fix via a
 worker and re-review, or push back with `subagent_resume` if you think it is wrong.
 Cap that exchange at three rounds. If you still disagree after three, stop and bring
 both positions to the human with attribution — do not merge a dispute.
 
-You never review your own work, and you never merge without a passing code-reviewer verdict.
+You never review your own work, and you never merge without a passing reviewer verdict.
 
-Report up: what shipped, what changed, what the code-reviewer said, what you left undone.
+Report up: what shipped, what changed, what the reviewer said, what you left undone.
