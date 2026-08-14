@@ -172,7 +172,8 @@
     "linear-cli@linear-cli": true,
     "logfire-session-capture@pydantic-claude-code-logfire-plugin": false,
     "plannotator@plannotator": true,
-    "security-guidance@claude-plugins-official": true
+    "security-guidance@claude-plugins-official": true,
+    "claude-obsidian@agricidaniel-claude-obsidian": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
@@ -216,6 +217,12 @@
         "repo": "pydantic/claude-code-logfire-plugin"
       },
       "autoUpdate": true
+    },
+    "agricidaniel-claude-obsidian": {
+      "source": {
+        "source": "github",
+        "repo": "AgriciDaniel/claude-obsidian"
+      }
     }
   },
   "otelHeadersHelper": "/Users/kuba.gaj/dotfiles/local/bin/claude-otel-headers",

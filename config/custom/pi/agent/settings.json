@@ -49,7 +49,7 @@
     "26.5.0",
     "npm"
   ],
-  "lastChangelogVersion": "0.83.0",
+  "lastChangelogVersion": "0.84.1",
   "showCacheMissNotices": false,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-fable-5",
@@ -86,7 +86,7 @@
     "debugLog": false
   },
   "hideThinkingBlock": true,
-  "quietStartup": true,
+  "quietStartup": false,
   "collapseChangelog": true,
   "clearOnStart": true,
   "theme": "terminal",

@@ -85,14 +85,14 @@ preset = 'qwerty'
 [gaps]
 inner.horizontal = 8
 inner.vertical = 8
-outer.left = [{ monitor.'PHL 499P9' = 8 }, 4]
+outer.left = [{ monitor.'PHL 499P9' = 1278 }, 4]
 outer.bottom = 8
 outer.top = [
   { monitor.'PHL 499P9' = 54 },
   { monitor.'Built-in Retina Display' = 24 },
   24,
 ]
-outer.right = [{ monitor.'PHL 499P9' = 8 }, 4]
+outer.right = [{ monitor.'PHL 499P9' = 1278 }, 4]
 
 # Window rules — scratchpad/toggle apps always float
 [[on-window-detected]]
