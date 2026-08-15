@@ -40,15 +40,10 @@
     "npm:pi-cc-header",
     "npm:pi-skills-manager",
     "npm:@d3ara1n/pi-context-include",
-    "npm:@tigorhutasuhut/pi-rules"
+    "npm:@tigorhutasuhut/pi-rules",
+    "npm:@piewf/subagents"
   ],
-  "npmCommand": [
-    "fnm",
-    "exec",
-    "--using",
-    "26.5.0",
-    "npm"
-  ],
+  "npmCommand": ["fnm", "exec", "--using", "26.5.0", "npm"],
   "lastChangelogVersion": "0.84.1",
   "showCacheMissNotices": false,
   "defaultProvider": "anthropic",
