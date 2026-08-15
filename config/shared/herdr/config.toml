@@ -25,8 +25,8 @@ resize_mode = "prefix+alt+r"
 workspace_picker = "prefix+o"
 navigate_workspace_up = "up"
 navigate_workspace_down = "down"
-previous_workspace = "prefix+j"
-next_workspace = "prefix+k"
+previous_workspace = "prefix+k"
+next_workspace = "prefix+j"
 switch_workspace = "prefix+shift+1..9"
 close_workspace = "prefix+alt+d"
 new_worktree = ""
@@ -198,8 +198,10 @@ confirm_close = true
 prompt_new_tab_name = false
 pane_borders = true
 pane_gaps = true
+pane_scrollbars = false
 show_agent_labels_on_pane_borders = true
 agent_panel_sort = "priority"
+prompt_new_workspace_name = true
 
 [ui.sidebar.agents]
 row_gap = 1
@@ -242,3 +244,5 @@ enabled = true
 [experimental]
 switch_ascii_input_source_in_prefix = false
 kitty_graphics = true
+reveal_hidden_cursor_for_cjk_ime = true
+cjk_ime_agents = ["claude", "pi", "codex"]
