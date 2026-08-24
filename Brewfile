@@ -6,7 +6,6 @@
 # ─── Taps ────────────────────────────────────────────────────────
 
 tap "basicmachines-co/basic-memory"
-tap "dimentium/autoraise"
 tap "felixkratz/formulae"
 tap "nikitabobko/tap"
 tap "oven-sh/bun"
@@ -170,7 +169,6 @@ brew "felixkratz/formulae/borders"
 # ─── macOS Window Management & Desktop ──────────────────────────
 
 cask "nikitabobko/tap/aerospace"
-cask "dimentium/autoraise/autoraiseapp"
 cask "hammerspoon"
 cask "karabiner-elements"
 cask "middleclick"

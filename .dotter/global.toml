@@ -80,7 +80,6 @@ depends = ["base"]
 "config/custom/launchagents/com.user.borders.plist" = { target = "~/Library/LaunchAgents/com.user.borders.plist", type = "template" }
 "config/custom/launchagents/com.user.colima.plist" = { target = "~/Library/LaunchAgents/com.user.colima.plist", type = "template" }
 "config/custom/launchagents/com.user.tmux.plist" = { target = "~/Library/LaunchAgents/com.user.tmux.plist", type = "template" }
-"config/custom/launchagents/com.user.aerospace-restart.plist" = { target = "~/Library/LaunchAgents/com.user.aerospace-restart.plist", type = "template" }
 
 # ─── Arch = base + linux + system files (/etc, root) ───
 [arch]

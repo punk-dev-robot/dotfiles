@@ -45,6 +45,11 @@ default-root-container-orientation = 'auto'
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 on-focus-changed = ['exec-and-forget ~/.local/bin/aerospace-widescreen']
 
+# Native focus-follows-mouse (since 0.21.0) — replaced AutoRaise cask.
+# Focuses AND raises on hover; drag-safe; no delay/ignore-list knobs.
+# Revert path: set false + `brew install dimentium/autoraise/autoraiseapp`.
+focus-follows-mouse.enabled = true
+
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
 # Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
 # Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
@@ -282,6 +287,12 @@ alt-ctrl-9 = ['move-node-to-workspace 9', 'workspace 9']
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
+
+# Cycle workspaces / move window to prev-next workspace
+alt-leftSquareBracket = 'workspace --wrap-around prev'
+alt-rightSquareBracket = 'workspace --wrap-around next'
+alt-shift-leftSquareBracket = 'move-node-to-workspace --wrap-around prev'
+alt-shift-rightSquareBracket = 'move-node-to-workspace --wrap-around next'
 
 # Monitor navigation
 alt-backtick = 'focus-monitor --wrap-around next'
