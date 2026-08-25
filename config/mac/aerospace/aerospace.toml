@@ -162,6 +162,32 @@ if.app-id = 'app.zen-browser.zen-twilight'
 if.window-title-regex-substring = '^(Page Info|Library|Downloads|About Zen|Browser Console|Print|Profile Manager|Page Source|View Source) '
 run = 'layout floating'
 
+# Startup workspace assignments: comms → 0, main (Zen + Ghostty) → 1, audio → 2
+[[on-window-detected]]
+if.app-id = 'com.granola.app'
+run = 'move-node-to-workspace 0'
+
+# Zen move rules sit below the float sub-window rules — first match wins, dialogs keep floating
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen-twilight'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'com.sonarworks.soundid.reference.systemwide'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.oplus.devicespace'
+run = 'move-node-to-workspace 2'
+
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' binding mode must be always presented
