@@ -19,9 +19,9 @@ is_mac=false
 
 # Counters
 if $is_mac; then
-    total_steps=9
-else
     total_steps=10
+else
+    total_steps=11
 fi
 current_step=0
 failed_steps=0
@@ -241,6 +241,22 @@ if command -v herdr >/dev/null 2>&1; then
     fi
 else
     print_info "herdr not installed, skipping"
+fi
+print_separator
+
+# pi + extensions (shared); pull piewf repo first — pi loads extensions from it
+print_section "Updating pi"
+if [[ -d "$HOME/dev/oss/pi-extensible-workflows" ]]; then
+    git -C "$HOME/dev/oss/pi-extensible-workflows" pull --ff-only \
+        && print_success "pi-extensible-workflows pulled" \
+        || print_error "Failed to pull pi-extensible-workflows"
+fi
+if command -v pi >/dev/null 2>&1; then
+    pi update --extensions \
+        && print_success "pi extensions updated" \
+        || print_error "Failed to update pi extensions"
+else
+    print_info "pi not installed, skipping"
 fi
 print_separator
 
