@@ -21,6 +21,7 @@ default_target_type = "symbolic"
 "config/custom/zsh" = "~/.config/zsh"
 "config/custom/zsh/.zshenv" = "~/.zshenv"
 "config/custom/.markdownlint.jsonc" = "~/.markdownlint.jsonc"
+"config/custom/pnpm/global-packages.txt" = "~/.config/pnpm/global-packages.txt"
 "config/custom/pi/agent" = "~/.config/pi/agent"
 # piewf's role scanner can't see per-file symlinks (Dirent.isFile() false; vekexasia/pi-extensible-workflows#193),
 # so deploy roles as template COPIES instead of symlinks. Edit in repo, then redeploy.

@@ -1,0 +1,14 @@
+# Global pnpm packages, one per line. Comments (#) stripped by `upd` before install.
+# Regenerate reference: pnpm ls -g --depth=0
+@piewf/cli
+@cometix/ccline
+@sakasegawa/ncli
+agent-browser
+ccusage
+context-mode
+firebase-tools
+headroom-ai
+# prime-agent (PrimeIntellect coding agent, pi fork): NOT via pnpm — official curl installer
+# uses npm -g under the hood, so it lands in the current fnm node and strands on default bumps.
+# Re-run after a node default bump (or use `prime-agent update`):
+#   curl -fsSL https://app.primeintellect.ai/prime-agent/install.sh | sh

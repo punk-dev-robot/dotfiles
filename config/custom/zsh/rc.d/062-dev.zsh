@@ -9,6 +9,8 @@ path+=("./node_modules/.bin")
 path+=("$HOME/.node_modules/bin")
 path+=("$HOME/.yarn/bin")
 path+=("$HOME/.npm-global/bin")
+export PNPM_HOME="$HOME/.local/share/pnpm"  # pnpm reads this for global installs
+path=("$PNPM_HOME/bin" $path)               # prepend: must win over per-version npm bins
 znap eval fnm 'fnm env --use-on-cd'
 znap eval pnpm 'pnpm completion zsh'
 

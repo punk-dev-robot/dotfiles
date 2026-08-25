@@ -253,7 +253,6 @@ fi
 # npx
 alias nx='npx nx'
 alias nxa='npx nx affected'
-alias piewf='npx -y @piewf/cli'
 alias nxm='npx nx run-many'
 alias nxsp='nx show project'
 
