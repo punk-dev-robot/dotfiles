@@ -23,12 +23,6 @@ default_target_type = "symbolic"
 "config/custom/.markdownlint.jsonc" = "~/.markdownlint.jsonc"
 "config/custom/pnpm/global-packages.txt" = "~/.config/pnpm/global-packages.txt"
 "config/custom/pi/agent" = "~/.config/pi/agent"
-# piewf's role scanner can't see per-file symlinks (Dirent.isFile() false; vekexasia/pi-extensible-workflows#193),
-# so deploy roles as template COPIES instead of symlinks. Edit in repo, then redeploy.
-"config/custom/pi/agent/pi-extensible-workflows/roles" = { target = "~/.config/pi/agent/pi-extensible-workflows/roles", type = "template" }
-# agents/*.md frontmatter carries handlebars vars too, so the same #193 template-copy
-# treatment applies (the parent agent dir stays a plain symlink).
-"config/custom/pi/agent/agents" = { target = "~/.config/pi/agent/agents", type = "template" }
 # pi-claude-code-ui reads its own settings from ~/.pi/settings.json (~/.pi == ~/.config/pi)
 "config/custom/pi/settings.json" = "~/.config/pi/settings.json"
 # tessl global skill manifest (which plugins/skills are installed; excludes derived from it).
@@ -37,39 +31,6 @@ default_target_type = "symbolic"
 
 # own agent skills (punk-*); deployed next to tessl__* symlinks managed by tessl-cock-prefix.
 "config/custom/agents/skills" = "~/.agents/skills"
-
-# Shared tool groups for piewf role frontmatter (roles/*.md are handlebars templates).
-# piewf roles: `tools:` fully replaces the inherited toolset (no merge), so shared
-# groups live here; `disabledAgentResources` DOES merge (global settings.json first,
-# role patterns appended, last-match-wins). Inspect with: npx -y @piewf/cli doctor --role <role>
-# See docs/reference/piewf-role-config.md.
-[base.variables]
-# No spaces after commas: subagent frontmatter takes `tools: a,b,c` verbatim.
-pi_tools_core = "read,grep,find,ls"
-pi_tools_cymbal = "cymbal_search,cymbal_show,cymbal_refs"
-pi_tools_edit = "write,edit"
-pi_tools_cymbal_deep = "cymbal_investigate,cymbal_map,cymbal_outline,cymbal_structure,cymbal_context"
-pi_tools_cymbal_review = "cymbal_diff,cymbal_changed,cymbal_impact"
-# advisor tools require pi-advisor-flow re-enabled for agents in piewf settings.json extensions
-pi_tools_advisor = "ask_advisor,record_advisor_outcome"
-pi_tools_ctx = "ctx_execute,ctx_batch_execute,ctx_search"
-
-# Model + thinking level per paired concept (subagent agents/<name>.md and piewf
-# roles/<name>.md read the same pair).
-pi_model_recon = "anthropic/claude-sonnet-5"
-pi_think_recon = "low"
-pi_model_researcher = "anthropic/claude-opus-5"
-pi_think_researcher = "medium"
-pi_model_dev = "anthropic/claude-opus-5"
-pi_think_dev = "medium"
-pi_model_impl = "anthropic/claude-sonnet-5"
-pi_think_impl = "medium"
-pi_model_reviewer = "anthropic/claude-fable-5"
-pi_think_reviewer = "high"
-pi_model_tests = "anthropic/claude-sonnet-5"
-pi_think_tests = "medium"
-pi_model_comms = "anthropic/claude-sonnet-5"
-pi_think_comms = "medium"
 
 # ─── Linux desktop (Hyprland stack) ───
 [linux.files]

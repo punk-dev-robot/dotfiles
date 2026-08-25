@@ -12,9 +12,11 @@
 - [workflow] You can check and confirm changes before deployment with `dotter -v -d` or even with `-vv` for more verbosity #tooling
 - [workflow] After `tessl update`, run `tessl-cock-prefix` (`local/bin/`) — re-applies the `cock-` name prefix to Matt Pocock skills that updates revert #tooling
 
-## Pi agents / workflow roles sync
+## Pi agent roles (piewf)
 
-- [sync] Prompt bodies live once, in `config/custom/pi/prompts/<name>.md`. Both the subagent (`config/custom/pi/agent/agents/<name>.md`) and the piewf role (`config/custom/pi/agent/pi-extensible-workflows/roles/<name>.md`) are dotter templates whose body is a single `{{include_template "config/custom/pi/prompts/<name>.md"}}`; model/thinking come from `pi_model_<name>` / `pi_think_<name>` in `.dotter/global.toml`. Names match 1:1 across both surfaces (`recon`, `researcher`, `dev`, `impl`, `reviewer`, `tests`, `comms`); `lead` is subagent-only. Edit the prompt source, then `dotter deploy` — never the deployed copies under `~/.config/pi/agent`. Frontmatter stays format-specific (subagent: mode/extensions/deny-tools; role: overrideSystemPrompt/disabledAgentResources) #workflow
+- [roles] Agent roles live in `config/custom/pi/agent/pi-extensible-workflows/roles/<name>.md`: `recon`, `researcher`, `dev`, `impl`, `reviewer`, `tests`, `comms`. Used by both `subagents_run` and workflow `agent(...)`. #workflow
+- [roles] Each role is one self-contained file: YAML frontmatter (model as `provider/model:thinking`; tools/skills/extensions selectors) + the prompt as body. #workflow
+- [roles] Deployed as symlinks — edit the repo file directly, changes are live, no `dotter deploy`. Details: `docs/reference/piewf-role-config.md`. #workflow
 
 ## Documentation
 

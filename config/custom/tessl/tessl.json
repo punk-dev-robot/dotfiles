@@ -73,6 +73,15 @@
     "plannotator/effective-html": {
       "version": "d95debbaef15af1d201fc6c10c77cf92b524a0d6",
       "source": "https://github.com/plannotator/effective-html"
+    },
+    "schpet/linear-cli": {
+      "version": "5af828699afa8ff2bbae1d9a8b3ff5e1f37f9bd7",
+      "source": "https://github.com/schpet/linear-cli",
+      "include": {
+        "skills": [
+          "linear-cli"
+        ]
+      }
     }
   }
 }

@@ -20,8 +20,6 @@
     "npm:pi-cymbal",
     "npm:@ogulcancelik/pi-herdr",
     "npm:@yassimba/pi-herdr-worktree",
-    "git:github.com/edxeth/pi-subagents",
-    "/Users/kuba.gaj/.config/pi/agent/git/github.com/edxeth/pi-subagents",
     "npm:pi-web-access",
     "npm:context-mode",
     "npm:@plannotator/pi-extension",
@@ -40,8 +38,7 @@
     "npm:@d3ara1n/pi-context-include",
     "npm:@tigorhutasuhut/pi-rules",
     "../../../dev/oss/pi-extensible-workflows/packages/core",
-    "../../../dev/oss/pi-extensible-workflows/packages/extensions/herdr",
-    "../../../dev/oss/pi-extensible-workflows/packages/extensions/subagents"
+    "../../../dev/oss/pi-extensible-workflows/packages/extensions/herdr"
   ],
   "npmCommand": [
     "fnm",
@@ -50,7 +47,7 @@
     "26.5.0",
     "npm"
   ],
-  "lastChangelogVersion": "0.84.2",
+  "lastChangelogVersion": "0.84.3",
   "showCacheMissNotices": false,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-fable-5",

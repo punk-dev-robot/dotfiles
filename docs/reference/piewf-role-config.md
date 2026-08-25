@@ -1,18 +1,21 @@
 # piewf Role Config: Shared Tools & Resource Merging
 
 How pi-extensible-workflows (piewf) roles combine with global settings, and how
-this repo shares tool lists across roles. Verified against piewf 5.1.1 source
-and `piewf doctor` output (2026-08).
+this repo shares tool lists across roles. Roles are the **only** agent surface
+in this repo — consumed by both piewf workflows (`agent(...)`) and piewf's
+standalone `subagents_run`/`_inspect`/`_steer`/`_stop`/`_retry` tools; the
+`pi-subagents` extension was removed during the 2026-08 migration. Verified
+against piewf 5.8.0 source and `piewf doctor` output (2026-08, updated during
+the pi-subagents removal migration).
 
 ## Merge vs override semantics
 
 | Field | Behavior |
 |---|---|
-| `tools:` (role frontmatter) | **Full replacement.** The role's list replaces the inherited toolset entirely — no merge with anything (`WorkflowAgentExecutor.resolve()`). |
-| `disabledAgentResources:` (skills/extensions) | **Merges.** Global `settings.json` patterns first, role patterns appended (`mergeAgentResourceExclusions`, agent-execution.ts:521), evaluated gitignore-style **last-match-wins** (utils.ts:130-138). |
+| `tools:`, `skills:`, `extensions:` (role frontmatter) | Ordered minimatch selector lists — same mechanism for all three. Candidates start **enabled**; selectors layer in precedence order **global settings → trusted-project settings → role frontmatter → call-level**, each layer's patterns evaluated last-match-wins. `["!*", "read", "grep"]` disables everything then re-enables the named items; `["*"]` re-enables everything after a restriction. `disabledAgentResources:` and `thinking:` no longer exist — role frontmatter and `settings.json` both reject them with `INVALID_METADATA` ("use skills, extensions, and tools selectors" / "put it on model as provider/model:thinking"). |
 | `modelAliases` | Defined in `settings.json`, referenced by name in roles. |
 
-Practical consequences of the merge:
+Practical consequences of the selector layering:
 
 - A role declaring only `skills:` leaves the global **extensions** baseline
   fully in effect.
@@ -38,7 +41,7 @@ Roles live in `config/custom/pi/agent/pi-extensible-workflows/roles/` and are
 deployed as **template copies** (not symlinks — piewf's role scanner can't see
 per-file symlinks, upstream #193; see `.dotter/global.toml`).
 
-Since `tools:` doesn't merge, shared groups are dotter handlebars variables in
+Since each role spells out its own `tools:` selector list, shared groups are dotter handlebars variables in
 `.dotter/global.toml`:
 
 ```toml
@@ -88,8 +91,8 @@ bash-having roles only); `impl` = all (`["**"]`); `reviewer` = none.
 `researcher` re-enables pi-web-access per-role — the pattern for role-scoped
 extension grants.
 
-Per-role extension refinements (frontmatter `disabledAgentResources.extensions`,
-appended after global so last-match-wins):
+Per-role extension refinements (frontmatter `extensions:` selectors, layered
+after global/trusted-project settings selectors, last-match-wins):
 
 - caveman terse mode: ON for dev/impl/tests (code is the artifact),
   re-disabled (`"**/pi-caveman/**"`) for reviewer/recon/researcher/comms whose
@@ -102,14 +105,17 @@ appended after global so last-match-wins):
 
 ## Single source of truth: shared prompt bodies
 
-Seven concepts — `recon`, `researcher`, `dev`, `impl`, `reviewer`, `tests`,
-`comms` — exist twice, as a subagent (`config/custom/pi/agent/agents/<name>.md`)
-and as a piewf role (`.../pi-extensible-workflows/roles/<name>.md`). Names match
-1:1; `lead` is the exception (subagent only — it spawns subagents, which roles
-cannot do).
+Seven roles — `recon`, `researcher`, `dev`, `impl`, `reviewer`, `tests`,
+`comms` — live only as piewf roles (`.../pi-extensible-workflows/roles/<name>.md`),
+consumed by both piewf workflows (`agent(...)`) and piewf's standalone
+`subagents_run` tools. The old `pi-subagents` extension (`agents/<name>.md`,
+separate `subagent`/`subagent_kill`/`subagent_resume` tools) was removed
+2026-08; `lead` (which spawned other agents) had no roles equivalent and is
+retired pending a piewf workflow-script port, since nested spawning isn't
+possible for standalone `subagents_run` calls.
 
-Both files are dotter templates whose entire body is one include of the shared
-prompt:
+The role file is a dotter template whose entire body is one include of the
+shared prompt:
 
 ```handlebars
 {{include_template "config/custom/pi/prompts/dev.md"}}
@@ -120,9 +126,10 @@ the included file. The shared bodies live in `config/custom/pi/prompts/` —
 deliberately *outside* `config/custom/pi/agent/`, which is mapped wholesale to
 `~/.config/pi/agent`, so prompt sources never deploy as agent resources.
 
-Model and thinking level come from per-concept dotter variables
-(`pi_model_<name>` / `pi_think_<name>` in `.dotter/global.toml`), so both
-surfaces resolve to the same model. Roles no longer use `modelAliases`
+Model and thinking level come from per-role dotter variables
+(`pi_model_<name>` / `pi_think_<name>` in `.dotter/global.toml`); role
+frontmatter joins them as `model: provider/model:thinking` (role frontmatter
+rejects a separate `thinking:` key). Roles no longer use `modelAliases`
 indirection; only `cheap-model` survives for workflow scripts.
 
 Edit the prompt source and `dotter deploy`. Never edit the deployed copies in
@@ -131,29 +138,18 @@ Edit the prompt source and `dotter deploy`. Never edit the deployed copies in
 ## Per-call role overrides (one-off capabilities)
 
 Workflows can grant extra capability for a single `agent()` call instead of
-baking it into the role — `role` accepts an object (`applyRoleOverride`);
-`tools` **replaces** the role list (copy the current one from
-`piewf doctor --role <role>`), and the `disabledAgentResources` override can
-even re-enable an extension just for that call:
-
-```js
-await agent(task, {
-  label: "review-with-telemetry",
-  role: {
-    name: "reviewer",
-    tools: [/* full list from doctor */ "mcp"],
-    disabledAgentResources: {
-      skills: ["**", "!logfire-query"],
-      extensions: ["!**/pi-mcp-adapter/**"],
-    },
-  },
-});
-```
+baking it into the role — `role` accepts an object (`applyRoleOverride`).
+`disabledAgentResources` is gone — both frontmatter and `settings.json` reject
+it with `INVALID_METADATA`. The current per-call override shape for
+`skills:`/`extensions:`/`tools:` selectors isn't nailed down here; check
+`npx piewf doctor --role <role>` for the resolved policy and the upstream
+piewf roles docs for the current call-level override syntax before writing
+one.
 
 Notes:
 
 - **A role tool only works if its providing extension is re-enabled for agents**
-  in workflow `settings.json` `disabledAgentResources.extensions` (negation
+  via `extensions:` selectors in workflow `settings.json` (negation
   pattern). Web tools need `!**/pi-web-access/**`, advisor tools need
   `!**/pi-advisor-flow/**`; cymbal/fff/hashline already enabled. Tools from
   disabled extensions (subagent, herdr_*, mcp, agent_browser, recall,
