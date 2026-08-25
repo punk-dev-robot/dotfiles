@@ -249,7 +249,9 @@ print_separator
 print_section "Updating pi"
 piewf_dir="$HOME/dev/oss/pi-extensible-workflows"
 if [[ -d "$piewf_dir" ]]; then
-    if [[ -n "$(git -C "$piewf_dir" status --porcelain)" ]]; then
+    if [[ "$(git -C "$piewf_dir" branch --show-current)" != "main" ]]; then
+        print_info "piewf on a feature branch — skipping pull"
+    elif [[ -n "$(git -C "$piewf_dir" status --porcelain -uno)" ]]; then
         print_info "piewf checkout dirty (WIP) — skipping pull, update manually"
     else
         piewf_head=$(git -C "$piewf_dir" rev-parse HEAD)
