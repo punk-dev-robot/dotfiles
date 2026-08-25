@@ -244,12 +244,27 @@ else
 fi
 print_separator
 
-# pi + extensions (shared); pull piewf repo first — pi loads extensions from it
+# pi + extensions (shared). piewf is installed as local path packages from this checkout,
+# so the pull IS its update; pi update --extensions only covers the npm: extensions.
 print_section "Updating pi"
-if [[ -d "$HOME/dev/oss/pi-extensible-workflows" ]]; then
-    git -C "$HOME/dev/oss/pi-extensible-workflows" pull --ff-only \
-        && print_success "pi-extensible-workflows pulled" \
-        || print_error "Failed to pull pi-extensible-workflows"
+piewf_dir="$HOME/dev/oss/pi-extensible-workflows"
+if [[ -d "$piewf_dir" ]]; then
+    if [[ -n "$(git -C "$piewf_dir" status --porcelain)" ]]; then
+        print_info "piewf checkout dirty (WIP) — skipping pull, update manually"
+    else
+        piewf_head=$(git -C "$piewf_dir" rev-parse HEAD)
+        if git -C "$piewf_dir" pull --ff-only; then
+            if [[ "$(git -C "$piewf_dir" rev-parse HEAD)" != "$piewf_head" ]]; then
+                (cd "$piewf_dir" && npm ci) \
+                    && print_success "piewf updated (pulled + deps)" \
+                    || print_error "piewf npm ci failed"
+            else
+                print_info "piewf already up to date"
+            fi
+        else
+            print_error "Failed to pull piewf"
+        fi
+    fi
 fi
 if command -v pi >/dev/null 2>&1; then
     pi update --extensions \
