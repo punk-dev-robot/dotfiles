@@ -3,32 +3,30 @@
   "modelAliases": {
     "cheap-model": "anthropic/claude-sonnet-5:medium"
   },
-  "disabledAgentResources": {
-    "skills": [
-      "herdr",
-      "logfire-ui",
-      "plannotator-*",
-      "ctx-insight",
-      "ponytail-help"
-    ],
-    "extensions": [
-      "**",
-      "!**/pi-claude-auth/**",
-      "!**/pi-otel/**",
-      "!**/pi-rtk-optimizer/**",
-      "!**/@ff-labs/pi-fff/**",
-      "!**/noheadroom/**",
-      "!**/pi-caveman/**",
-      "!**/pi-hashline-edit-pro/**",
-      "!**/pi-cymbal/**",
-      "!**/context-mode/**",
-      "!**/pi-advisor-flow/**",
-      "!**/pi-mcp-adapter/**",
-      "!**/pi-context-include/**",
-      "!**/pi-rules/**"
-    ]
-  },
-  "extensions": {
+  "skills": [
+    "!herdr",
+    "!logfire-ui",
+    "!plannotator-*",
+    "!ctx-insight",
+    "!ponytail-help"
+  ],
+  "extensions": [
+    "!*",
+    "**/pi-claude-auth/**",
+    "**/pi-otel/**",
+    "**/pi-rtk-optimizer/**",
+    "**/@ff-labs/pi-fff/**",
+    "**/noheadroom/**",
+    "**/pi-caveman/**",
+    "**/pi-hashline-edit-pro/**",
+    "**/pi-cymbal/**",
+    "**/context-mode/**",
+    "**/pi-advisor-flow/**",
+    "**/pi-mcp-adapter/**",
+    "**/pi-context-include/**",
+    "**/pi-rules/**"
+  ],
+  "extensionSettings": {
     "herdr": {
       "enableFullyInspectableMode": false
     }
