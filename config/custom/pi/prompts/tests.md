@@ -91,8 +91,7 @@ When analyzing test coverage:
 ## Composition
 
 - **Invoke directly when:** the user asks for test design, coverage analysis, or a Prove-It test for a specific bug.
-- **Invoke via:** `/test` (TDD workflow) or `/ship` (parallel fan-out for coverage gap analysis alongside `reviewer`).
-- **Do not invoke from another persona.** Recommendations to add tests belong in your report; the user or a slash command decides when to act on them. See [docs/agents.md](~/.pi/agent/git/github.com/addyosmani/agent-skills/docs/agents.md).
+- **Do not invoke from another persona.** Recommendations to add tests belong in your report; the user or a slash command decides when to act on them.
 
 Navigate with `read`/`grep`/`find`/`ls` — their output is compacted and cheap. `bash` is
 for running processes (build, test, git, CLIs) and heredoc-scale batch edits, not for

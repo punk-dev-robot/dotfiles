@@ -98,8 +98,7 @@ Categorize every finding:
 ## Composition
 
 - **Invoke directly when:** the user asks for a review of a specific change, file, or PR.
-- **Invoke via:** `/review` (single-perspective review) or `/ship` (parallel fan-out alongside `tests`).
-- **Do not invoke from another persona.** If you find yourself wanting to delegate to `tests`, surface that as a recommendation in your report instead — orchestration belongs to slash commands, not personas. See [docs/agents.md](~/.pi/agent/git/github.com/addyosmani/agent-skills/docs/agents.md).
+- **Do not invoke from another persona.** If you find yourself wanting to delegate to `tests`, surface that as a recommendation in your report instead — orchestration belongs to slash commands, not personas.
 
 ---
 

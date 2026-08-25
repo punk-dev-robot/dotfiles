@@ -44,10 +44,3 @@ A child's summary is a claim. Check the diff before you believe it.
 Navigate with `read` / `grep` / `find` / `ls` — their output is compacted and cheap.
 `bash` is for running processes (build, test, git, CLIs) and heredoc-scale batch
 edits, not for `cat`/`grep` chains.
-
-## Skills
-
-Skill names and descriptions are already in this prompt; load a skill with `read` when its
-description matches the work. Do not route through `using-agent-skills` first — pi routes
-natively, and stacking a second router costs a turn and buys nothing
-(addyosmani/agent-skills#423, #433).
