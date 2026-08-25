@@ -1,0 +1,11 @@
+#!/bin/sh
+# Prefix Matt Pocock tessl skills with 'cock-' so their names stop colliding
+# with generic trigger words. Idempotent. Re-run after `tessl update` —
+# updates overwrite SKILL.md and revert the names.
+set -eu
+
+for f in "$HOME"/.tessl/plugins/mattpocock/skills/skills/*/*/SKILL.md; do
+  sed -i '' 's/^name: \(cock-\)\{0,1\}/name: cock-/' "$f"
+done
+
+grep -h '^name:' "$HOME"/.tessl/plugins/mattpocock/skills/skills/*/*/SKILL.md

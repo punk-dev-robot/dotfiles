@@ -10,6 +10,7 @@
 
 - [workflow] **Always** use `dotter` tool for linking config from this repo! `dotter` manages these dotfiles project and we should be dog-fooding it as much as possible #tooling
 - [workflow] You can check and confirm changes before deployment with `dotter -v -d` or even with `-vv` for more verbosity #tooling
+- [workflow] After `tessl update`, run `tessl-cock-prefix` (`local/bin/`) — re-applies the `cock-` name prefix to Matt Pocock skills that updates revert #tooling
 
 ## Pi agents / workflow roles sync
 
