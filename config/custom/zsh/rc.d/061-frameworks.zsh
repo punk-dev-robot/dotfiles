@@ -9,6 +9,11 @@ else
   znap source sorin-ionescu/prezto modules/docker
 fi
 
+# omz plugins outside the framework need ZSH_CACHE_DIR (kubectl etc. write completions there)
+export ZSH_CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}/ohmyzsh
+mkdir -p $ZSH_CACHE_DIR/completions
+fpath+=( $ZSH_CACHE_DIR/completions )
+
 # oh-my-zsh lib
 znap source ohmyzsh/ohmyzsh lib/{functions,git}.zsh
 
