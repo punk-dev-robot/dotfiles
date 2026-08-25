@@ -11,7 +11,7 @@
     "npm:pi-rtk-optimizer",
     "npm:pine-of-glass",
     "npm:pi-observational-memory",
-    "npm:pi-hashline-edit-pro",
+    "npm:pi-readseek",
     "npm:@ff-labs/pi-fff",
     "npm:@dietrichgebert/ponytail",
     "npm:pi-caveman",
@@ -107,6 +107,13 @@
       "metrics": true,
       "logs": true
     }
+  },
+  "readseek": {
+    "overrideTools": [
+      "read",
+      "edit",
+      "write"
+    ]
   },
   "skills": [
     "-../../.agents/skills/plannotator-compound/SKILL.md",

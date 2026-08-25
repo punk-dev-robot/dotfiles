@@ -6,6 +6,6 @@
     "find": false,
     "ls": true,
     "bash": true,
-    "write": true
+    "write": false
   }
 }
