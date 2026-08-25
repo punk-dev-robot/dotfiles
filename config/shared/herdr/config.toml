@@ -37,6 +37,8 @@ previous_tab = ["prefix+[", "ctrl+shift+["]
 next_tab = ["prefix+]", "ctrl+shift+]"]
 switch_tab = "prefix+1..9"
 close_tab = "prefix+shift+q"
+move_tab_previous = "prefix+shift+["
+move_tab_next = "prefix+shift+]"
 
 focus_pane_left = ""
 focus_pane_down = ""
@@ -201,6 +203,8 @@ pane_gaps = true
 pane_scrollbars = false
 show_agent_labels_on_pane_borders = true
 agent_panel_sort = "priority"
+window_title = "{hostname}: {workspace}"
+status_indicators = "symbols"
 prompt_new_workspace_name = true
 
 [ui.sidebar.agents]

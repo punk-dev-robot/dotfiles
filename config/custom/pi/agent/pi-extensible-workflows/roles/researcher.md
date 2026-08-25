@@ -6,7 +6,7 @@ tools: [read, write, bash, web_search, fetch_content, get_search_content, {{pi_t
 overrideSystemPrompt: true
 contextFiles: []
 disabledAgentResources:
-  skills: ["**", "!composio-cli", "!research", "!notion"]
+  skills: ["**", "!composio-cli", "!cock-research", "!notion"]
   # re-enable web for this role only; re-disable caveman (cited briefs need fidelity)
   extensions: ["!**/pi-web-access/**", "**/pi-caveman/**"]
 ---
