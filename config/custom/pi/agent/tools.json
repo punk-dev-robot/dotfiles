@@ -4,17 +4,6 @@
     "ask_advisor",
     "ask_user_question",
     "bash",
-    "ctx_batch_execute",
-    "ctx_doctor",
-    "ctx_execute",
-    "ctx_execute_file",
-    "ctx_fetch_and_index",
-    "ctx_index",
-    "ctx_insight",
-    "ctx_purge",
-    "ctx_search",
-    "ctx_stats",
-    "ctx_upgrade",
     "cymbal_changed",
     "cymbal_context",
     "cymbal_diff",
@@ -45,6 +34,11 @@
     "subagent",
     "subagent_kill",
     "subagent_resume",
+    "subagents_inspect",
+    "subagents_retry",
+    "subagents_run",
+    "subagents_steer",
+    "subagents_stop",
     "undo_last_replace",
     "web_search",
     "workflow",
@@ -61,7 +55,6 @@
     "edit",
     "mcpScript",
     "plannotator_submit_plan",
-    "source_check",
-    "workflow_catalog"
+    "source_check"
   ]
 }
