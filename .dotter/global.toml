@@ -31,6 +31,9 @@ default_target_type = "symbolic"
 "config/custom/pi/agent/agents" = { target = "~/.config/pi/agent/agents", type = "template" }
 # pi-claude-code-ui reads its own settings from ~/.pi/settings.json (~/.pi == ~/.config/pi)
 "config/custom/pi/settings.json" = "~/.config/pi/settings.json"
+# tessl global skill manifest (which plugins/skills are installed; excludes derived from it).
+# After changing: tessl install -g ... then tessl-cock-prefix. Do NOT run tessl inside ~/.tessl.
+"config/custom/tessl/tessl.json" = "~/.tessl/tessl.json"
 
 # Shared tool groups for piewf role frontmatter (roles/*.md are handlebars templates).
 # piewf roles: `tools:` fully replaces the inherited toolset (no merge), so shared

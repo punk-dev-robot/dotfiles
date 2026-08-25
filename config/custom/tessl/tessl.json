@@ -1,0 +1,79 @@
+{
+  "name": "project",
+  "dependencies": {
+    "nyosegawa/notion-cli": {
+      "version": "a325ac7a6527860d081581215cf4662d59b41351",
+      "source": "https://github.com/nyosegawa/notion-cli",
+      "include": {
+        "skills": [
+          "notion"
+        ]
+      }
+    },
+    "DrCatHicks/learning-opportunities": {
+      "version": "2b3a5e0cb39a230c3c84d775d02fc44f3bfb1ca7",
+      "source": "https://github.com/DrCatHicks/learning-opportunities",
+      "include": {
+        "skills": [
+          "learning-opportunities",
+          "orient"
+        ]
+      }
+    },
+    "DrCatHicks/learning-goal": {
+      "version": "d459a8b34f47101ab8e4c61ea1360e7a102c1da3",
+      "source": "https://github.com/DrCatHicks/learning-goal",
+      "include": {
+        "skills": [
+          "learning-goal"
+        ]
+      }
+    },
+    "github/gh-stack": {
+      "version": "14fc42ed9b6c376a53b2f999f138d3bd26dac546",
+      "source": "https://github.com/github/gh-stack",
+      "include": {
+        "skills": [
+          "gh-stack"
+        ]
+      }
+    },
+    "mattpocock/skills": {
+      "version": "6654f6b60cd9d5be8b54c6fafe44346dabeb3b76",
+      "source": "https://github.com/mattpocock/skills",
+      "include": {
+        "skills": [
+          "code-review",
+          "codebase-design",
+          "diagnosing-bugs",
+          "domain-modeling",
+          "grill-me",
+          "grill-with-docs",
+          "grilling",
+          "handoff",
+          "implement",
+          "improve-codebase-architecture",
+          "loop-me",
+          "prototype",
+          "research",
+          "resolving-merge-conflicts",
+          "setup-matt-pocock-skills",
+          "tdd",
+          "teach",
+          "to-questionnaire",
+          "to-spec",
+          "to-tickets",
+          "triage",
+          "wait-what",
+          "wayfinder",
+          "wizard",
+          "writing-for-agents"
+        ]
+      }
+    },
+    "plannotator/effective-html": {
+      "version": "d95debbaef15af1d201fc6c10c77cf92b524a0d6",
+      "source": "https://github.com/plannotator/effective-html"
+    }
+  }
+}
