@@ -1,0 +1,5 @@
+#!/bin/sh
+# piewf CLI from the dev checkout (~/dev/oss/pi-extensible-workflows), not the
+# published @piewf/cli — pi loads its extensions from the same checkout, so the
+# CLI must match. Rebuild there after pulling: npm run build --workspace packages/cli
+exec node "$HOME/dev/oss/pi-extensible-workflows/packages/cli/dist/src/cli.js" "$@"

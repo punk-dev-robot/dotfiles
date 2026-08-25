@@ -1,8 +1,7 @@
 ---
 description: External research — docs, APIs, versions, release notes; writes a cited brief to a file, no repo changes.
-model: {{pi_model_researcher}}
-thinking: {{pi_think_researcher}}
-tools: [read, write, bash, web_search, fetch_content, get_search_content, {{pi_tools_advisor}}]
+model: {{pi_model_researcher}}:{{pi_think_researcher}}
+tools: ["!*", read, write, bash, web_search, fetch_content, get_search_content, {{pi_tools_advisor}}]
 overrideSystemPrompt: true
 contextFiles: []
 skills: ["!*", "composio-cli", "cock-research", "notion"]
