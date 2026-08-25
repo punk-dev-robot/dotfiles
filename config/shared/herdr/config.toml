@@ -190,8 +190,8 @@ command = '"${HERDR_BIN_PATH}" plugin pane open --plugin official.browser --entr
 description = "open browser overlay"
 
 [ui]
-sidebar_width = 30
-sidebar_min_width = 22
+sidebar_width = 24
+sidebar_min_width = 18
 sidebar_max_width = 60
 sidebar_start_collapsed = true
 mouse_capture = true
@@ -202,7 +202,7 @@ pane_borders = true
 pane_gaps = true
 pane_scrollbars = false
 show_agent_labels_on_pane_borders = true
-agent_panel_sort = "priority"
+agent_panel_sort = "spaces"
 window_title = "{hostname}: {workspace} · {tab}"
 status_indicators = "symbols"
 prompt_new_workspace_name = true
