@@ -4,8 +4,20 @@
 # updates overwrite SKILL.md and revert the names.
 set -eu
 
-for f in "$HOME"/.tessl/plugins/mattpocock/skills/skills/*/*/SKILL.md; do
+root="$HOME/.tessl/plugins/mattpocock/skills/skills"
+
+for f in "$root"/*/*/SKILL.md; do
   sed -i '' 's/^name: \(cock-\)\{0,1\}/name: cock-/' "$f"
 done
 
-grep -h '^name:' "$HOME"/.tessl/plugins/mattpocock/skills/skills/*/*/SKILL.md
+# Skills cross-reference each other slash-style (/grilling, /tdd, ...) in SKILL.md
+# bodies and scripts — rewrite those to the prefixed names too. Idempotent:
+# /cock-grilling contains no /grilling substring, so a second run is a no-op.
+names=$(sed -n 's/^name: cock-//p' "$root"/*/*/SKILL.md)
+for n in $names; do
+  find "$root" -type f | while read -r f; do
+    perl -pi -e "s{/\\Q$n\\E\\b}{/cock-$n}g" "$f"
+  done
+done
+
+grep -h '^name:' "$root"/*/*/SKILL.md
