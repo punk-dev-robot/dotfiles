@@ -79,3 +79,10 @@ Mirror regenerated on every launch — always fresh, no drift.
 Skipped: dotter profile for the sandbox (wrapper regeneration covers it); isolated
 sessions dir (shared is fine, add `PI_CODING_AGENT_SESSION_DIR` only if test noise
 becomes a problem).
+
+## Work-repo hook caveats (31 Aug)
+
+- repowise `update` regrows `.vscode/` unconditionally (upstream bug, noted in
+  KUB-26). Cleanup patches live in shopai `.git/hooks/post-commit` and shopmr
+  `.husky/_/post-commit` (husky hooksPath!). `npm install` in shopmr regenerates
+  `.husky/_` — re-run `repowise hook install` + re-add the cleanup lines after.
