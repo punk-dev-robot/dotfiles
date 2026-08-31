@@ -39,14 +39,20 @@ changes are live in new sessions, no `dotter deploy` needed.
   the product; ponytail off globally, dev opts back in (`"!**/ponytail/**"`);
   pi-web-access granted per call, not per role.
 
-## Global tool activation (tools.json)
+## Global tool activation (/tools)
 
-`config/custom/pi/agent/tools.json` (`{"active": [...], "inactive": [...]}`)
-is applied by the local extension `extensions/tool-activation.ts`, which
-deactivates the `inactive` list via `pi.setActiveTools()` on session start.
-Role `tools:` selectors can only pick from what survives this filter.
-pi-cymbal's injected system-prompt guidance and nudges are disabled in
-`extensions/pi-cymbal.json` (they recommended deactivated tools).
+`@firstpick/pi-extension-tools` owns the `/tools` TUI command and is the single
+place tools are enabled/disabled. Scope precedence: session (session entries) >
+exact model profile > global default > runtime. Global + model scopes persist
+to `~/.pi/webui/settings.json` (`resourceDefaults.tools.enabledTools`
+allowlist) — dotter-managed as `config/custom/pi/webui/settings.json`; `pi-rw`
+points `PI_WEBUI_SETTINGS_FILE` at the worktree copy. Dynamically registered
+tools (`ctx_*`, lazy `mcp__*` proxies, workflow/subagents) self-activate
+additively after startup and need no allowlist entry. Caveat: brand-new
+*static* tools from future extensions start disabled until added via `/tools`.
+The old `config/custom/pi/agent/tools.json` snapshot and its enforcement shim
+were removed (KUB-17). pi-cymbal's injected system-prompt guidance and nudges
+are disabled in `extensions/pi-cymbal.json` (they recommended deactivated tools).
 
 ## Verification
 

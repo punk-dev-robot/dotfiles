@@ -1,0 +1,38 @@
+{
+  "resourceDefaults": {
+    "tools": {
+      "enabledTools": [
+        "agent_browser",
+        "ask_advisor",
+        "ask_user_question",
+        "bash",
+        "cymbal_changed",
+        "cymbal_impact",
+        "edit",
+        "fetch_content",
+        "find",
+        "get_search_content",
+        "grep",
+        "herdr_agent",
+        "herdr_layout",
+        "herdr_pane",
+        "herdr_start_worktree",
+        "ls",
+        "mcp",
+        "mcp__logfire",
+        "powershell",
+        "read",
+        "readSeek_def",
+        "readSeek_grep",
+        "readSeek_refs",
+        "readSeek_rename",
+        "readSeek_search",
+        "readSeek_view",
+        "recall",
+        "record_advisor_outcome",
+        "web_search",
+        "write"
+      ]
+    }
+  }
+}

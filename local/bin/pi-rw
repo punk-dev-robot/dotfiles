@@ -42,4 +42,6 @@ while IFS= read -r -d '' f; do
   [ -e "$DST/$rel" ] || [ -L "$DST/$rel" ] || { mkdir -p "$DST/${rel%/*}"; ln -s "$f" "$DST/$rel"; }
 done < <(find "$WT/config/custom/pi/agent" -type f -print0)
 
+# /tools global+model scopes live outside the agent dir; point them at the worktree copy
+export PI_WEBUI_SETTINGS_FILE="$WT/config/custom/pi/webui/settings.json"
 PI_CODING_AGENT_DIR="$DST" exec pi "$@"
