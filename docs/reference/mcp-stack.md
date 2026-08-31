@@ -14,6 +14,8 @@ Remote MCP servers, lazy-loaded through `pi-mcp-adapter`, replacing composio + p
 | slack | `https://mcp.slack.com/mcp` | pre-registered internal Slack app (no DCR): `oauth.clientId` + `clientSecret` via `!op read`, exact `redirectUri`, **`authorizationParams.user_scope`** (comma-separated — Slack ignores standard `scope`) | lazy |
 | gmail | `https://gmailmcp.googleapis.com/mcp/v1` | pre-registered Google OAuth client needed (no DCR) — pending, KUB-19 | lazy |
 | calendar | `https://calendarmcp.googleapis.com/mcp/v1` | pre-registered Google OAuth client needed (no DCR) — pending, KUB-19 | lazy |
+| newrelic | `https://mcp.eu.newrelic.com/mcp/` (EU; US: `mcp.newrelic.com`) | OAuth (DCR works); NRAK `api-key` header alternative | lazy |
+| context7 | `https://mcp.context7.com/mcp/oauth` | OAuth (DCR works); Bearer-key variant at `/mcp` | lazy |
 
 Config is dotter-symlinked; adapter reads at startup — run `/reload` in pi after edits. OAuth: `/mcp-auth <server>` or `mcp({ action: "auth-start", server })`.
 
@@ -42,7 +44,7 @@ Settings gotcha: the "MCP servers" tab in app settings is the *opposite* feature
 
 ## Composio removal checklist
 
-Blocked on: gmail/gcal (KUB-19, needs pre-registered Google OAuth client), new relic (no MCP found yet). Slack: DONE via internal app (KUB-21).
+Blocked on: nothing critical. Slack DONE (KUB-21), New Relic DONE (EU, NRQL validated), context7 DONE. gmail/gcal (KUB-19) explicitly non-blocking. Removal is now pure deletion work — KUB-22.
 
 When coverage complete, remove:
 
