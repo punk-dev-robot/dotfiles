@@ -31,7 +31,6 @@
     "npm:@firstpick/pi-extension-tools",
     "git:github.com/punk-dev-robot/pi-otel@fix/otlp-http-per-signal-paths",
     "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:pi-agent-browser-native",
     "npm:@pi-kaush/pi-btw-with-imports",
     "npm:pi-cc-header",
     "npm:pi-skills-manager",
