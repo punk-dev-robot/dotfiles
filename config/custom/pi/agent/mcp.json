@@ -13,17 +13,10 @@
       "url": "https://mcp.notion.com/mcp",
       "lifecycle": "lazy"
     },
-    "linear": {
-      "url": "https://mcp.linear.app/mcp",
-      "lifecycle": "lazy"
-    },
-    "exa": {
-      "url": "https://mcp.exa.ai/mcp",
-      "lifecycle": "lazy"
-    },
-    "firecrawl": {
-      "url": "https://mcp.firecrawl.dev/v2/mcp-oauth",
-      "lifecycle": "lazy"
+    "gateway": {
+      "url": "http://localhost:3000/mcp",
+      "lifecycle": "lazy",
+      "description": "agentgateway: exa, firecrawl, linear (tools prefixed by upstream name)"
     },
     "gmail": {
       "url": "https://gmailmcp.googleapis.com/mcp/v1",
