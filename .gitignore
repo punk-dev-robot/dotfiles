@@ -110,3 +110,4 @@ arch.pacman-list.pkg
 # agent working notes
 .scratch/
 .repowise/
+.vscode/
