@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+# KUB-18: shared MCP gateway. Start: 2 key-auth upstreams. Run wrapped in
+# `op run --env-file=config/shared/claude/secrets.env -- agentgateway -f <this>`
+mcp:
+  port: 3000
+  targets:
+    - name: exa
+      mcp:
+        host: https://mcp.exa.ai/mcp
+      policies:
+        backendAuth:
+          key: "$EXA_API_KEY"
+    - name: firecrawl
+      mcp:
+        host: https://mcp.firecrawl.dev/v2/mcp
+      policies:
+        backendAuth:
+          key: "$FIRECRAWL_API_KEY"
+    - name: linear
+      mcp:
+        host: https://mcp.linear.app/mcp
+      policies:
+        backendAuth:
+          key: "$LINEAR_API_KEY"
