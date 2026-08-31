@@ -54,6 +54,18 @@
           "user_scope": "canvases:read,canvases:write,channels:history,channels:read,chat:write,groups:history,search:read.private,search:read.public,users:read"
         }
       }
+    },
+    "repowise": {
+      "command": "repowise",
+      "args": [
+        "mcp",
+        ".",
+        "--transport",
+        "stdio",
+        "--tools",
+        "lean"
+      ],
+      "description": "repowise: codebase intelligence — docs, graph, git signals, dead code, decisions"
     }
   }
 }

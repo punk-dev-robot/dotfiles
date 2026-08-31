@@ -25,6 +25,8 @@ default_target_type = "symbolic"
 "config/custom/pi/agent" = "~/.config/pi/agent"
 # pi-claude-code-ui reads its own settings from ~/.pi/settings.json (~/.pi == ~/.config/pi)
 "config/custom/pi/settings.json" = "~/.config/pi/settings.json"
+# @firstpick/pi-extension-tools + WebUI shared resource defaults (/tools global+model scopes)
+"config/custom/pi/webui/settings.json" = "~/.config/pi/webui/settings.json"
 # tessl global skill manifest (which plugins/skills are installed; excludes derived from it).
 # After changing: tessl install -g ... then tessl-cock-prefix. Do NOT run tessl inside ~/.tessl.
 "config/custom/tessl/tessl.json" = "~/.tessl/tessl.json"

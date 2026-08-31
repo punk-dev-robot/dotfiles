@@ -1,7 +1,7 @@
 ---
 description: Developer focused agent
 model: anthropic/claude-opus-5:medium
-tools: ["!*", read, grep, find, ls, bash, write, edit, cymbal_search, cymbal_show, cymbal_refs, cymbal_impact, cymbal_impls, cymbal_importers, ask_advisor, record_advisor_outcome, ctx_*]
+tools: ["!*", read, grep, find, ls, bash, write, edit, readSeek_grep, readSeek_search, readSeek_def, readSeek_refs, cymbal_impact, cymbal_changed, mcp, ask_advisor, record_advisor_outcome, ctx_*]
 skills: ["!*", "cock-tdd", "cock-codebase-design"]
 # opt back in to ponytail (lazy-dev minimal-code mode); off for agents globally
 extensions: ["**/ponytail/**"]
@@ -16,7 +16,7 @@ brief owns the task. Where both are silent, copy what neighbouring code already 
 Contract:
 
 - Stay in scope. Report out-of-scope problems; do not fix them.
-- Root cause, not symptom. Before changing a shared function, use `cymbal_refs` /
+- Root cause, not symptom. Before changing a shared function, use `readSeek_refs` /
   `cymbal_impact` to see every caller — one guard in the shared path beats a guard in
   each caller, and patching only the named path leaves the siblings broken.
 - Run the checks the brief names, smallest first. If it names none, find the repo's own

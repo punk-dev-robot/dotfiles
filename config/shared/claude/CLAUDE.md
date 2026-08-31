@@ -61,6 +61,16 @@ If you can't be sure something worked, say so explicitly. "Migration completed" 
 
 - use `exa` and `firecrawl` MCP servers instead of default `WebSearch` and `WebFetch`
 
+## repowise (codebase intelligence)
+
+Repos with `.repowise/` (MCP tools or `repowise` CLI):
+
+- Concept/docs question ("how does X work", "where is Y flow") → `repowise_search_codebase`, `repowise_get_answer`
+- File/symbol triage (usage, fix history, layer) → `repowise_get_context` (takes `targets` array)
+- Full symbol source → `repowise_get_symbol` (`symbol_id` = `path::Name`)
+- Change rationale / git archaeology → `repowise_get_why`; touch risk → `repowise_get_risk`
+- NOT for exact text (grep) or line-level refs. Index auto-syncs via post-commit hook.
+
 ## context-mode
 
 ### Shell/run/read → context-mode sandbox
@@ -83,6 +93,7 @@ If you can't be sure something worked, say so explicitly. "Migration completed" 
 | Read log/big file | `ctx_execute_file`                   |
 | Fetch URL         | `ctx_fetch_and_index` → `ctx_search` |
 | Recall prior      | `ctx_search`                         |
+| Codebase question | `repowise_search_codebase`/`get_answer` |
 
 ## RTK - Rust Token Killer
 

@@ -1,7 +1,7 @@
 ---
 description: Reviewer. Use when we need to review decisions or code changes
 model: anthropic/claude-fable-5:high
-tools: ["!*", read, grep, find, ls, bash, cymbal_search, cymbal_show, cymbal_refs, cymbal_diff, cymbal_changed, cymbal_impact, ask_advisor, record_advisor_outcome]
+tools: ["!*", read, grep, find, ls, bash, readSeek_grep, readSeek_search, readSeek_def, readSeek_refs, cymbal_changed, cymbal_impact, mcp, ask_advisor, record_advisor_outcome]
 overrideSystemPrompt: true
 contextFiles: []
 skills: ["!*"]

@@ -109,7 +109,6 @@ arch.pacman-list.pkg
 
 # agent working notes
 .scratch/
-
 # transient plannotator plan drafts (archived in ~/.plannotator)
 plans/
 
