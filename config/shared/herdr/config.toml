@@ -50,7 +50,7 @@ swap_pane_down = "prefix+shift+j"
 swap_pane_up = "prefix+shift+k"
 swap_pane_right = "prefix+shift+l"
 
-last_pane = "prefix+tab"
+# last_pane = "prefix+tab"
 split_vertical = "prefix+|"
 split_horizontal = "prefix+minus"
 close_pane = "prefix+q"
@@ -109,23 +109,23 @@ type = "plugin_action"
 command = "herdr-splits.resize-right"
 description = "resize right (nvim/herdr)"
 
-[[keys.command]]
-key = "prefix+shift+g"
-type = "plugin_action"
-command = "worktrunk.open"
-description = "switch or create worktree from default branch"
-
-[[keys.command]]
-key = "prefix+shift+c"
-type = "plugin_action"
-command = "worktrunk.open-current"
-description = "create worktree from current branch"
-
-[[keys.command]]
-key = "prefix+shift+d"
-type = "plugin_action"
-command = "worktrunk.remove"
-description = "remove worktree"
+# [[keys.command]]
+# key = "prefix+shift+g"
+# type = "plugin_action"
+# command = "worktrunk.open"
+# description = "switch or create worktree from default branch"
+#
+# [[keys.command]]
+# key = "prefix+shift+c"
+# type = "plugin_action"
+# command = "worktrunk.open-current"
+# description = "create worktree from current branch"
+#
+# [[keys.command]]
+# key = "prefix+shift+d"
+# type = "plugin_action"
+# command = "worktrunk.remove"
+# description = "remove worktree"
 
 [[keys.command]]
 key = "prefix+x"
@@ -138,24 +138,6 @@ key = "prefix+shift+x"
 type = "plugin_action"
 command = "termscope.open"
 description = "open target from visible terminal output"
-
-[[keys.command]]
-key = "prefix+f"
-type = "plugin_action"
-command = "herdr-file-viewer.open-file-viewer"
-description = "open file viewer"
-
-[[keys.command]]
-key = "prefix+shift+f"
-type = "plugin_action"
-command = "herdr-file-viewer.open-file-viewer-tab"
-description = "open file viewer tab"
-
-[[keys.command]]
-key = "prefix+v"
-type = "plugin_action"
-command = "persiyanov.reviewr.toggle"
-description = "toggle reviewr sidebar"
 
 [[keys.command]]
 key = "prefix+l"
@@ -178,17 +160,26 @@ command = "herdr-navigator.open"
 description = "jump to anything"
 
 [[keys.command]]
-key = "prefix+b"
-type = "shell"
-command = '"${HERDR_BIN_PATH}" plugin pane open --plugin official.browser --entrypoint browser --placement split --direction right --focus'
-description = "open browser in right split"
+key = "prefix+tab"
+type = "plugin_action"
+command = "herdr-navigator.jump-back"
+description = "last workspace"
 
 [[keys.command]]
-key = "prefix+shift+b"
+key = "prefix+b"
 type = "shell"
-command = '"${HERDR_BIN_PATH}" plugin pane open --plugin official.browser --entrypoint browser --placement overlay --focus'
-description = "open browser overlay"
+command = "zenbu-labs.terminal-browser.open-split"
+description = "open browser in right split"
 
+[[keys.command]] # lazygit: open in a split
+key = "prefix+g"
+type = "plugin_action"
+command = "herdr-lazygit.open"
+
+[[keys.command]] # lazygit: open in its own tab
+key = "prefix+shift+g"
+type = "plugin_action"
+command = "herdr-lazygit.open-tab"
 [ui]
 sidebar_width = 24
 sidebar_min_width = 18
@@ -250,3 +241,10 @@ switch_ascii_input_source_in_prefix = false
 kitty_graphics = true
 reveal_hidden_cursor_for_cjk_ime = true
 cjk_ime_agents = ["claude", "pi", "codex"]
+
+# herdr-floax:keybind
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "herdr-floax.toggle"
+description = "Toggle floating pane"

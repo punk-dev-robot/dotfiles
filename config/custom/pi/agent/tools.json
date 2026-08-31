@@ -28,6 +28,7 @@
     "herdr_start_worktree",
     "ls",
     "mcp",
+    "powershell",
     "read",
     "readSeek_def",
     "readSeek_grep",
