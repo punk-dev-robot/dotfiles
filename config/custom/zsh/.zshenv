@@ -23,6 +23,8 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_CACHE_HOME=$HOME/.cache
 export PI_CODING_AGENT_DIR=$XDG_CONFIG_HOME/pi/agent
+# Write directly to the repo file: /tools saves via tmp+rename, which would sever the dotter symlink
+export PI_WEBUI_SETTINGS_FILE=$HOME/dotfiles/config/custom/pi/webui/settings.json
 # Must be here, not rc.d: Claude Code launched non-interactively (IDE, GUI, scripts)
 # otherwise falls back to ~/.claude.json, a separate config with different MCP servers.
 export CLAUDE_CONFIG_DIR=$XDG_CONFIG_HOME/claude

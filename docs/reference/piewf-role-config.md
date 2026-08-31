@@ -58,10 +58,10 @@ recomputes (model switch, session-tree navigation) cannot clamp them — the
 extension preserves saved-but-unavailable names. Caveat: brand-new *static*
 tools from future extensions start disabled until added via `/tools`.
 
-Write-source caveat: the extension saves via tmp-file + rename, which replaces
-the deployed dotter *symlink* with a regular file — after saving from the
-`/tools` UI, diff the live file back into the repo copy and re-run
-`dotter deploy` to restore the link.
+Write-source: the extension saves via tmp-file + rename, which would replace a
+dotter *symlink* with a regular file. Solved by `PI_WEBUI_SETTINGS_FILE` (set in
+`.zshenv`) pointing straight at the repo file — `/tools` saves land in the
+working tree as a normal git diff; commit when happy.
 The old `config/custom/pi/agent/tools.json` snapshot and its enforcement shim
 were removed (KUB-17). pi-cymbal's injected system-prompt guidance and nudges
 are disabled in `extensions/pi-cymbal.json` (they recommended deactivated tools).
