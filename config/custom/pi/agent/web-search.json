@@ -1,5 +1,6 @@
 {
-  "provider": "all",
+  "provider": "auto",
+  "workflow": "auto-summary",
   "tools": {
     "sourceCheck": { "enabled": false }
   }
