@@ -1,0 +1,6 @@
+{
+  "provider": "all",
+  "tools": {
+    "sourceCheck": { "enabled": false }
+  }
+}
