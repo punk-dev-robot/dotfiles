@@ -59,8 +59,14 @@ Mirror regenerated on every launch — always fresh, no drift.
    Readseek kept whole (edit machinery, no overlap).
 3. ~~Update agent roles~~ **DONE**: dev/recon/reviewer/tests re-tooled.
 4. ~~AGENTS.md~~ **DONE**: "Codebase intelligence routing" section added.
-5. Webhooks/extensions.
-6. Other harnesses (needs human discussion).
+5. ~~Webhooks/extensions~~ **DONE (31 Aug)**: post-commit sync hooks installed on
+   all 4 repos (`repowise hook install`; worktree shares base's hooks dir).
+   Claude Code agent hooks (rewrite/read-skeleton/search-digest) **skipped**
+   deliberately — overlap context-mode, would fight dotter-managed Claude settings.
+6. ~~Other harnesses~~ **DONE for free**: repowise routing added to global
+   `config/shared/claude/CLAUDE.md`, which codex + opencode AGENTS.md symlink.
+   Deeper per-harness integration (MCP wiring for codex/opencode) still open
+   if ever needed.
 7. ~~Embedder~~ **DONE (31 Aug)**: `gemini` / gemini-embedding-001 @ 3072 dims
    (research brief: `docs/.scratch/repowise-embedder-brief.md`). Key from 1Password
    (Swap-Gemini-Embed) persisted in each repo's `.repowise/.env` (chmod 600,
