@@ -2,7 +2,6 @@
   "resourceDefaults": {
     "tools": {
       "enabledTools": [
-        "agent_browser",
         "ask_advisor",
         "ask_user_question",
         "bash",
@@ -27,6 +26,7 @@
         "mcp__logfire",
         "mcp__newrelic",
         "mcp__notion",
+        "mcp__repowise",
         "mcp__slack",
         "plannotator_submit_plan",
         "read",
@@ -38,7 +38,6 @@
         "readSeek_view",
         "recall",
         "record_advisor_outcome",
-        "source_check",
         "subagents_inspect",
         "subagents_retry",
         "subagents_run",
