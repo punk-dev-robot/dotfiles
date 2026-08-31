@@ -11,7 +11,7 @@
       }
     },
     "DrCatHicks/learning-opportunities": {
-      "version": "2b3a5e0cb39a230c3c84d775d02fc44f3bfb1ca7",
+      "version": "3862d2eb6e93427f1f163a54360d11ef943b88b7",
       "source": "https://github.com/DrCatHicks/learning-opportunities",
       "include": {
         "skills": [
@@ -30,7 +30,7 @@
       }
     },
     "github/gh-stack": {
-      "version": "14fc42ed9b6c376a53b2f999f138d3bd26dac546",
+      "version": "2bd699a544a09cb5c45a013d03416e0894b0454e",
       "source": "https://github.com/github/gh-stack",
       "include": {
         "skills": [
@@ -75,7 +75,7 @@
       "source": "https://github.com/plannotator/effective-html"
     },
     "schpet/linear-cli": {
-      "version": "5af828699afa8ff2bbae1d9a8b3ff5e1f37f9bd7",
+      "version": "189d1ee6ba7a272fef879ddb7eae68e4e901bad0",
       "source": "https://github.com/schpet/linear-cli",
       "include": {
         "skills": [
