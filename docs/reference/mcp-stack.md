@@ -41,8 +41,8 @@ When coverage complete, remove:
 - [ ] `config/shared/claude/hooks/prefer-web-tools.py` (composio branches)
 - [ ] `config/custom/zsh/rc.d/062-dev.zsh:57-59` (COMPOSIO_INSTALL_DIR + PATH)
 - [ ] `config/custom/pi/agent/config/skill-gate.json` `composio-cli` entry
-- [ ] `config/custom/pi/agent/pi-extensible-workflows/roles/comms.md` (skills list + Slack-via-composio prose → Slack MCP or drop)
-- [ ] `config/custom/pi/agent/pi-extensible-workflows/roles/researcher.md` (skills list + exa/firecrawl-via-composio prose → exa/firecrawl MCP)
+- [ ] `config/custom/pi/agent/pi-extensible-workflows/roles/comms.md` — migrated to MCP for Linear/Notion; still `composio-cli` for Slack (KUB-21)
+- [x] `config/custom/pi/agent/pi-extensible-workflows/roles/researcher.md` — migrated to MCP (exa/firecrawl/notion)
 - [ ] `config/shared/{opencode,claude}/skills/linear-agent-workflow/SKILL.md` composio mentions
 - [ ] `docs/reference/piewf-role-config.md` composio mentions
 - [ ] `~/.agents/skills/composio-cli/` installed skill
