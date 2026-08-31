@@ -115,3 +115,6 @@ plans/
 
 # repowise machine-local caches/DBs
 .repowise/
+
+# editor/tool-generated
+.vscode/
