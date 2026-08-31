@@ -24,6 +24,28 @@
     "firecrawl": {
       "url": "https://mcp.firecrawl.dev/v2/mcp-oauth",
       "lifecycle": "lazy"
+    },
+    "gmail": {
+      "url": "https://gmailmcp.googleapis.com/mcp/v1",
+      "lifecycle": "lazy"
+    },
+    "calendar": {
+      "url": "https://calendarmcp.googleapis.com/mcp/v1",
+      "lifecycle": "lazy"
+    },
+    "slack": {
+      "url": "https://mcp.slack.com/mcp",
+      "lifecycle": "lazy",
+      "auth": "oauth",
+      "oauth": {
+        "clientId": "2966739332885.11949201186418",
+        "clientSecret": "!op read 'op://AI/Swap-Slack-MCP-Client-Secret/password' --account my.1password.com",
+        "redirectUri": "http://localhost:3118/callback",
+        "scope": "canvases:read canvases:write channels:history channels:read chat:write groups:history search:read.private search:read.public users:read",
+        "authorizationParams": {
+          "user_scope": "canvases:read,canvases:write,channels:history,channels:read,chat:write,groups:history,search:read.private,search:read.public,users:read"
+        }
+      }
     }
   }
 }

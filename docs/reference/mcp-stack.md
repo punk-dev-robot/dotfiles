@@ -6,11 +6,14 @@ Remote MCP servers, lazy-loaded through `pi-mcp-adapter`, replacing composio + p
 
 | Server | Endpoint | Auth | Lifecycle |
 |---|---|---|---|
-| logfire | `https://logfire-eu.pydantic.dev/mcp` | token | eager |
+| logfire | `https://logfire-eu.pydantic.dev/mcp` | token | lazy |
 | notion | `https://mcp.notion.com/mcp` | OAuth (localhost cb) | lazy |
 | linear | `https://mcp.linear.app/mcp` | OAuth 2.1 + DCR | lazy |
 | exa | `https://mcp.exa.ai/mcp` | keyless free tier; on 429 add `headers: { "x-api-key": ... }` | lazy |
 | firecrawl | `https://mcp.firecrawl.dev/v2/mcp-oauth` | OAuth sign-in (key variant: `/v2/mcp` + `Authorization: Bearer`) | lazy |
+| slack | `https://mcp.slack.com/mcp` | pre-registered internal Slack app (no DCR): `oauth.clientId` + `clientSecret` via `!op read`, exact `redirectUri`, **`authorizationParams.user_scope`** (comma-separated — Slack ignores standard `scope`) | lazy |
+| gmail | `https://gmailmcp.googleapis.com/mcp/v1` | pre-registered Google OAuth client needed (no DCR) — pending, KUB-19 | lazy |
+| calendar | `https://calendarmcp.googleapis.com/mcp/v1` | pre-registered Google OAuth client needed (no DCR) — pending, KUB-19 | lazy |
 
 Config is dotter-symlinked; adapter reads at startup — run `/reload` in pi after edits. OAuth: `/mcp-auth <server>` or `mcp({ action: "auth-start", server })`.
 
@@ -27,13 +30,19 @@ Code-mode + lazy discovery: `mcp({ search })` / `describe` / `mcpScript` keep to
 - `mcpScript` batch validated: notion-search + linear_list_issues + linear_get_issue in one round trip.
 - Context cost vs skills: `notion` skill ≈ 1.7k tokens + `linear-cli` skill ≈ 2.5k tokens loaded per triggering session, plus verbose CLI output per op. MCP route: fixed gateway tool (already present), ~0.3–0.7k per search, schemas on demand. Conventional (non-lazy) MCP client would pay ~30–50k tokens upfront for the same 137 remote tool schemas.
 
-## Slack (investigated, deferred)
+## Slack (working since 2026-08-31)
 
-Slack MCP server requires the MCP client to be backed by a **registered Slack app with a fixed app ID**; only directory-published or internal apps may use MCP; workspace admins approve via the standard app-approval process. OAuth: `https://slack.com/oauth/v2_user/authorize` / `oauth.v2.user.access`. Generic clients (pi adapter, gateways) cannot just connect — needs an internal Slack app + work admin approval. Until then: composio slack.
+Slack MCP requires a **pre-registered internal Slack app** (no DCR). Working recipe, validated end-to-end:
+
+1. Internal app with MCP enabled (Agents & AI Apps → "Slack MCP Server" toggle, or manifest `settings.is_mcp_enabled`), user-token scopes, redirect `http://localhost:3118/callback`. PKCE opt-in NOT needed (irreversible — avoid).
+2. Adapter config: `auth: "oauth"` + `oauth.clientId/clientSecret/redirectUri` **plus `authorizationParams.user_scope`** with comma-separated scopes — Slack's `v2_user/authorize` ignores the standard `scope` param ("Invalid permissions requested / No scopes requested" otherwise).
+3. No workspace admin approval was required (self-serve internal app + user OAuth).
+
+Settings gotcha: the "MCP servers" tab in app settings is the *opposite* feature (Slackbot-as-client) — ignore it. Full research trail: `docs/.scratch/research-mcp-non-dcr-oauth.md`.
 
 ## Composio removal checklist
 
-Blocked on: slack (needs internal Slack app), gmail/gcal (KUB-19), new relic (no MCP found yet).
+Blocked on: gmail/gcal (KUB-19, needs pre-registered Google OAuth client), new relic (no MCP found yet). Slack: DONE via internal app (KUB-21).
 
 When coverage complete, remove:
 
