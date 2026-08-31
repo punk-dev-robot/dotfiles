@@ -16,6 +16,16 @@ mcp:
       policies:
         backendAuth:
           key: "$FIRECRAWL_API_KEY"
+    - name: context7
+      mcp:
+        host: https://mcp.context7.com/mcp
+      policies:
+        backendAuth:
+          key:
+            value: "$CONTEXT7_API_KEY"
+            location:
+              header:
+                name: CONTEXT7_API_KEY
     - name: linear
       mcp:
         host: https://mcp.linear.app/mcp
