@@ -33,6 +33,14 @@
       "url": "https://calendarmcp.googleapis.com/mcp/v1",
       "lifecycle": "lazy"
     },
+    "newrelic": {
+      "url": "https://mcp.eu.newrelic.com/mcp/",
+      "lifecycle": "lazy"
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp/oauth",
+      "lifecycle": "lazy"
+    },
     "slack": {
       "url": "https://mcp.slack.com/mcp",
       "lifecycle": "lazy",
