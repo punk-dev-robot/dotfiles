@@ -61,9 +61,14 @@ Mirror regenerated on every launch — always fresh, no drift.
 4. ~~AGENTS.md~~ **DONE**: "Codebase intelligence routing" section added.
 5. Webhooks/extensions.
 6. Other harnesses (needs human discussion).
-7. Follow-up: embedder for semantic search (keyword-only today, `embedder: mock`;
-   Ollama not installed — decide later). MCP arg shapes: `get_symbol` needs
-   `symbol_id` = `path::Name`, `get_context` needs `targets` array.
+7. ~~Embedder~~ **DONE (31 Aug)**: `gemini` / gemini-embedding-001 @ 3072 dims
+   (research brief: `docs/.scratch/repowise-embedder-brief.md`). Key from 1Password
+   (Swap-Gemini-Embed) persisted in each repo's `.repowise/.env` (chmod 600,
+   gitignored; work repos use `.git/info/exclude`). All 4 repos reindexed;
+   semantic leg verified via CLI (`set -a; . .repowise/.env`) and MCP (auto-loads
+   .env). MCP arg shapes: `get_symbol` needs `symbol_id` = `path::Name`,
+   `get_context` needs `targets` array. Open: confirm Gemini enterprise
+   data-handling tier (Vertex vs paid API key).
 
 Skipped: dotter profile for the sandbox (wrapper regeneration covers it); isolated
 sessions dir (shared is fine, add `PI_CODING_AGENT_SESSION_DIR` only if test noise
