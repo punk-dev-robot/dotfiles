@@ -46,15 +46,24 @@ Mirror regenerated on every launch — always fresh, no drift.
 
 `pi: add pi-rw test-instance wrapper for repowise worktree` on this branch.
 
-## Later phases (ticket checklist, not this session)
+## Later phases (ticket checklist)
 
-1. Install repowise, `repowise init --no-prose` on dotfiles; add MCP server to
-   worktree `mcp.json`; test via `pi-rw`.
-2. Per-tool pros/cons discussion: context-mode, cymbal, readseek → prune.
-3. Update agent roles (`pi-extensible-workflows/roles/*.md`).
-4. Update global CLAUDE.md/AGENTS.md descriptions.
+1. ~~Install repowise, init, MCP wiring~~ **DONE (phase 2, 31 Aug)**: repowise 0.47.0
+   via `uv tool install`, telemetry disabled, `init --no-prose` on `~/dotfiles`
+   (worktree auto-seeds, verified) + shopai/shopmr (`--no-editor-setup`).
+   MCP lean profile (6 tools, cwd-based `.`) in `config/custom/pi/agent/mcp.json`;
+   tested end-to-end via `pi-rw`. Editor-wiring files deleted (user decision).
+2. ~~Per-tool discussion~~ **DONE**: context-mode kept (orthogonal; codebase Qs
+   reroute to repowise). Cymbal trimmed to `changed`+`impact` in `tools.json`
+   (13 deactivated; refs→readSeek_refs, search/context/why→repowise, ~3.7k token save).
+   Readseek kept whole (edit machinery, no overlap).
+3. ~~Update agent roles~~ **DONE**: dev/recon/reviewer/tests re-tooled.
+4. ~~AGENTS.md~~ **DONE**: "Codebase intelligence routing" section added.
 5. Webhooks/extensions.
 6. Other harnesses (needs human discussion).
+7. Follow-up: embedder for semantic search (keyword-only today, `embedder: mock`;
+   Ollama not installed — decide later). MCP arg shapes: `get_symbol` needs
+   `symbol_id` = `path::Name`, `get_context` needs `targets` array.
 
 Skipped: dotter profile for the sandbox (wrapper regeneration covers it); isolated
 sessions dir (shared is fine, add `PI_CODING_AGENT_SESSION_DIR` only if test noise
