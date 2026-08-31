@@ -32,6 +32,9 @@
   cmd = difft "$LOCAL" "$REMOTE"
 [include]
   path = {{delta_theme_path}}
+[include]
+  # machine-local state (git maintenance register etc.); missing file is ignored
+  path = ~/.gitconfig-maintenance
 [delta]
   features = catppuccin-macchiato
   side-by-side = false

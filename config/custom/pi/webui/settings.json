@@ -6,17 +6,6 @@
         "ask_advisor",
         "ask_user_question",
         "bash",
-        "ctx_batch_execute",
-        "ctx_doctor",
-        "ctx_execute",
-        "ctx_execute_file",
-        "ctx_fetch_and_index",
-        "ctx_index",
-        "ctx_insight",
-        "ctx_purge",
-        "ctx_search",
-        "ctx_stats",
-        "ctx_upgrade",
         "cymbal_changed",
         "cymbal_impact",
         "edit",
@@ -30,11 +19,16 @@
         "herdr_start_worktree",
         "ls",
         "mcp",
+        "mcpScript",
+        "mcp__context7",
         "mcp__exa",
         "mcp__firecrawl",
         "mcp__linear",
         "mcp__logfire",
+        "mcp__newrelic",
         "mcp__notion",
+        "mcp__slack",
+        "plannotator_submit_plan",
         "read",
         "readSeek_def",
         "readSeek_grep",
@@ -44,6 +38,7 @@
         "readSeek_view",
         "recall",
         "record_advisor_outcome",
+        "source_check",
         "subagents_inspect",
         "subagents_retry",
         "subagents_run",
@@ -57,8 +52,24 @@
         "workflow_retry",
         "workflow_status",
         "workflow_stop",
-        "write"
+        "write",
+        "ctx_batch_execute",
+        "ctx_doctor",
+        "ctx_execute",
+        "ctx_execute_file",
+        "ctx_fetch_and_index",
+        "ctx_index",
+        "ctx_insight",
+        "ctx_purge",
+        "ctx_search",
+        "ctx_stats",
+        "ctx_upgrade"
       ]
-    }
-  }
+    },
+    "skills": {
+      "enabledSkills": null
+    },
+    "modelProfiles": []
+  },
+  "version": 8
 }
