@@ -128,10 +128,16 @@ export default function (pi: {
 			// Second pass: covers cc-header writing after our setTimeout(0) fired.
 			unquietStartup();
 			if (!anchored) {
-				ctx.ui.notify(
-					"prune-resource-list: contextimate never anchored; check quietStartup is false and pine-of-glass is loaded",
-					"warn",
-				);
+				// ponytail: try/catch — this timer outlives /reload and ctx.ui throws on a
+				// stale ctx (session replaced), which crashed pi. Stale = nothing to warn about.
+				try {
+					ctx.ui.notify(
+						"prune-resource-list: contextimate never anchored; check quietStartup is false and pine-of-glass is loaded",
+						"warn",
+					);
+				} catch {
+					/* ctx stale after reload/session replacement */
+				}
 			}
 		}, 10000).unref?.();
 	});

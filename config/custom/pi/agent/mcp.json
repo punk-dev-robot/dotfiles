@@ -7,7 +7,23 @@
   "mcpServers": {
     "logfire": {
       "url": "https://logfire-eu.pydantic.dev/mcp",
-      "lifecycle": "eager"
+      "lifecycle": "lazy"
+    },
+    "notion": {
+      "url": "https://mcp.notion.com/mcp",
+      "lifecycle": "lazy"
+    },
+    "linear": {
+      "url": "https://mcp.linear.app/mcp",
+      "lifecycle": "lazy"
+    },
+    "exa": {
+      "url": "https://mcp.exa.ai/mcp",
+      "lifecycle": "lazy"
+    },
+    "firecrawl": {
+      "url": "https://mcp.firecrawl.dev/v2/mcp-oauth",
+      "lifecycle": "lazy"
     }
   }
 }

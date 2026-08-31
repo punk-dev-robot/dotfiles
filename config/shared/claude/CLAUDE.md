@@ -53,22 +53,13 @@ If you can't be sure something worked, say so explicitly. "Migration completed" 
 
 ### External services
 
-1. Always use `notion` skill for interacting with Notion
-2. Always use `linear-cli` skill for interacting with Linear
-3. Always use `logfire` skills for interacting with Logfire
-4. For anything else, use `composio-cli`, including:
-
-- slack
-- gmail
-- google calendar
-- new relic
-- exa
-- firecrawl
-- and many more
+1. Always use MCP servers first: `notion`, `linear`, `logfire`, `exa`, `firecrawl` (configured in pi mcp.json; other agents pending shared config — KUB-18)
+2. `logfire` skills are usage guidance for the logfire MCP tools (query syntax, instrumentation) — use them together. Fallback when MCP unavailable: `linear` CLI for Linear
+3. `composio-cli` only for services without MCP coverage yet: slack, gmail, google calendar (KUB-19), new relic
 
 ### Replacement to built-in tools
 
-- use `exa` and `firecrawl` through `composio-cli` instead of default `WebSearch` and `WebFetch`
+- use `exa` and `firecrawl` MCP servers instead of default `WebSearch` and `WebFetch`
 
 ## context-mode
 
