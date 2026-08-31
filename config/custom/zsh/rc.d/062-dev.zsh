@@ -62,3 +62,6 @@ export PATH="$COMPOSIO_INSTALL_DIR:$PATH"
 # Added by Cupcake installer
 export PATH="/Users/kuba.gaj/.cupcake/bin:$PATH"
 
+
+# repowise: never write editor-wiring files (.mcp.json, .claude/, .vscode/) — pi MCP config owns integration
+export REPOWISE_SKIP_EDITOR_SETUP=1
