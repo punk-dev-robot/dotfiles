@@ -10,7 +10,7 @@ Use Linear as the shared task layer for agent work. Keep the workflow lightweigh
 ## Defaults
 
 - Source of truth for task state: Linear.
-- Transport: 1. linear-cli skill (preferred) 2. linear mcp tools if available (backup) 3. composio if available (backup)
+- Transport: 1. linear-cli skill (preferred) 2. linear mcp tools if available (backup)
 - Initial team: `62f87de9-2d7b-401d-8bbd-749477d7a773`.
 - Do not assume Linear Projects; this workflow starts team-scoped.
 - No local task database, SQLite file, or per-worktree hidden state.

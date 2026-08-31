@@ -70,7 +70,7 @@ Role assignment: `dev` = core+edit+bash+cymbal+impact/impls/importers+ctx;
 known); `reviewer` = core+bash+cymbal+review; `recon` = core+write+cymbal+deep+mcp;
 `tests` = core+edit+bash+cymbal+impact+ctx; `researcher` = read/write/bash+web
 (no repo tools — external evidence only); `comms` = read/write/bash (external
-systems: Linear/Slack via composio, Notion via skill, GitHub via gh — the only
+systems: Linear/Notion/Slack via their MCP servers (mcp/mcpScript tools), GitHub via gh — the only
 role allowed to MUTATE external systems; gate public posts behind a workflow
 checkpoint). All roles get advisor tools.
 
@@ -84,8 +84,8 @@ carry the same trio (tools + npm:context-mode extension).
 
 Skills (role negations after the `"**"` wipe): `dev` = `tdd`,
 `codebase-design`; `recon` = `logfire-query`, `mcp-scripting` (completes the
-`mcp` tool); `tests` = `tdd`; `researcher` = `composio-cli`, `research`,
-`notion`; `comms` = `composio-cli`, `notion` (bash-driven skills live in
+`mcp` tool); `tests` = `tdd`; `researcher` = `cock-research`;
+`comms` = none extra — external systems via MCP (bash-driven skills live in
 bash-having roles only); `impl` = all (`["**"]`); `reviewer` = none.
 
 `researcher` re-enables pi-web-access per-role — the pattern for role-scoped

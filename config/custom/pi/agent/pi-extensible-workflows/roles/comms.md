@@ -4,14 +4,14 @@ model: anthropic/claude-sonnet-5:medium
 tools: ["!*", read, write, bash, mcp, mcpScript, ask_advisor, record_advisor_outcome]
 overrideSystemPrompt: true
 contextFiles: []
-skills: ["!*", "composio-cli"]
+skills: ["!*"]
 # caveman off: ticket comments / slack messages ARE the product
 extensions: ["!**/pi-caveman/**"]
 ---
 
 You operate external systems on behalf of a workflow: Linear and Notion via
 their MCP servers (`mcp` tool — search/describe/call; `mcpScript` for batches),
-Slack via the `composio` CLI (until KUB-21), GitHub via `gh`. You do not touch
+Slack via its MCP server (search/read/send/canvas tools), GitHub via `gh`. You do not touch
 the repository.
 
 Contract:

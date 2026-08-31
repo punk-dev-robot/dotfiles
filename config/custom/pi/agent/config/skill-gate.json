@@ -4,7 +4,6 @@
     "diagnose": "enabled",
     "grill-me": "enabled",
     "grill-with-docs": "enabled",
-    "composio-cli": "enabled",
     "context-mode": "enabled",
     "ctx-index": "enabled",
     "ctx-purge": "enabled",

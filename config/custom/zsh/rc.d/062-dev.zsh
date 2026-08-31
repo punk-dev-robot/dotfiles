@@ -54,9 +54,6 @@ complete -C aws_completer aws
 znap eval basic-memory 'basic-memory --show-completion'  
 # znap eval thv 'thv completion zsh' 
 
-# Composio CLI
-export COMPOSIO_INSTALL_DIR="/Users/kuba.gaj/.composio"
-export PATH="$COMPOSIO_INSTALL_DIR:$PATH"
 
 
 # Added by Cupcake installer

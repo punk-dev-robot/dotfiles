@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Deny WebSearch/WebFetch, suggest Composio CLI. Allow retry within TTL window.
+"""Nudge away from built-in search tools. Allow retry within TTL window.
 
 On first call for a tool, creates a marker and denies with a message pointing
-to Composio CLI alternatives. If the same tool is retried within the TTL window,
+to preferred alternatives. If the same tool is retried within the TTL window,
 the marker is consumed and the tool is allowed as fallback. Each cycle is
 independent -- after consumption, the next call starts fresh.
 """
@@ -13,15 +13,6 @@ import time
 from pathlib import Path
 
 _PREFERRED_TOOLS = {
-    "WebSearch": (
-        'the Composio CLI workflow first: run `composio search "<task>"` to discover the right slug, '
-        "then use `composio execute <SLUG> --get-schema` or `--dry-run` before execution. "
-        "Common search slugs are `EXA_SEARCH`, `EXA_ANSWER`, and `FIRECRAWL_SEARCH`."
-    ),
-    "WebFetch": (
-        "the Composio CLI workflow first: discover or confirm the slug, then use `composio execute <SLUG> --get-schema` "
-        "or `--dry-run` before execution. Common fetch/scrape slugs are `FIRECRAWL_SCRAPE` and `EXA_GET_CONTENTS_ACTION`."
-    ),
     "Glob": ("the Chunkhound search tool, as well as bash rg and fd tools instead"),
     "Grep": (
         "the Chunkhound search and research are preferred tools and great replacement. Alternatively search tools provided by serena"
@@ -55,7 +46,7 @@ def main():
     marker.touch()
 
     preferred = _PREFERRED_TOOLS[tool_name]
-    reason = f"Use {preferred} instead of {tool_name}. If Composio fails or external credits are exhausted, retry {tool_name} as fallback."
+    reason = f"Use {preferred} instead of {tool_name}. If the alternative fails, retry {tool_name} as fallback."
     output = {
         "hookSpecificOutput": {
             "hookEventName": "PreToolUse",

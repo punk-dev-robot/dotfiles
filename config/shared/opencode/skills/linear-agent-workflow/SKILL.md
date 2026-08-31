@@ -1,6 +1,6 @@
 ---
 name: linear-agent-workflow
-description: Use when managing agent tasks, Linear issues, spec-driven work, task handoffs, or discovered follow-up work through Linear and Composio.
+description: Use when managing agent tasks, Linear issues, spec-driven work, task handoffs, or discovered follow-up work through Linear.
 ---
 
 # Linear Agent Workflow
@@ -10,7 +10,7 @@ Use Linear as the shared task layer for agent work. Keep the workflow lightweigh
 ## Defaults
 
 - Source of truth for task state: Linear.
-- Transport: Composio Linear MCP tools when available, Composio CLI when MCP is unavailable.
+- Transport: `linear` CLI (always available), or Linear MCP tools when configured.
 - Initial team: `62f87de9-2d7b-401d-8bbd-749477d7a773`.
 - Do not assume Linear Projects; this workflow starts team-scoped.
 - No local task database, SQLite file, or per-worktree hidden state.
@@ -103,14 +103,10 @@ Blocked by:
 
 This format is optional. Do not comment on every state transition.
 
-## Composio Linear Rules
+## Linear Transport Rules
 
-- Use `LINEAR_LIST_LINEAR_TEAMS` before team/state/label-sensitive writes unless IDs are already confirmed. Keep pages small; `first:250` can exceed Linear complexity limits in large workspaces.
-- Use `LINEAR_LIST_LINEAR_STATES` for workflow states; state IDs are team-scoped.
-- Use `LINEAR_LIST_LINEAR_LABELS` for labels; avoid group/container labels.
-- Use `LINEAR_LIST_LINEAR_ISSUES` with pagination for broad reads.
-- Use `LINEAR_GET_LINEAR_ISSUE` before updating an issue.
-- Use `LINEAR_RUN_QUERY_OR_MUTATION` for comments, relations, dependencies, or fields missing from dedicated tools.
+- `linear` CLI: `linear team list`, `linear issue list/create/update`, `linear project list` — confirm team/state/label IDs before sensitive writes.
+- Linear MCP (when configured): `linear_list_issues` with pagination for broad reads, `linear_get_issue` before updating, `linear_save_issue` for create/update (patch ops preferred over full description overwrite).
 - Description updates overwrite existing descriptions; omit fields you do not intend to change.
 
 ## Safety

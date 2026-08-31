@@ -55,7 +55,7 @@ If you can't be sure something worked, say so explicitly. "Migration completed" 
 
 1. Always use MCP servers first: `notion`, `linear`, `logfire`, `exa`, `firecrawl` (configured in pi mcp.json; other agents pending shared config — KUB-18)
 2. `logfire` skills are usage guidance for the logfire MCP tools (query syntax, instrumentation) — use them together. Fallback when MCP unavailable: `linear` CLI for Linear
-3. `composio-cli` only for services without MCP coverage yet: slack, gmail, google calendar (KUB-19), new relic
+3. Gmail/Calendar: no route yet — pending Google OAuth client (KUB-19)
 
 ### Replacement to built-in tools
 

@@ -42,26 +42,12 @@ Slack MCP requires a **pre-registered internal Slack app** (no DCR). Working rec
 
 Settings gotcha: the "MCP servers" tab in app settings is the *opposite* feature (Slackbot-as-client) — ignore it. Full research trail: `docs/.scratch/research-mcp-non-dcr-oauth.md`.
 
-## Composio removal checklist
+## Composio removal — COMPLETE (2026-08-31, KUB-22)
 
-Blocked on: nothing critical. Slack DONE (KUB-21), New Relic DONE (EU, NRQL validated), context7 DONE. gmail/gcal (KUB-19) explicitly non-blocking. Removal is now pure deletion work — KUB-22.
+Composio fully removed. Every service migrated to direct remote MCP servers (see table above); gmail/gcal have no route until KUB-19 (explicitly acceptable).
 
-When coverage complete, remove:
+Removed: opencode `prefer-composio-web.ts` plugin; composio branches in claude `prefer-web-tools.py` hook (Glob/Grep→chunkhound nudge kept); zsh `COMPOSIO_INSTALL_DIR`/PATH; `skill-gate.json` entry; composio prose in `comms` role, both `linear-agent-workflow` skills, `piewf-role-config.md`, CLAUDE.md rules; `~/.agents/skills/composio-cli/`; `~/.composio/`.
 
-- [ ] `config/shared/opencode/plugins/prefer-composio-web.ts`
-- [ ] `config/shared/claude/hooks/prefer-web-tools.py` (composio branches)
-- [ ] `config/custom/zsh/rc.d/062-dev.zsh:57-59` (COMPOSIO_INSTALL_DIR + PATH)
-- [ ] `config/custom/pi/agent/config/skill-gate.json` `composio-cli` entry
-- [ ] `config/custom/pi/agent/pi-extensible-workflows/roles/comms.md` — migrated to MCP for Linear/Notion; still `composio-cli` for Slack (KUB-21)
-- [x] `config/custom/pi/agent/pi-extensible-workflows/roles/researcher.md` — migrated to MCP (exa/firecrawl/notion)
-- [ ] `config/shared/{opencode,claude}/skills/linear-agent-workflow/SKILL.md` composio mentions
-- [ ] `docs/reference/piewf-role-config.md` composio mentions
-- [ ] `~/.agents/skills/composio-cli/` installed skill
-- [ ] `~/.composio/` install dir
-- [ ] `config/shared/claude/CLAUDE.md` residual composio rule (line ~58)
+## Roles
 
-Already done: CLAUDE.md external-services rules point at MCP first; exa/firecrawl composio routing removed.
-
-## Roles migration note
-
-`comms` and `researcher` roles run as subagents — they get the same pi MCP adapter, so once OAuth is done they can use notion/linear/exa/firecrawl MCP directly; update their skill selectors and prose then.
+`comms` and `researcher` roles use the pi MCP adapter directly (linear/notion/slack/exa/firecrawl via mcp/mcpScript tools); no CLI-skill selectors remain.
