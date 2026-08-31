@@ -39,7 +39,7 @@ mirror "$SRC" "$DST"
 # main-checkout-deployed dir) still belong in the sandbox.
 while IFS= read -r -d '' f; do
   rel=${f#"$WT/config/custom/pi/agent/"}
-  [ -e "$DST/$rel" ] || [ -L "$DST/$rel" ] || { mkdir -p "$DST/${rel%/*}"; ln -s "$f" "$DST/$rel"; }
+  [ -e "$DST/$rel" ] || [ -L "$DST/$rel" ] || { mkdir -p "$DST/$(dirname "$rel")"; ln -s "$f" "$DST/$rel"; }
 done < <(find "$WT/config/custom/pi/agent" -type f -print0)
 
 # /tools global+model scopes live outside the agent dir; point them at the worktree copy

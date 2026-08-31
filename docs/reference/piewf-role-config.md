@@ -29,15 +29,19 @@ changes are live in new sessions, no `dotter deploy` needed.
   repowise migration (KUB-17): navigation = `readSeek_*`, call-graph =
   `cymbal_impact` / `cymbal_changed` (only cymbal tools still active),
   codebase intelligence = repowise via the `mcp` gateway.
-- `skills:` negations after the `"!*"` wipe: `dev`/`tests` = `tdd` (+
-  `codebase-design` for dev); `recon` = `logfire-query`, `mcp-scripting`;
-  `researcher` = `composio-cli`, `research`, `notion`; `comms` =
-  `composio-cli`, `notion`; `impl` = all; `reviewer` = none.
+- `skills:` negations after the `"!*"` wipe (exact names — a selector matching
+  nothing silently disables everything): `dev` = `cock-tdd`,
+  `cock-codebase-design`; `tests` = `cock-tdd`; `recon` = `logfire-query`,
+  `mcp-scripting`; `researcher` = `composio-cli`, `cock-research`, `notion`;
+  `comms` = `linear-cli`, `composio-cli`, `notion`; `impl` and `reviewer` =
+  none (`["!*"]`).
 - `extensions:` refinements (layered after global settings, last-match-wins):
   caveman terse mode ON for dev/impl/tests, re-disabled
   (`"!**/pi-caveman/**"`) for reviewer/recon/researcher/comms whose prose is
-  the product; ponytail off globally, dev opts back in (`"!**/ponytail/**"`);
-  pi-web-access granted per call, not per role.
+  the product; ponytail off globally for agents, dev opts back in
+  (`["**/ponytail/**"]` — positive re-enable); researcher re-enables
+  pi-web-access per-role (`"**/pi-web-access/**"`); other roles get web tools
+  per call only.
 
 ## Global tool activation (/tools)
 
@@ -46,10 +50,18 @@ place tools are enabled/disabled. Scope precedence: session (session entries) >
 exact model profile > global default > runtime. Global + model scopes persist
 to `~/.pi/webui/settings.json` (`resourceDefaults.tools.enabledTools`
 allowlist) — dotter-managed as `config/custom/pi/webui/settings.json`; `pi-rw`
-points `PI_WEBUI_SETTINGS_FILE` at the worktree copy. Dynamically registered
-tools (`ctx_*`, lazy `mcp__*` proxies, workflow/subagents) self-activate
-additively after startup and need no allowlist entry. Caveat: brand-new
-*static* tools from future extensions start disabled until added via `/tools`.
+points `PI_WEBUI_SETTINGS_FILE` at the worktree copy.
+
+Dynamic tools (`ctx_*`, `workflow_*`, `subagents_*`, lazy `mcp__*` proxies)
+register after startup; they are pinned in the allowlist anyway so scope
+recomputes (model switch, session-tree navigation) cannot clamp them — the
+extension preserves saved-but-unavailable names. Caveat: brand-new *static*
+tools from future extensions start disabled until added via `/tools`.
+
+Write-source caveat: the extension saves via tmp-file + rename, which replaces
+the deployed dotter *symlink* with a regular file — after saving from the
+`/tools` UI, diff the live file back into the repo copy and re-run
+`dotter deploy` to restore the link.
 The old `config/custom/pi/agent/tools.json` snapshot and its enforcement shim
 were removed (KUB-17). pi-cymbal's injected system-prompt guidance and nudges
 are disabled in `extensions/pi-cymbal.json` (they recommended deactivated tools).

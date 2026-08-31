@@ -54,7 +54,7 @@ Mirror regenerated on every launch — always fresh, no drift.
    MCP lean profile (6 tools, cwd-based `.`) in `config/custom/pi/agent/mcp.json`;
    tested end-to-end via `pi-rw`. Editor-wiring files deleted (user decision).
 2. ~~Per-tool discussion~~ **DONE**: context-mode kept (orthogonal; codebase Qs
-   reroute to repowise). Cymbal trimmed to `changed`+`impact` in `tools.json`
+   reroute to repowise). Cymbal trimmed to `changed`+`impact` via /tools global allowlist
    (13 deactivated; refs→readSeek_refs, search/context/why→repowise, ~3.7k token save).
    Readseek kept whole (edit machinery, no overlap).
 3. ~~Update agent roles~~ **DONE**: dev/recon/reviewer/tests re-tooled.
