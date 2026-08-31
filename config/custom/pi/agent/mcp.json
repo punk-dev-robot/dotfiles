@@ -8,6 +8,11 @@
     "logfire": {
       "url": "https://logfire-eu.pydantic.dev/mcp",
       "lifecycle": "eager"
+    },
+    "repowise": {
+      "command": "repowise",
+      "args": ["mcp", ".", "--transport", "stdio", "--tools", "lean"],
+      "description": "repowise: codebase intelligence — docs, graph, git signals, dead code, decisions"
     }
   }
 }
