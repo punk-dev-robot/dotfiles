@@ -32,9 +32,9 @@ changes are live in new sessions, no `dotter deploy` needed.
 - `skills:` negations after the `"!*"` wipe (exact names — a selector matching
   nothing silently disables everything): `dev` = `cock-tdd`,
   `cock-codebase-design`; `tests` = `cock-tdd`; `recon` = `logfire-query`,
-  `mcp-scripting`; `researcher` = `composio-cli`, `cock-research`, `notion`;
-  `comms` = `linear-cli`, `composio-cli`, `notion`; `impl` and `reviewer` =
-  none (`["!*"]`).
+  `mcp-scripting`; `researcher` = `cock-research`; `comms`, `impl`, and
+  `reviewer` = none (`["!*"]`) — composio/notion/linear skills dropped with
+  the move to direct remote MCP (KUB-22).
 - `extensions:` refinements (layered after global settings, last-match-wins):
   caveman terse mode ON for dev/impl/tests, re-disabled
   (`"!**/pi-caveman/**"`) for reviewer/recon/researcher/comms whose prose is
