@@ -59,3 +59,17 @@ A child's summary is a claim. Check the diff before you believe it.
 Navigate with `read` / `grep` / `find` / `ls` — their output is compacted and cheap.
 `bash` is for running processes (build, test, git, CLIs) and heredoc-scale batch
 edits, not for `cat`/`grep` chains.
+
+## Codebase intelligence routing
+
+When the repowise MCP server is available (repo has `.repowise/`):
+
+- Concept/docs questions ("how does X work", "where is the Y flow") →
+  `repowise_search_codebase`, `repowise_get_answer`.
+- File/symbol triage (usage, fix history, layer) → `repowise_get_context`;
+  full symbol source → `repowise_get_symbol` (`symbol_id` is `path::Name`;
+  `get_context` takes a `targets` array).
+- Change rationale / git archaeology → `repowise_get_why`; touch risk → `repowise_get_risk`.
+- Line-level references stay local: `readSeek_refs` (single hop),
+  `cymbal_impact` (transitive callers), `cymbal_changed` (diff → affected symbols, pre-PR).
+- Exact text/regex with edit anchors → `readSeek_grep`; AST → `readSeek_search`.
