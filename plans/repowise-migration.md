@@ -21,7 +21,7 @@ at the worktree directly.
 
 ## Phase 1 (this session)
 
-### 1. `local/bin/pi-rw` wrapper (new file)
+### 1. `local/bin/pi-rw` wrapper (new file; removed post-merge — worktree gone, purpose served)
 
 Bash script that:
 - wipes + rebuilds `~/.config/pi-repowise` as a mirror of `~/.config/pi/agent`:
