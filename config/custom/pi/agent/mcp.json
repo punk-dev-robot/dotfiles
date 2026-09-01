@@ -10,7 +10,7 @@
       "lifecycle": "lazy"
     },
     "notion": {
-      "url": "https://mcp.notion.com/mcp",
+      "url": "http://localhost:3000/notion",
       "lifecycle": "lazy"
     },
     "gateway": {

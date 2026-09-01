@@ -3,68 +3,90 @@
 # Run: op run --account my.1password.com --env-file=config/shared/claude/secrets.env \
 #   -- agentgateway -f <this file>
 #
-# /mcp      — multiplexed key-auth upstreams (gateway holds credentials)
-# /logfire  — dedicated passthrough path: client does its own OAuth against
-#             upstream, gateway forwards Authorization (full user capabilities)
-binds:
-  - port: 3000
-    listeners:
-      - routes:
-          - matches:
-              - path:
-                  pathPrefix: /mcp
-            backends:
-              - mcp:
-                  targets:
-                    - name: exa
-                      mcp:
-                        host: https://mcp.exa.ai/mcp
-                      policies:
-                        backendAuth:
-                          key: "$EXA_API_KEY"
-                    - name: firecrawl
-                      mcp:
-                        host: https://mcp.firecrawl.dev/v2/mcp
-                      policies:
-                        backendAuth:
-                          key: "$FIRECRAWL_API_KEY"
-                    - name: context7
-                      mcp:
-                        host: https://mcp.context7.com/mcp
-                      policies:
-                        backendAuth:
-                          key:
-                            value: "$CONTEXT7_API_KEY"
-                            location:
-                              header:
-                                name: CONTEXT7_API_KEY
-                    - name: linear
-                      mcp:
-                        host: https://mcp.linear.app/mcp
-                      policies:
-                        backendAuth:
-                          key: "$LINEAR_API_KEY"
-          - matches:
-              - path:
-                  pathPrefix: /logfire
-            policies:
-              backendAuth:
-                passthrough: {}
-            backends:
-              - mcp:
-                  targets:
-                    - name: logfire
-                      mcp:
-                        host: https://logfire-eu.pydantic.dev/mcp
-          - matches:
-              - path:
-                  pathPrefix: /newrelic
-            policies:
-              backendAuth:
-                passthrough: {}
-            backends:
-              - mcp:
-                  targets:
-                    - name: newrelic
-                      mcp:
-                        host: https://mcp.eu.newrelic.com/mcp/
+# /mcp       — multiplexed key-auth upstreams (gateway holds credentials)
+# /logfire   — passthrough: client OAuths against upstream, full user scopes
+# /newrelic  — passthrough
+# /notion    — passthrough
+#
+# NOTE: manage this file by hand; the admin UI (localhost:15000/ui) overwrites
+# the file and wipes comments if used to edit config.
+gateways:
+  default:
+    port: 3000
+    protocol: HTTP
+
+routes:
+  - name: mcp-multiplexed
+    matches:
+      - path:
+          pathPrefix: /mcp
+    backends:
+      - mcp:
+          targets:
+            - name: exa
+              mcp:
+                host: https://mcp.exa.ai/mcp
+              policies:
+                backendAuth:
+                  key: "$EXA_API_KEY"
+            - name: firecrawl
+              mcp:
+                host: https://mcp.firecrawl.dev/v2/mcp
+              policies:
+                backendAuth:
+                  key: "$FIRECRAWL_API_KEY"
+            - name: context7
+              mcp:
+                host: https://mcp.context7.com/mcp
+              policies:
+                backendAuth:
+                  key:
+                    value: "$CONTEXT7_API_KEY"
+                    location:
+                      header:
+                        name: CONTEXT7_API_KEY
+            - name: linear
+              mcp:
+                host: https://mcp.linear.app/mcp
+              policies:
+                backendAuth:
+                  key: "$LINEAR_API_KEY"
+  - name: logfire
+    matches:
+      - path:
+          pathPrefix: /logfire
+    policies:
+      backendAuth:
+        passthrough: {}
+    backends:
+      - mcp:
+          targets:
+            - name: logfire
+              mcp:
+                host: https://logfire-eu.pydantic.dev/mcp
+  - name: newrelic
+    matches:
+      - path:
+          pathPrefix: /newrelic
+    policies:
+      backendAuth:
+        passthrough: {}
+    backends:
+      - mcp:
+          targets:
+            - name: newrelic
+              mcp:
+                host: https://mcp.eu.newrelic.com/mcp/
+  - name: notion
+    matches:
+      - path:
+          pathPrefix: /notion
+    policies:
+      backendAuth:
+        passthrough: {}
+    backends:
+      - mcp:
+          targets:
+            - name: notion
+              mcp:
+                host: https://mcp.notion.com/mcp
