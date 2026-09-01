@@ -1,8 +1,28 @@
 # MCP Stack
 
-Remote MCP servers, lazy-loaded through `pi-mcp-adapter`, replacing composio + per-service CLIs. Linear: KUB-18 (proxy/shared config), KUB-19 (gmail/gcal), both under project “Setup modern mcp tools”.
+Remote MCP servers behind a local **agentgateway** (KUB-18), lazy-loaded through `pi-mcp-adapter`, replacing composio + per-service CLIs. Linear: KUB-18 (proxy/shared config), KUB-19 (gmail/gcal), both under project “Setup modern mcp tools”.
 
-## Servers (`config/custom/pi/agent/mcp.json`)
+## Gateway (KUB-18, 2026-09-01)
+
+All agents (pi, Claude Code, Codex, opencode) share one **agentgateway v1.5.0** on `localhost:3000`. Binary: `~/.local/bin/agentgateway`; config: `config/custom/agentgateway/config.yaml` (dotter → `~/.config/agentgateway/config.yaml`); daemon: `com.user.agentgateway` launchd plist wrapping `op run` (secrets from `config/shared/claude/secrets.env`, resolved from 1Password at start). Admin UI + MCP playground: `localhost:15000/ui` (careful: UI edits overwrite the config file and wipe comments).
+
+| Route | Upstreams | Auth pattern |
+|---|---|---|
+| `/mcp` | exa, firecrawl, context7, linear (multiplexed, tool names prefixed) | gateway-held keys via per-target `backendAuth` (env vars from op run) |
+| `/logfire` | logfire | mcp-remote stdio bridge — OAuth once gateway-side |
+| `/notion` | notion | mcp-remote stdio bridge |
+| `/newrelic` | newrelic | mcp-remote stdio bridge |
+| `/slack` | slack | mcp-remote bridge + pre-registered client (`--static-oauth-client-info`) + `--authorize-param user_scope=…`; app redirect list includes `http://localhost:3118/oauth/callback` |
+
+Key facts (hard-won, don't re-derive):
+
+- **Naive Authorization passthrough fails** for OAuth upstreams: strict MCP SDK clients (pi, Claude Code) enforce RFC 9728 — upstream's protected-resource metadata `resource` ≠ gateway URL → client refuses. agentgateway cannot hold upstream OAuth tokens itself (issue #239 open); ID-JAG/Cross-App-Access needs enterprise IdP + upstream support.
+- **mcp-remote@0.8.3 (pinned) as gateway stdio target** is the working bridge: one browser grant per upstream, tokens `0600` in `~/.mcp-auth/mcp-remote-v1/`, headless proactive refresh. `--authorize-param` solved Slack's `user_scope` (previously believed impossible under any gateway).
+- OAuth grants are **gateway-scoped**: every agent shares them; re-grant = run the same `npx mcp-remote …` command standalone, then restart route sessions.
+- Gateway config hot-reloads on file save; `agentgateway --validate-only -f <cfg>` is the CI-able lint.
+- gmail/calendar deferred (Google: no DCR; spike `--static-oauth-client-info` with pre-registered Google client, KUB-19). repowise stays per-repo stdio.
+- Research trail: `docs/.scratch/research-kub18-mcp-gateway-eval.md`, `docs/.scratch/research-kub18-oauth-bridge.md`.
+## Upstream reference (direct endpoints, pre-gateway; agents now point at the gateway)
 
 | Server | Endpoint | Auth | Lifecycle |
 |---|---|---|---|
