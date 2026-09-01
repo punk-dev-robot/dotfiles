@@ -4,12 +4,15 @@
 #   -- agentgateway -f <this file>
 #
 # /mcp       — multiplexed key-auth upstreams (gateway holds credentials)
-# /logfire   — passthrough: client OAuths against upstream, full user scopes
-# /newrelic  — passthrough
-# /notion    — passthrough
+# /logfire, /newrelic, /notion — mcp-remote stdio bridges: OAuth done ONCE
+#   gateway-side (browser grant on first use), tokens cached+refreshed at
+#   ~/.mcp-auth (0600), shared by all agents. Naive passthrough fails: strict
+#   MCP SDK clients reject RFC 9728 resource mismatch (upstream resource !=
+#   gateway URL).
 #
 # NOTE: manage this file by hand; the admin UI (localhost:15000/ui) overwrites
-# the file and wipes comments if used to edit config.
+# it and wipes comments. UI "MCP/LLM gateway" cards track the simplified
+# top-level mcp:/llm: sections only — routes below are the real config.
 gateways:
   default:
     port: 3000
@@ -55,38 +58,32 @@ routes:
     matches:
       - path:
           pathPrefix: /logfire
-    policies:
-      backendAuth:
-        passthrough: {}
     backends:
       - mcp:
           targets:
             - name: logfire
-              mcp:
-                host: https://logfire-eu.pydantic.dev/mcp
+              stdio:
+                cmd: npx
+                args: ["-y", "mcp-remote@0.8.3", "https://logfire-eu.pydantic.dev/mcp"]
   - name: newrelic
     matches:
       - path:
           pathPrefix: /newrelic
-    policies:
-      backendAuth:
-        passthrough: {}
     backends:
       - mcp:
           targets:
             - name: newrelic
-              mcp:
-                host: https://mcp.eu.newrelic.com/mcp/
+              stdio:
+                cmd: npx
+                args: ["-y", "mcp-remote@0.8.3", "https://mcp.eu.newrelic.com/mcp/"]
   - name: notion
     matches:
       - path:
           pathPrefix: /notion
-    policies:
-      backendAuth:
-        passthrough: {}
     backends:
       - mcp:
           targets:
             - name: notion
-              mcp:
-                host: https://mcp.notion.com/mcp
+              stdio:
+                cmd: npx
+                args: ["-y", "mcp-remote@0.8.3", "https://mcp.notion.com/mcp"]
