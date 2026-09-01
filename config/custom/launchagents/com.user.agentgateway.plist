@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.user.agentgateway</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/opt/homebrew/bin/op</string>
+		<string>run</string>
+		<string>--account</string>
+		<string>my.1password.com</string>
+		<string>--env-file={{home_dir}}/.claude/secrets.env</string>
+		<string>--</string>
+		<string>{{home_dir}}/.local/bin/agentgateway</string>
+		<string>-f</string>
+		<string>{{home_dir}}/.config/agentgateway/config.yaml</string>
+	</array>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>HOME</key>
+		<string>{{home_dir}}</string>
+		<!-- fnm default node first: gateway spawns npx (mcp-remote bridges) -->
+		<key>PATH</key>
+		<string>{{home_dir}}/.local/share/fnm/aliases/default/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+	</dict>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<true/>
+	<!-- op run fails while 1Password is locked; back off instead of crash-looping -->
+	<key>ThrottleInterval</key>
+	<integer>60</integer>
+	<key>StandardOutPath</key>
+	<string>{{home_dir}}/Library/Logs/agentgateway.log</string>
+	<key>StandardErrorPath</key>
+	<string>{{home_dir}}/Library/Logs/agentgateway.log</string>
+</dict>
+</plist>
