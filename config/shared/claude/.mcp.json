@@ -1,24 +1,8 @@
 {
     "mcpServers": {
-        "gateway": {
-            "type": "http",
-            "url": "http://localhost:3000/mcp"
-        },
         "logfire": {
             "type": "http",
             "url": "http://localhost:3000/logfire"
-        },
-        "notion": {
-            "type": "http",
-            "url": "http://localhost:3000/notion"
-        },
-        "newrelic": {
-            "type": "http",
-            "url": "http://localhost:3000/newrelic"
-        },
-        "slack": {
-            "type": "http",
-            "url": "http://localhost:3000/slack"
         }
     }
 }

@@ -56,7 +56,7 @@ Code-mode + lazy discovery: `mcp({ search })` / `describe` / `mcpScript` keep to
 
 Slack MCP requires a **pre-registered internal Slack app** (no DCR). Working recipe, validated end-to-end:
 
-1. Internal app with MCP enabled (Agents & AI Apps → "Slack MCP Server" toggle, or manifest `settings.is_mcp_enabled`), user-token scopes, redirect `http://localhost:3118/callback`. PKCE opt-in NOT needed (irreversible — avoid).
+1. Internal app with MCP enabled (Agents & AI Apps → "Slack MCP Server" toggle, or manifest `settings.is_mcp_enabled`), user-token scopes, redirects `http://localhost:3118/callback` (pi adapter, historical) **and** `http://localhost:3118/oauth/callback` (gateway mcp-remote bridge) — both in the app's redirect list. PKCE opt-in NOT needed (irreversible — avoid).
 2. Adapter config: `auth: "oauth"` + `oauth.clientId/clientSecret/redirectUri` **plus `authorizationParams.user_scope`** with comma-separated scopes — Slack's `v2_user/authorize` ignores the standard `scope` param ("Invalid permissions requested / No scopes requested" otherwise).
 3. No workspace admin approval was required (self-serve internal app + user OAuth).
 
