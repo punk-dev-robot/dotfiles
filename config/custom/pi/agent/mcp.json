@@ -16,7 +16,7 @@
     "gateway": {
       "url": "http://localhost:3000/mcp",
       "lifecycle": "lazy",
-      "description": "agentgateway: exa, firecrawl, linear (tools prefixed by upstream name)"
+      "description": "agentgateway: exa, firecrawl, linear, context7 (tools prefixed by upstream name)"
     },
     "gmail": {
       "url": "https://gmailmcp.googleapis.com/mcp/v1",
@@ -30,23 +30,9 @@
       "url": "http://localhost:3000/newrelic",
       "lifecycle": "lazy"
     },
-    "context7": {
-      "url": "https://mcp.context7.com/mcp/oauth",
-      "lifecycle": "lazy"
-    },
     "slack": {
-      "url": "https://mcp.slack.com/mcp",
-      "lifecycle": "lazy",
-      "auth": "oauth",
-      "oauth": {
-        "clientId": "2966739332885.11949201186418",
-        "clientSecret": "!op read 'op://AI/Swap-Slack-MCP-Client-Secret/password' --account my.1password.com",
-        "redirectUri": "http://localhost:3118/callback",
-        "scope": "canvases:read canvases:write channels:history channels:read chat:write groups:history search:read.private search:read.public users:read",
-        "authorizationParams": {
-          "user_scope": "canvases:read,canvases:write,channels:history,channels:read,chat:write,groups:history,search:read.private,search:read.public,users:read"
-        }
-      }
+      "url": "http://localhost:3000/slack",
+      "lifecycle": "lazy"
     },
     "repowise": {
       "command": "repowise",

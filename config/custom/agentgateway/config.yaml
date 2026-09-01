@@ -87,3 +87,24 @@ routes:
               stdio:
                 cmd: npx
                 args: ["-y", "mcp-remote@0.8.3", "https://mcp.notion.com/mcp"]
+  - name: slack
+    matches:
+      - path:
+          pathPrefix: /slack
+    backends:
+      - mcp:
+          targets:
+            - name: slack
+              stdio:
+                cmd: npx
+                args:
+                  - "-y"
+                  - "mcp-remote@0.8.3"
+                  - "https://mcp.slack.com/mcp"
+                  - "3118"
+                  - "--static-oauth-client-info"
+                  - '{"client_id":"2966739332885.11949201186418","client_secret":"$SLACK_MCP_CLIENT_SECRET"}'
+                  - "--static-oauth-client-metadata"
+                  - '{"scope":"canvases:read canvases:write channels:history channels:read chat:write groups:history search:read.private search:read.public users:read","token_endpoint_auth_method":"client_secret_post"}'
+                  - "--authorize-param"
+                  - "user_scope=canvases:read,canvases:write,channels:history,channels:read,chat:write,groups:history,search:read.private,search:read.public,users:read"
