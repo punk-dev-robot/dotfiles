@@ -6,7 +6,7 @@
   },
   "mcpServers": {
     "logfire": {
-      "url": "https://logfire-eu.pydantic.dev/mcp",
+      "url": "http://localhost:3000/logfire",
       "lifecycle": "lazy"
     },
     "notion": {
@@ -27,7 +27,7 @@
       "lifecycle": "lazy"
     },
     "newrelic": {
-      "url": "https://mcp.eu.newrelic.com/mcp/",
+      "url": "http://localhost:3000/newrelic",
       "lifecycle": "lazy"
     },
     "context7": {
