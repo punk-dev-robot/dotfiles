@@ -2,10 +2,31 @@
   "$schema": "https://opencode.ai/config.json",
   "instructions": ["~/.config/opencode/context-mode.md"],
   "mcp": {
+    // agentgateway (KUB-18): key-auth upstreams multiplexed + OAuth bridges
+    "gateway": {
+      "enabled": true,
+      "type": "remote",
+      "url": "http://localhost:3000/mcp",
+    },
     "logfire": {
       "enabled": false,
       "type": "remote",
-      "url": "https://logfire-eu.pydantic.dev/mcp",
+      "url": "http://localhost:3000/logfire",
+    },
+    "notion": {
+      "enabled": true,
+      "type": "remote",
+      "url": "http://localhost:3000/notion",
+    },
+    "newrelic": {
+      "enabled": false,
+      "type": "remote",
+      "url": "http://localhost:3000/newrelic",
+    },
+    "slack": {
+      "enabled": true,
+      "type": "remote",
+      "url": "http://localhost:3000/slack",
     },
     "tessl": {
       "enabled": true,
@@ -23,8 +44,23 @@
         "/Users/kuba.gaj/Documents/notes",
       ],
     },
+    // merged from formerly-untracked ~/.config/opencode/opencode.json
+    "codebase-memory-mcp": {
+      "enabled": true,
+      "type": "local",
+      "command": ["/Users/kuba.gaj/.local/bin/codebase-memory-mcp"],
+    },
+    "workshop": {
+      "enabled": true,
+      "type": "local",
+      "command": ["/Users/kuba.gaj/.raindrop/bin/raindrop", "workshop", "mcp"],
+    },
   },
-  "plugin": ["context-mode", "@plannotator/opencode@latest"],
+  "plugin": [
+    "context-mode",
+    "@plannotator/opencode@latest",
+    "./plugins/cmux-session.js",
+  ],
   "skills": {
     "paths": ["/Users/kuba.gaj/.config/opencode/skills"],
   },
