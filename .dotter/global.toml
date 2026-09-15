@@ -59,6 +59,7 @@ depends = ["base"]
 "config/custom/agentgateway/config.yaml" = { target = "~/.config/agentgateway/config.yaml", type = "template" }
 "config/omarchy/systemd/agentgateway.service" = "~/.config/systemd/user/agentgateway.service"
 # KUB-122: own maintenance timers (omarchy has none besides snapper-cleanup); post_deploy enables them.
+"config/omarchy/systemd/easyeffects.service" = "~/.config/systemd/user/easyeffects.service" # bound to pipewire.service (audio correction)
 "config/omarchy/systemd/btrfs-space-monitor.service" = "~/.config/systemd/user/btrfs-space-monitor.service"
 "config/omarchy/systemd/btrfs-space-monitor.timer" = "~/.config/systemd/user/btrfs-space-monitor.timer"
 "config/omarchy/systemd/git-maintenance-sync.service" = "~/.config/systemd/user/git-maintenance-sync.service"
@@ -83,9 +84,7 @@ depends = ["base"]
 "config/omarchy/spotify-launcher.conf" = "~/.config/spotify-launcher.conf"
 # KUB-122: udiskie device rules (omarchy autostarts udiskie; config.yml is read regardless of its flags).
 "config/omarchy/udiskie" = "~/.config/udiskie"
-# KUB-122: pipewire drop-ins: pipewire.conf.d (rnnoise "Noise Canceling source"), pipewire-pulse.conf.d (switch-on-connect —
-#   pulse.cmd is only read from pipewire-pulse.conf.d; the museum copy sat in pipewire.conf.d and never loaded); easyeffects presets.
-"config/omarchy/pipewire" = "~/.config/pipewire"
+"config/omarchy/wireplumber" = "~/.config/wireplumber" # pro-audio profile + disable unused mics (plans/soundid-migration.md)
 "config/omarchy/easyeffects" = "~/.local/share/easyeffects" # 8.x preset dir; it migrates+trashes ~/.config/easyeffects/{input,output}
 
 # ─── Omarchy system files (/etc, root-owned copies). KUB-129 / verdicts KUB-94 / ADR 0003.

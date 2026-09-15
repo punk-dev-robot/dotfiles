@@ -1,0 +1,16 @@
+{
+    "output": {
+        "blocklist": [],
+        "convolver#0": {
+            "autogain": false,
+            "bypass": false,
+            "input-gain": 0.0,
+            "ir-width": 100,
+            "kernel-name": "quantum-2.1-harman",
+            "output-gain": 0.0
+        },
+        "plugins_order": [
+            "convolver#0"
+        ]
+    }
+}

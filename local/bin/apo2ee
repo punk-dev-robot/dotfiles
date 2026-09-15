@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+"""apo2ee — AutoEq/APO ParametricEQ.txt → EasyEffects 8 output preset (Equalizer, IIR, APO band mode).
+Usage: apo2ee ParametricEQ.txt ~/.local/share/easyeffects/output/name.json
+"""
+import json, re, sys
+src,out=sys.argv[1],sys.argv[2]
+TYPES={'PK':'Bell','LSC':'Lo-shelf','HSC':'Hi-shelf'}
+pre=0.0; bands=[]
+for l in open(src):
+    if m:=re.match(r'Preamp:\s*([-\d.]+)',l): pre=float(m.group(1))
+    if m:=re.match(r'Filter \d+: ON (\w+) Fc ([\d.]+) Hz Gain ([-\d.]+) dB Q ([\d.]+)',l):
+        t,fc,g,q=m.groups()
+        bands.append({'frequency':float(fc),'gain':float(g),'mode':'APO (DR)','mute':False,'q':float(q),'slope':'x1','solo':False,'type':TYPES[t],'width':4.0})
+ch={f'band{i}':b for i,b in enumerate(bands)}
+eq={'balance':0.0,'bypass':False,'input-gain':pre,'mode':'IIR','num-bands':len(bands),'output-gain':0.0,'pitch-left':0.0,'pitch-right':0.0,'split-channels':False,'left':ch,'right':ch}
+json.dump({'output':{'blocklist':[],'equalizer#0':eq,'plugins_order':['equalizer#0']}},open(out,'w'),indent=4)
+print(out,len(bands),'bands, preamp',pre)

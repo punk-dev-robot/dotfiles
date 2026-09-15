@@ -1,0 +1,16 @@
+# EasyEffects aborts by design when PipeWire goes away (pw_manager.cpp: "No connection to PipeWire.
+# Aborting!"), so a plain exec-once dies on every `systemctl --user restart pipewire`. Bind it to
+# pipewire.service and let systemd restart it. plans/soundid-migration.md
+[Unit]
+Description=EasyEffects (service mode)
+After=pipewire.service wireplumber.service graphical-session.target
+Requires=pipewire.service
+PartOf=pipewire.service
+
+[Service]
+ExecStart=/usr/bin/easyeffects --service-mode --hide-window
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=pipewire.service

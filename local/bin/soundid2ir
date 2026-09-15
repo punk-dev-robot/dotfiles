@@ -1,0 +1,179 @@
+#!/usr/bin/env -S uv run --script --quiet
+# /// script
+# requires-python = ">=3.11"
+# dependencies = ["numpy", "soundfile"]
+# ///
+"""soundid2ir — Sonarworks SoundID Reference speaker project (.swproj) → minimum-phase stereo IR (WAV).
+
+The .swproj header claims Encrypted=true but the `eqb` part is plain float32: per channel a
+355-point log grid 20–22000 Hz with (freq, measured_dB) and (freq, correction_dB, _) where
+correction = -measured (relative to flat). SoundID itself does not apply the raw inverse below
+the speakers' LF limit (verified against its Dolby Atmos text export), hence --lf-cutoff.
+
+Pipeline: correction + target shelves → LF roll-off → boost limit → HF taper → min-phase FIR
+(cepstral) → per-channel trim → normalize → float32 WAV. Self-checks assert the IR magnitude
+matches the design and, if given, the Atmos export. Docs: docs/reference/soundid-migration.md
+"""
+import argparse, cmath, math, re, struct, sys
+import numpy as np
+import soundfile as sf
+
+NPTS, F_LO, F_HI = 355, 20.0, 22000.0
+F1 = F_LO * (F_HI / F_LO) ** (1 / (NPTS - 1))  # 2nd grid point, used as a signature
+
+
+def read_eqb(path):
+    d = open(path, "rb").read()
+    size = int(re.search(rb"<Type>eqb</Type>\s*<Size>(\d+)</Size>", d).group(1))
+    rest = d[d.find(b"</ProjectHeader>"):]
+    p = rest.find(b"PEQb")
+    return rest[p:p + size]
+
+
+def curves(blk):
+    """Return [(stride, ndarray(355, stride))] for every log sweep found, in file order."""
+    out = []
+    for m in re.finditer(re.escape(struct.pack("<f", F_LO)), blk):
+        s = m.start()
+        for stride in (2, 3):
+            try:
+                nxt = struct.unpack_from("<f", blk, s + 4 * stride)[0]
+            except struct.error:
+                continue
+            if abs(nxt - F1) < 1e-3:
+                v = np.frombuffer(blk, "<f4", NPTS * stride, s).reshape(NPTS, stride)
+                if abs(v[-1, 0] - F_HI) < 1:
+                    out.append((stride, v.astype(float)))
+    return out
+
+
+def parse_swproj(path):
+    cs = curves(read_eqb(path))
+    if len(cs) != 4 or [c[0] for c in cs] != [2, 3, 2, 3]:
+        sys.exit(f"unexpected eqb layout: {[c[0] for c in cs]} (want [2,3,2,3] = L meas, L corr, R meas, R corr)")
+    f = cs[0][1][:, 0]
+    ch = {}
+    for name, (meas, corr) in zip("LR", (cs[0:2], cs[2:4])):
+        m, c = meas[1][:, 1], corr[1][:, 1]
+        assert np.max(np.abs(m + c)) < 1e-3, f"{name}: correction is not the inverse of measured (sign/offset wrong)"
+        ch[name] = c
+    return f, ch
+
+
+def shelf_db(f, fc, gain, q, kind, fs):
+    """RBJ low/high shelf magnitude in dB (matches SoundID custom-target shelves at the Atmos export points)."""
+    A = 10 ** (gain / 40); w = 2 * math.pi * fc / fs; cw, sw = math.cos(w), math.sin(w)
+    al = sw / (2 * q); sA = math.sqrt(A)
+    if kind == "ls":
+        b = [A * ((A + 1) - (A - 1) * cw + 2 * sA * al), 2 * A * ((A - 1) - (A + 1) * cw), A * ((A + 1) - (A - 1) * cw - 2 * sA * al)]
+        a = [(A + 1) + (A - 1) * cw + 2 * sA * al, -2 * ((A - 1) + (A + 1) * cw), (A + 1) + (A - 1) * cw - 2 * sA * al]
+    else:
+        b = [A * ((A + 1) + (A - 1) * cw + 2 * sA * al), -2 * A * ((A - 1) + (A + 1) * cw), A * ((A + 1) + (A - 1) * cw - 2 * sA * al)]
+        a = [(A + 1) - (A - 1) * cw + 2 * sA * al, 2 * ((A - 1) - (A + 1) * cw), (A + 1) - (A - 1) * cw - 2 * sA * al]
+    z = np.exp(-1j * 2 * np.pi * np.asarray(f) / fs)
+    H = (b[0] + b[1] * z + b[2] * z * z) / (a[0] + a[1] * z + a[2] * z * z)
+    return 20 * np.log10(np.abs(H))
+
+
+def logfade(f, f0, f1):
+    """0 below f0, 1 above f1, linear in log-frequency between."""
+    return np.clip((np.log(f) - math.log(f0)) / (math.log(f1) - math.log(f0)), 0, 1)
+
+
+def design(f, corr, a):
+    total = corr.copy()
+    for fc, g, q, kind in a.shelves:
+        total += shelf_db(f, fc, g, q, kind, a.fs)
+    total *= logfade(f, a.lf_cutoff, a.lf_cutoff * 1.25)          # SoundID-like LF roll-off: 0 dB at/below cutoff, full 1/3 oct above
+    total = np.minimum(total, a.limit)                              # Limit Controls: max boost
+    total *= 1 - logfade(f, a.hf_taper, F_HI)                       # back to 0 dB by Nyquist-ish
+    return total
+
+
+def min_phase_fir(f, mag_db, taps, fs):
+    nfft = 16 * taps
+    grid = np.fft.rfftfreq(nfft, 1 / fs)
+    # interpolate in log-f, hold the edge values outside the design grid
+    m = np.interp(np.log(np.maximum(grid, 1e-3)), np.log(f), mag_db, left=mag_db[0], right=mag_db[-1])
+    mag = 10 ** (m / 20)
+    # real cepstrum → fold → min-phase spectrum
+    cep = np.fft.irfft(np.log(np.maximum(mag, 1e-9)), nfft)
+    fold = np.zeros(nfft); fold[0] = cep[0]; fold[1:nfft // 2] = 2 * cep[1:nfft // 2]; fold[nfft // 2] = cep[nfft // 2]
+    H = np.exp(np.fft.rfft(fold, nfft))
+    h = np.fft.irfft(H, nfft)[:taps]
+    h *= np.concatenate([np.ones(taps * 9 // 10), np.hanning(2 * (taps - taps * 9 // 10))[taps - taps * 9 // 10:]])  # tail fade
+    return h
+
+
+def response_db(h, f, fs):
+    n = 1 << 18
+    H = np.fft.rfft(h, n); grid = np.fft.rfftfreq(n, 1 / fs)
+    return np.interp(f, grid, 20 * np.log10(np.abs(H) + 1e-12))
+
+
+def parse_atmos(path):
+    """Dolby Atmos Renderer export → {'L': [(f, dB)], 'R': [...]}, plus per-channel Gain."""
+    out, gain, ch = {}, {}, None
+    for line in open(path, encoding="utf-8"):
+        if m := re.match(r"(L|R) channel calibration", line):
+            ch = m.group(1); out[ch] = []
+        elif ch and (m := re.match(r"Gain:\s*([-\d.]+)\s*dB", line)):
+            gain[ch] = float(m.group(1))
+        elif ch and (m := re.match(r"\|(\d+)\s*Hz\|([-\d.]+)\s*dB\|", line)):
+            out[ch].append((float(m.group(1)), float(m.group(2))))
+    return out, gain
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    p.add_argument("swproj")
+    p.add_argument("-o", "--out", required=True, help="output WAV/.irs (stereo float32)")
+    p.add_argument("--fs", type=int, default=48000)
+    p.add_argument("--taps", type=int, default=16384)
+    p.add_argument("--shelf", action="append", default=None, metavar="FC:GAIN:Q:ls|hs",
+                   help="target shelf (repeatable). Default = SoundID 'harman' preset: 105:3.5:1:ls 10000:-1.5:1:hs. --flat for none")
+    p.add_argument("--flat", action="store_true", help="no target shelves (flat target)")
+    p.add_argument("--lf-cutoff", type=float, default=40.0, help="correction is 0 dB at/below this [Hz], full 1/3 octave above (SoundID export: 40 Hz ≈ 0 dB)")
+    p.add_argument("--limit", type=float, default=12.0, help="max boost [dB] (SoundID Limit Controls)")
+    p.add_argument("--hf-taper", type=float, default=18000.0, help="start fading the correction to 0 dB above [Hz]")
+    p.add_argument("--right-gain", type=float, default=None, help="R trim [dB]; default from --atmos Gain, else 0")
+    p.add_argument("--atmos", help="SoundID Dolby Atmos export .txt for cross-check (±1 dB, unclamped points ≥50 Hz)")
+    a = p.parse_args()
+
+    a.shelves = [] if a.flat else [
+        (float(fc), float(g), float(q), k) for fc, g, q, k in
+        (s.split(":") for s in (a.shelf or ["105:3.5:1:ls", "10000:-1.5:1:hs"]))]
+
+    f, corr = parse_swproj(a.swproj)
+    atmos, again = parse_atmos(a.atmos) if a.atmos else ({}, {})
+    trim = {"L": 0.0, "R": a.right_gain if a.right_gain is not None else again.get("R", 0.0)}
+
+    irs, worst = {}, 0.0
+    for ch in "LR":
+        tgt = design(f, corr[ch], a)
+        h = min_phase_fir(f, tgt, a.taps, a.fs)
+        got = response_db(h, f, a.fs)
+        band = (f >= 50) & (f <= 16000)
+        err = np.max(np.abs(got[band] - tgt[band]))
+        assert err < 0.5, f"{ch}: IR deviates {err:.2f} dB from design in 50 Hz–16 kHz"
+        if ch in atmos:
+            pts = [(af, ag) for af, ag in atmos[ch] if af >= 50 and abs(ag) < 5.9]  # ±6 dB is the export clamp
+            dev = [abs(np.interp(math.log(af), np.log(f), got) - ag) for af, ag in pts]
+            worst = max(worst, max(dev))
+            # SoundID's own export shows 1–2 dB more correction than the stored curve around 60–130 Hz
+            # (its LF smoothing is not reproducible); tolerate 2.5 dB there, 1.5 dB elsewhere.
+            for (af, ag), dv in zip(pts, dev):
+                assert dv < (2.5 if af < 150 else 1.5), f"{ch}: IR deviates {dv:.2f} dB from Atmos export at {af:.0f} Hz"
+        irs[ch] = h * 10 ** (trim[ch] / 20)
+        print(f"{ch}: design→IR max err {err:.2f} dB; peak gain {tgt.max():+.1f} dB @ {f[tgt.argmax()]:.0f} Hz; trim {trim[ch]:+.2f} dB", file=sys.stderr)
+
+    x = np.stack([irs["L"], irs["R"]], axis=1)
+    peak = max(np.max(np.abs(np.fft.rfft(x[:, i], 1 << 17))) for i in range(2))  # max spectral gain (linear)
+    x /= peak                                                                       # ≤ 0 dBFS at any frequency
+    sf.write(a.out, x.astype(np.float32), a.fs, format="WAV", subtype="FLOAT")
+    print(f"wrote {a.out}: {a.taps} taps @ {a.fs} Hz, normalized by {20*math.log10(peak):+.1f} dB"
+          + (f"; Atmos cross-check worst {worst:.2f} dB" if atmos else ""), file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

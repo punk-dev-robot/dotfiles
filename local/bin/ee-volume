@@ -1,0 +1,26 @@
+#!/bin/sh
+# ee-volume — omarchy-audio-output-volume, but on the sink EasyEffects actually feeds.
+# EE 8's output node (ee_soe_output_level) has no media.class, so omarchy-audio-output-sink can't
+# follow it through `pactl list sink-inputs` and falls back to easyeffects_sink — whose monitor is
+# passthrough (monitor.channel-volumes=false), so its volume is never applied. Resolve via pw-link.
+# Usage: ee-volume raise|lower|mute-toggle|+N|-N
+set -eu
+sink=$(pw-link -l | awk '/^ee_soe_output_level:output_FL$/ {f=1; next} f && /\|->/ {sub(/.*\|-> /, ""); sub(/:playback_.*/, ""); print; exit}')
+sink=${sink:-$(pactl get-default-sink)}
+
+pct() { pactl get-sink-volume "$sink" | awk -F'/' 'NR==1 {gsub(/[ %]/, "", $2); print $2}'; }
+
+case "${1:-}" in
+  raise) a=+5 ;; lower) a=-5 ;; *) a=${1:-} ;;
+esac
+case "$a" in
+  mute-toggle) pactl set-sink-mute "$sink" toggle ;;
+  [+-][0-9]*)
+    next=$(( $(pct) $a )); [ "$next" -gt 100 ] && next=100; [ "$next" -lt 0 ] && next=0
+    pactl set-sink-mute "$sink" 0; pactl set-sink-volume "$sink" "$next%" ;;
+  *) echo "Usage: ee-volume raise|lower|mute-toggle|+N|-N" >&2; exit 1 ;;
+esac
+
+p=$(pct); icon=volume-high
+{ [ "$(pactl get-sink-mute "$sink")" = "Mute: yes" ] || [ "$p" -eq 0 ]; } && icon=volume-muted
+omarchy-osd -i "$icon" -p "$p"

@@ -153,6 +153,15 @@ o.bind("SUPER + SHIFT + Q", "Kill window", hl.dsp.window.kill())
 -- 2. Apps / misc
 ---------------------------------------------------------------------------
 o.bind("SUPER + CTRL + A", "Toggle pipewire profile", "pw-profile toggle")
+o.bind("SUPER + CTRL + SHIFT + V", "EasyEffects: toggle speakers/headphones preset", "ee-toggle")
+-- Volume keys: omarchy's script can't resolve through EasyEffects 8 (see ee-volume header) → rebind.
+for _, k in ipairs({ "XF86AudioRaiseVolume", "XF86AudioLowerVolume", "XF86AudioMute",
+                     "ALT + XF86AudioRaiseVolume", "ALT + XF86AudioLowerVolume" }) do hl.unbind(k) end
+o.bind("XF86AudioRaiseVolume", "Volume up", "ee-volume raise", { locked = true, repeating = true })
+o.bind("XF86AudioLowerVolume", "Volume down", "ee-volume lower", { locked = true, repeating = true })
+o.bind("XF86AudioMute", "Mute", "ee-volume mute-toggle", { locked = true })
+o.bind("ALT + XF86AudioRaiseVolume", "Volume up precise", "ee-volume +1", { locked = true, repeating = true })
+o.bind("ALT + XF86AudioLowerVolume", "Volume down precise", "ee-volume -1", { locked = true, repeating = true })
 -- KUB-128: Vicinae is the primary launcher (user service vicinae.service). Omarchy menu moves SUPER+SPACE → SUPER+SHIFT+D
 -- (SUPER+SPACE itself is unbound above and now runs the floating-toggle WM binding).
 -- Omarchy's SUPER+ALT+SPACE (apps menu) and the other omarchy-menu binds stay.

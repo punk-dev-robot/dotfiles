@@ -2,17 +2,20 @@
 
 ## Hardware
 
-- **Interface:** PreSonus Quantum ES2 (USB-C, class-compliant)
-- **Host:** Framework 13 laptop
+- **Interface:** PreSonus Quantum ES2 (USB-C, class-compliant) — Linux channel map, Rode input chain and
+  room/headphone correction: [soundid-migration.md](../soundid-migration.md)
+- **Host:** omarchy desktop (2026-09; the quantum/latency sections below date from the Framework 13 era —
+  no `10-low-latency.conf` is deployed now, PipeWire runs its default quantum 1024 and `pw-profile` still works)
 - **Use cases:** eDrum kit monitoring (low-latency), video calls (Meet/Zoom), voice-to-text (voxtype)
 
 ## Config Files
 
 | File | Purpose |
 |------|---------|
-| `config/pipewire/pipewire.conf.d/10-low-latency.conf` | Quantum limits and sample rate |
-| `config/pipewire/pipewire.conf.d/99-input-denoising.conf` | RNNoise filter chain for mic input |
-| `config/pipewire/pipewire.conf.d/98-switch-on-connect.conf` | Auto-switch to newly connected devices |
+| `config/omarchy/pipewire/pipewire.conf.d/99-input-denoising.conf` | RNNoise filter chain for the Rode (Quantum input 1) |
+| `config/omarchy/wireplumber/wireplumber.conf.d/51-disable-unused-mics.conf` | Hide unused mics so the default source stays put |
+| `config/omarchy/easyeffects/` | Output presets + IRs (speaker/headphone correction), see soundid-migration.md |
+| ~~`98-switch-on-connect.conf`~~ | Removed 2026-09: made the last-enumerated mic default on every restart |
 | `config/systemd/user/voxtype.service.d/audio.conf` | Pin voxtype to 48kHz sample rate |
 | `config/hypr/xdph.conf` | Screencopy max_fps (portal screen sharing) |
 | `local/bin/pw-profile` | Toggle music/call quantum modes |

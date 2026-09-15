@@ -1,0 +1,15 @@
+#!/bin/sh
+# ee-toggle — flip EasyEffects output preset between speakers and headphones.
+# Quantum ES 2 phones mirror the main outs, so per-device auto-switch is impossible; this is the manual switch.
+# Usage: ee-toggle [speakers|headphones]   (no arg = toggle, based on the preset EasyEffects reports as loaded)
+set -eu
+SPEAKERS=quantum-2.1-soundid-harman
+HEADPHONES=hd490-autoeq-harman
+
+case "${1:-}" in
+  speakers)   next=$SPEAKERS ;;
+  headphones) next=$HEADPHONES ;;
+  *) [ "$(easyeffects -a output 2>/dev/null | tr -d '[:space:]')" = "$SPEAKERS" ] && next=$HEADPHONES || next=$SPEAKERS ;;
+esac
+easyeffects -l "$next"
+notify-send -a easyeffects -i audio-speakers "EasyEffects: $next"
