@@ -13,7 +13,7 @@ fpath+=( $ZSH_CACHE_DIR/completions )
 znap source ohmyzsh/ohmyzsh lib/{functions,git}.zsh
 
 # oh-my-zsh plugins — all in one znap source call (one clone-check subshell vs N)
-# removed: ansible (unused at company), node (fnm owns it), pip/python (uv ecosystem), yarn (using pnpm)
+# removed: ansible (unused at company), node (mise owns it), pip/python (uv ecosystem), yarn (using pnpm)
 znap source ohmyzsh/ohmyzsh \
   plugins/aliases \
   plugins/eza \

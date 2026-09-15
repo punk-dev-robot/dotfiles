@@ -19,7 +19,7 @@ is_mac=false
 
 # Counters
 if $is_mac; then
-    total_steps=10
+    total_steps=11
 else
     total_steps=9
 fi
@@ -95,6 +95,15 @@ if $is_mac; then
         print_error "Failed to update some casks"
     fi
     brew cleanup
+    print_separator
+
+    # mise (node, terraform). omarchy-update does this on Linux.
+    print_section "Updating mise tools"
+    if MISE_MINIMUM_RELEASE_AGE=0 mise up; then
+        print_success "mise tools updated"
+    else
+        print_error "Failed to update mise tools"
+    fi
     print_separator
 
     # OS / App Store updates

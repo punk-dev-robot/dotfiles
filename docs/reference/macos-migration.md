@@ -115,8 +115,8 @@ defaults import com.knollsoft.Hookshot "$EXT/rectangle-pro.plist"
 ### Phase 5: Runtime versions
 
 ```bash
-# Node via fnm
-fnm install 22
+# Node via mise (config: config/mac/mise/config.toml, deployed by dotter)
+mise install
 
 # Python via pyenv (if needed beyond system python)
 # pyenv install 3.13

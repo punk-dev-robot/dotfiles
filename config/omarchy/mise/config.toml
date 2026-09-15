@@ -12,3 +12,6 @@ pi = "latest"
 
 [settings.upgrade]
 auto_prune = false
+
+[settings]
+idiomatic_version_file_enable_tools = ["node"]  # honour .nvmrc / .node-version (off by default since mise 2025.10)

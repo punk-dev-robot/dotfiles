@@ -1,0 +1,6 @@
+[tools]
+node = "lts"
+terraform = "1.12.2"
+
+[settings]
+idiomatic_version_file_enable_tools = ["node"]  # honour .nvmrc / .node-version (off by default since mise 2025.10)

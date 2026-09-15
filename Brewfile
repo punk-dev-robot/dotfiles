@@ -62,7 +62,6 @@ brew "tpm"
 
 # ─── Dev Runtimes & Tooling ─────────────────────────────────────
 
-brew "fnm"
 brew "node"
 brew "pnpm"
 brew "pyenv"

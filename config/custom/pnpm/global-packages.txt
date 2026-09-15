@@ -9,6 +9,6 @@ context-mode
 firebase-tools
 headroom-ai
 # prime-agent (PrimeIntellect coding agent, pi fork): NOT via pnpm — official curl installer
-# uses npm -g under the hood, so it lands in the current fnm node and strands on default bumps.
+# uses npm -g under the hood, so it lands in the current mise node and strands on node version bumps.
 # Re-run after a node default bump (or use `prime-agent update`):
 #   curl -fsSL https://app.primeintellect.ai/prime-agent/install.sh | sh

@@ -9,9 +9,9 @@ path+=("./node_modules/.bin")
 path+=("$HOME/.node_modules/bin")
 path+=("$HOME/.yarn/bin")
 path+=("$HOME/.npm-global/bin")
+path=("$HOME/.local/share/mise/shims" $path)  # node via mise (must beat homebrew node on mac)
 export PNPM_HOME="$HOME/.local/share/pnpm"  # pnpm reads this for global installs
 path=("$PNPM_HOME/bin" $path)               # prepend: must win over per-version npm bins
-znap eval fnm 'fnm env --use-on-cd'
 znap eval pnpm 'pnpm completion zsh'
 
 # docker
@@ -32,7 +32,7 @@ znap eval uv 'uv generate-shell-completion zsh'
 
 # lua5.1 is in /usr/local/bin
 export LUAROCKS_CONFIG="$XDG_CONFIG_HOME/luarocks/config-5.4.lua"
-# TODO: this unsets some PATH like the one for fnm
+# TODO: this clobbers PATH entries added earlier
 # znap eval luarocks 'luarocks path'
 
 # git
