@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
-# KUB-18: shared MCP gateway. Dotter TEMPLATE: work routes (logfire, newrelic,
-# slack) are mac-only — an unset env var anywhere in this file is a hard parse
+# KUB-18: shared MCP gateway. Dotter TEMPLATE: work routes (newrelic, slack)
+# are mac-only — an unset env var anywhere in this file is a hard parse
 # failure on the host that lacks the secret (KUB-78 D2).
 # Run (mac):   op run --account my.1password.com --env-file=config/shared/claude/secrets.env \
 #   -- agentgateway -f <this file>
@@ -57,7 +57,8 @@ routes:
               policies:
                 backendAuth:
                   key: "$LINEAR_API_KEY"
-{{#if is_macos}}
+  # logfire: OAuth via mcp-remote, no secret → all hosts (KUB-149 P2). Same
+  # logfire-eu tenant that pi-otel exports to.
   - name: logfire
     matches:
       - path:
@@ -69,6 +70,7 @@ routes:
               stdio:
                 cmd: npx
                 args: ["-y", "mcp-remote@0.8.3", "https://logfire-eu.pydantic.dev/mcp"]
+{{#if is_macos}}
   - name: newrelic
     matches:
       - path:

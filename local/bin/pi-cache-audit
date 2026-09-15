@@ -1,0 +1,64 @@
+#!/usr/bin/env node
+// pi-cache-audit — prompt-cache + compaction audit over local pi session JSONL.
+// Offline fallback for the Logfire queries in docs/reference/pi-context-window.md.
+// Usage: pi-cache-audit [days=4] [sessionsDir=~/.pi/agent/sessions]
+// KUB-149 / KUB-153.
+const fs = require("fs");
+const path = require("path");
+
+const days = Number(process.argv[2] || 4);
+const root = process.argv[3] || path.join(process.env.HOME, ".pi/agent/sessions");
+const since = Date.now() - days * 864e5;
+// $/M base input, cache read — pi's cost field assumes 5m writes (1.25x); we run 1h (2x).
+const price = {
+	"claude-fable-5-1": [10, 0.25], "claude-fable-5": [10, 0.25],
+	"claude-opus-5": [5, 0.5], "claude-opus-4-8": [5, 0.5], "claude-sonnet-5": [2, 0.2],
+};
+
+const files = [];
+(function walk(d) {
+	for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+		const p = path.join(d, e.name);
+		if (e.isDirectory()) walk(p);
+		else if (p.endsWith(".jsonl") && fs.statSync(p).mtimeMs > since) files.push(p);
+	}
+})(root);
+
+const cat = {};
+const bump = (k, cw, p) => {
+	const c = (cat[k] ??= { n: 0, cw: 0, usd: 0 });
+	c.n++; c.cw += cw;
+	if (p) c.usd += (cw * (p[0] * 2 - p[1])) / 1e6; // waste vs. having read it, at 1h write price
+};
+let totalCW = 0, missCW = 0, compactions = 0, turns = 0, est = 0;
+const maxima = [];
+for (const f of files) {
+	const L = fs.readFileSync(f, "utf8").split("\n").filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+	let last = null, max = 0, comp = 0, model = "";
+	for (const o of L) {
+		if (o.type === "compaction") { compactions++; comp++; }
+		const m = o.message;
+		if (!(m?.role === "assistant" && m.usage)) continue;
+		const u = m.usage, p = price[m.model];
+		turns++; est += u.cost?.total || 0; totalCW += u.cacheWrite || 0; model = m.model;
+		max = Math.max(max, u.totalTokens || 0);
+		if ((u.cacheWrite || 0) > 20000) {
+			missCW += u.cacheWrite;
+			const drop = (m.diagnostics || []).some((d) => d.type === "anthropic_input_transformations" && (d.details?.transformations || []).some((t) => t.type === "thinking_dropped"));
+			const gap = last ? (m.timestamp - last.timestamp) / 6e4 : null;
+			const k = !last ? "session-start" : drop ? "thinking_dropped" : gap > 60 ? "idle>60m" : gap > 5 ? "idle 5-60m" : "other(<5m, no diag)";
+			bump(k, u.cacheWrite, p);
+		}
+		last = m;
+	}
+	if (max) maxima.push({ f: path.basename(f).slice(0, 19), max, comp, model });
+}
+
+console.log(`${files.length} sessions, ${turns} turns, last ${days}d — pi-estimated spend $${est.toFixed(0)}`);
+console.log(`cacheWrite total ${(totalCW / 1e6).toFixed(1)}M; in miss turns ${(missCW / 1e6).toFixed(1)}M (${((missCW / totalCW) * 100).toFixed(0)}%)`);
+console.log("\nmiss turns by cause              turns  cacheWrite  waste@1h");
+for (const [k, c] of Object.entries(cat).sort((a, b) => b[1].cw - a[1].cw))
+	console.log(`  ${k.padEnd(28)} ${String(c.n).padStart(5)}  ${(c.cw / 1e6).toFixed(1).padStart(8)}M  $${c.usd.toFixed(0)}`);
+console.log(`\ncompactions: ${compactions}; sessions > 270K: ${maxima.filter((s) => s.max > 27e4).length}`);
+for (const s of maxima.sort((a, b) => b.max - a.max).slice(0, 5))
+	console.log(`  ${s.f} max=${s.max} compactions=${s.comp} ${s.model}`);
