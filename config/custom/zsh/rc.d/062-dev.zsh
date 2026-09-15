@@ -9,7 +9,6 @@ path+=("./node_modules/.bin")
 path+=("$HOME/.node_modules/bin")
 path+=("$HOME/.yarn/bin")
 path+=("$HOME/.npm-global/bin")
-path=("$HOME/.local/share/mise/shims" $path)  # node via mise (must beat homebrew node on mac)
 export PNPM_HOME="$HOME/.local/share/pnpm"  # pnpm reads this for global installs
 path=("$PNPM_HOME/bin" $path)               # prepend: must win over per-version npm bins
 znap eval pnpm 'pnpm completion zsh'

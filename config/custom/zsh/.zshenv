@@ -44,6 +44,7 @@ export ZDOTDIR=${XDG_CONFIG_HOME:=~/.config}/zsh
 # for $HOME in each $path entry.
 path=(
     ~/.local/bin
+    ~/.local/share/mise/shims  # node etc. via mise; here (not rc.d) so ssh/scripts see it too; must beat homebrew node
     /opt/homebrew/bin
     /opt/homebrew/sbin
     $path
