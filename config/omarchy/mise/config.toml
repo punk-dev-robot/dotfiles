@@ -1,0 +1,14 @@
+[tools]
+checkov = "latest"
+claude = "latest"
+codex = "latest"
+copilot = "latest"
+gh = "latest"
+hadolint = "latest"
+node = "26.8.1"
+opa = "latest"
+opencode = "latest"
+pi = "latest"
+
+[settings.upgrade]
+auto_prune = false

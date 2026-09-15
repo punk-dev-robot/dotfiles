@@ -1,13 +1,8 @@
 ##
 # Plugins from frameworks
 
-# Prezto
-(( $+commands[yay] )) && zstyle ':prezto:module:pacman' frontend 'yay'
-if [[ "$OSTYPE" == linux* ]]; then
-  znap source sorin-ionescu/prezto modules/{docker,pacman}
-else
-  znap source sorin-ionescu/prezto modules/docker
-fi
+# Prezto (pacman module dropped: pac* aliases live in 090-aliases.zsh on omarchy wrappers)
+znap source sorin-ionescu/prezto modules/docker
 
 # omz plugins outside the framework need ZSH_CACHE_DIR (kubectl etc. write completions there)
 export ZSH_CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}/ohmyzsh
@@ -30,7 +25,6 @@ znap source ohmyzsh/ohmyzsh \
 
 if [[ "$OSTYPE" == linux* ]]; then
   znap source ohmyzsh/ohmyzsh \
-    plugins/archlinux \
     plugins/podman \
     plugins/systemadmin \
     plugins/systemd

@@ -58,6 +58,8 @@ depends = ["base"]
 # KUB-79: agentgateway as a systemd user unit. config.yaml is a template (work routes are mac-only).
 "config/custom/agentgateway/config.yaml" = { target = "~/.config/agentgateway/config.yaml", type = "template" }
 "config/omarchy/systemd/agentgateway.service" = "~/.config/systemd/user/agentgateway.service"
+# mise tools (node, AI CLIs, hadolint/opa/checkov); `omarchy-update` runs `mise up`
+"config/omarchy/mise/config.toml" = "~/.config/mise/config.toml"
 # KUB-122: own maintenance timers (omarchy has none besides snapper-cleanup); post_deploy enables them.
 "config/omarchy/systemd/easyeffects.service" = "~/.config/systemd/user/easyeffects.service" # bound to pipewire.service (audio correction)
 "config/omarchy/systemd/btrfs-space-monitor.service" = "~/.config/systemd/user/btrfs-space-monitor.service"

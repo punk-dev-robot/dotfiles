@@ -240,6 +240,21 @@ function upd {
   source "$HOME/.local/bin/update-system.zsh"
 }
 
+# pacman via omarchy wrappers (Linux only). Direct `yay -Syu` is blocked by
+# omarchy's pacman guard hook; omarchy-pkg-* are `--noconfirm --needed`.
+if (( $+commands[omarchy-update] )); then
+  alias pacU='omarchy-update'          # full system upgrade
+  alias paci='omarchy-pkg-aur-add'     # install repo or AUR pkg(s)
+  alias pacx='omarchy-pkg-drop'        # remove pkg(s) -Rns
+  alias pacI='omarchy-pkg-aur-install' # fzf picker install (repo+AUR)
+  alias pacX='omarchy-pkg-remove'      # fzf picker remove
+  alias pacs='yay -Ss'                 # search
+  alias pacq='yay -Si'                 # remote info
+  alias pacQ='yay -Qi'                 # local info
+  alias pacown='pacman -Qo'
+  alias pacls='pacman -Ql'
+fi
+
 alias psc='ps xawf -eo pid,user,cgroup,args'
 
 # journalctl (Linux only)
@@ -284,7 +299,6 @@ oc() {
         OP_SERVICE_ACCOUNT_TOKEN= op run --account my.1password.com --env-file="$XDG_CONFIG_HOME/claude/secrets.env" -- script -q /dev/null -c "opencode $*"
     fi
 }
-alias mem='basic-memory'
 
 # oh-my-pi with 1Password secret injection (same pattern as cld/oc)
 om() {

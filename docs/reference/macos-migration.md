@@ -125,10 +125,8 @@ fnm install 22
 rustup-init
 
 # UV tools
-uv tool install basic-memory
 uv tool install huggingface-hub
 uv tool install serena-agent
-uv tool install specify-cli
 ```
 
 ### Phase 6: Post-install configuration

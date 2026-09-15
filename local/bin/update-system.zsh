@@ -21,7 +21,7 @@ is_mac=false
 if $is_mac; then
     total_steps=10
 else
-    total_steps=11
+    total_steps=9
 fi
 current_step=0
 failed_steps=0
@@ -111,85 +111,6 @@ if $is_mac; then
         print_info "mas not installed, skipping App Store updates"
     fi
     print_separator
-else
-    # Check for news
-    print_section "Checking for news"
-    news_output=$(yay -Pw 2>/dev/null)
-    if [[ -n "$news_output" ]]; then
-        echo "$news_output"
-        print_success "News found - please review above"
-        echo -e "${YELLOW}Press Enter to continue...${RESET}"
-        read -r
-    else
-        print_info "No news"
-    fi
-    print_separator
-
-    # Remove orphans
-    print_section "Removing orphan packages"
-    # Use ${(f)...} to split output on newlines into array - zsh doesn't split
-    # unquoted variables on whitespace by default (unlike bash)
-    orphans=(${(f)"$(yay --quiet --query --deps --unrequired)"})
-    if (( ${#orphans} > 0 )); then
-        # Expand array properly so each package is a separate argument
-        yay --remove --recursive "${orphans[@]}"
-        if [[ $? -eq 0 ]]; then
-            print_success "Orphans removed"
-        else
-            print_error "Failed to remove some orphans"
-        fi
-    else
-        print_info "No orphans to remove"
-    fi
-    print_separator
-
-    # Update system packages
-    print_section "Updating repository and AUR packages"
-    yay -Syu --devel
-    if [[ $? -eq 0 ]]; then
-        print_success "System packages updated"
-    else
-        print_error "Failed to update some packages"
-    fi
-
-    # Update neovim nightly
-    yay -S --needed neovim-nightly-bin
-    if [[ $? -eq 0 ]]; then
-        print_success "Neovim nightly updated"
-    else
-        print_error "Failed to update Neovim nightly"
-    fi
-    print_separator
-
-    # Update firmware
-    print_section "Updating firmware"
-    fwupdmgr refresh >/dev/null 2>&1
-    refresh_exit_code=$?
-    if [[ $refresh_exit_code -eq 0 ]]; then
-        print_info "Firmware metadata refreshed"
-    elif [[ $refresh_exit_code -eq 2 ]]; then
-        print_info "Firmware metadata already up to date"
-    else
-        print_error "Failed to refresh firmware metadata"
-    fi
-
-    # Check if updates are available
-    fwupdmgr get-updates >/dev/null 2>&1
-    check_exit_code=$?
-    if [[ $check_exit_code -eq 2 ]]; then
-        print_info "No firmware updates available"
-    elif [[ $check_exit_code -eq 0 ]]; then
-        # Updates are available, install them
-        fwupdmgr update
-        if [[ $? -eq 0 ]]; then
-            print_success "Firmware updated"
-        else
-            print_error "Failed to update firmware"
-        fi
-    else
-        print_error "Failed to check for firmware updates"
-    fi
-    print_separator
 fi
 
 # Global node tools (shared)
@@ -230,17 +151,18 @@ else
 fi
 print_separator
 
-# herdr (shared)
+# herdr (shared). brew (mac) / herdr-bin AUR (omarchy) own the binary and already updated it
+# above; `herdr update` is only for self-installed copies (and refuses to run inside herdr).
 print_section "Updating herdr"
-if command -v herdr >/dev/null 2>&1; then
-    herdr update
-    if [[ $? -eq 0 ]]; then
-        print_success "herdr updated"
-    else
-        print_error "Failed to update herdr"
-    fi
-else
+herdr_bin=$(command -v herdr)
+if [[ -z "$herdr_bin" ]]; then
     print_info "herdr not installed, skipping"
+elif [[ "$herdr_bin" == /opt/homebrew/* ]] || pacman -Qo "$herdr_bin" >/dev/null 2>&1; then
+    print_info "herdr owned by package manager — already updated"
+elif herdr update; then
+    print_success "herdr updated"
+else
+    print_error "Failed to update herdr (self-update must run outside herdr)"
 fi
 print_separator
 
@@ -286,6 +208,28 @@ else
     print_error "Failed to update znap packages"
 fi
 print_separator
+
+# Linux system update last: omarchy-update may prompt to reboot at the end
+if ! $is_mac; then
+    # omarchy-update: snapshot, keyring, pacman -Syu, migrations, AUR (-git via
+    # `yay --devel --save`), mise up, orphans, reboot check. Direct `yay -Syu` is
+    # blocked by omarchy's pacman guard hook.
+    print_section "Omarchy update"
+    if omarchy-update; then
+        print_success "Omarchy updated"
+    else
+        print_error "omarchy-update failed (see /tmp/omarchy-update.log)"
+    fi
+    print_separator
+
+    print_section "Updating firmware"
+    if omarchy-update-firmware; then
+        print_success "Firmware checked"
+    else
+        print_error "Firmware update failed"
+    fi
+    print_separator
+fi
 
 # Clear caches (last, so next shell re-evals against the updated world)
 print_section "Clearing caches"

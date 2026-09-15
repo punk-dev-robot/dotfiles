@@ -51,7 +51,6 @@ complete -C aws_completer aws
 
 # ai
 # CLAUDE_CONFIG_DIR and CODEX_HOME moved to .zshenv — must apply to non-interactive shells too
-znap eval basic-memory 'basic-memory --show-completion'  
 # znap eval thv 'thv completion zsh' 
 
 
