@@ -1,5 +1,5 @@
 [tools]
-node = "lts"
+node = "26"  # major pin: `mise up` follows patch/minor; same major as omarchy
 terraform = "1.12.2"
 
 [settings]
