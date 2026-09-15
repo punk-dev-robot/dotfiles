@@ -40,7 +40,7 @@
     "npm:@tmustier/pi-usage-extension",
     "npm:@zhcsyncer/pi-recap",
     "npm:@firstpick/pi-extension-tools",
-    "git:github.com/punk-dev-robot/pi-otel@feat/thinking-dropped-attr",
+    "git:github.com/punk-dev-robot/pi-otel@fix/otlp-http-per-signal-paths",
     "npm:@juicesharp/rpiv-ask-user-question",
     "npm:@pi-kaush/pi-btw-with-imports",
     "npm:pi-cc-header",
@@ -69,15 +69,15 @@
   },
   "compaction": {
     "enabled": true,
-    "reserveTokens": 64000,
-    "keepRecentTokens": 40000
+    "reserveTokens": 100000,
+    "keepRecentTokens": 20000
   },
   "observational-memory": {
     "observeAfterTokens": 10000,
     "reflectAfterTokens": 20000,
     "compactAfterTokens": 81000,
     "compactAfterTokensMode": "ratio",
-    "compactAfterTokensRatio": 0.18,
+    "compactAfterTokensRatio": 0.63,
     "observationsPoolMaxTokens": 20000,
     "observationsPoolTargetTokens": 10000,
     "agentMaxTurns": 16,
@@ -90,7 +90,7 @@
     "passive": false,
     "debugLog": false
   },
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "quietStartup": false,
   "collapseChangelog": true,
   "clearOnStart": true,
