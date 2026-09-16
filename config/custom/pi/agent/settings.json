@@ -25,7 +25,6 @@
     "npm:pi-advisor-flow",
     "npm:pi-cymbal",
     "npm:@ogulcancelik/pi-herdr",
-    "npm:@yassimba/pi-herdr-worktree",
     "npm:pi-web-access",
     {
       "source": "npm:context-mode",
@@ -34,9 +33,6 @@
       ]
     },
     "npm:@plannotator/pi-extension",
-    "npm:pi-mermaid",
-    "npm:@tmustier/pi-usage-extension",
-    "npm:@zhcsyncer/pi-recap",
     "npm:@firstpick/pi-extension-tools",
     "npm:@juicesharp/rpiv-ask-user-question",
     "npm:@pi-kaush/pi-btw-with-imports",
@@ -103,10 +99,11 @@
     "serviceName": "pi",
     "captureContent": "full",
     "spanNaming": "genai",
+    "logLevel": "warn",
     "sampleRatio": 1,
     "signals": {
       "traces": true,
-      "metrics": true,
+      "metrics": false,
       "logs": true
     }
   },
