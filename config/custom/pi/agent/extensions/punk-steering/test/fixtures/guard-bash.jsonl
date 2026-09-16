@@ -1,0 +1,50 @@
+{"cmd": "sleep 5", "expect": "pass"}
+{"cmd": "cd /home/kuba/dotfiles && git show 651424b --stat", "expect": "pass"}
+{"cmd": "cd /home/kuba/dotfiles && node --test x.test.ts 2>&1 | tail -60", "expect": "pass  # pipe filter"}
+{"cmd": "cd /x/steering && for f in *.md; do echo \"=== $f ===\"; cat \"$f\"; done", "expect": "violation:cat"}
+{"cmd": "mkdir -p /x/docs/.scratch && echo ok", "expect": "pass"}
+{"cmd": "cd ~/dotfiles && hyprctl reload >/dev/null && hyprctl configerrors | head -3", "expect": "pass  # pipe filter"}
+{"cmd": "grep -n \"APPEND_SYSTEM\" /home/kuba/dotfiles/AGENTS.md", "expect": "violation:grep"}
+{"cmd": "cd /home/kuba/dotfiles && sed -n '166,172p' docs/x.md", "expect": "violation:sed -n"}
+{"cmd": "P=/x; find $P -maxdepth 4 -name \"*.d.ts\" | head -20", "expect": "violation:find"}
+{"cmd": "D=/x/docs; sed -n 360,420p $D/extensions.md; echo ======; grep -n \"x\" $D/extensions.md", "expect": "violation:sed -n"}
+{"cmd": "git show --stat --format='%H' 651424b | head -60", "expect": "pass  # pipe filter"}
+{"cmd": "git --no-pager diff --no-ext-diff config/settings.json", "expect": "pass"}
+{"cmd": "cd ~/dotfiles && grep -n \"^## \" config/APPEND_SYSTEM.md", "expect": "violation:grep"}
+{"cmd": "hm() { ssh mac \"export PATH=/opt/homebrew/bin:\\$PATH; herdr $*\"; }; hm pane list 2>&1 | head -30", "expect": "pass  # pipe filter"}
+{"cmd": "ssh -o BatchMode=yes mac 'cd ~/.repowise/web; python3 - <<EOF\nprint(1)\nEOF' 2>&1 | fold -w 200 | head -30", "expect": "pass  # pipe filter"}
+{"cmd": "cd ~/dev/swapc/shopai && sqlite3 .repowise/wiki.db \".tables\" | tr ' ' '\n' | grep -v '^$' | head -20", "expect": "pass  # pipe filter"}
+{"cmd": "cd /x && grep -rln \"ActorRole\" --include=\"*.ts\" apps packages 2>/dev/null", "expect": "violation:grep"}
+{"cmd": "cd /x/apps/gateway && pnpm jest 2>&1 | tail -15", "expect": "pass  # pipe filter"}
+{"cmd": "cd /x && pnpm build:packages 2>&1 | tail -60", "expect": "pass  # pipe filter"}
+{"cmd": "cd /x && sed -n '1,80p' apps/core-api/src/x.service.ts", "expect": "violation:sed -n"}
+{"cmd": "cd /x && git status --short && git branch --show-current", "expect": "pass"}
+{"cmd": "git diff", "expect": "pass"}
+{"cmd": "cd ~/dotfiles && git check-ignore -v plans/x.md; git diff --stat -- docs/x.md", "expect": "pass"}
+{"cmd": "cd /tmp/apb && ls; npm pack @x/y@0.25.0 2>&1 | tail -3", "expect": "violation:ls"}
+{"cmd": "cat /tmp/pr5352-body.md; sed -n 1,20p /tmp/pr5352-botreviews.txt", "expect": "violation:cat"}
+{"cmd": "sleep 120; echo", "expect": "pass"}
+{"cmd": "WT=~/dev/swapc/x\ncd \"$WT\"\npnpm --filter web lint 2>&1 | tail -80", "expect": "pass  # pipe filter"}
+{"cmd": "terraform fmt -check -recursive envs modules 2>&1 | head; git push origin HEAD 2>&1 | tail -3", "expect": "pass  # pipe filter"}
+{"cmd": "ls -la ~/.local/bin/repowise-augment; file ~/.local/bin/repowise-augment", "expect": "violation:ls"}
+{"cmd": "cd ~/dev/swapc/shopmr && wt switch --create AGIK-351 2>&1", "expect": "pass"}
+{"cmd": "grep -rn \"class FullTextSearch\" ~/.local/share/uv/tools/repowise/lib/python3.13/site-packages/repowise/ | head -2", "expect": "violation:grep"}
+{"cmd": "head -20 /Users/kuba.gaj/.local/state/punk/handoffs/shopmr/x.md", "expect": "violation:head"}
+{"cmd": "cd /x && cat -n apps/pre-ingestion/src/x.spec.ts", "expect": "violation:cat"}
+{"cmd": "open /x/research/agip-257.html && echo opened", "expect": "pass"}
+{"cmd": "git log --oneline -3; git reset --hard HEAD~1 && git log --oneline -2", "expect": "pass"}
+{"cmd": "rm /x/PLAN.md && echo deleted", "expect": "pass"}
+{"cmd": "cd /x/apps/core-api && pnpm lint 2>&1 | grep -E \"error|warning\" | head -5", "expect": "pass  # pipe filter"}
+{"cmd": "cd /home/kuba/dotfiles && grep -n x file.md  # allow: one-off check", "expect": "override"}
+{"cmd": "git grep -n APPEND_SYSTEM", "expect": "pass"}
+{"cmd": "cd /home/kuba/dotfiles && python3 -c \"import json;print(json.load(open('s.json')))\"", "expect": "violation:python3 -c"}
+{"cmd": "python3 - <<'EOF'\nimport re\nEOF", "expect": "violation:python3 -"}
+{"cmd": "cd /home/kuba/dotfiles && perl -pi -e 's/a/b/' f.txt", "expect": "violation:perl -pi"}
+{"cmd": "cd /home/kuba/dotfiles && sed -i 's/a/b/' f.txt", "expect": "violation:sed -i"}
+{"cmd": "cd $PWD && git status", "expect": "violation:cd $PWD"}
+{"cmd": "cd /home/kuba/dotfiles && git status", "expect": "pass  # cwd=/home/kuba/dotfiles \u2192 violation:cd <cwd>; cwd=/other \u2192 pass"}
+{"cmd": "dotter -v -d 2>&1 | head", "expect": "pass  # pipe filter"}
+{"cmd": "gh pr view 1 --json body | jq .body", "expect": "pass"}
+{"cmd": "cat > /tmp/x.sh <<'EOF'\necho hi\nEOF", "expect": "violation:cat"}
+{"cmd": "echo $(ls /tmp)", "expect": "violation:ls"}
+{"cmd": "wc -l docs/*.md", "expect": "violation:wc"}

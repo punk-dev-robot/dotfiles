@@ -180,3 +180,16 @@ SELECT span_name, attributes->>'pi.compaction.reason' reason,
        attributes->>'pi.om.items' om_items, attributes->>'gen_ai.request.model' model, attributes->>'pi.session.id' sid
 FROM records WHERE span_name LIKE 'pi.context.%' ORDER BY start_timestamp DESC LIMIT 50;
 ```
+
+## Steering guards (punk-steering v2, from 2026-09-16 23:20Z)
+
+```sql
+SELECT span_name, attributes->>'pi.steering.rule' rule, attributes->>'pi.steering.enforced' enforced,
+       attributes->>'pi.steering.subagent' subagent, count(*) n,
+       count(DISTINCT attributes->>'pi.session.id') sessions
+FROM records WHERE span_name LIKE 'pi.steering.%' GROUP BY 1,2,3,4 ORDER BY n DESC LIMIT 20;
+
+-- false-positive review: what got flagged
+SELECT attributes->>'pi.steering.pattern' pattern, attributes->>'pi.steering.segment' segment, count(*) n
+FROM records WHERE span_name = 'pi.steering.violation' GROUP BY 1,2 ORDER BY n DESC LIMIT 60;
+```

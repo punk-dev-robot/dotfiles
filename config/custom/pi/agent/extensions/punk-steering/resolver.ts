@@ -5,8 +5,18 @@
 
 export const LEVELS = ["off", "observe", "advise", "rewrite"] as const;
 export type Level = (typeof LEVELS)[number];
-export type Kind = "briefing" | "precondition" | "reminder";
+export type Kind = "briefing" | "precondition" | "reminder" | "guard";
 export type OnFail = "notify" | "ask" | "run" | "stop";
+
+/** kind: guard — tool_call inspector (specs/punk-steering-v2.md). Patterns stay strings; `<cwd>` is substituted at match time. */
+export interface GuardSpec {
+	tool: string;
+	field: string;
+	/** an entry prefixed `override:` passes *and* is logged as an override instead of a silent pass */
+	allow: string[];
+	deny: string[];
+	strikes: number;
+}
 
 export interface Rule {
 	name: string;
@@ -21,6 +31,7 @@ export interface Rule {
 	fix?: string;
 	message?: string;
 	timeout: number; // seconds
+	guard?: GuardSpec;
 	source: "global" | "project";
 }
 
@@ -36,6 +47,8 @@ export interface Resolution {
 	/** failed preconditions → what to do */
 	preconditions: { name: string; action: OnFail; message: string; fix?: string }[];
 	observed: { name: string; reason: string }[];
+	/** active guard rules with their effective level (adapter runs them on tool_call) */
+	guards: { rule: Rule; level: Level }[];
 	/** every loaded rule with its gate verdict (for /steering) */
 	report: { name: string; kind: Kind; level: Level; matched: string[]; applies: boolean; source: string }[];
 	errors: { name: string; error: string }[];
@@ -121,7 +134,7 @@ function strList(v: unknown, field: string): string[] {
 export function parseRule(name: string, text: string, source: Rule["source"] = "global"): Rule {
 	const { fm, body } = parseFrontmatter(text);
 	const kind = fm.kind as Kind;
-	if (!["briefing", "precondition", "reminder"].includes(kind)) throw new Error(`kind must be briefing|precondition|reminder, got ${String(fm.kind)}`);
+	if (!["briefing", "precondition", "reminder", "guard"].includes(kind)) throw new Error(`kind must be briefing|precondition|reminder|guard, got ${String(fm.kind)}`);
 	if (kind === "reminder") throw new Error("kind: reminder not implemented in v1");
 	if (fm.level !== undefined && !LEVELS.includes(fm.level as Level)) throw new Error(`level must be one of ${LEVELS.join("|")}`);
 	const when = (fm.when ?? {}) as Fm;
@@ -130,6 +143,20 @@ export function parseRule(name: string, text: string, source: Rule["source"] = "
 		if (!["notify", "ask", "run", "stop"].includes(on_fail)) throw new Error(`on_fail must be notify|ask|run|stop`);
 		if ((on_fail === "ask" || on_fail === "run") && fm.fix === undefined) throw new Error(`on_fail: ${on_fail} requires fix`);
 		if (fm.probe === undefined && fm.required_tools === undefined) throw new Error("precondition needs probe or required_tools");
+	}
+	let guard: GuardSpec | undefined;
+	if (kind === "guard") {
+		const tool = str(fm.tool, "tool") ?? "bash";
+		const deny = strList(fm.deny, "deny");
+		if (deny.length === 0) throw new Error("guard needs at least one deny pattern");
+		guard = {
+			tool,
+			field: str(fm.field, "field") ?? (tool === "read" ? "path" : "command"),
+			allow: strList(fm.allow, "allow"),
+			deny,
+			strikes: typeof fm.strikes === "number" ? fm.strikes : 3,
+		};
+		for (const p of [...guard.allow, ...guard.deny]) compile(p, ""); // fail the rule, not the tool call, on a bad regex
 	}
 	return {
 		name,
@@ -143,6 +170,7 @@ export function parseRule(name: string, text: string, source: Rule["source"] = "
 		fix: str(fm.fix, "fix"),
 		message: str(fm.message, "message"),
 		timeout: typeof fm.timeout === "number" ? fm.timeout : 10,
+		guard,
 		source,
 	};
 }
@@ -200,12 +228,17 @@ export function effectiveLevel(rule: Rule, global: Level): Level {
 // ─── resolve
 
 export function resolve(rules: Rule[], selectedTools: string[], globalLevel: Level, probeResults: Record<string, ProbeResult> = {}): Resolution {
-	const res: Resolution = { briefings: [], pending: [], preconditions: [], observed: [], report: [], errors: [] };
+	const res: Resolution = { briefings: [], pending: [], preconditions: [], observed: [], guards: [], report: [], errors: [] };
 	for (const rule of rules) {
 		const { applies, matched } = gate(rule, selectedTools);
 		const level = effectiveLevel(rule, globalLevel);
 		res.report.push({ name: rule.name, kind: rule.kind, level, matched, applies, source: rule.source });
 		if (!applies || level === "off") continue;
+
+		if (rule.kind === "guard") {
+			res.guards.push({ rule, level }); // observe included: the adapter counts and logs, enforces only at advise+
+			continue;
+		}
 
 		if (rule.kind === "briefing") {
 			if (level === "observe") res.observed.push({ name: rule.name, reason: `briefing would fire (tools: ${matched.join(", ") || "always"})` });
@@ -227,6 +260,190 @@ export function resolve(rules: Rule[], selectedTools: string[], globalLevel: Lev
 		else res.preconditions.push({ name: rule.name, action: rule.on_fail, message, fix: rule.fix });
 	}
 	return res;
+}
+
+// ─── guard: normalise + verdict (specs/punk-steering-v2.md)
+
+export interface Segment {
+	text: string;
+	head: string;
+	/** segment is the target of a `|` (not `||`) — pipe filters trim process output, which is sanctioned bash */
+	isPipeTarget: boolean;
+}
+
+export interface Verdict {
+	verdict: "pass" | "override" | "violation";
+	segment?: string;
+	pattern?: string;
+	/** the text the deny pattern matched (`sed -n`, `python3 -c`) — what the reason line names */
+	match?: string;
+	head?: string;
+}
+
+/** trimming process output is what bash is for; the same heads as a *first* segment read files and are denied */
+const PIPE_FILTERS = new Set(["grep", "rg", "head", "tail", "wc", "sort", "uniq", "cut", "jq", "awk"]);
+const SELF_CD = new Set(["$PWD", "${PWD}", ".", "./"]);
+const ENV_PREFIX = /^(?:[A-Za-z_]\w*=(?:"[^"]*"|'[^']*'|\S*)\s+)+(?=\S)/;
+
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/** `<cwd>` → the session cwd, regex-escaped; unmatchable when no cwd is known. */
+function compile(pattern: string, cwd: string): RegExp {
+	return new RegExp(pattern.replace(/<cwd>/g, cwd ? escapeRe(cwd) : "(?!)"));
+}
+
+const unq = (s: string) => ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'")) ? s.slice(1, -1) : s);
+
+/** Split on `|`/`||`/`;`/`&&`/newline outside quotes; `$( )` and backtick bodies become their own segments; heredoc bodies are dropped. */
+function split(src: string): { text: string; pipe: boolean }[] {
+	const out: { text: string; pipe: boolean }[] = [];
+	const nested: string[] = [];
+	let buf = "";
+	let pipe = false;
+	let heredoc: string | null = null;
+	const push = (nextPipe: boolean) => {
+		const t = buf.trim();
+		if (t) out.push({ text: t, pipe });
+		buf = "";
+		pipe = nextPipe;
+	};
+	for (let i = 0; i < src.length; i++) {
+		const c = src[i];
+		if (c === "\\" && i + 1 < src.length) {
+			buf += c + src[++i];
+			continue;
+		}
+		if (c === "'" || c === '"') {
+			// quoted runs are opaque: a denied head inside quotes is a false positive we accept (spec)
+			const j = src.indexOf(c, i + 1);
+			const end = j < 0 ? src.length - 1 : j;
+			buf += src.slice(i, end + 1);
+			i = end;
+			continue;
+		}
+		if (c === "`" || (c === "$" && src[i + 1] === "(")) {
+			const open = c === "`" ? 1 : 2;
+			let depth = 1;
+			let j = i + open;
+			for (; j < src.length && depth > 0; j++) {
+				if (c === "`") {
+					if (src[j] === "`") depth = 0;
+				} else if (src[j] === "(") depth++;
+				else if (src[j] === ")") depth--;
+			}
+			nested.push(src.slice(i + open, depth === 0 ? j - 1 : src.length));
+			i = j - 1;
+			continue;
+		}
+		if (c === "<" && src[i + 1] === "<") {
+			const m = /^<<-?\s*(['"]?)(\w+)\1/.exec(src.slice(i));
+			if (m) {
+				heredoc = m[2];
+				buf += m[0];
+				i += m[0].length - 1;
+				continue;
+			}
+		}
+		if (c === "\n" && heredoc) {
+			// heredoc body is not shell: skip it, the command line before `<<` is the segment
+			let j = i + 1;
+			while (j < src.length) {
+				const eol = src.indexOf("\n", j);
+				const line = src.slice(j, eol < 0 ? src.length : eol);
+				j = eol < 0 ? src.length : eol + 1;
+				if (line.trim() === heredoc) break;
+			}
+			heredoc = null;
+			i = j - 1;
+			push(false);
+			continue;
+		}
+		if (c === "|") {
+			const or = src[i + 1] === "|";
+			if (or) i++;
+			push(!or);
+			continue;
+		}
+		if (c === "&" && src[i + 1] === "&") {
+			i++;
+			push(false);
+			continue;
+		}
+		if (c === ";" || c === "\n") {
+			push(false);
+			continue;
+		}
+		buf += c;
+	}
+	push(false);
+	for (const n of nested) out.push(...split(n));
+	return out;
+}
+
+/** Command text → segments. Strips one leading `cd <path> (&&|;)` unless that cd is itself a denied self-cd. */
+export function normalise(cmd: string, cwd = ""): Segment[] {
+	let s = cmd.trim();
+	const m = /^cd\s+("[^"]*"|'[^']*'|[^\s;&|]+)\s*(&&|;)\s*/.exec(s);
+	if (m && !SELF_CD.has(m[1]) && unq(m[1]) !== cwd) s = s.slice(m[0].length);
+	return split(s).map(({ text, pipe }) => {
+		const t = text.replace(ENV_PREFIX, ""); // `FOO=1 grep x` is a grep
+		return { text: t, head: (/^\S+/.exec(t)?.[0] ?? ""), isPipeTarget: pipe };
+	});
+}
+
+/** allow (override-flagged first) then deny, per segment; first violation wins. */
+export function guard(rule: Rule, input: string, cwd = ""): Verdict {
+	const g = rule.guard;
+	if (!g) return { verdict: "pass" };
+	const allow = g.allow.map((p) => {
+		const override = p.startsWith("override:");
+		const src = override ? p.slice("override:".length).trim() : p;
+		return { src, override, re: compile(src, cwd) };
+	});
+	const deny = g.deny.map((p) => ({ src: p, re: compile(p, cwd) }));
+	for (const seg of normalise(input, cwd)) {
+		let allowed = false;
+		for (const a of allow) {
+			if (!a.re.test(seg.text)) continue;
+			if (a.override) return { verdict: "override", segment: seg.text, pattern: a.src, head: seg.head };
+			allowed = true;
+		}
+		if (allowed) continue;
+		for (const d of deny) {
+			const hit = d.re.exec(seg.text);
+			if (!hit) continue;
+			if (seg.isPipeTarget && PIPE_FILTERS.has(seg.head)) break;
+			return { verdict: "violation", segment: seg.text, pattern: d.src, match: hit[0].trim(), head: seg.head };
+		}
+	}
+	return { verdict: "pass" };
+}
+
+export interface GuardAction {
+	/** level is advise+ : the call is rejected. observe counts and logs only. */
+	enforced: boolean;
+	/** 3rd strike in a main session: reduce tools to HANDOFF_TOOLS and notify. Never true for subagents. */
+	handoff: boolean;
+	reason?: string;
+}
+
+/**
+ * What the adapter does with a violation. Subagents (piewf roles) are rejected on every
+ * violation but never blocked — the parent reruns them, a handoff would strand the brief.
+ */
+export function guardAction(rule: Rule, v: Verdict, strikes: number, level: Level, subagent: boolean): GuardAction {
+	const max = rule.guard?.strikes ?? 3;
+	const enforced = level === "advise" || level === "rewrite";
+	if (v.verdict !== "violation" || !enforced) return { enforced, handoff: false };
+	if (!subagent && strikes >= max) {
+		return {
+			enforced,
+			handoff: true,
+			reason: `steering/${rule.name} — strike ${max} of ${max}. Session blocked. Invoke the punk-handoff skill now (read ~/.agents/skills/punk-handoff/SKILL.md and follow it; argument: 'blocked by steering/${rule.name} after ${max} violations — continue the task in a fresh session'), then stop.`,
+		};
+	}
+	const budget = subagent ? `strike ${strikes}` : `strike ${strikes} of ${max}; at ${max} this session is blocked and must hand off`;
+	return { enforced, handoff: false, reason: `steering/${rule.name} — ${budget}. Denied: ${v.segment}. ${rule.body}` };
 }
 
 /** System-prompt block for applicable briefings; empty string when none. */

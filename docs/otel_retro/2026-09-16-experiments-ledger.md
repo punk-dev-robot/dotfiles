@@ -89,3 +89,18 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
 - **Fallback if refuted:** `pi-hashline-edit-pro-lean` with auto-read off (selective override,
   423 preamble tok, 1.09× read).
 - **Status:** open — score ≥ 2026-09-23.
+
+### E5 — punk-steering v2 `guard` rules (reject → block, telemetry)
+- **Spec:** `specs/punk-steering-v2.md`. Ships at `level: observe` first (log only).
+- **Baseline (14d, main models fable/opus):** bash-nav/edit share 45–75% by host/model;
+  ~600 bash navigation calls; sed -n 129, python3 inline 59, sed -i 13; installed-package reads
+  from main ≈ 85; subagents_run 22.
+- **Expect (observe, day 1):** `pi.steering.violation` count ≈ the bash-nav rate above; false
+  positives (legit commands flagged) < 5% of violations — else fix patterns before flipping.
+- **Expect (advise, week 1):** bash-nav share < 10%; ≤ 1 `pi.steering.block` per 10 sessions
+  (more = budget too tight or model can't recover); `subagents_run`/session up; `read` calls
+  with node_modules/site-packages paths → 0 in main; no rise in `ctx_execute` used as a
+  cat/grep substitute (watch its content).
+- **Measure:** `SELECT span_name, attributes->>'pi.steering.rule', attributes->>'pi.steering.enforced', count(*) FROM records WHERE span_name LIKE 'pi.steering.%' GROUP BY 1,2,3` + bash-nav share query, window from flip time.
+- **Shipped:** 2026-09-16 23:20Z omarchy, per-rule `level: observe` on both guard rules (global level stays `advise`). Smoke: observe → violation logged, command ran; advise → rejected with strike text, haiku stopped after strike 1.
+- **Status:** open — flip = delete `level: observe` in `steering/guard-*.md` ≥ 09-17 23:00Z after false-positive check; score ≥ 09-24.

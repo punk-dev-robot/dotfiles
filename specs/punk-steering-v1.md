@@ -155,15 +155,15 @@ as a checklist on KUB-164; keep both in sync.
 | # | Item | Why deferred | Bring back when |
 |---|---|---|---|
 | D1 | `reminder` kind — observation-triggered nudges (turn count, tool seen, N turns since X) via `sendMessage(deliverAs: steer)` | predicate surface is open-ended; one existing case covered by `context-nudge.ts` | second reminder is wanted, or `context-nudge.ts` needs a condition |
-| D2 | `block` level — semantics *terminate session + flag for review*, never deny-and-retry (pix-nudge: forced retries waste turns) | no v1 rule needs it; needs tracker-write path | a rule exists whose violation should end the session |
-| D3 | `rewrite` execution (mutate `tool_call` input) | schema parsed, no rule needs it | first routing rule that is better as a rewrite than as prose (rtk-style) |
+| D2 | ~~`block` level~~ — **shipped in v2** (`specs/punk-steering-v2.md`): `kind: guard` + 3-strike counter; strike 3 blocks the main session into `punk-handoff`, subagents are rejected but never blocked | — | done |
+| D3 | `rewrite` execution (mutate `tool_call` input) | still deferred in v2 (`rewrite` behaves as `advise`); no rule needs it | first rewrite candidates come from a week of `pi.steering.violation` shapes |
 | D4 | `posture: defer \| augment \| replace` per tool toward other extensions' shipped guidance | overlap is content, fixed at source or via the other extension's own switch | owner wants more/less aggressive guidance than a tool ships and its switch is insufficient |
 | D5 | Role-contributed rules: (a) match on piewf role name, (b) `steering:` frontmatter key in `AgentDefinition` | v1 opts roles out via existing `extensions: ["!…"]` | a role needs its own rule; verify unknown-key survival in piewf decoders before (b) |
 | D6 | Conditions beyond tools: cwd / repo shape, model, MCP server health as a predicate | cwd-shaped guidance lives in project `AGENTS.md`; model = premature | a rule cannot be expressed with tool globs alone |
 | D7 | Precondition probes as tool calls (not shell) | shell probe covers repowise/MCP cases | a probe needs an MCP tool result, not a CLI |
 | D8 | Extract to standalone package | lives in dotfiles extensions dir | tests/deps outgrow dotfiles, or a second machine/user wants it |
 | D9 | Mechanical dedup of other extensions' prompt text (marker-based strip) | fragile; rejected | never, unless D4 proves insufficient |
-| D10 | Enforcement via `tool_call` hooks generally (advise→block ladder end) | pi-steering/guardme cover safety rails | D2 or D3 lands |
+| D10 | ~~Enforcement via `tool_call` hooks generally~~ — **shipped in v2** with D2 (guard rules inspect `tool_call`); safety-rail argv guarding stays out of scope | — | done |
 
 ## Further Notes
 

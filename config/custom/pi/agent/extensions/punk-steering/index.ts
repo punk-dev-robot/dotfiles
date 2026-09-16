@@ -9,7 +9,15 @@ import { appendFileSync, existsSync, readdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { basename, join } from "node:path";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { LEVELS, type Level, mergeRules, parseRules, renderBriefings, resolve, type Resolution, type Rule, type ProbeResult } from "./resolver.ts";
+import { guard, guardAction, LEVELS, type Level, mergeRules, parseRules, renderBriefings, resolve, type Resolution, type Rule, type ProbeResult } from "./resolver.ts";
+
+/** what the punk-handoff skill needs (write the file, spawn the next pane) and nothing else */
+const HANDOFF_TOOLS = ["read", "write", "herdr_layout", "herdr_agent", "herdr_pane"];
+
+const sessionId = (sm: { getSessionId(): string; getSessionFile?(): string | undefined }) => {
+	const f = sm.getSessionFile?.();
+	return f ? basename(f, ".jsonl") : sm.getSessionId();
+};
 
 const AGENT_DIR = process.env.PI_CODING_AGENT_DIR ?? join(homedir(), ".pi", "agent");
 
@@ -37,6 +45,34 @@ export default function (pi: ExtensionAPI) {
 	const timedOut = new Set<string>(); // inconclusive probes: never trigger on_fail
 	let last: Resolution | undefined;
 	let stopPending = false;
+	let strikes = 0; // per session, shared across guard rules; overrides do not count
+	let verdictLog: string[] = [];
+	let applied = false;
+	let cwd = process.cwd();
+
+	const log = (ctx: any, eventName: string, body: string, attributes: Record<string, string | number | boolean> = {}) => {
+		pi.events.emit("pi-otel:log", {
+			eventName,
+			severity: eventName === "pi.steering.applied" ? "info" : "warn",
+			body,
+			attributes: { "pi.session.id": sessionId(ctx.sessionManager), ...attributes },
+		});
+	};
+
+	// Subagents (piewf roles) are never blocked — the parent reruns them. Cheap signal: no herdr pane tools / piewf's prompt prefix.
+	const isSubagent = (ctx: any) => {
+		const tools = pi.getActiveTools();
+		if (!tools.includes("herdr_layout") && !tools.includes("herdr_agent")) return true;
+		try {
+			for (const e of ctx.sessionManager.getEntries()) {
+				if (e.type !== "message" || e.message?.role !== "user") continue;
+				const c = e.message.content;
+				const text = typeof c === "string" ? c : Array.isArray(c) ? c.map((p: any) => p?.text ?? "").join("") : "";
+				return text.trimStart().startsWith("Workflow: ");
+			}
+		} catch {}
+		return false;
+	};
 
 	const load = (cwd: string, trusted: boolean) => {
 		level = readLevel();
@@ -54,6 +90,10 @@ export default function (pi: ExtensionAPI) {
 	pi.on("session_start", (_e, ctx) => {
 		if (process.env.PUNK_STEERING_DEBUG) appendFileSync(process.env.PUNK_STEERING_DEBUG, `load agentDir=${AGENT_DIR}\n`);
 		load(ctx.cwd, ctx.isProjectTrusted());
+		cwd = ctx.cwd;
+		strikes = 0;
+		verdictLog = [];
+		applied = false;
 		if (loadErrors.length && ctx.hasUI) ctx.ui.notify(`steering: ${loadErrors.length} rule(s) skipped — /steering`, "warning");
 	});
 
@@ -108,6 +148,10 @@ export default function (pi: ExtensionAPI) {
 			failLines.push(`steering/${pc.name}: ${pc.message}`);
 		}
 		last = res;
+		if (!applied) {
+			applied = true;
+			log(ctx, "pi.steering.applied", `steering ${level}`, { "pi.steering.rules": rules.length, "pi.steering.level": level, "pi.steering.guards": res.guards.length });
+		}
 
 		const block = renderBriefings(res.briefings);
 		if (process.env.PUNK_STEERING_DEBUG) appendFileSync(process.env.PUNK_STEERING_DEBUG, `bas rules=${rules.length} tools=${tools.length} briefings=${res.briefings.map(b=>b.name)} pending=${res.pending.length} pre=${JSON.stringify(res.preconditions)} probes=${JSON.stringify(probes)} block=${block.length}\n`);
@@ -115,6 +159,47 @@ export default function (pi: ExtensionAPI) {
 		if (block) ret.systemPrompt = `${event.systemPrompt}\n\n${block}`;
 		if (failLines.length) ret.message = { customType: "punk-steering", content: failLines.join("\n") };
 		if (ret.systemPrompt || ret.message) return ret;
+	});
+
+	pi.on("tool_call", (event, ctx) => {
+		if (level === "off" || !last?.guards.length) return;
+		for (const { rule, level: lv } of last.guards) {
+			if (lv === "off" || rule.guard!.tool !== event.toolName) continue;
+			const input = (event.input as Record<string, unknown> | undefined)?.[rule.guard!.field];
+			if (typeof input !== "string" || !input) continue;
+			const v = guard(rule, input, ctx.cwd ?? cwd);
+			if (v.verdict === "pass") continue;
+
+			if (v.verdict === "override") {
+				verdictLog.push(`override ${rule.name}: ${v.segment}`);
+				log(ctx, "pi.steering.override", `override ${rule.name}`, { "pi.steering.rule": rule.name, "pi.steering.segment": (v.segment ?? "").slice(0, 200) });
+				continue;
+			}
+
+			// one strike per call, even when several segments violate
+			strikes++;
+			const sub = isSubagent(ctx);
+			const act = guardAction(rule, v, strikes, lv, sub);
+			const enforced = act.enforced;
+			verdictLog.push(`${enforced ? "violation" : "observed"} ${rule.name}: ${v.match} (strike ${strikes})`);
+			log(ctx, "pi.steering.violation", `${rule.name}: ${v.match}`, {
+				"pi.steering.rule": rule.name,
+				"pi.steering.tool": event.toolName,
+				"pi.steering.segment": (v.segment ?? "").slice(0, 200),
+				"pi.steering.pattern": v.pattern ?? "",
+				"pi.steering.strike": strikes,
+				"pi.steering.enforced": enforced,
+				"pi.steering.subagent": sub,
+			});
+			if (!enforced) continue; // observe: count + log, never reject
+
+			if (act.handoff) {
+				log(ctx, "pi.steering.block", `blocked by ${rule.name}`, { "pi.steering.rule": rule.name, "pi.steering.strikes": strikes });
+				pi.setActiveTools(HANDOFF_TOOLS);
+				if (ctx.hasUI) ctx.ui.notify(`steering/${rule.name}: strike ${strikes} of ${rule.guard!.strikes} — session blocked, hand off`, "error");
+			}
+			return { block: true, reason: act.reason };
+		}
 	});
 
 	pi.on("agent_start", (_e, ctx) => {
@@ -133,6 +218,8 @@ export default function (pi: ExtensionAPI) {
 				const state = r.kind === "precondition" && probe ? (probe.ok ? " probe=ok" : ` probe=FAIL`) : "";
 				lines.push(`${r.applies ? "✓" : "·"} ${r.name} [${r.kind}/${r.level}/${r.source}] ${r.matched.length ? r.matched.join(",") : r.applies ? "always" : "no tool match"}${state}`);
 			}
+			lines.push(`strikes: ${strikes}/${res.guards[0]?.rule.guard?.strikes ?? 3}`);
+			for (const v of verdictLog.slice(-5)) lines.push(`  ${v}`);
 			for (const o of res.observed) lines.push(`~ observed ${o.name}: ${o.reason}`);
 			for (const e of loadErrors) lines.push(`✗ ${e.name}: ${e.error}`);
 			ctx.ui.notify(lines.join("\n"), loadErrors.length ? "warning" : "info");
