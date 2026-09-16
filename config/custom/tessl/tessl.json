@@ -82,6 +82,18 @@
           "linear-cli"
         ]
       }
+    },
+    "humanlayer/skills": {
+      "version": "3c2629142c5d437428269b1b722b08c0b87f574d",
+      "source": "https://github.com/humanlayer/skills",
+      "include": {
+        "skills": [
+          "build-iterated-agentic-loop",
+          "design-control-loop",
+          "improve-claude-md",
+          "show-me"
+        ]
+      }
     }
   }
 }
