@@ -34,7 +34,7 @@ export default function (pi: ExtensionAPI) {
 	let loadErrors: Resolution["errors"] = [];
 	let level: Level = "advise";
 	let probes: Record<string, ProbeResult> = {};
-	let probed = false;
+	const timedOut = new Set<string>(); // inconclusive probes: never trigger on_fail
 	let last: Resolution | undefined;
 	let stopPending = false;
 
@@ -45,7 +45,7 @@ export default function (pi: ExtensionAPI) {
 		rules = mergeRules(g.rules, p.rules);
 		loadErrors = [...g.errors, ...p.errors];
 		probes = {};
-		probed = false;
+		timedOut.clear();
 	};
 
 	// `cwd` is not in the documented pi.exec options but is honoured (verified pi 0.85.1: probe `pwd` == ctx.cwd).
@@ -61,40 +61,60 @@ export default function (pi: ExtensionAPI) {
 		const tools = event.systemPromptOptions?.selectedTools ?? pi.getActiveTools();
 		let res = resolve(rules, tools, level, probes);
 
-		if (!probed) {
-			probed = true;
-			for (const p of res.pending) {
-				const r = await sh(p.probe, ctx.cwd, p.timeout);
-				probes[p.name] = { ok: r.code === 0 && !r.killed, stdout: r.killed ? "probe timed out" : r.stdout || r.stderr };
+		// Probe each pending precondition once (across the whole session — `probes` only resets on load).
+		const newlyProbed = new Set<string>();
+		for (const p of res.pending) {
+			const r = await sh(p.probe, ctx.cwd, p.timeout);
+			probes[p.name] = { ok: r.code === 0 && !r.killed, stdout: r.killed ? "probe timed out" : r.stdout || r.stderr };
+			newlyProbed.add(p.name);
+			if (r.killed) timedOut.add(p.name);
+		}
+		if (newlyProbed.size) res = resolve(rules, tools, level, probes);
+
+		// `stop` holds every turn until fixed, but we only re-notify / re-message the turn it was newly probed.
+		const failLines: string[] = [];
+		for (const pc of res.preconditions) {
+			if (pc.action === "stop" && !timedOut.has(pc.name)) stopPending = true; // ctx.abort() is a no-op before the run exists; agent_start aborts it
+			if (!newlyProbed.has(pc.name)) continue;
+
+			if (timedOut.has(pc.name)) {
+				if (ctx.hasUI) ctx.ui.notify(`steering/${pc.name}: probe timed out`, "warning");
+				failLines.push(`steering/${pc.name}: probe timed out`);
+				continue;
 			}
-			res = resolve(rules, tools, level, probes);
-			for (const pc of res.preconditions) {
-				if (pc.action === "stop") {
-					ctx.ui.notify(`steering/${pc.name}: ${pc.message}`, "error");
-					stopPending = true; // ctx.abort() is a no-op before the run exists; agent_start aborts it
-					break;
-				}
-				if (pc.action === "run" && pc.fix) {
-					const r = await sh(pc.fix, ctx.cwd, 120);
-					if (ctx.hasUI) ctx.ui.notify(`steering/${pc.name}: ${pc.message} → fix ${r.code === 0 ? "ok" : `failed (${r.code})`}`, r.code === 0 ? "info" : "warning");
-					continue;
-				}
-				if (pc.action === "ask" && pc.fix && ctx.hasUI) {
-					if (await ctx.ui.confirm(`steering/${pc.name}`, `${pc.message}\n\nRun: ${pc.fix}`)) {
-						const r = await sh(pc.fix, ctx.cwd, 300);
-						ctx.ui.notify(`steering/${pc.name}: fix ${r.code === 0 ? "ok" : `failed (${r.code})`}`, r.code === 0 ? "info" : "warning");
-					}
-					continue;
-				}
-				if (ctx.hasUI) ctx.ui.notify(`steering/${pc.name}: ${pc.message}`, "warning");
+			if (pc.action === "stop") {
+				if (ctx.hasUI) ctx.ui.notify(`steering/${pc.name}: ${pc.message}`, "error");
+				failLines.push(`steering/${pc.name}: ${pc.message}`);
+				continue;
 			}
+			if (pc.action === "run" && pc.fix) {
+				const r = await sh(pc.fix, ctx.cwd, 120);
+				if (ctx.hasUI) ctx.ui.notify(`steering/${pc.name}: ${pc.message} → fix ${r.code === 0 ? "ok" : `failed (${r.code})`}`, r.code === 0 ? "info" : "warning");
+				if (r.code !== 0) failLines.push(`steering/${pc.name}: ${pc.message}`);
+				continue;
+			}
+			if (pc.action === "ask" && pc.fix && ctx.hasUI) {
+				if (await ctx.ui.confirm(`steering/${pc.name}`, `${pc.message}\n\nRun: ${pc.fix}`)) {
+					const r = await sh(pc.fix, ctx.cwd, 300);
+					ctx.ui.notify(`steering/${pc.name}: fix ${r.code === 0 ? "ok" : `failed (${r.code})`}`, r.code === 0 ? "info" : "warning");
+					if (r.code !== 0) failLines.push(`steering/${pc.name}: ${pc.message}`);
+				} else {
+					failLines.push(`steering/${pc.name}: ${pc.message}`);
+				}
+				continue;
+			}
+			// notify, or ask with no UI
+			if (ctx.hasUI) ctx.ui.notify(`steering/${pc.name}: ${pc.message}`, "warning");
+			failLines.push(`steering/${pc.name}: ${pc.message}`);
 		}
 		last = res;
 
 		const block = renderBriefings(res.briefings);
 		if (process.env.PUNK_STEERING_DEBUG) appendFileSync(process.env.PUNK_STEERING_DEBUG, `bas rules=${rules.length} tools=${tools.length} briefings=${res.briefings.map(b=>b.name)} pending=${res.pending.length} pre=${JSON.stringify(res.preconditions)} probes=${JSON.stringify(probes)} block=${block.length}\n`);
-		if (!block) return;
-		return { systemPrompt: `${event.systemPrompt}\n\n${block}` };
+		const ret: { systemPrompt?: string; message?: { customType: string; content: string } } = {};
+		if (block) ret.systemPrompt = `${event.systemPrompt}\n\n${block}`;
+		if (failLines.length) ret.message = { customType: "punk-steering", content: failLines.join("\n") };
+		if (ret.systemPrompt || ret.message) return ret;
 	});
 
 	pi.on("agent_start", (_e, ctx) => {

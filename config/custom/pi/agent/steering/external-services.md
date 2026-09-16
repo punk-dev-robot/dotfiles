@@ -1,7 +1,7 @@
 ---
 kind: briefing
 when:
-  tools: ["mcp__*", "*linear*", "*notion*", "*logfire*"]
+  tools: [mcp, mcpScript]
 ---
 ## External services
 

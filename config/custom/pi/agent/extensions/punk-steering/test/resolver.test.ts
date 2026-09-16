@@ -16,10 +16,14 @@ const rules: Rule[] = mergeRules(g.rules, p.rules);
 const names = (xs: { name: string }[]) => xs.map((x) => x.name).sort();
 
 test("malformed rules are reported and skipped, good ones still load", () => {
-	assert.deepEqual(names(g.errors), ["bad-ask-no-fix", "bad-kind", "bad-reminder"]);
+	assert.deepEqual(names(g.errors), ["bad-ask-no-fix", "bad-kind", "bad-probe-list", "bad-reminder"]);
 	assert.match(g.errors.find((e) => e.name === "bad-reminder")!.error, /not implemented in v1/);
 	assert.match(g.errors.find((e) => e.name === "bad-ask-no-fix")!.error, /requires fix/);
 	assert.ok(rules.length >= 9);
+});
+
+test("array-valued probe is a rule error, not a mis-parsed scalar", () => {
+	assert.match(g.errors.find((e) => e.name === "bad-probe-list")!.error, /probe must be a scalar/);
 });
 
 test("project rule wins over global on name collision", () => {

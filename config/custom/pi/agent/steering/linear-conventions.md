@@ -1,7 +1,7 @@
 ---
 kind: briefing
 when:
-  tools: ["*linear*", "mcp__gateway"]
+  tools: [mcp, mcpScript]
 ---
 ## Linear conventions
 

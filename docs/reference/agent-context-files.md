@@ -33,7 +33,7 @@ config/custom/pi/agent/AGENTS.md   ─┐
 config/shared/claude/CLAUDE.md      ├─ git symlinks → ../punk/AGENTS.md; dotter deploys them as-is
 config/shared/codex/AGENTS.md       │  (2-hop readlink, verified fine for pi)
 config/shared/opencode/AGENTS.md   ─┘
-config/custom/pi/agent/steering/*.md      pi-only steering rules (punk-steering ext, KUB-164): tool-gated briefings + preconditions
+config/custom/pi/agent/steering/*.md      pi-only steering rules (punk-steering ext, KUB-164): tool-gated briefings + preconditions, frontmatter schema: specs/punk-steering-v1.md
 config/custom/agents/skills/punk-resume/manager-mode.md   manager mode, loads with the skill
 <repo>/AGENTS.md                      project context; <repo>/CLAUDE.md = `@AGENTS.md` shim
 ```

@@ -105,7 +105,11 @@ export function parseFrontmatter(text: string): { fm: Fm; body: string } {
 // ─── rule parsing
 
 /** shell commands / messages stay text even when YAML would read them as bool/number (`probe: false`) */
-const str = (v: unknown) => (v === undefined ? undefined : String(v));
+function str(v: unknown, field: string): string | undefined {
+	if (v === undefined) return undefined;
+	if (Array.isArray(v)) throw new Error(`${field} must be a scalar, not a list`);
+	return String(v);
+}
 
 function strList(v: unknown, field: string): string[] {
 	if (v === undefined) return [];
@@ -134,10 +138,10 @@ export function parseRule(name: string, text: string, source: Rule["source"] = "
 		when: { tools: strList(when.tools, "when.tools"), tools_all: when.tools_all === true },
 		body: body.trim(),
 		required_tools: strList(fm.required_tools, "required_tools"),
-		probe: str(fm.probe),
+		probe: str(fm.probe, "probe"),
 		on_fail,
-		fix: str(fm.fix),
-		message: str(fm.message),
+		fix: str(fm.fix, "fix"),
+		message: str(fm.message, "message"),
 		timeout: typeof fm.timeout === "number" ? fm.timeout : 10,
 		source,
 	};

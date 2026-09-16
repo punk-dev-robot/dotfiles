@@ -11,7 +11,7 @@ laptop — deployed by dotter. Vocabulary: `CONTEXT.md`. Decisions: `docs/adr/`.
 - `config/mac/` — mac-only `~/.config/*`
 - `config/.disabled/` — parked, not deployed
 - `config/shared/punk/AGENTS.md` — global context (every harness's global slot symlinks here)
-- `config/custom/pi/agent/` — pi settings, `APPEND_SYSTEM.md` (temporary tool routing), extensions
+- `config/custom/pi/agent/` — pi settings, `steering/*.md` (punk-steering rules), extensions
 - `config/custom/agents/skills/` — own skills (`punk-*`, `multi-repo-ticket`, repowise-*) → `~/.agents/skills`
 - `config/custom/pi/agent/pi-extensible-workflows/roles/` — piewf agent roles
 - `etc/`, `system/` — root-owned templates (`omarchy-system` package)
