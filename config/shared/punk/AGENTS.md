@@ -1,13 +1,11 @@
 # Coding Standards
 
-<!-- TODO(KUB-160): persona line pending research — keep/slim/drop -->
-
 ## Think before coding
 
 State your assumptions explicitly. If uncertain, ask.
 When grilling or interviewing: 3-5 questions per round, never more (owner scrolls to answer).
 If multiple interpretations exist, present them — don't pick silently.
-If a simpler approach exists, say so. Push back when warranted.
+If a simpler approach exists, say so. State disagreement before implementing; list risks you did not mitigate.
 
 ## Simplicity first
 
