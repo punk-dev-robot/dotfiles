@@ -40,7 +40,6 @@
     "npm:@tmustier/pi-usage-extension",
     "npm:@zhcsyncer/pi-recap",
     "npm:@firstpick/pi-extension-tools",
-    "git:github.com/punk-dev-robot/pi-otel@feat/thinking-dropped-attr",
     "npm:@juicesharp/rpiv-ask-user-question",
     "npm:@pi-kaush/pi-btw-with-imports",
     "npm:pi-cc-header",
@@ -50,7 +49,8 @@
     "../../../dev/oss/pi-extensible-workflows/packages/core",
     "../../../dev/oss/pi-extensible-workflows/packages/extensions/herdr",
     "npm:@henryqw/pi-task-models",
-    "npm:@henryqw/pi-herdr-rename"
+    "npm:@henryqw/pi-herdr-rename",
+    "npm:pi-otel"
   ],
   "npmCommand": [
     "mise",

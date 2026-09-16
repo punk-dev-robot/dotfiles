@@ -97,7 +97,26 @@
       "design": "aurora"
     },
     {
-      "id": "io.github.tallsam.navbar-cat"
+      "id": "io.github.tallsam.navbar-cat",
+      "character": "neko",
+      "speed": 1.0,
+      "size": 16,
+      "pettable": true,
+      "chaseCursor": true,
+      "pounce": true,
+      "rhythm": true,
+      "avoidCenter": 0.2,
+      "sleepAfter": 180,
+      "stirEvery": 150,
+      "stirFor": 25,
+      "monitor": "focused",
+      "reactions": {
+        "music": true,
+        "charging": true,
+        "workspace": true,
+        "notification": true,
+        "theme": true
+      }
     }
   ],
   "version": 1,

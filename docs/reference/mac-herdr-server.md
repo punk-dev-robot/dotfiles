@@ -87,6 +87,36 @@ mac lid closed, on AC, on WiFi. Requires (owner tickets):
 | mac-side git/`op` hangs | something reached the 1P desktop agent (prompt on the invisible screen). Git hosts must resolve to a file key (`ssh -G git@github.com`); `op` needs `OP_SERVICE_ACCOUNT_TOKEN` (login zsh). Wrap probes in `perl -e 'alarm 10; exec @ARGV' --`. |
 | version skew after `brew upgrade herdr` | client/server negotiate; don't stop a running server just because versions differ. Update the server explicitly when you need new server features. |
 
+## Web UIs on the mac
+
+Dev servers on the mac (repowise UI, Next dev, …) bind loopback; the mac has no screen. Two
+ways in from Linux, both verified with `repowise serve --port 8000 --ui-port 3001` in the
+shopai workspace (`hm pane run w9:p1 'repowise serve …'` — the herdr server is a daemon, the
+pane survives ssh drops; no launchd, start per need):
+
+- **Default — terminal-browser through the mac** (in a **plain Ghostty window**, see below):
+  `terminal-browser open --ssh mac localhost:3001 --split right`. `--ssh` spawns
+  `ssh -f -N -M -S /tmp/tb-ssh/<id> -D 127.0.0.1:<port> … mac` and points the browser at that
+  SOCKS proxy, so `localhost` resolves *on the mac*; nothing to install remotely, ssh-config
+  aliases work. Agents drive it with `terminal-browser action -- snapshot|click|eval …` (use
+  `--browser <key>` from `terminal-browser ls --all` when calling from another pane). Uses the
+  1P agent key like any interactive `ssh mac`; unlock first.
+  **Not inside a herdr pane until herdr > 0.9.0**: herdr #3785 — the 0.9.0 client rejects its
+  own direct-kitty image IDs (`boot_id` vs `local:<boot_id>`), so terminal-browser falls back to
+  inline PTY graphics after frame 1 and ~12 MB RGBA frames make it unusable (seconds per
+  scroll). Fixed on master 2026-09-11, unreleased as of 2026-09-16; fix is client-side, so the
+  mac server can stay 0.9.0. Watch `herdr channel set preview` + `herdr update`. Ruled out
+  meanwhile (don't re-investigate): herdr-pet plugin, SOCKS/Wi-Fi latency, `TERMINAL_BROWSER_FPS`,
+  bypassing the herdr backend via `unset HERDR_PANE_ID` (same PTY path, same lag).
+- **Fallback — real browser:** `ssh -f -N -o ExitOnForwardFailure=yes -L 3001:localhost:3001 mac`
+  then `http://localhost:3001`. Don't put `LocalForward` under `Host mac` — the bridge and `hm`
+  share that alias and every connection would fight over the port.
+
+Only the **UI port** needs to cross: the repowise Next.js UI rewrites `/api/*` server-side to
+the API on mac loopback (`REPOWISE_API_URL=http://localhost:8000`). Never `--host 0.0.0.0` —
+that hands the company repo UI + proxied API to the LAN (repowise itself warns without
+`REPOWISE_API_KEY`).
+
 ## Open
 
 - KUB-139 reconnect matrix (owner cases: dock switch, lid, mac TUI, Linux reboot).
@@ -107,3 +137,4 @@ system domain). `mac-desktop` (`local/bin`) brings the tiling + utility set back
 `colima start` on demand. Baseline 736 procs / 14 G used (KUB-142) → **601 procs** after
 M2 (memory is noisy on macOS; process count is the honest metric).
 - Remote access from outside home: parked (Tailscale vs Cloudflare WARP tunnel).
+- terminal-browser inside herdr panes: blocked on herdr #3785 release (see Web UIs).
