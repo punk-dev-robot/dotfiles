@@ -31,6 +31,8 @@ for _, k in ipairs({
   "SUPER + SHIFT + RETURN",       -- omarchy: Browser -> new plain terminal
   "SUPER + CTRL + A",             -- omarchy: Audio -> pipewire profile toggle
   "SUPER + SHIFT + D",            -- omarchy: Docker webapp -> Omarchy menu
+  "SUPER + CTRL + V", "SUPER + CTRL + E", -- omarchy: clipboard/emoji shell panels -> vicinae (omarchy ones on +SHIFT/+ALT)
+  "SUPER + CTRL + Q", "XF86Calculator", "SUPER + ALT + SPACE", -- omarchy: omacalc, apps menu -> vicinae root search does both
 }) do
   hl.unbind(k)
 end
@@ -164,9 +166,14 @@ o.bind("ALT + XF86AudioRaiseVolume", "Volume up precise", "ee-volume +1", { lock
 o.bind("ALT + XF86AudioLowerVolume", "Volume down precise", "ee-volume -1", { locked = true, repeating = true })
 -- KUB-128: Vicinae is the primary launcher (user service vicinae.service). Omarchy menu moves SUPER+SPACE → SUPER+SHIFT+D
 -- (SUPER+SPACE itself is unbound above and now runs the floating-toggle WM binding).
--- Omarchy's SUPER+ALT+SPACE (apps menu) and the other omarchy-menu binds stay.
+-- Omarchy-menu binds other than apps (capture/toggle/hardware/system) stay.
+-- Clipboard + emoji go to vicinae; omarchy's shell panels keep a fallback (SHIFT for emoji; clipboard on ALT — SUPER+CTRL+SHIFT+V is ee-toggle).
 o.bind("SUPER + D", "Vicinae launcher", "vicinae toggle")
 o.bind("SUPER + SHIFT + D", "Omarchy menu", "omarchy-menu toggle")
+o.bind("SUPER + CTRL + V", "Clipboard history (vicinae)", "vicinae deeplink vicinae://launch/clipboard/history")
+o.bind("SUPER + CTRL + E", "Emojis (vicinae)", "vicinae deeplink vicinae://launch/core/search-emojis")
+o.bind("SUPER + CTRL + ALT + V", "Clipboard manager (omarchy)", "omarchy-shell shell toggle omarchy.clipboard")
+o.bind("SUPER + CTRL + SHIFT + E", "Emojis (omarchy)", "omarchy-shell shell toggle omarchy.emojis")
 -- KUB-127: hold Right ◇ (SUPER_R, HHKB) = push-to-talk dictation; same release shape as omarchy's F9.
 -- ALT+ALT_L tap-toggle dropped (mistriggers). Omarchy SUPER+CTRL+X toggle and F9 PTT stay.
 -- Probed: press fires as bare "SUPER_R"; release only fires with the modifier in the mask ("SUPER + SUPER_R").

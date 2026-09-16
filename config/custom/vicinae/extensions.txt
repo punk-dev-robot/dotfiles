@@ -1,0 +1,38 @@
+# Vicinae extensions (store ids as shown by `vicinae cmd ls`, `@author/store.<origin>.<name>`).
+# Reference only — install via vicinae Store (root search: "store"). No CLI installer yet.
+# Regenerate: vicinae cmd ls | grep '^@' | sed 's/:.*//' | sort -u
+
+# shared (linux + mac; raycast-compat ones run on both)
+@aurelleb/store.vicinae.dashboard-icons
+@ike-gg/store.raycast.clean-keyboard
+@jarry_chung/store.raycast.ghostty
+@Keyruu/store.raycast.zen-browser
+@khasbilegt/store.raycast.1password
+@knoopx/store.vicinae.github
+@leonkohli/store.vicinae.process-manager
+@lightbody/store.raycast.reclaim-ai
+@LuggaPugga/store.vicinae.port-killer
+@maggie/store.raycast.todo-list
+@marcjulian/store.raycast.obsidian
+@mattisssa/store.raycast.spotify-player
+@mommertf/store.raycast.slack
+@nikbpetrov/store.vicinae.it-tools
+@reckoning-dev/store.raycast.search-notion
+@tadassuksteris/store.vicinae.prompt-deck
+@tegola/store.raycast.remove-paywall
+@thomaslombart/store.raycast.linear
+@thomas/store.raycast.color-picker
+@tiagem/store.vicinae.coffee
+@vMohammad24/store.vicinae.seerr
+@wy3z/store.vicinae.reminders
+
+# linux / omarchy only
+@brpaz/store.vicinae.gnome-dnd
+@codingcodax/store.vicinae.omarchy-menu
+@Gelei/store.vicinae.bluetooth
+@knoopx/store.vicinae.systemd
+@lufimio/store.vicinae.gpu-screen-recorder
+@nino-mau/store.vicinae.hypr
+@rithvikvibhu/store.vicinae.arch-packages
+
+# mac only — fill from the Raycast extension list when migrating (see Linear ticket)

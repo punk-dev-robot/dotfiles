@@ -21,6 +21,9 @@ default_target_type = "symbolic"
 "config/custom/zsh/.zshenv" = "~/.zshenv"
 "config/custom/.markdownlint.jsonc" = "~/.markdownlint.jsonc"
 "config/custom/pnpm/global-packages.txt" = "~/.config/pnpm/global-packages.txt"
+# Vicinae: settings.json stays local (GUI-written, secrets); it imports this shared template. Extension list is reference only.
+"config/custom/vicinae/dotfiles.json" = { target = "~/.config/vicinae/dotfiles.json", type = "template" }
+"config/custom/vicinae/extensions.txt" = "~/.config/vicinae/extensions.txt"
 "config/custom/pi/agent" = "~/.config/pi/agent"
 # @firstpick/pi-extension-tools (/tools) resource defaults; path via PI_WEBUI_SETTINGS_FILE in .zshenv
 "config/custom/pi/webui/settings.json" = "~/.config/pi/webui/settings.json"
