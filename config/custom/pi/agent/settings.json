@@ -34,8 +34,6 @@
     },
     "npm:@plannotator/pi-extension",
     "npm:@firstpick/pi-extension-tools",
-    "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:@pi-kaush/pi-btw-with-imports",
     "npm:pi-cc-header",
     "npm:pi-skills-manager",
     "npm:@d3ara1n/pi-context-include",
@@ -43,7 +41,9 @@
     "npm:@henryqw/pi-herdr-rename",
     "npm:pi-otel",
     "npm:pi-extensible-workflows",
-    "npm:@piewf/herdr"
+    "npm:@piewf/herdr",
+    "npm:pi-ask-user",
+    "npm:@henryqw/pi-herdr-btw"
   ],
   "npmCommand": [
     "mise",
