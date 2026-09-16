@@ -112,3 +112,9 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   ticket); no loss of chat/execute_tool spans (compare session count vs `pi.session.start`).
 - **Measure:** inventory query, `span_name LIKE '{"message":%'` grouped by day/host.
 - **Status:** open — score ≥ 09-18.
+
+### E7 — ctx_execute_file allow-list (unblocks recon outside the repo)
+- **Shipped:** 2026-09-17 00:05Z omarchy; mac on pull (uses `{{home_dir}}`).
+- **Baseline (14d):** ctx_execute_file 43 calls, 37% `File access blocked`; each failure → bash `cat`/`grep` fallback in main.
+- **Expect:** ctx_execute_file err% → <5%; recon runs on installed-package questions succeed; precondition for flipping `guard-read-outside-repo` to advise.
+- **Status:** open — score with E5.

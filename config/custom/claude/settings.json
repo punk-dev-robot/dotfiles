@@ -38,6 +38,11 @@
   "permissions": {
     "allow": [
       "Read",
+      "Read({{home_dir}}/.config/**)",
+      "Read({{home_dir}}/.agents/**)",
+      "Read({{home_dir}}/.local/share/**)",
+      "Read({{home_dir}}/dev/**)",
+      "Read(/tmp/**)",
       "Bash(git *)",
       "Bash(ls *)",
       "Bash(which *)",

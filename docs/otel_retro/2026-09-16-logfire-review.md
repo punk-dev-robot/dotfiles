@@ -85,8 +85,14 @@ Legacy `pi.tool.*`, `pi.llm_request`, `pi.interaction` (09-11 → 09-16) coexist
 ### O3 — Tool output stored 3× per span
 `execute_tool` spans carry the full output in `gen_ai.tool.call.result`, `pi.tool.output`, and `details`. A 76-line `read` = ~30KB span. Ingestion cost + slow queries. Query rule: never `SELECT attributes` raw.
 
-### O4 — Role attribution impossible
-piewf injects `Workflow: <name>\nAgent: <label>`; label is free text (`ps-plan-html`, `agip257-final-review`). Role (`recon`/`impl`/…) is never recorded. Need a `pi.agent.role` attribute or `Role:` line in the prefix.
+### O4 — Role attribution impossible (root-caused; upstream fix)
+piewf injects `Workflow: <name>\nAgent: <label>`; label is free text. The role *is* known in
+`pi-extensible-workflows/dist/src/agent-execution.js` (`options.role`, L835) but not emitted.
+Fix options, both upstream PRs to piewf: (a) add `Role: ${options.role}` to the prompt prefix
+(L806) — 1 line, the existing CTE gains one `regexp_match`; (b) set
+`OTEL_RESOURCE_ATTRIBUTES=pi.agent.role=<role>` on the child (pi-otel already parses it,
+`config.js` L134) → resource attribute, no prompt coupling, works for metrics too. Prefer (b),
+fall back to (a). Until then role = manual label mapping.
 
 ### O5 — `bash` is 43% of all tool calls; ~60% of them are `cd … && …`
 1650 bash calls / 64 sessions. `cd X && <cmd>` = 987. After the `cd`: grep 194, git 193, sed 120, cat 44, ls 27, python3 49. Plus bare `grep` 56, `cat` 39, `ls` 49, `sed` 21.
@@ -105,7 +111,7 @@ piewf injects `Workflow: <name>\nAgent: <label>`; label is free text (`ps-plan-h
 | readSeek_def / refs / search | 2 / 1 / 0 | |
 | cymbal_impact / changed | 0 / 0 | "before refactors or PRs" |
 | subagents_run | 20 (recon 12, impl 3, comms 2, researcher 2, dev 1) in 12 sessions | "third tool call is the tripwire" |
-| ctx_execute / ctx_batch_execute | 281 / 49 | used, but ctx_execute_file 13/28 errors (`File access blocked` outside project root) |
+| ctx_execute / ctx_batch_execute | 281 / 49 | used; ctx_execute_file 37% errors (`File access blocked` outside project root) — **fixed 09-17 00:05Z**: context-mode honours `permissions.allow: ["Read(<abs glob>)"]` in `$CLAUDE_CONFIG_DIR/settings.json` (bare `Read` is ignored, `~` not expanded) → added `Read(<home>/{.config,.agents,.local/share,dev}/**)`, `Read(/tmp/**)` in `config/custom/claude/settings.json`. Unblocks recon reading installed packages, hence `guard-read-outside-repo`. |
 | ask_advisor | 30 in 27 sessions | ~1/session, ok |
 | herdr_pane | 63, 23 errors (37%) | `Expected JSON output from herdr pane …` — CLI output format mismatch |
 
