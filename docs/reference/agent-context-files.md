@@ -33,7 +33,7 @@ config/custom/pi/agent/AGENTS.md   ─┐
 config/shared/claude/CLAUDE.md      ├─ git symlinks → ../punk/AGENTS.md; dotter deploys them as-is
 config/shared/codex/AGENTS.md       │  (2-hop readlink, verified fine for pi)
 config/shared/opencode/AGENTS.md   ─┘
-config/custom/pi/agent/APPEND_SYSTEM.md   pi-only, TEMPORARY: tool/workflow routing until steering ext (KUB-164)
+config/custom/pi/agent/steering/*.md      pi-only steering rules (punk-steering ext, KUB-164): tool-gated briefings + preconditions
 config/custom/agents/skills/punk-resume/manager-mode.md   manager mode, loads with the skill
 <repo>/AGENTS.md                      project context; <repo>/CLAUDE.md = `@AGENTS.md` shim
 ```
@@ -43,7 +43,7 @@ config/custom/agents/skills/punk-resume/manager-mode.md   manager mode, loads wi
 | Content | Goes to |
 |---|---|
 | Applies to every harness, every session, names no tool (coding standards) | global context, bare markdown |
-| Names a tool, MCP server, skill, or workflow (delegation, routing, MCP-first, tracker conventions) | `APPEND_SYSTEM.md` (interim) → steering extension |
+| Names a tool, MCP server, skill, or workflow (delegation, routing, MCP-first, tracker conventions) | steering rule `config/custom/pi/agent/steering/<name>.md`, gated on `when.tools` globs (`/steering` shows what fired) |
 | Conditional on a mode the user triggers (manager mode) | the skill that triggers it |
 | Repo facts: identity, layout, commands, repo-specific rules | project `AGENTS.md`; rules under narrow `**When …**` headers |
 | Harness-specific tooling prose (context-mode quickref, RTK) | nowhere — the tool's own hook/skill ships it |
@@ -60,8 +60,9 @@ config/custom/agents/skills/punk-resume/manager-mode.md   manager mode, loads wi
 ## Footprint (KUB-163, 2026-09-16)
 
 Always-loaded bytes, pi in dotfiles root: before 15.5KB (shared 3.8 + manager-mode 3.7 + pi 4.6 + project
-+ docs/README include 3.5) → after 12.0KB (punk 1.4 + APPEND_SYSTEM 7.6 + project 3.0). APPEND_SYSTEM.md is the
-remaining bulk — that is the steering extension's target (KUB-164).
++ docs/README include 3.5) → after 12.0KB (punk 1.4 + APPEND_SYSTEM 7.6 + project 3.0). KUB-164 moved
+APPEND_SYSTEM.md into steering rules: a full-tool main session still gets ~7.4KB, a recon subagent
+(read/grep/find + repowise) gets ~1.8KB (tool-economy, repowise-routing, multi-repo).
 
 ## Known dead / gotchas
 

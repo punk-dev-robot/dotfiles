@@ -1,0 +1,4 @@
+---
+kind: briefing
+---
+PROJECT version

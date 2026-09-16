@@ -1,0 +1,4 @@
+---
+kind: briefing
+---
+GLOBAL version

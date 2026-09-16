@@ -29,7 +29,7 @@
     "**/pi-advisor-flow/**",
     "**/pi-mcp-adapter/**",
     "**/pi-context-include/**",
-    "**/pi-rules/**"
+    "**/punk-steering/**"
   ],
   "extensionSettings": {
     "herdr": {

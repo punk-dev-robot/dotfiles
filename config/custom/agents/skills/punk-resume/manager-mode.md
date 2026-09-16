@@ -29,5 +29,5 @@ work the manager can do himself.
 - **Ticket discipline** follows the tracker's method (wayfinder maps: one
   decision ticket per session, claim = assign, resolution comment + close).
 - **Tracker conventions** (states, labels, PR lifecycle) are in the pi system
-  prompt (`APPEND_SYSTEM.md` → Linear conventions) — they apply to everyone,
+  prompt (steering rule `linear-conventions`) — they apply to everyone,
   manager or not.

@@ -12,8 +12,10 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
  * (`hook_event_name` / `hookSpecificOutput.additionalContext`), since no
  * `--client pi` contract exists upstream yet.
  *
- *  - session start  -> SessionStart payload, inject context message
  *  - tool_result    -> PostToolUse / PostToolUseFailure, append notice to result
+ *
+ * SessionStart (index absent / stale notices) is not ported: punk-steering's
+ * repowise-index-* precondition rules own that (KUB-164).
  *
  * Deliberately NOT ported: the PreToolUse rewrite hook (pi-rtk-optimizer owns
  * command rewriting here) and `updatedToolOutput` replacement (additionalContext
@@ -32,7 +34,6 @@ const TOOL_MAP: Record<string, string> = {
 
 // Matches upstream hooks.json timeout: 10. Common PostToolUse path measured ~0.5s;
 // the zero-match semantic rescue (embedding lookup) legitimately takes ~10s.
-const SESSION_START_TIMEOUT_MS = 10_000;
 const SEARCH_TIMEOUT_MS = 10_000; // zero-match semantic rescue legitimately ~10s
 const FAST_TIMEOUT_MS = 3_000; // staleness / decision notices; common path ~0.5-1.4s
 const MAX_OUTPUT_CHARS = 20_000; // cap tool output forwarded to augment
@@ -104,23 +105,6 @@ function augment(payload: object, timeoutMs: number): Promise<string | null> {
 }
 
 export default function (pi: ExtensionAPI) {
-	let sessionStartDone = false;
-
-	pi.on("before_agent_start", async (_event, ctx) => {
-		if (sessionStartDone) return;
-		sessionStartDone = true;
-		const root = repoWithIndex(ctx.cwd);
-		if (!root) return;
-		const context = await augment(
-			{ hook_event_name: "SessionStart", source: "startup", cwd: root, session_id: SESSION_ID },
-			SESSION_START_TIMEOUT_MS,
-		);
-		if (!context) return;
-		return {
-			message: { customType: "repowise-augment", content: context, display: true },
-		};
-	});
-
 	pi.on("tool_result", async (event, ctx) => {
 		dbg(`tool_result tool=${event.toolName} cwd=${ctx?.cwd}`);
 		const claudeTool = TOOL_MAP[event.toolName];
