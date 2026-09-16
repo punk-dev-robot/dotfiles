@@ -34,6 +34,8 @@ hl.config({
   },
 })
 
--- KUB-111: screenshots land in ~/Pictures/Screenshots (omarchy default: ~/Pictures). Editor = tensaku (trial);
--- fallback: hl.env("OMARCHY_SCREENSHOT_EDITOR", "swappy -f") needs a 1-line wrapper (editor is invoked quoted).
+-- KUB-111: screenshots land in ~/Pictures/Screenshots (omarchy default: ~/Pictures). Editor = satty
+-- (tensaku trial over); local/bin/satty-edit supplies the flags — omarchy passes the editor as a single
+-- argv element with a bare path, so a plain "satty -f" string cannot work.
 hl.env("OMARCHY_SCREENSHOT_DIR", os.getenv("HOME") .. "/Pictures/Screenshots")
+hl.env("OMARCHY_SCREENSHOT_EDITOR", "satty-edit")

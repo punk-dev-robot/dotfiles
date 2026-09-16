@@ -1,0 +1,18 @@
+#!/bin/bash
+# Annotate a screenshot in Satty.
+#
+# Omarchy's capture scripts invoke $OMARCHY_SCREENSHOT_EDITOR as a single argv
+# element with a bare image path, so flags need a wrapper (same shape as
+# omarchy's own tensaku-edit).
+#
+# No argument = newest screenshot, so a keybind can reach the last capture
+# without going through the notification.
+img="${1:-$(ls -t "${OMARCHY_SCREENSHOT_DIR:-$HOME/Pictures/Screenshots}"/*.png 2>/dev/null | head -1)}"
+[[ -r $img ]] || exit 0
+
+exec satty \
+  --filename "$img" \
+  --output-filename "$img" \
+  --copy-command wl-copy \
+  --early-exit \
+  --initial-tool arrow

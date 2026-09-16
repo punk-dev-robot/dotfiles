@@ -31,6 +31,9 @@ for _, k in ipairs({
   "SUPER + SHIFT + RETURN",       -- omarchy: Browser -> new plain terminal
   "SUPER + CTRL + A",             -- omarchy: Audio -> pipewire profile toggle
   "SUPER + SHIFT + D",            -- omarchy: Docker webapp -> Omarchy menu
+  "SUPER + SHIFT + S",            -- omarchy: Google Maps webapp -> screenshot (HHKB has no PrtScr)
+  "SUPER + CTRL + S",             -- omarchy: Share menu (still in omarchy-menu) -> capture menu, next to SHIFT+S
+  "SUPER + CTRL + C",             -- omarchy: capture menu -> moved to SUPER+CTRL+S
   "SUPER + CTRL + V", "SUPER + CTRL + E", -- omarchy: clipboard/emoji shell panels -> vicinae (omarchy ones on +SHIFT/+ALT)
   "SUPER + CTRL + Q", "XF86Calculator", "SUPER + ALT + SPACE", -- omarchy: omacalc, apps menu -> vicinae root search does both
 }) do
@@ -180,6 +183,14 @@ o.bind("SUPER + CTRL + SHIFT + E", "Emojis (omarchy)", "omarchy-shell shell togg
 o.bind("SUPER_R", "Dictation (hold)", "voxtype record start")
 o.bind("SUPER + SUPER_R", "Dictation (release)", "voxtype record stop", { release = true })
 
+-- Capture, grouped on S. Omarchy puts screenshot/recording/OCR on PRINT; the HHKB (ydkb firmware, see
+-- config/shared/keyboards/ydkb/) has no PrtScr on any layer, so those binds are unreachable there.
+-- Capture menu moves C -> S so both live on the same key; omarchy's Share menu it displaces stays
+-- reachable from omarchy-menu. Omarchy has no edit-screenshot bind at all (SUPER+ALT+, is the generic
+-- "invoke last notification"), so CTRL+SHIFT+S opens the newest shot in satty directly.
+o.bind("SUPER + SHIFT + S", "Screenshot", "omarchy-capture-screenshot")
+o.bind("SUPER + CTRL + S", "Capture menu (record / OCR / QR / webcam)", "omarchy-menu toggle capture")
+o.bind("SUPER + CTRL + SHIFT + S", "Edit last screenshot (satty)", "satty-edit")
 -- Help
 o.bind("SUPER + CTRL + K", "Keybindings", "omarchy-menu-keybindings")
 o.bind("SUPER + CTRL + SHIFT + K", "Herdr keybindings", "omarchy-menu-herdr-keybindings")
