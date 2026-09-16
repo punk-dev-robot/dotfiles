@@ -104,3 +104,11 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
 - **Measure:** `SELECT span_name, attributes->>'pi.steering.rule', attributes->>'pi.steering.enforced', count(*) FROM records WHERE span_name LIKE 'pi.steering.%' GROUP BY 1,2,3` + bash-nav share query, window from flip time.
 - **Shipped:** 2026-09-16 23:20Z omarchy, per-rule `level: observe` on both guard rules (global level stays `advise`). Smoke: observe → violation logged, command ran; advise → rejected with strike text, haiku stopped after strike 1.
 - **Status:** open — flip = delete `level: observe` in `steering/guard-*.md` ≥ 09-17 23:00Z after false-positive check; score ≥ 09-24.
+
+### E6 — pi-otel noise: logLevel warn, metrics off
+- **Shipped:** 2026-09-16 23:40Z omarchy (settings.json `otel.logLevel`, `signals.metrics`).
+- **Baseline:** ~14k noise records/day omarchy (metrics-reader ~5k, request-timeout ~9k); 0 on mac.
+- **Expect:** metrics-reader records → 0; request-timeout unchanged (Bun/http issue, separate
+  ticket); no loss of chat/execute_tool spans (compare session count vs `pi.session.start`).
+- **Measure:** inventory query, `span_name LIKE '{"message":%'` grouped by day/host.
+- **Status:** open — score ≥ 09-18.

@@ -61,13 +61,22 @@ main: 49 sessions, 2144 calls, **$472** ($9.63/session). All subagents combined 
 
 ## Observations
 
-### O1 — Telemetry self-noise: ~200k OTel exporter error logs
-`Request timed out` / `PeriodicExportingMetricReader: metrics export failed` from pi-otel
-exporter. ~196k records 09-12 → 09-16, now the dominant record type (2× all real spans).
-Two install paths seen: `pi/agent/git/.../pi-otel/node_modules` and `pi/agent/npm/node_modules`.
-- Impact: query noise, ingestion volume, possible lost spans (if export fails, data gaps).
-- Hypothesis: exporter timeout too low or endpoint slow; metrics export retried every interval.
-- Todo: check whether span exports also drop (session count vs `pi.session.start` = 396 vs 315 sids).
+### O1 — Telemetry self-noise: ~200k OTel exporter error logs (root-caused, partly fixed)
+`Request timed out` / `PeriodicExportingMetricReader: metrics export failed`, omarchy only, every pi
+process since 09-12 (when a pi-otel build with the diag→OTLP log bridge landed). ~196k records,
+2× all real spans.
+- **Not network**: `curl` and a standalone node OTLP export to logfire-eu = 40–80 ms.
+- **Amplifier**: pi-otel default diag `logLevel` is DEBUG and the bridge ships every diag line as
+  a log record → each timeout produces a record that is itself exported → feedback. Metrics
+  reader retried every 10 s → 50k of the records on its own; metrics are role-blind and unused.
+- **Fixed (config, 09-16 23:40Z)**: `otel.logLevel: "warn"`, `signals.metrics: false`. Verified:
+  0 metric-reader records in a test session.
+- **Remaining**: real `Request timed out` at ERROR still ~1 per 5 s per process (8 in a 40 s
+  session). Stack shows `native:7:39` / `internal:http` → **pi runs on Bun**; the OTLP exporter's
+  keep-alive `http.Agent` + 10 s `timeoutMillis` misbehaves under Bun's http shim. Spans still
+  arrive (retry succeeds), so data is intact; cost is ~10k junk records/day. Ticket: pi-otel —
+  test `OTEL_EXPORTER_OTLP_TIMEOUT` / disable keep-alive under Bun, or drop the ERROR bridge line
+  for this message. Not touched here.
 
 ### O2 — Two overlapping span schemas
 Legacy `pi.tool.*`, `pi.llm_request`, `pi.interaction` (09-11 → 09-16) coexist with genai
