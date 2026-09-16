@@ -62,7 +62,7 @@
   "showCacheMissNotices": false,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-fable-5-1",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "medium",
   "warnings": {
     "anthropicExtraUsage": false
   },
