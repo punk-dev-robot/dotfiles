@@ -1,6 +1,6 @@
 ---
 name: punk-handoff
-description: Compact the current conversation into a handoff document for another agent to pick up, then optionally continue immediately in a new Herdr pane. Also invoke at the end of a manager-mode session (see manager-mode.md), when context is running low mid-project, or when the user asks to hand off / wrap up.
+description: Compact the current conversation into a handoff document for another agent to pick up, then optionally continue immediately in a new Herdr pane. Also invoke at the end of a manager-mode session (see punk-resume/manager-mode.md), when context is running low mid-project, or when the user asks to hand off / wrap up.
 argument-hint: "What will the next session be used for?"
 ---
 

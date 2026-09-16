@@ -29,6 +29,7 @@ asking.
 
 ## 3. Continue
 
-Read the chosen handoff fully. Load any skills its "Suggested skills" section
+Read `manager-mode.md` (beside this file) — resuming a handoff puts you in
+manager mode. Then read the chosen handoff fully. Load any skills its "Suggested skills" section
 names. Then continue the work it describes, honoring the user's arguments as
 additional focus if given.

@@ -28,7 +28,7 @@ section of the ticket file is their interface.
   workspace tools and recon subagents, then create right-sized Linear tickets —
   some will be single-repo/single-worktree, some multi-repo sets. Governance
   (claiming, resolution comments, acceptance, session-end handoff) follows
-  `~/dotfiles/config/shared/agents/manager-mode.md`. Then run each multi-repo
+  `~/.agents/skills/punk-resume/manager-mode.md`. Then run each multi-repo
   ticket through ticket mode.
 
 > [!NOTE]

@@ -63,3 +63,36 @@ _Avoid_: linux config, overrides dir
 A named Hyprland special workspace holding one app, toggled by a key; launches the
 app if it is not running. Defined in the omarchy package, not by a daemon.
 _Avoid_: dropdown, hyprscratch, special
+
+### Agent context
+
+**Harness**:
+A runtime that loads context files and exposes tools to a model — coding-agent
+CLIs (pi, Claude Code, codex, opencode) and custom SDK-built agents alike.
+_Avoid_: agent, CLI, tool
+
+**Context file**:
+A markdown file (`AGENTS.md`, `CLAUDE.md`) a harness reads into the system
+prompt at startup. Prose only; no tool-specific guidance.
+_Avoid_: rules file, instructions, memory, prompt
+
+**Global context**:
+The single harness-agnostic context file, `~/.config/punk/AGENTS.md`. Every
+harness's own global slot is a symlink to it. Holds only what applies to every
+harness in every session.
+_Avoid_: shared rules, base AGENTS.md
+
+**Project context**:
+A repo's own `AGENTS.md`: identity, layout, commands, repo-specific rules.
+`CLAUDE.md` beside it is only a shim pointing at it.
+_Avoid_: repo rules, CLAUDE.md
+
+**Steering**:
+Guidance injected into the prompt by an extension, conditioned on the task and
+on which tools are active. Phase 2; not written into context files.
+_Avoid_: rules, instructions, hints
+
+**Enforcement**:
+Blocking or rewriting a tool call via hooks. Distinct from steering: steering
+advises, enforcement prevents.
+_Avoid_: guardrail, policy, ban
