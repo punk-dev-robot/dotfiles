@@ -27,9 +27,11 @@ for _, k in ipairs({
   "SUPER + ALT + code:34", "SUPER + ALT + code:35", -- omarchy: webcam overlay resize, unused; frees Super+Alt+[/]
   "SUPER + mouse_down", "SUPER + mouse_up", -- omarchy: scroll workspace e+-1 -> relative r+-1
   "SUPER + BACKSPACE", "SUPER + SHIFT + BACKSPACE", "SUPER + O", "SUPER + SHIFT + O", "SUPER + SHIFT + A",
-  "SUPER + P", "SUPER + T", "SUPER + V", "SUPER + RETURN", -- scratchpad trigger keys (retargeted below)
+  "SUPER + P", "SUPER + T", "SUPER + RETURN", -- scratchpad trigger keys (retargeted below)
   "SUPER + SHIFT + RETURN",       -- omarchy: Browser -> new plain terminal
-  "SUPER + CTRL + A",             -- omarchy: Audio -> pipewire profile toggle
+  "SUPER + CTRL + A",             -- omarchy: Audio panel -> pipewire profile toggle
+  "SUPER + SHIFT + CTRL + A",     -- omarchy: Agent picker (launcher/omarchy-menu still reach it) -> ee-toggle
+                                  -- NB: unbind must match omarchy's literal modifier order, not the modmask.
   "SUPER + SHIFT + D",            -- omarchy: Docker webapp -> Omarchy menu
   "SUPER + SHIFT + S",            -- omarchy: Google Maps webapp -> screenshot (HHKB has no PrtScr)
   "SUPER + CTRL + S",             -- omarchy: Share menu (still in omarchy-menu) -> capture menu, next to SHIFT+S
@@ -157,8 +159,10 @@ o.bind("SUPER + SHIFT + Q", "Kill window", hl.dsp.window.kill())
 ---------------------------------------------------------------------------
 -- 2. Apps / misc
 ---------------------------------------------------------------------------
+-- KUB-114 cluster: A = audio (SUPER pavucontrol, +SHIFT easyeffects — both scratchpads below;
+-- +CTRL pipewire profile, +CTRL+SHIFT EasyEffects preset). V stays clipboard/paste.
 o.bind("SUPER + CTRL + A", "Toggle pipewire profile", "pw-profile toggle")
-o.bind("SUPER + CTRL + SHIFT + V", "EasyEffects: toggle speakers/headphones preset", "ee-toggle")
+o.bind("SUPER + CTRL + SHIFT + A", "EasyEffects: toggle speakers/headphones preset", "ee-toggle")
 -- Volume keys: omarchy's script can't resolve through EasyEffects 8 (see ee-volume header) → rebind.
 for _, k in ipairs({ "XF86AudioRaiseVolume", "XF86AudioLowerVolume", "XF86AudioMute",
                      "ALT + XF86AudioRaiseVolume", "ALT + XF86AudioLowerVolume" }) do hl.unbind(k) end
@@ -256,12 +260,10 @@ scratch("SUPER + O", "obsidian", "obsidian", "obsidian")
 scratch("SUPER + N", "notion", "chrome-www.notion.so__.*", "omarchy-launch-webapp https://www.notion.so")
 scratch("SUPER + P", "1password", "1[Pp]assword", "1password", { size = { "33%", "66%" } })
 scratch("SUPER + M", "spotify", "[Ss]potify.*", "spotify-launcher")
-scratch("SUPER + A", "openwebui", "crx_ciaamnabomjhndmogimfmmkflefihebh", "gtk-launch openwebui")
-scratch("SUPER + SHIFT + A", "claude", "[Cc]laude.*", "claude-desktop")
+scratch("SUPER + A", "volume", "org.pulseaudio.pavucontrol", "pavucontrol", { size = { 800, 600 } })
+scratch("SUPER + SHIFT + A", "easyeffects", "com.github.wwmm.easyeffects", "easyeffects")
 scratch("SUPER + E", "protonmail", ".*[Pp]roton.*", "proton-mail")
 scratch("SUPER + T", "linear", "[Ll]inear-linux", "gtk-launch Linear") -- KUB-118: user .desktop adds GDK_BACKEND=x11 (class is Linear-linux on XWayland)
-scratch("SUPER + V", "volume", "org.pulseaudio.pavucontrol", "pavucontrol", { size = { 800, 600 } })
-scratch("SUPER + SHIFT + V", "easyeffects", "com.github.wwmm.easyeffects", "easyeffects")
 scratch("SUPER + I", "top", "scratch.btm", "xdg-terminal-exec --app-id=scratch.btm -e btm")
 scratch("SUPER + SHIFT + I", "nvtop", "scratch.nvtop", "xdg-terminal-exec --app-id=scratch.nvtop -e nvtop")
 scratch("SUPER + RETURN", "dropterm", "scratch.dropterm", "xdg-terminal-exec --app-id=scratch.dropterm")
