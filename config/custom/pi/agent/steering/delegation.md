@@ -21,7 +21,10 @@ Launch with `subagents_run({ role, label, prompt })` — background by default,
   bounded, `dev` when it needs judgement. Do not hand-edit a change you could brief.
 - **Tests go to `tests`** — test strategy, writing tests, coverage analysis.
 - **External docs, versions, release notes go to `researcher`.**
-- **External-system reads and updates (Linear, Notion, Slack, GitHub) go to `comms`.**
+- **External systems (Linear, Notion, Slack, GitHub): small ops inline via `mcpScript`** —
+  one comment, a status change, one issue read; filter/project in code so raw payloads
+  never land here. **Bulk reads or multi-step external ops go to `comms`** (triage a
+  project, cross-reference issues, anything returning tens of KB).
 - **A finished change goes to `reviewer`** before you call it done.
 
 The third tool call on the same question is the tripwire: you are now doing a
