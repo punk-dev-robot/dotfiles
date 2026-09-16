@@ -12,6 +12,18 @@ Tuned in KUB-149 (Sep 2026). Cache-leak follow-up: KUB-153. Full analysis: `docs
 | `observational-memory.compactAfterTokensRatio` | `settings.json` | 0.18 | **The real compaction trigger.** `floor(contextWindow × ratio)` *source* tokens since last compaction (excludes system/tools, ~50K). 0.18 × 1M ≈ 180K source ≈ 230K request on Claude; 0.18 × 872K ≈ 157K on Codex. Fires only when idle between turns. |
 | `PI_CACHE_RETENTION` | `config/custom/zsh/.zshenv` | `long` | Anthropic `cache_control.ttl: "1h"` (2× write price vs 1.25× for 5m). Right for long-lived orchestrator sessions with >5 min pauses. pi's `$` display assumes 5m pricing → under-reports cacheWrite by ~60%. |
 
+## Who decides what (mental model)
+
+Three knobs, three separate jobs — no shared formula:
+
+- **When** → `compactAfterTokensRatio` (OM). Fires when source tokens since last compaction ≥ ratio × window, only while idle. A single autonomous run can overshoot past it.
+- **How much survives** → `keepRecentTokens`. Post-compaction request ≈ system+tools (~50K) + OM summary (10–20K) + 40K verbatim ≈ 100–110K.
+- **Overflow net + summarizer ceiling** → `reserveTokens`. Threshold `window − reserve` (936K/808K — should never be reached); `0.8×reserve` caps pi's built-in summarizer, which OM normally replaces.
+
+Steady state on a long session: oscillates ~105K ↔ ~230K; the 150K nudge fires mid-cycle. System+tools prefix stays cache-hot across compaction; the summary onward is one ~60K cache write.
+
+Extensions: **pi-observational-memory** is the mechanism (supplies the summary via `session_before_compact`, inherits pi's `keepRecentTokens` cut). **pi-recap** is orthogonal — stored via `appendEntry`, never in LLM context, no compaction.
+
 Target: **never reach 270K** on Claude. `context-nudge.ts` (extension) warns once at 150K: prefer `/punk-handoff` at a semantic boundary over a compaction summary when the goal is shifting anyway.
 
 ## Anthropic prompt-cache rules that bite
