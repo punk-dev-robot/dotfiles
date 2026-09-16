@@ -16,7 +16,7 @@ laptop — deployed by dotter. Vocabulary: `CONTEXT.md`. Decisions: `docs/adr/`.
 - `config/custom/pi/agent/pi-extensible-workflows/roles/` — piewf agent roles
 - `etc/`, `system/` — root-owned templates (`omarchy-system` package)
 - `local/bin/` — scripts → `~/.local/bin`
-- `docs/` — `reference/`, `troubleshooting/`, `agents/`, `adr/`; index in `docs/README.md`
+- `docs/` — `reference/`, `troubleshooting/`, `agents/`, `adr/`, `otel_retro/` (Logfire-driven workflow retros + experiments ledger); index in `docs/README.md`
 - `.dotter/` — `global.toml` (mappings), `<hostname>.toml` (host profile), `cache.toml` (deployed state)
 
 **When deploying or changing what a config maps to**
