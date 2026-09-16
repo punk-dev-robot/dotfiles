@@ -183,7 +183,7 @@ spotify-launcher
 sshpass
 steam
 stress-ng
-swappy
+# swappy — dropped, satty is the screenshot annotator (docs/reference/omarchy-diet.md)
 swayimg
 syncthing
 sysstat

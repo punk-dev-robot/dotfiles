@@ -9,3 +9,4 @@ Host-level state that dotter does not manage.
 Both lists end with commented-out judgement calls / unverified workflows; uncomment to opt in.
 Omarchy's own dependencies are not listed — `omarchy` meta package owns them.
 Triage rationale: `docs/.scratch/research-KUB-82-package-triage.md` (KUB-82).
+Dropped omarchy defaults (and how to re-drop them after a reinstall): `docs/reference/omarchy-diet.md`.

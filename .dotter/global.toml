@@ -91,6 +91,8 @@ depends = ["base"]
 "config/omarchy/tridactyl/tridactylrc" = "~/.config/tridactyl/tridactylrc"
 "config/omarchy/1Password/ssh/agent.toml" = "~/.config/1Password/ssh/agent.toml"
 "config/omarchy/spotify-launcher.conf" = "~/.config/spotify-launcher.conf"
+# KUB-111 follow-up: imv keybinds; Ctrl+E annotates in satty (omarchy default calls the dropped tensaku).
+"config/omarchy/imv/config" = "~/.config/imv/config"
 # KUB-122: udiskie device rules (omarchy autostarts udiskie; config.yml is read regardless of its flags).
 "config/omarchy/udiskie" = "~/.config/udiskie"
 "config/omarchy/wireplumber" = "~/.config/wireplumber" # pro-audio profile + disable unused mics (plans/soundid-migration.md)
