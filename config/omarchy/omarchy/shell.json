@@ -4,16 +4,15 @@
     "layout": {
       "center": [
         {
-          "id": "omaplug"
+          "id": "omaplug",
+          "autoCheckUpdates": true,
+          "autoCheckIntervalHours": 12
         },
         {
           "id": "omarchy.system-update"
         },
         {
           "id": "omarchy.active-window"
-        },
-        {
-          "id": "omarchy.indicators"
         },
         {
           "id": "meviusisback.agent-orchestr"
@@ -25,6 +24,17 @@
         },
         {
           "id": "omarchy.workspaces"
+        },
+        {
+          "id": "ee-preset",
+          "type": "command",
+          "exec": "echo \"EQ · $(easyeffects -a output)\"",
+          "interval": 5,
+          "tooltip": "EasyEffects output preset · click: ee-toggle",
+          "onClick": "ee-toggle"
+        },
+        {
+          "id": "omarchy.indicators"
         },
         {
           "id": "io.github.sohanemon.submap"
@@ -60,6 +70,9 @@
           "id": "omarchy.network"
         },
         {
+          "id": "jkoestinger.vpn"
+        },
+        {
           "id": "omarchy.tailscale"
         },
         {
@@ -67,17 +80,6 @@
         },
         {
           "id": "tmn73.calendar"
-        },
-        {
-          "id": "jkoestinger.vpn"
-        },
-        {
-          "id": "ee-preset",
-          "type": "command",
-          "exec": "echo \"EQ \u00b7 $(easyeffects -a output)\"",
-          "interval": 5,
-          "tooltip": "EasyEffects output preset \u00b7 click: ee-toggle",
-          "onClick": "ee-toggle"
         }
       ]
     },
@@ -93,14 +95,12 @@
       "id": "io.github.sirjul1337.lock-explorer",
       "boot": "theme",
       "design": "aurora"
+    },
+    {
+      "id": "io.github.tallsam.navbar-cat"
     }
   ],
   "version": 1,
-  "disabledPlugins": [
-    "nerdyworm.easyeffects-presets",
-    "omarchy.lock"
-  ],
-  "cloneSourceRestores": [
-    "io.github.sirjul1337.lock-explorer"
-  ]
+  "disabledPlugins": ["nerdyworm.easyeffects-presets", "omarchy.lock"],
+  "cloneSourceRestores": ["io.github.sirjul1337.lock-explorer"]
 }

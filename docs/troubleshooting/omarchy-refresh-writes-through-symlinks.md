@@ -28,22 +28,26 @@ cd ~/dotfiles && git checkout -- config/shared && dotter
 Check `git status` once more; any `.bak.<epoch>` files left in `~/.config` are omarchy's
 backups of the (already-correct) repo content and can be deleted.
 
-## Second failure mode: shell commands replace the symlink
+## Second failure mode: shell.json is a copy, not a symlink (bar lost all custom plugins)
 
-`omarchy bar …`, `omarchy plugin enable|disable`, `omarchy refresh shell` (`omarchy-bar defaults`) and
-`omarchy display text size` write via `jq … > $(mktemp); mv tmp ~/.config/omarchy/shell.{json,toml}`.
-`mv` replaces the dotter symlink with a real file — the repo copy is untouched, `git status` is clean,
-but the live file has drifted and `dotter -v -d` reports the target as an existing-file collision.
-(`omarchy refresh shell` does both: `cp -f` through the link first, then `mv` over it.)
+omarchy-shell inotify-watches `~/.config/omarchy/shell.json` (`shell.qml` FileView, `watchChanges: true`)
+and on every change re-parses it; empty / unparseable / missing → **in-memory config silently falls back to
+built-in defaults** (3 widgets, `plugins: []`). Nothing is logged (`printErrors: false`). A non-atomic
+writer — nvim saving the symlinked repo file (truncate + write), `cp -f` through the link — fires the
+watcher mid-write. The bar keeps rendering the old widgets, so nothing looks wrong until the next drag in
+the bar editor / `omarchy bar …` persists the *default* in-memory config over the file (atomic tmp+rename,
+which also replaces a symlink with a real file). Symptom: "moved one widget, lost every plugin".
 
-Recovery — keep omarchy's write, diff it into the repo:
+Hence `shell.{json,toml}` are dotter **copies** (`type = "template"` in `.dotter/global.toml`):
 
-```sh
-mv ~/.config/omarchy/shell.json{,.omarchy-new} && cd ~/dotfiles && dotter
-diff ~/.config/omarchy/shell.json.omarchy-new config/omarchy/omarchy/shell.json   # port what you want, commit
-```
+- edit `config/omarchy/omarchy/shell.json` in the repo → `dotter` (post_deploy runs
+  `omarchy-shell shell reloadConfig`, so memory always ends on the final file);
+- edit live (bar editor, `omarchy bar move <id> left`, `omarchy plugin enable`) → `omarchy-shell-pull`
+  copies live → repo, commit.
 
-Prefer editing `config/omarchy/omarchy/shell.{json,toml}` directly over the CLI; the shell live-reloads both.
+Diagnose: `omarchy plugin list` asks the live shell — third-party widgets `disabled` while the file lists
+them = stale memory. Recover: `omarchy-shell shell reloadConfig`.
+
 (`omarchy display text size` additionally `sed -i`s `~/.config/ghostty/config` and sets GTK `text-scaling-factor`;
 use `[font] base-size` in `shell.toml` instead — KUB-111.)
 

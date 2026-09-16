@@ -77,9 +77,13 @@ depends = ["base"]
 # KUB-111/118: omarchy user override points, per-file symlinks into ~/.config/omarchy (omarchy's own dirs stay).
 #   shell.json (bar layout, idle; original: shell.json.omarchy-bak), shell.toml (font base-size),
 #   themed/*.tpl (rendered on theme-set), hooks/theme-set.d/zen.
-# `omarchy bar|plugin|refresh shell` and `omarchy display text size` `mv` over the symlinks → dotter dry-run
-# collision; see docs/troubleshooting/omarchy-refresh-writes-through-symlinks.md.
+# shell.{json,toml} are COPIES (template type), not symlinks: omarchy-shell persists its in-memory config
+# with an atomic write (tmp + rename) and `omarchy bar|plugin|display text size` do `mv` — both replace a
+# symlink with a real file. Pull UI/CLI edits back with `omarchy-shell-pull`; post_deploy reloads the shell.
+# See docs/troubleshooting/omarchy-refresh-writes-through-symlinks.md.
 "config/omarchy/omarchy" = "~/.config/omarchy"
+"config/omarchy/omarchy/shell.json" = { target = "~/.config/omarchy/shell.json", type = "template" }
+"config/omarchy/omarchy/shell.toml" = { target = "~/.config/omarchy/shell.toml", type = "template" }
 # KUB-127 (KUB-93 verdicts): app flags & misc. chromium-flags.conf is an omarchy refresh target (original:
 # ~/.config/chromium-flags.conf.omarchy-bak). mimeapps.list stays unmanaged (runtime churn) — reference copy only.
 "config/omarchy/chromium-flags.conf" = "~/.config/chromium-flags.conf"

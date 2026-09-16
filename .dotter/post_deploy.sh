@@ -37,6 +37,12 @@ if command -v herdr >/dev/null 2>&1 && [ -x "$HOME/.local/bin/herdr-sync-plugins
     "$HOME/.local/bin/herdr-sync-plugins" || echo "  warning: herdr plugin sync had failures" >&2
 fi
 
+# shell.{json,toml} are copies; omarchy-shell only re-reads them on request — otherwise its stale
+# in-memory config gets persisted over the file on the next bar edit.
+if command -v omarchy-shell >/dev/null 2>&1; then
+    omarchy-shell shell reloadConfig >/dev/null 2>&1 || true
+fi
+
 # KUB-122: own user timers (config/omarchy/systemd). Only when a user systemd is reachable
 # (Linux desktop session); no-op elsewhere.
 if [[ "$(uname)" == "Linux" ]] && systemctl --user show-environment >/dev/null 2>&1; then

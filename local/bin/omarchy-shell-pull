@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Pull bar/plugin edits made via the omarchy-shell UI or `omarchy bar|plugin` back into the repo.
+# ~/.config/omarchy/shell.{json,toml} are dotter *copies* (omarchy-shell atomic-writes them), so
+# live edits do not reach the repo on their own. Run this, review `git diff`, commit.
+set -euo pipefail
+repo="$HOME/dotfiles/config/omarchy/omarchy"
+for f in shell.json shell.toml; do
+  cmp -s "$HOME/.config/omarchy/$f" "$repo/$f" || { cp "$HOME/.config/omarchy/$f" "$repo/$f"; echo "pulled $f"; }
+done
+git -C "$HOME/dotfiles" --no-pager diff --stat -- config/omarchy/omarchy/shell.json config/omarchy/omarchy/shell.toml
