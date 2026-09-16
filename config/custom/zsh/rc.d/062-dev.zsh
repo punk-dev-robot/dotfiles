@@ -11,6 +11,7 @@ path+=("$HOME/.yarn/bin")
 path+=("$HOME/.npm-global/bin")
 export PNPM_HOME="$HOME/.local/share/pnpm"  # pnpm reads this for global installs
 path=("$PNPM_HOME/bin" $path)               # prepend: must win over per-version npm bins
+znap eval mise 'mise activate zsh'   # cd-hook: real bin paths + mise.toml [env]; shims (.zshenv) cover non-interactive
 znap eval pnpm 'pnpm completion zsh'
 
 # docker
