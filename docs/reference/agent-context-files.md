@@ -57,6 +57,12 @@ config/custom/agents/skills/punk-resume/manager-mode.md   manager mode, loads wi
 - Persona preambles ("senior architect, 20 years", `BE CRITICAL`): no measured gain, small negative in the
   largest study; Anthropic says role prompting steers tone only. Dropped; slogans rewritten as rules.
 
+## Footprint (KUB-163, 2026-09-16)
+
+Always-loaded bytes, pi in dotfiles root: before 15.5KB (shared 3.8 + manager-mode 3.7 + pi 4.6 + project
++ docs/README include 3.5) → after 12.0KB (punk 1.4 + APPEND_SYSTEM 7.6 + project 3.0). APPEND_SYSTEM.md is the
+remaining bulk — that is the steering extension's target (KUB-164).
+
 ## Known dead / gotchas
 
 - Tessl writes `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md` (`@../.tessl/RULES.md`) — hardcoded default
@@ -64,7 +70,8 @@ config/custom/agents/skills/punk-resume/manager-mode.md   manager mode, loads wi
   runtime state, not context files: left alone. `RULES.md` aggregates plugin *rules*; we have none → boilerplate.
 - Tessl skills land in `~/.agents/skills`, `~/.claude/skills`, `~/.codex/skills`; Claude reads
   `~/.config/claude/skills` (doesn't exist) → tessl skills invisible to Claude. Claude out of scope.
-- Double-load: pi walk-up from cwd under `config/shared/punk/` hits the SSOT file directly and via the
-  global symlink. Check in KUB-163.
+- Double-load: pi core does **not** realpath-dedup. cwd under `config/shared/punk/` loaded the SSOT twice (walk-up +
+  global symlink). Fixed by `config/shared/punk/AGENTS.override.md` (pi loads it instead of `AGENTS.md` there).
+- Running pi inside `config/shared/punk/` makes repowise create a `.repowise/` there (gitignored; delete it).
 - Deployed symlinks that were hand-repointed make `dotter` refuse to update ("target exists and doesn't
   point at source"). Remove the stale link and redeploy; no `--force`.
