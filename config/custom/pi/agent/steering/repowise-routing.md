@@ -14,7 +14,6 @@ Repowise FIRST for concept/history/risk questions; `grep`/`find` are the unindex
 - File/symbol triage (usage, fix history, layer) → `repowise_get_context` (takes `targets` array).
 - Full symbol source → `repowise_get_symbol` (`symbol_id` = `path::Name`).
 - Change rationale / git archaeology → `repowise_get_why`; touch risk → `repowise_get_risk`.
-- Line-level references stay local: `readSeek_refs` (single hop), `cymbal_impact` (transitive
-  callers), `cymbal_changed` (diff → affected symbols, pre-PR).
-- Exact text/regex with edit anchors → `readSeek_grep`; AST → `readSeek_search`.
+- Line-level references stay local: `cymbal_impact` (transitive callers), `cymbal_changed`
+  (diff → affected symbols, pre-PR); exact text/regex → `grep`.
 - NOT for exact text or line-level refs. Index auto-syncs via post-commit hook.

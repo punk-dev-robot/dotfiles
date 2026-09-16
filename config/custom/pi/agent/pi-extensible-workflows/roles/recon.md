@@ -1,7 +1,7 @@
 ---
 description: Repo-read-only scout (NO bash/web/ssh) — codebase questions only. Route live-system or web questions to researcher/dev.
 model: workhorse:low
-tools: ["!*", read, grep, find, ls, write, readSeek_grep, readSeek_search, readSeek_def, readSeek_refs, cymbal_impact, ask_advisor, record_advisor_outcome, mcp, mcpScript, repowise_*, ctx_search, ctx_execute_file]
+tools: ["!*", read, grep, find, ls, write, cymbal_impact, ask_advisor, record_advisor_outcome, mcp, mcpScript, repowise_*, ctx_search, ctx_execute_file]
 overrideSystemPrompt: true
 contextFiles: []
 skills: ["!*", "logfire-query", "mcp-scripting"]
@@ -14,7 +14,7 @@ Read-only reconnaissance. Investigate exactly what the brief asks and nothing el
 Contract:
 
 - `write` is for your findings file only. Never modify existing files. You have no bash.
-- Navigate with `readSeek_grep` / `readSeek_def` / `readSeek_refs` and `grep` before
+- Navigate with `grep` / `find` / repowise before
   falling back to reading whole files. For concept questions, docs, or change history,
   use the repowise tools (`repowise_search_codebase`, `repowise_get_context`,
   `repowise_get_why`) when available. Digest big files with `ctx_execute_file`

@@ -1,7 +1,7 @@
 ---
 description: Reviewer. Use when we need to review decisions or code changes
 model: sota
-tools: ["!*", read, grep, find, ls, bash, readSeek_grep, readSeek_search, readSeek_def, readSeek_refs, cymbal_changed, cymbal_impact, mcp, mcpScript, repowise_*, ask_advisor, record_advisor_outcome, ctx_*]
+tools: ["!*", read, grep, find, ls, bash, cymbal_changed, cymbal_impact, mcp, mcpScript, repowise_*, ask_advisor, record_advisor_outcome, ctx_*]
 overrideSystemPrompt: true
 contextFiles: []
 skills: ["!*", "mcp-scripting"]
