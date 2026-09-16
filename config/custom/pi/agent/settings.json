@@ -2,7 +2,6 @@
   "packages": [
     "npm:pi-claude-auth",
     "npm:pi-terminal-theme",
-    "npm:@raquezha/noheadroom",
     "npm:pi-vim",
     "npm:@pi-kaush/pi-double-paste@0.1.0",
     "npm:pi-tool-display",
