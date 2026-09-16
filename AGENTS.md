@@ -1,40 +1,51 @@
-# Dotfiles Configuration
+# dotfiles
 
-## Summary
+Personal config for two hosts — Omarchy (Arch + Hyprland) mini-pc and a work macOS
+laptop — deployed by dotter. Vocabulary: `CONTEXT.md`. Decisions: `docs/adr/`.
 
-- [project] dotfiles - Personal configuration files for Arch Linux with Hyprland #main
-- [type] Configuration Management #architecture
-- [stack] Dotter, ZSH, Neovim, Hyprland, Modern CLI tools #tech
+## Project map
 
-## Development Workflow
+- `config/shared/` — plain `~/.config/*` dirs, one recursive dotter map; drop a dir in, no edit needed
+- `config/custom/` — needs templating, single-dir symlink, or non-`~/.config` target; listed per entry in `.dotter/global.toml`
+- `config/omarchy/` — Omarchy override-point files (Keep/Tweak verdicts)
+- `config/mac/` — mac-only `~/.config/*`
+- `config/.disabled/` — parked, not deployed
+- `config/shared/punk/AGENTS.md` — global context (every harness's global slot symlinks here)
+- `config/custom/pi/agent/` — pi settings, `APPEND_SYSTEM.md` (temporary tool routing), extensions
+- `config/custom/agents/skills/` — own skills (`punk-*`, `multi-repo-ticket`, repowise-*) → `~/.agents/skills`
+- `config/custom/pi/agent/pi-extensible-workflows/roles/` — piewf agent roles
+- `etc/`, `system/` — root-owned templates (`omarchy-system` package)
+- `local/bin/` — scripts → `~/.local/bin`
+- `docs/` — `reference/`, `troubleshooting/`, `agents/`, `adr/`; index in `docs/README.md`
+- `.dotter/` — `global.toml` (mappings), `<hostname>.toml` (host profile), `cache.toml` (deployed state)
 
-- [workflow] **Always** use `dotter` tool for linking config from this repo! `dotter` manages these dotfiles project and we should be dog-fooding it as much as possible #tooling
-- [workflow] You can check and confirm changes before deployment with `dotter -v -d` or even with `-vv` for more verbosity #tooling
-- [workflow] After `tessl update`, run `tessl-cock-prefix` (`local/bin/`) — re-applies the `cock-` name prefix to Matt Pocock skills that updates revert #tooling
+**When deploying or changing what a config maps to**
 
-## Pi agent roles (piewf)
+- Always `dotter` — never hand-link. Dry run first: `dotter -v -d` (`-vv` more).
+- Deployed = symlink into the repo; edits to repo files are live, no redeploy. Redeploy only for new mappings or templates.
+- `[base.files]` = all hosts; `[macos.files]` / `[omarchy.files]` / `[omarchy-system.files]` per host. Hosts pick packages in `.dotter/<hostname>.toml`.
+- Apps that rewrite their own config (codex, claude `settings.json`) are `type = "template"` so the repo copy stays clean.
 
-- [roles] Agent roles live in `config/custom/pi/agent/pi-extensible-workflows/roles/<name>.md`: `recon`, `researcher`, `dev`, `impl`, `reviewer`, `tests`, `comms`. Used by both `subagents_run` and workflow `agent(...)`. #workflow
-- [roles] Each role is one self-contained file: YAML frontmatter (model as `provider/model:thinking`; tools/skills/extensions selectors) + the prompt as body. #workflow
-- [roles] Deployed as symlinks — edit the repo file directly, changes are live, no `dotter deploy`. Details: `docs/reference/piewf-role-config.md`. #workflow
+**When touching tessl skills**
 
-## Documentation
+- After `tessl update`, run `tessl-cock-prefix` (`local/bin/`) — re-applies the `cock-` prefix that updates revert.
+- Global manifest: `config/custom/tessl/tessl.json` → `~/.tessl/tessl.json`.
 
-@docs/README.md
+**When editing agent roles for `subagents_run` or workflow `agent(...)`**
 
-## Agent skills
+- One file per role in `config/custom/pi/agent/pi-extensible-workflows/roles/<name>.md`: YAML frontmatter (model `provider/model:thinking`, tool/skill/extension selectors) + prompt body. Live via symlink. Details: `docs/reference/piewf-role-config.md`.
 
-### Issue tracker
+**When creating or updating tracker issues**
 
-Planning and wayfinder work tracked in Linear (team `Kuba`, `KUB-n`) via Linear MCP tools; GitHub Issues (`gh`) only for public repo bugs. See `docs/agents/issue-tracker.md`.
+- Linear, team `Kuba` (`KUB-n`), via Linear MCP tools. GitHub Issues only for public repo bugs. Ops: `docs/agents/issue-tracker.md`. Labels: `docs/agents/triage-labels.md`.
 
-### Triage labels
+**When adding or changing docs**
 
-Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+- Value bar and layout rules: `docs/README.md`. kebab-case filenames; session notes → `docs/.scratch/` (gitignored), promote later.
 
-### Domain docs
+**When changing vocabulary or recording a decision**
 
-Single-context: `CONTEXT.md` + `docs/adr/` at repo root. See `docs/agents/domain.md`.
+- Glossary `CONTEXT.md`, ADRs `docs/adr/`. Method: `docs/agents/domain.md`.
 
 
 # Agent Rules <!-- tessl-managed -->
