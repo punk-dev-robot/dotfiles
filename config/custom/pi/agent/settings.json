@@ -53,10 +53,10 @@
     "npm:@henryqw/pi-herdr-rename"
   ],
   "npmCommand": [
-    "fnm",
+    "mise",
     "exec",
-    "--using",
-    "26.5.0",
+    "node@26",
+    "--",
     "npm"
   ],
   "lastChangelogVersion": "0.85.1",
