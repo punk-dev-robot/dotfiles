@@ -72,7 +72,12 @@
           "id": "jkoestinger.vpn"
         },
         {
-          "id": "nerdyworm.easyeffects-presets"
+          "id": "ee-preset",
+          "type": "command",
+          "exec": "echo \"EQ \u00b7 $(easyeffects -a output)\"",
+          "interval": 5,
+          "tooltip": "EasyEffects output preset \u00b7 click: ee-toggle",
+          "onClick": "ee-toggle"
         }
       ]
     },
@@ -92,6 +97,7 @@
   ],
   "version": 1,
   "disabledPlugins": [
+    "nerdyworm.easyeffects-presets",
     "omarchy.lock"
   ],
   "cloneSourceRestores": [

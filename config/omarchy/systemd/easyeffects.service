@@ -3,9 +3,11 @@
 # pipewire.service and let systemd restart it. plans/soundid-migration.md
 [Unit]
 Description=EasyEffects (service mode)
+# Started by graphical-session.target (not pipewire.service): pipewire comes up before WAYLAND_DISPLAY
+# is in the systemd user env, Qt then falls to xcb and aborts once per boot (stale bar widget etc).
 After=pipewire.service wireplumber.service graphical-session.target
 Requires=pipewire.service
-PartOf=pipewire.service
+PartOf=pipewire.service graphical-session.target
 
 [Service]
 ExecStart=/usr/bin/easyeffects --service-mode --hide-window
@@ -13,4 +15,4 @@ Restart=on-failure
 RestartSec=2
 
 [Install]
-WantedBy=pipewire.service
+WantedBy=graphical-session.target
