@@ -16,6 +16,8 @@ default_target_type = "symbolic"
 "config/custom/nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }
 "config/custom/git/gitconfig" = { target = "~/.gitconfig", type = "template" }
 "config/custom/git/gitignore" = "~/.gitignore"
+# shared git hooks (repowise index auto-update on commit/merge/branch-checkout); core.hooksPath points here
+"config/custom/git/hooks" = "~/.config/git/hooks"
 "config/custom/ssh" = { target = "~/.ssh", type = "template" }
 "config/custom/zsh" = "~/.config/zsh"
 "config/custom/zsh/.zshenv" = "~/.zshenv"

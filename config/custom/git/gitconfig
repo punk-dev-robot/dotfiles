@@ -10,6 +10,9 @@
   autoStash = true
 [core]
 	excludesfile = ~/.gitignore
+	# shared repowise index auto-update hooks; shadows per-repo .git/hooks (only
+	# repowise's own post-commit lived there, and config/custom/git/hooks replaces it)
+	hooksPath = ~/.config/git/hooks
   pager = delta
 [interactive]
   diffFilter = delta --color-only

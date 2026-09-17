@@ -118,3 +118,30 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
 - **Baseline (14d):** ctx_execute_file 43 calls, 37% `File access blocked`; each failure → bash `cat`/`grep` fallback in main.
 - **Expect:** ctx_execute_file err% → <5%; recon runs on installed-package questions succeed; precondition for flipping `guard-read-outside-repo` to advise.
 - **Status:** open — score with E5.
+
+### E8 — repowise augment: telemetry + read success path + SessionStart decisions
+- **Shipped:** 2026-09-17 omarchy (`extensions/repowise-augment.ts`: `pi.augment.fired` log on every
+  call, read success-path `tool_response` in Claude's file shape, `before_agent_start` →
+  SessionStart standing-decisions block; shared git hooks `config/custom/git/hooks/*` +
+  `core.hooksPath` so the index also updates on merge/branch-checkout). Mac on next pull + `dotter`.
+  Research: `2026-09-17-research-repowise-plugin.md` §6.
+- **Baseline (14d):** `repowise_*` MCP tools 10 calls; augment firings **unknown — no telemetry at
+  all** (read success path skipped outright, so stale-read / re-read / changed-outside surfaces
+  could never fire); index updated on commit only.
+- **Expect:** `pi.augment.fired` visible with a computable hit rate (hit=false emitted too);
+  read-path notices appear (`stale`, `unchanged re-read`, `changed outside`) — verified by hand:
+  read→edit→read returns the 110-char stale notice; SessionStart decisions block ≤150 tok/session
+  and silent when nothing clears the floor; p95 `pi.augment.ms` ≤ FAST_TIMEOUT_MS (3s) on non-search
+  tools, timeouts flagged `pi.augment.timeout`.
+- **Measure:**
+  ```sql
+  SELECT attributes->>'pi.augment.event' ev, attributes->>'pi.augment.tool' tool, count(*) n,
+    sum(CASE WHEN attributes->>'pi.augment.hit' = 'true' THEN 1 ELSE 0 END) hits,
+    avg(CAST(attributes->>'pi.augment.ms' AS DOUBLE)) avg_ms,
+    sum(CAST(attributes->>'pi.augment.chars' AS BIGINT)) chars
+  FROM records WHERE service_name='pi' AND attributes->>'event.name'='pi.augment.fired'
+  GROUP BY 1,2 ORDER BY n DESC
+  ```
+  Cross-check cost: injected chars/4 ≈ tokens vs `repowise_search_codebase` 1.6k tok/result.
+- **Status:** open — score ≥ 2026-09-20 (need ≥20 sessions). Refuted if hit rate <5% on read
+  (notices never fire → revert the read path and keep telemetry only).

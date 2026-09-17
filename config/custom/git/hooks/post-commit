@@ -1,0 +1,46 @@
+#!/bin/sh
+# Shared repowise index auto-update hook — deployed globally via core.hooksPath
+# (~/.config/git/hooks). post-merge and post-checkout are symlinks to this file.
+#
+# Same body as `repowise hook install`'s per-repo post-commit: background,
+# non-blocking, no-ops in repos without .repowise/state.json. A global
+# core.hooksPath shadows per-repo .git/hooks, so this must cover post-commit too.
+name="${0##*/}"
+case "$name" in
+post-checkout)
+	# args: <prev-HEAD> <new-HEAD> <branch-flag>; 1 = branch checkout, 0 = file checkout
+	[ "$3" = "1" ] || exit 0
+	;;
+esac
+
+# core.hooksPath shadows .git/hooks, so chain to a per-repo hook if one exists
+# (pre-commit framework, lefthook…). repowise's own installed hook is skipped:
+# this file already does its job and running both would double-queue an update.
+GD=$(git rev-parse --git-dir 2>/dev/null) || GD=""
+if [ -n "$GD" ] && [ -x "$GD/hooks/$name" ] &&
+	! grep -q repowise-hook-start "$GD/hooks/$name" 2>/dev/null; then
+	"$GD/hooks/$name" "$@" || exit $?
+fi
+{
+	ROOT=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+	[ -f "$ROOT/.repowise/state.json" ] || exit 0
+	HEAD=$(git rev-parse HEAD 2>/dev/null) || HEAD=""
+	TS=$(date +%s 2>/dev/null) || TS=""
+	if [ -n "$TS" ]; then
+		printf '{"target_commit":"%s","queued_at":%s}\n' "$HEAD" "$TS" \
+			> "$ROOT/.repowise/.update.queued" 2>/dev/null || true
+	fi
+	LOG="$ROOT/.repowise/.update.log"
+	{
+		printf '\n--- %s hook fired at %s for HEAD %s ---\n' \
+			"$name" "$(date 2>/dev/null)" "$HEAD"
+	} >> "$LOG" 2>&1 || true
+	(
+		cd "$ROOT" || exit 1
+		if command -v repowise >/dev/null 2>&1; then
+			repowise update >> "$LOG" 2>&1
+		elif [ -x "$ROOT/.venv/bin/repowise" ]; then
+			"$ROOT/.venv/bin/repowise" update >> "$LOG" 2>&1
+		fi
+	) &
+} >/dev/null 2>&1
