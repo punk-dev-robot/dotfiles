@@ -114,6 +114,15 @@ Git hooks: global `core.hooksPath=~/.config/git/hooks` (post-commit/merge/checko
 - Decisions on hidden dotfiles (`config/custom/zsh/.zshenv`) show `staleness 1.00` with
   "nothing changed" — cosmetic, not chased.
 - Dry-run decisions line and `--prose` cost estimate are both meaningless with claude_cli.
+- `repowise update` "Pages to regenerate: 7 … Pages updated 0" after a docs/json-only commit is
+  normal: md/json/toml have no pages, the 7 are cascade candidates that get dropped. A code file
+  with a page does regenerate (probe: 1 page in 4.5s from the hook). `model_name` on `file_page`
+  rows is just the provider tag — those pages are structural (0 tokens). Whether `update` calls
+  opus for a *module* page from the hook context is **unverified**; check the first time a
+  cascade actually picks one (`input_tokens > 0` on a `module_page` row with a fresh `updated_at`).
+- `.repowise/.env` loading under the hook: no embed errors in the log, but no positive proof
+  either (lancedb `wiki_pages` stayed at 166 rows across the probe). Verify on swapc with a
+  commit that adds a new code file: row count must grow.
 
 ## swapc (mac)
 
