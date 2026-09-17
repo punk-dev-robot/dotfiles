@@ -292,7 +292,7 @@ rows = [
       { starts_with = "blocked", fg = "#f38ba8", bold = true },
       { starts_with = "working", fg = "#f9e2af" },
       { starts_with = "done", fg = "#a6e3a1" },
-      { starts_with = "idle", dim = true },
+      { starts_with = "idle", hide = true }, # 0.9.1: idle is the default state, icon says it
     ] },
   ],
   [
@@ -327,7 +327,7 @@ position = "bottom-right"
 enabled = true
 
 [experimental]
-kitty_graphics = true
+# kitty_graphics moved to terminal.kitty_graphics in 0.9.0 and defaults to true
 switch_ascii_input_source_in_prefix = false
 reveal_hidden_cursor_for_cjk_ime = true
 cjk_ime_agents = ["claude", "pi", "codex"]
