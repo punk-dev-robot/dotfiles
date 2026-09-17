@@ -292,7 +292,8 @@ rows = [
       { starts_with = "blocked", fg = "#f38ba8", bold = true },
       { starts_with = "working", fg = "#f9e2af" },
       { starts_with = "done", fg = "#a6e3a1" },
-      { starts_with = "idle", hide = true }, # 0.9.1: idle is the default state, icon says it
+      # 0.9.1 supports { hide = true } here; needs a 0.9.1 server (0.9.0 drops all of [ui] on it)
+      { starts_with = "idle", dim = true },
     ] },
   ],
   [
