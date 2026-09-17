@@ -184,5 +184,23 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
     the governed file.
   - 4 `.zshenv` decisions report `staleness 1.00` with "nothing changed" — hidden-file quirk,
     not chased.
-- **Status:** open — Logfire check ≥ 09-18: `pi.augment.fired` `event='SessionStart' AND hit`
-  with `chars > 300` in dotfiles sessions; `tool=edit hit=true` count > 0.
+- **Measure (Logfire, pass `start_timestamp`/`end_timestamp`):**
+  ```sql
+  SELECT attributes->>'pi.augment.event' ev, attributes->>'pi.augment.tool' tool,
+    count(*) n,
+    sum(CASE WHEN attributes->>'pi.augment.hit'='true' THEN 1 ELSE 0 END) hits,
+    sum(CASE WHEN CAST(attributes->>'pi.augment.chars' AS BIGINT) > 300 THEN 1 ELSE 0 END) decision_blocks,
+    max(CAST(attributes->>'pi.augment.chars' AS BIGINT)) max_chars
+  FROM records WHERE service_name='pi' AND span_name='pi.augment.fired'
+  GROUP BY 1,2 ORDER BY n DESC
+  ```
+  Pass: `SessionStart` rows with `decision_blocks > 0` (≥1 dotfiles session started with a
+  governed file dirty), `max_chars ≤ 1900` (≈400-tok cap + freshness line); `tool=edit hits > 0`
+  (governed-by notice); `tool=read` p95 ms still ≤ 1 s (E8 revert trigger unchanged).
+  Cross-check per session: system prompt tail carries `<!-- repowise:session -->`.
+- **Upstream:** repowise-dev/repowise#2288 (confirm --scope writes no `decision_node_links` —
+  backfill in runbook until fixed; re-check after each `repowise` upgrade whether the backfill is
+  still needed), #2289 (per-page regenerate + steering; onboarding pages on dotfiles are
+  graph-derived noise — ignore them, decisions + augment are the value here).
+- **Status:** open — score ≥ 2026-09-18 with the query above. Refuted if `SessionStart
+  decision_blocks = 0` across ≥5 dotfiles sessions that touched `config/omarchy/hypr/*`.
