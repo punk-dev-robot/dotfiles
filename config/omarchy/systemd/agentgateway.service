@@ -14,9 +14,9 @@ Type=simple
 WorkingDirectory=%h
 # mise shims first: the /notion route spawns `npx mcp-remote`.
 Environment=PATH=%h/.local/share/mise/shims:%h/.local/bin:/usr/local/bin:/usr/bin:/bin
-# Secrets: 4 keys, chmod 600, written once from 1Password (no `op run` in the
+# Secrets: chmod 600, written once from 1Password (no `op run` in the
 # unit — polkit/vault-unlock timing under systemd is unreliable). Refresh with:
-#   (umask 077; grep -E '^(EXA|FIRECRAWL|CONTEXT7|LINEAR)_API_KEY=' \
+#   (umask 077; grep -E '^((EXA|FIRECRAWL|CONTEXT7|LINEAR)_API_KEY|SLACK_MCP_CLIENT_SECRET)=' \
 #     ~/.config/claude/secrets.env | op inject -o ~/.config/agentgateway/env)
 #   systemctl --user restart agentgateway
 EnvironmentFile=%h/.config/agentgateway/env

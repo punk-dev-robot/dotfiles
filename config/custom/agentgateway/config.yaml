@@ -1,7 +1,8 @@
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
-# KUB-18: shared MCP gateway. Dotter TEMPLATE: work routes (newrelic, slack)
-# are mac-only — an unset env var anywhere in this file is a hard parse
-# failure on the host that lacks the secret (KUB-78 D2).
+# KUB-18: shared MCP gateway. Dotter TEMPLATE: work route (newrelic) is
+# mac-only — an unset env var anywhere in this file is a hard parse
+# failure on the host that lacks the secret (KUB-78 D2). slack is now
+# cross-platform (Linux env carries SLACK_MCP_CLIENT_SECRET).
 # Run (mac):   op run --account my.1password.com --env-file=config/shared/claude/secrets.env \
 #   -- agentgateway -f <this file>
 # Run (linux): systemd user unit config/omarchy/systemd/agentgateway.service
@@ -94,7 +95,8 @@ routes:
               stdio:
                 cmd: npx
                 args: ["-y", "mcp-remote@0.8.3", "https://mcp.notion.com/mcp"]
-{{#if is_macos}}
+  # slack: cross-platform. Requires SLACK_MCP_CLIENT_SECRET in
+  # the host env file; OAuth browser grant happens once per host.
   - name: slack
     matches:
       - path:
@@ -116,4 +118,3 @@ routes:
                   - '{"scope":"canvases:read canvases:write channels:history channels:read chat:write groups:history search:read.private search:read.public users:read","token_endpoint_auth_method":"client_secret_post"}'
                   - "--authorize-param"
                   - "user_scope=canvases:read,canvases:write,channels:history,channels:read,chat:write,groups:history,search:read.private,search:read.public,users:read"
-{{/if}}
