@@ -250,3 +250,47 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   `err_pct`/`avg_out_tok` row for `edit`.
 - **Status:** open — score ≥ 2026-09-24 (needs swapc py/ts sessions on the mac; dotfiles alone is
   mostly toml/sh/md).
+
+### E11 — punk-sdlc artifact-per-stage + `planner` role (main-session token cost per ticket)
+- **Hypothesis:** running a ticket as staged `planner` dispatches that write `intent.md` /
+  `research.md` / `spec.md` / `plan.md` into `~/dev/swapc/specs/<KEY>/` costs **fewer main-session
+  tokens per ticket** than ad-hoc planning in the main session, because the ticket text, repo
+  reads, Notion/Slack context and draft prose stay in the subagent and only a path + 5-line
+  summary comes back. Total spend across all roles may rise; the main session's peak is what E1's
+  compaction work is protecting, so that is the metric.
+- **Spec:** `docs/.scratch/plan-agentic-sdlc.md` § Inc 2; ADR `docs/adr/0004-artifact-per-stage-sdlc.md`.
+  Not shipped for dogfooding yet (mac is the runtime host; `~/dev/swapc/specs` + direct `linear`
+  MCP route unverified there).
+- **Baseline (to fill before first dogfood run):** main-session (`claude-fable%`) tokens and cost
+  for the last ~10 sessions whose user prompt names a ticket key, no `planner` dispatch — standard
+  per-session query, window 14d, plus `count(*)` of `execute_tool read|grep|mcp` calls in those
+  sessions.
+- **Expect:** main-session p50 peak per ticket down ≥ 30% vs baseline; `planner` rows carry the
+  repo/Notion read volume instead; gate turnaround (spec submitted → sign-off) one plannotator
+  round per stage, not three.
+- **Measure:** role attribution is not a native attribute — `.scratch/recon-otel-role-attribution.md`:
+  piewf writes `Workflow: <name>\nAgent: <role>` as the first user prompt of the subagent session,
+  so the role is parsed out of `pi.user_prompt` and joined to `chat *` spans on `pi.session.id`:
+  ```sql
+  WITH r AS (
+    SELECT attributes->>'pi.session.id' sid,
+           regexp_match(attributes->>'pi.prompt.text', 'Agent: ([a-z-]+)')[1] role
+    FROM records WHERE span_name='pi.user_prompt'
+      AND attributes->>'pi.prompt.text' LIKE 'Workflow:%'),
+  s AS (
+    SELECT attributes->>'pi.session.id' sid, attributes->>'gen_ai.request.model' model,
+           sum((attributes->>'pi.cost.usd')::double) cost,
+           max((attributes->>'gen_ai.usage.cache_read_input_tokens')::double
+             + (attributes->>'gen_ai.usage.cache_write_input_tokens')::double) peak
+    FROM records WHERE span_name LIKE 'chat %' GROUP BY 1,2)
+  SELECT coalesce(r.role,'main') role, count(DISTINCT s.sid) sessions,
+         round(approx_percentile_cont(s.peak,0.5)/1000) p50_peak_k, round(sum(s.cost),2) cost
+  FROM s LEFT JOIN r USING (sid) GROUP BY 1 ORDER BY cost DESC LIMIT 20
+  ```
+  The query has no ticket dimension: scope it by adding
+  `AND attributes->>'pi.prompt.text' ~ '(KUB|AGI[ACKFPTXD])-[0-9]+'` to the `main` side when
+  comparing per-ticket sessions. Refuted if `role='main'` p50 peak on those ticket sessions is
+  flat or up while `planner` sessions add cost —
+  i.e. the delegation pays for itself in neither context nor money.
+- **Status:** not started — ships with the first dogfooded ticket (one `full` flow, one `fast`);
+  fill the baseline row in the same session.

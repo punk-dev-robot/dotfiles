@@ -166,7 +166,9 @@ Per runbook: 1 / 3 / 5 / 8 (no fetch needed — not a live Linear value).
 
 - `linear_list_cycles` takes `teamId` (not `team`).
 - `linear_save_project`: teams via `addTeams`/`setTeams`, lead via `lead`, initiatives via `addInitiatives`; no `teamIds`/`leadId`.
-- `linear_get_issue` does not echo cycle or blocking relations — verify in UI.
+- `linear_get_issue` does not echo cycle or blocking relations, and can return a **stale state** right after an update — verify state via `linear_list_issues` (`status` field), cycle/blocking in UI.
+- `linear_get_project` takes `query` (not `id`). `linear_save_project` patch ops use `text` (not `content`); to append to Decisions-so-far chronologically use `insert_before` anchor `## Not yet specified`.
+- `mcpScript` has no `require`/fs — long comment bodies must be inlined (read the file in bash first).
 - Workspace-level label `Research` (capital R) exists; per-team `spike`/`decision`/`task` created on AGIA 2026-09-17 (`8a2d8d7a…`, `b930214d…`, `3cd70021…`). AGIA also has `Monitoring and Alerting`.
 - Current cycle AGIA at pin time: Cycle 38 `66b3e8ca-a88e-4586-a409-bcc281dd21bb` (2026-09-14→21) — rolls weekly.
 
