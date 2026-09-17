@@ -104,6 +104,7 @@
           "codebase-exploration",
           "dead-code-cleanup",
           "pre-modification-check"
+          "show-me"
         ]
       }
     }
