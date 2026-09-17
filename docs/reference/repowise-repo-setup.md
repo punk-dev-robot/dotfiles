@@ -126,10 +126,14 @@ Git hooks: global `core.hooksPath=~/.config/git/hooks` (post-commit/merge/checko
 
 ## swapc (mac)
 
-State 2026-09-16: shopmr/shopai/merchdash/apollo-monorepo have opus module pages but **0
-decisions with provider set** — check `repowise decision status` per repo; `skipped_no_provider`
-or `Records 0` on git_archaeology means extraction never ran → rerun step 2 (`--resume` keeps the
-wiki). Small repos (admdash, analytics-dbt, shopargo, shopiac, protobuf-registry) same check.
-Workspace `~/dev/swapc/.repowise-workspace.yaml`, default repo shopmr. Needs `git pull` +
-`dotter` first (hooks, augment extension, guards). Per-repo: `git check-ignore .vscode` before
-the first hook fire.
+State 2026-09-17 (checked over `ssh mac`): all 9 repos indexed at HEAD, `claude_cli/opus` +
+`gemini`, module pages opus-written (shopmr 105/136, shopai 67/71, rest 100%), embeddings
+present. Decisions: extraction **did** run (pr/git/comment sources have records) — 132
+candidates sit in `proposed`, nobody reviewed them. shopmr and shopargo have 0 records
+(shopmr worth a `repowise update --full` look). No `docs/adr` anywhere → `adr: 0`.
+
+To do there, per repo: (1) `.repowise/.env` with `GEMINI_API_KEY` — only shopmr/shopai have
+it, the mac shell doesn't export it, so hook updates in the other 7 can't embed; (2) `decision
+candidates` → `confirm` → link backfill (#2288); (3) `git pull` + `dotter` for hooks/augment;
+(4) `git check-ignore .vscode` before the first hook fire. Workspace
+`~/dev/swapc/.repowise-workspace.yaml`, default repo shopmr.
