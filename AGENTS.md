@@ -12,11 +12,11 @@ laptop — deployed by dotter. Vocabulary: `CONTEXT.md`. Decisions: `docs/adr/`.
 - `config/.disabled/` — parked, not deployed
 - `config/shared/punk/AGENTS.md` — global context (every harness's global slot symlinks here)
 - `config/custom/pi/agent/` — pi settings, `steering/*.md` (punk-steering rules), extensions
-- `config/custom/agents/skills/` — own skills (`punk-*`, `multi-repo-ticket`, repowise-*) → `~/.agents/skills`
+- `config/custom/agents/skills/` — own skills (`punk-*`, `swap-linear`, `swap-project`, `multi-repo-ticket`) → `~/.agents/skills`
 - `config/custom/pi/agent/pi-extensible-workflows/roles/` — piewf agent roles
 - `etc/`, `system/` — root-owned templates (`omarchy-system` package)
 - `local/bin/` — scripts → `~/.local/bin`
-- `docs/` — `reference/`, `troubleshooting/`, `agents/`, `adr/`, `otel_retro/` (Logfire-driven workflow retros + experiments ledger); index in `docs/README.md`
+- `docs/` — `reference/`, `troubleshooting/`, `workflow/` (tracker ops, team rules, wayfinding), `adr/`, `otel_retro/` (Logfire-driven workflow retros + experiments ledger); index in `docs/README.md`
 - `.dotter/` — `global.toml` (mappings), `<hostname>.toml` (host profile), `cache.toml` (deployed state)
 
 **When deploying or changing what a config maps to**
@@ -37,7 +37,7 @@ laptop — deployed by dotter. Vocabulary: `CONTEXT.md`. Decisions: `docs/adr/`.
 
 **When creating or updating tracker issues**
 
-- Linear, team `Kuba` (`KUB-n`), via Linear MCP tools. GitHub Issues only for public repo bugs. Ops: `docs/agents/issue-tracker.md`. Labels: `docs/agents/triage-labels.md`.
+- Linear, team `Kuba` (`KUB-n`), via Linear MCP tools. GitHub Issues only for public repo bugs. Ops: `docs/workflow/issue-tracker.md`. Labels: `docs/workflow/triage-labels.md`.
 
 **When adding or changing docs**
 
@@ -45,7 +45,7 @@ laptop — deployed by dotter. Vocabulary: `CONTEXT.md`. Decisions: `docs/adr/`.
 
 **When changing vocabulary or recording a decision**
 
-- Glossary `CONTEXT.md`, ADRs `docs/adr/`. Method: `docs/agents/domain.md`.
+- Glossary `CONTEXT.md`, ADRs `docs/adr/`. Method: `docs/workflow/domain.md`.
 
 
 # Agent Rules <!-- tessl-managed -->

@@ -5,11 +5,15 @@ when:
 ---
 ## Linear conventions
 
-- Access: Linear MCP tools only (`*linear_*` via the `mcp`/`mcpScript` tools —
-  gateway route on the mac, direct `linear` server on omarchy). No CLI fallback:
-  if the tools fail, fail early and fix the MCP route instead of improvising —
-  applies to anyone updating issues (manager, comms, workflows).
-  Operations reference: `docs/agents/issue-tracker.md`.
+- Access: Linear MCP tools only (`linear_*` on the direct `linear` server, via
+  `mcp`/`mcpScript`; the `gateway_linear_*` route is a fallback, not the default).
+  No CLI fallback: if the tools fail, fail early and fix the MCP route instead of
+  improvising — applies to anyone updating issues (manager, comms, workflows).
+  Operations reference: `docs/workflow/issue-tracker.md`.
+- One workspace (`swap-commerce`). **Team rules** are picked by team key:
+  Agentic subteams (`AGIA/AGIC/AGIK/AGIF/AGIP/AGIT/AGIX/AGID`) follow the Swap
+  runbook via the `swap-linear` skill — load it before any create/update there.
+  `KUB` follows the rules below.
 - Branch names and PR titles carry the ticket reference (e.g. `KUB-123`);
   at work this auto-transitions status (in-pr/uat/prod). Same habit privately.
 - Private team: `Kuba` (KUB). Wayfinder artifacts: map labelled

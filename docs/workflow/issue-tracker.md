@@ -1,7 +1,10 @@
 # Issue tracker: Linear (primary), GitHub Issues (repo bugs)
 
 Planning, wayfinder maps, and manager-mode work live in **Linear**, team `Kuba`
-(key `KUB`). GitHub Issues on `punk-dev-robot/dotfiles` remain for public repo
+(key `KUB`) — one workspace (`swap-commerce`) shared with work. Work tickets on
+the Agentic subteams (`AGIA`…`AGID`) follow **team rules** from the
+`swap-linear` skill; planning there uses `swap-project` (Project-shaped,
+see below). GitHub Issues on `punk-dev-robot/dotfiles` remain for public repo
 bugs and for `#123` references in commits. When a skill says "the issue
 tracker" without qualification, it means Linear.
 
@@ -69,6 +72,24 @@ Used by `/cock-wayfinder` and manager mode. The **map** is one issue with
   (`[title](<url>): summary`).
 - **Annoyances**: plain issues in the project, milestone `Annoyances`, no
   wayfinder label.
+
+### Projects on Agentic subteams (`swap-project`)
+
+Swap deprecated `[EPIC]` parent issues, so the shape changes:
+
+| concept | `KUB` | Agentic |
+|---|---|---|
+| map | issue `wayfinder:map` | **Linear Project** under a Q3 initiative, lead = owner, body in description |
+| ticket | sub-issue of map | issue **in the Project** on the doing subteam, via `swap-linear` (Project, assignee, estimate, `Storefront` label) + type label `research`/`spike`/`decision`/`task` |
+| ordering | milestone + blocked-by | Project milestones + `blocks`/`blockedBy` |
+| frontier | open sub-issues, unblocked, unassigned | `linear_list_issues { project }`, not Done/Canceled, unblocked, unassigned |
+| resolve | comment, Done, map pointer | comment, Done (+`Query` if no PR), pointer in Project description |
+| out of scope | close | `Canceled` + line in Project description |
+
+Type labels: `KUB` keeps `wayfinder:<type>`; Agentic subteams use plain
+`research`/`spike`/`decision`/`task`, created per subteam on first use
+(`linear_save_issue_label`, confirm first). Pinned ids:
+`config/custom/agents/skills/swap-linear/reference.md`.
 
 ## GitHub Issues (repo bugs only)
 
