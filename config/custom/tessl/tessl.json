@@ -94,6 +94,20 @@
           "show-me"
         ]
       }
+    },
+    "repowise-dev/repowise": {
+      "version": "9241f3bbe0db91d56e7eebc1c60c25921fd33e13",
+      "source": "https://github.com/repowise-dev/repowise",
+      "include": {
+        "skills": [
+          "architectural-decisions",
+          "change-review",
+          "code-health",
+          "codebase-exploration",
+          "dead-code-cleanup",
+          "pre-modification-check"
+        ]
+      }
     }
   }
 }

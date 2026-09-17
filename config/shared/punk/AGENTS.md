@@ -29,3 +29,5 @@ If you can't write a test that would fail when business logic changes, the funct
 If you can't be sure something worked, say so explicitly. "Migration completed" is wrong
 if 30 records were skipped silently. "Tests pass" is wrong if you skipped any. "Feature
 works" is wrong if you didn't verify the edge case asked about. Surface uncertainty; never hide it.
+
+@/home/kuba/.tessl/RULES.md

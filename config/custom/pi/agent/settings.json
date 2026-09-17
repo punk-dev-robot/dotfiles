@@ -12,7 +12,14 @@
     "npm:pi-observational-memory",
     "npm:@ff-labs/pi-fff",
     {
-      "source": "npm:@dietrichgebert/ponytail"
+      "source": "npm:@dietrichgebert/ponytail",
+      "skills": [
+        "-skills/ponytail-audit/SKILL.md",
+        "-skills/ponytail-debt/SKILL.md",
+        "-skills/ponytail-gain/SKILL.md",
+        "-skills/ponytail-help/SKILL.md",
+        "+skills/ponytail-review/SKILL.md"
+      ]
     },
     "npm:pi-caveman",
     "npm:pi-mcp-adapter@2.32.1",
@@ -21,7 +28,9 @@
     "npm:pi-web-access",
     {
       "source": "npm:context-mode",
-      "skills": ["+skills/context-mode/SKILL.md"]
+      "skills": [
+        "+skills/context-mode/SKILL.md"
+      ]
     },
     "npm:@plannotator/pi-extension",
     "npm:@firstpick/pi-extension-tools",
@@ -36,7 +45,13 @@
     "npm:pi-ask-user",
     "npm:@henryqw/pi-herdr-btw"
   ],
-  "npmCommand": ["mise", "exec", "node@26", "--", "npm"],
+  "npmCommand": [
+    "mise",
+    "exec",
+    "node@26",
+    "--",
+    "npm"
+  ],
   "lastChangelogVersion": "0.85.1",
   "showCacheMissNotices": false,
   "defaultProvider": "anthropic",
@@ -99,10 +114,13 @@
     "+../../.agents/skills/logfire-instrumentation/SKILL.md",
     "-../../.agents/skills/tessl__html-prototype/SKILL.md",
     "-../../.agents/skills/tessl__html-wireframe/SKILL.md",
+    "-../../.agents/skills/tessl__writing-for-agents/SKILL.md",
+    "-../../.agents/skills/tessl__wizard/SKILL.md",
+    "-../../.agents/skills/tessl__improve-claude-md/SKILL.md",
     "-../../.agents/skills/tessl__linear-cli/SKILL.md",
     "-../../.agents/skills/tessl__notion/SKILL.md",
+    "-../../.agents/skills/tessl__resolving-merge-conflicts/SKILL.md",
     "-../../.agents/skills/tessl__setup-matt-pocock-skills/SKILL.md",
-    "-../../.agents/skills/tessl__writing-for-agents/SKILL.md",
-    "-../../.agents/skills/tessl__wizard/SKILL.md"
+    "-../../.agents/skills/tessl__wait-what/SKILL.md"
   ]
 }
