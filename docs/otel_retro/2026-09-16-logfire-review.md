@@ -152,6 +152,16 @@ Mac still blows past 200k within a day of the change → either mac checkout not
 - Tool output stored 3× (O3): `captureContent: "full"` — consider dropping `details` / one copy.
 - Logfire quirk to document: `event.name` → `span_name`, not an attribute.
 
+### O12 — repowise decisions: zero everywhere, provider not configured
+`repowise decision status` in dotfiles: capture on, LLM extraction on, **"No LLM provider
+configured; model stages are skipped"** → sources adr/git_archaeology/pr/comment/session all
+0 records; even the deterministic ADR stage found 0 despite `docs/adr/0001–…`. 10 ungoverned
+hotspots. Consequence: `repowise_get_why`, the SessionStart decisions block, and the
+edit-time "governed by decision" notices can never fire. Fix = configure a provider
+(`repowise init --provider claude_cli|codex_cli …` or a key) and re-run extraction; then
+`repowise decision candidates` → `confirm`. Same likely on mac (shopmr "has some" per owner —
+verify with `repowise decision list` there). Ticket.
+
 ## Hypotheses (to test)
 
 - H0 (KUB-149): with OM ratio 0.18, no fable session should exceed ~200k peak. Falsified on mac so far; check deployment first. Success metric: `count(peak>200k)=0` and p50 cost/session down vs $9.63.

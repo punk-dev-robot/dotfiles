@@ -139,9 +139,25 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
     sum(CASE WHEN attributes->>'pi.augment.hit' = 'true' THEN 1 ELSE 0 END) hits,
     avg(CAST(attributes->>'pi.augment.ms' AS DOUBLE)) avg_ms,
     sum(CAST(attributes->>'pi.augment.chars' AS BIGINT)) chars
-  FROM records WHERE service_name='pi' AND attributes->>'event.name'='pi.augment.fired'
+  FROM records WHERE service_name='pi' AND span_name='pi.augment.fired'
   GROUP BY 1,2 ORDER BY n DESC
   ```
+  Plus p95 latency for read specifically:
+  `approx_percentile_cont((attributes->>'pi.augment.ms')::double, 0.95) FILTER (WHERE attributes->>'pi.augment.tool'='read')`.
   Cross-check cost: injected chars/4 ≈ tokens vs `repowise_search_codebase` 1.6k tok/result.
+- **Verified live (09-17 01:45Z):** read → `hit=false, 87 ms` on a fresh read (correct);
+  SessionStart → `hit=true, 269 chars` but freshness-only, so the extension injected nothing.
+- **Untested — watch next time:**
+  - The standing-decisions injection has never run against real content: **no indexed repo has any
+    decision** (`repowise decision list` → 0 in dotfiles; `docs/adr/*` not picked up because no LLM
+    provider is configured for repowise, so adr/git/pr/session extraction stages are skipped —
+    see O12). First real decisions block: check it renders, size ≤150 tok, and that the
+    `[repowise] Standing decisions` slice logic in `repowise-augment.ts` holds.
+  - Every `read` in an indexed repo now pays an augment round-trip (~0.1–0.5 s, 3 s cap). Watch
+    p95 `pi.augment.ms` for `tool=read` and `pi.augment.timeout` count; if p95 > 1 s or timeouts
+    > 2% → revert the read path, keep telemetry.
+  - `repowise update` (fired by the new hooks) writes `.vscode/mcp.json` + `extensions.json` into
+    every indexed repo on every commit/checkout — gitignored in dotfiles, may not be elsewhere.
+  - Global `core.hooksPath` chains to per-repo hooks; untested with a real pre-commit/lefthook repo.
 - **Status:** open — score ≥ 2026-09-20 (need ≥20 sessions). Refuted if hit rate <5% on read
   (notices never fire → revert the read path and keep telemetry only).
