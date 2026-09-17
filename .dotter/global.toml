@@ -27,7 +27,8 @@ default_target_type = "symbolic"
 "config/custom/vicinae/dotfiles.json" = { target = "~/.config/vicinae/dotfiles.json", type = "template" }
 "config/custom/vicinae/extensions.txt" = "~/.config/vicinae/extensions.txt"
 "config/custom/pi/agent" = "~/.config/pi/agent"
-# pi-lsp: tsserver path is absolute per host ({{home_dir}}); pi-lsp does not expand ~ in initializationOptions
+# pi-lsp: tsserver fallbackPath is absolute per host ({{home_dir}}); pi-lsp does not expand ~ in initializationOptions.
+# fallbackPath (not path): TLS resolves user path > workspace node_modules/typescript > fallbackPath, so the repo TS wins.
 "config/custom/pi/agent/lsp.json" = { target = "~/.config/pi/agent/lsp.json", type = "template" }
 # vendored pi-lsp (patched, see its package.json); lives outside the recursive pi/agent map so node_modules is not walked; whole-dir symlink. `npm install` inside after clone.
 "config/custom/pi-lsp" = { target = "~/.config/pi/agent/extensions/pi-lsp", type = "symbolic", recurse = false }

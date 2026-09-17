@@ -19,7 +19,7 @@
       "rootMarkers": ["tsconfig.json", "package.json", ".git"],
       "bin": "typescript-language-server",
       "args": ["--stdio"],
-      "initializationOptions": { "tsserver": { "path": "{{home_dir}}/.local/share/mise/installs/npm-typescript/5/node_modules/typescript/lib" } },
+      "initializationOptions": { "tsserver": { "fallbackPath": "{{home_dir}}/.local/share/mise/installs/npm-typescript/5/node_modules/typescript/lib" } },
       "cwd": "{root}",
       "languageIdByExtension": { ".ts": "typescript", ".tsx": "typescriptreact", ".js": "javascript", ".jsx": "javascriptreact", ".mjs": "javascript" },
       "diagnosticsWaitMs": 2000
