@@ -1,6 +1,7 @@
 # herdr plugins: one per line, OWNER/REPO[/SUBDIR][@COMMIT]; `herdr-sync-plugins` (run by dotter post_deploy) installs missing ones.
-# Snapshot from the mac (herdr 0.9.0). Not listed: official.plannotator (local link to ~/dev/oss/herdr-plannotator).
 plannotator/herdr-annotate
+# own fork; branch ref, so it moves as we push. Needs `configure` action after install.
+punk-dev-robot/herdr-plannotator@terminal-browser-port
 ChmaraX/herdr-nvim
 ragamo/herdr-flock
 wyattjoh/herdr-plugin-gh-pr

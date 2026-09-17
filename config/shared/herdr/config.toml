@@ -292,8 +292,7 @@ rows = [
       { starts_with = "blocked", fg = "#f38ba8", bold = true },
       { starts_with = "working", fg = "#f9e2af" },
       { starts_with = "done", fg = "#a6e3a1" },
-      # 0.9.1 supports { hide = true } here; needs a 0.9.1 server (0.9.0 drops all of [ui] on it)
-      { starts_with = "idle", dim = true },
+      { starts_with = "idle", hide = true }, # 0.9.1: state_icon already says idle
     ] },
   ],
   [
@@ -328,6 +327,7 @@ position = "bottom-right"
 enabled = true
 
 [experimental]
+kitty_graphics = true
 # kitty_graphics moved to terminal.kitty_graphics in 0.9.0 and defaults to true
 switch_ascii_input_source_in_prefix = false
 reveal_hidden_cursor_for_cjk_ime = true
