@@ -161,3 +161,28 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   - Global `core.hooksPath` chains to per-repo hooks; untested with a real pre-commit/lefthook repo.
 - **Status:** open — score ≥ 2026-09-20 (need ≥20 sessions). Refuted if hit rate <5% on read
   (notices never fire → revert the read path and keep telemetry only).
+
+### E9 — repowise full setup on dotfiles (claude_cli/opus + gemini embedder + decisions)
+- **Shipped:** 2026-09-17 02:25Z omarchy. `repowise init --provider claude_cli --model claude-opus-5
+  --embedder gemini --prose --no-editor-setup --no-claude-md --no-agents --concurrency 4` (4m07s,
+  135 pages / 11 model-written, 31 candidates → 32 governing after review). Runbook:
+  `docs/reference/repowise-repo-setup.md`.
+- **Baseline:** `embedder: mock`, no provider → 0 decisions, template-only wiki, SessionStart
+  augment `hit=true / 269 chars` freshness-only, `get_why` on ADR-governed files = git archaeology.
+- **Expect:** decisions ≥ 3 from ADRs; SessionStart block injected ≤ 400 tok when a governed file
+  is in the working set, silent on a clean tree; `get_why <governed file>` answers from a decision;
+  edit-time "governed by" notice fires.
+- **Measured (hand-driven `repowise-augment` payloads, 02:40Z):**
+  - Decisions: 18 ADR + 5 git + 8 comment candidates (31); all confirmed. 16 ADR ones were blocked
+    "no scope" — needed `confirm --scope`. **Upstream bug:** `confirm --scope` writes
+    `affected_files` but no `decision_node_links` rows → augment scores them 0 → silence. Backfilled
+    42 links by SQL (runbook §Gotchas); after that SessionStart with dirty `bindings.lua` → block of
+    4 decisions, 1184 chars (~296 tok). Clean tree → freshness line only (by design).
+  - Edit `bindings.lua` → 262-char "governed by a standing decision" notice. Read→edit→read →
+    139-char stale notice. `repowise why config/omarchy/hypr/bindings.lua` → 8 decisions, alignment
+    medium. `why docs/adr/0001…` still archaeology — ADR files are evidence, not scope; ask about
+    the governed file.
+  - 4 `.zshenv` decisions report `staleness 1.00` with "nothing changed" — hidden-file quirk,
+    not chased.
+- **Status:** open — Logfire check ≥ 09-18: `pi.augment.fired` `event='SessionStart' AND hit`
+  with `chars > 300` in dotfiles sessions; `tool=edit hit=true` count > 0.
