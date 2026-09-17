@@ -204,3 +204,49 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   graph-derived noise — ignore them, decisions + augment are the value here).
 - **Status:** open — score ≥ 2026-09-18 with the query above. Refuted if `SessionStart
   decision_blocks = 0` across ≥5 dotfiles sessions that touched `config/omarchy/hypr/*`.
+
+### E10 — pi-lsp (vendored) edit-time diagnostics for py/ts
+- **Shipped:** 2026-09-17 03:50Z omarchy. `config/custom/pi-lsp/` = vendored pi-lsp 0.1.7 (npm has no
+  repo URL, so no PR) + one patch: diagnostics notice via `ctx.ui.notify` instead of an empty
+  `sendMessage(..., {deliverAs:"steer"})` — upstream's steer landed as an empty user turn and derailed
+  multi-step briefs (repro: two-edit `pi -p` brief returned 0–69 bytes; patched: full answer).
+  `lsp.json` is a dotter template (`{{home_dir}}` in `initializationOptions.tsserver.path` — pi-lsp
+  expands `~` only in bin/cwd). Servers via mise: `npm:pyright`, `npm:typescript-language-server`,
+  `npm:typescript = "5"` (TS 7 native ships no `tsserver.js`; TLS 6 dropped `--tsserver-path`).
+  Patch as diff: `config/custom/pi-lsp/0001-notify-instead-of-empty-steer.patch` — re-apply on re-vendor.
+  Mac: `git pull && mise install && dotter && (cd ~/dotfiles/config/custom/pi-lsp && npm install)`.
+- **Considered, rejected (don't re-evaluate without new evidence):**
+  - `billion-context` — third compressor next to native compaction + observational-memory; model-driven
+    lossy (own README #717: model faked 17 compressions while ctx hit 89%); MITM/proxy in the model
+    path blinds pi-otel token accounting and collides with pi-claude-auth/pi-cachemire; pi sends no
+    session id → collision risk with concurrent subagents. Same failure class as headroom (disabled
+    2026-09-02). Built for days-long sessions; we handoff.
+  - `pi-lens` — 25.7 MB, 45 runners on every write, turn-end findings injection + nudges: spends
+    context, doesn't save it. Nav funnel duplicates repowise (`symbol_search`≈`search_codebase`,
+    `read_symbol`≈`get_symbol`) and pi-cymbal. Only gap it fills is LSP diagnostics → pi-lsp.
+    Its read-guard (block edit without prior read) is worth stealing as a punk-steering guard if
+    Logfire shows blind edits.
+- **Baseline (14d to 09-17 04:00Z, query below):** 52 py/ts files, **reedit_pct 42**, edits_per_file 2.0,
+  lsp_pct 4 (today's smoke tests). Definitions: same-file re-edit rate on `.py`/`.ts` (an `edit`/`write` on
+  path P followed by another `edit`/`write` on P within the same session), and bash `pytest|tsc|
+  ruff|pyright|mypy|npm test` calls per session that edited `.py`/`.ts`. Query:
+  ```sql
+  WITH e AS (SELECT attributes->>'pi.session.id' sid, attributes->'pi.tool.input'->>'path' p, start_timestamp t,
+      attributes->>'pi.tool.output' LIKE '%LSP diagnostics:%' lsp, attributes->>'pi.tool.output' LIKE '%⚠️%' warn
+    FROM records WHERE span_name IN ('execute_tool edit','execute_tool write')
+      AND attributes->'pi.tool.input'->>'path' ~ '\.(py|ts|tsx)$'),
+  r AS (SELECT sid, p, count(*) n, bool_or(lsp) lsp, bool_or(warn) warn FROM e GROUP BY 1,2)
+  SELECT count(*) files, round(100.0*count(*) FILTER (WHERE n>1)/count(*)) reedit_pct,
+    round(100.0*count(*) FILTER (WHERE lsp)/count(*)) lsp_pct, round(100.0*count(*) FILTER (WHERE warn)/count(*)) warn_pct,
+    round(avg(n),2) edits_per_file FROM r LIMIT 1
+  ```
+  Extra context per edit: `avg(length(output))/4` for `execute_tool edit` with `%LSP diagnostics%` vs without.
+- **Expect:** `lsp_pct` ≈ 100% for py/ts edits (else server/config broken on that host); `reedit_pct`
+  < 42 (baseline) (fix loop shortened: error visible in the edit result, no test round-trip); bash
+  test/type-check calls per py/ts session down; extra context ≤ 60 tok per clean edit, ≤ 300 with errors.
+  `⚠️ … unavailable`/`Request initialize failed` in outputs = revert trigger (server flapping costs
+  `diagnosticsWaitMs` per edit for nothing).
+- **Measure:** query above, window ≥ 2026-09-17T04:00Z, against baseline window; plus the leaderboard
+  `err_pct`/`avg_out_tok` row for `edit`.
+- **Status:** open — score ≥ 2026-09-24 (needs swapc py/ts sessions on the mac; dotfiles alone is
+  mostly toml/sh/md).

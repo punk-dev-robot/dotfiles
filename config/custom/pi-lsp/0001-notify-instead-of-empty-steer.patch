@@ -1,0 +1,39 @@
+--- /tmp/tmp.6GiELDVTlf/package/extensions/pi-lsp/index.ts	1985-10-26 09:15:00.000000000 +0100
++++ index.ts	2026-09-17 03:45:32.298587733 +0100
+@@ -22,12 +22,12 @@
+ import { Type } from "typebox";
+ import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
+ import { Box, Spacer, Text } from "@earendil-works/pi-tui";
+-import { loadLspConfig } from "../_shared/config";
+-import { isPathIncluded, matchesAnyGlob } from "../_shared/glob";
+-import { filePathToUri, findProjectRoot, normalizeRelativePath, resolveCommand, toAbsolutePath, uriToFilePath } from "../_shared/paths";
+-import { formatLspDiagnostics, formatWarnings, hasIssueOutput, joinSections } from "../_shared/output";
+-import { isExecutableAvailable } from "../_shared/runner";
+-import type { LspServerConfig, ResolvedCommand, StoredDiagnostics } from "../_shared/types";
++import { loadLspConfig } from "./_shared/config";
++import { isPathIncluded, matchesAnyGlob } from "./_shared/glob";
++import { filePathToUri, findProjectRoot, normalizeRelativePath, resolveCommand, toAbsolutePath, uriToFilePath } from "./_shared/paths";
++import { formatLspDiagnostics, formatWarnings, hasIssueOutput, joinSections } from "./_shared/output";
++import { isExecutableAvailable } from "./_shared/runner";
++import type { LspServerConfig, ResolvedCommand, StoredDiagnostics } from "./_shared/types";
+ 
+ const DEFAULT_STARTUP_TIMEOUT_MS = 45_000;
+ const DEFAULT_DIAGNOSTICS_WAIT_MS = 1_500;
+@@ -609,13 +609,10 @@
+     const summary = await manager.updateDiagnosticsForFile(ctx, file);
+     if (!summary.trim()) return undefined;
+ 
+-    if (hasIssueOutput(summary)) {
+-      pi.sendMessage({
+-        customType: "pi-lsp-diagnostics",
+-        content: "",
+-        display: true,
+-        details: { path: file, summary, toolCallId: event.toolCallId },
+-      }, { deliverAs: "steer" });
++    // vendored patch: human-only notice. Diagnostics already ride the tool result; upstream's
++    // empty steer message became an empty user turn and derailed multi-step briefs.
++    if (hasIssueOutput(summary) && ctx.hasUI) {
++      ctx.ui.notify(summary, "warning");
+     }
+ 
+     return { content: [...event.content, { type: "text", text: summary }] };

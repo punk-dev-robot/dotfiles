@@ -1,0 +1,10 @@
+{
+  "name": "pi-lsp-vendored",
+  "private": true,
+  "type": "module",
+  "description": "Vendored pi-lsp 0.1.7 (npm, no public repo) + patch: diagnostics notice via ctx.ui.notify instead of an empty steer message. Upstream sends sendMessage({content:''}, {deliverAs:'steer'}) on every diagnostics hit, which lands as an empty user turn and derails multi-step briefs (subagents, -p mode). Run `npm install` here after clone. Diff vs upstream: 0001-notify-instead-of-empty-steer.patch (also import paths ../_shared \u2192 ./_shared). Diff vs upstream: 0001-notify-instead-of-empty-steer.patch (also import paths ../_shared -> ./_shared).",
+  "dependencies": {
+    "vscode-jsonrpc": "^8.2.1",
+    "vscode-languageserver-protocol": "^3.17.5"
+  }
+}

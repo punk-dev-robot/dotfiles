@@ -1,4 +1,7 @@
 [tools]
+"npm:pyright" = "latest"  # pyright-langserver for pi-lsp
+"npm:typescript" = "5"  # tsserver.js for typescript-language-server; TS 7 (native) ships none
+"npm:typescript-language-server" = "latest"  # pi-lsp
 checkov = "latest"
 claude = "latest"
 codex = "latest"

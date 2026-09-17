@@ -27,6 +27,10 @@ default_target_type = "symbolic"
 "config/custom/vicinae/dotfiles.json" = { target = "~/.config/vicinae/dotfiles.json", type = "template" }
 "config/custom/vicinae/extensions.txt" = "~/.config/vicinae/extensions.txt"
 "config/custom/pi/agent" = "~/.config/pi/agent"
+# pi-lsp: tsserver path is absolute per host ({{home_dir}}); pi-lsp does not expand ~ in initializationOptions
+"config/custom/pi/agent/lsp.json" = { target = "~/.config/pi/agent/lsp.json", type = "template" }
+# vendored pi-lsp (patched, see its package.json); lives outside the recursive pi/agent map so node_modules is not walked; whole-dir symlink. `npm install` inside after clone.
+"config/custom/pi-lsp" = { target = "~/.config/pi/agent/extensions/pi-lsp", type = "symbolic", recurse = false }
 # @firstpick/pi-extension-tools (/tools) resource defaults; path via PI_WEBUI_SETTINGS_FILE in .zshenv
 "config/custom/pi/webui/settings.json" = "~/.config/pi/webui/settings.json"
 # tessl global skill manifest (which plugins/skills are installed; excludes derived from it).
