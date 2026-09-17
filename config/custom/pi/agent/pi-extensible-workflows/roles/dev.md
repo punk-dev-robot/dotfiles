@@ -1,7 +1,7 @@
 ---
 description: Developer focused agent
 model: strong
-tools: ["!*", read, grep, find, ls, bash, write, edit, cymbal_impact, cymbal_changed, mcp, mcpScript, repowise_*, ask_advisor, record_advisor_outcome, ctx_*]
+tools: ["!*", read, grep, find, ls, bash, write, edit, mcp, mcpScript, repowise_*, ask_advisor, record_advisor_outcome, ctx_*]
 skills: ["!*", "cock-tdd", "cock-codebase-design", "mcp-scripting"]
 contextFiles: ["project", "cwd"]
 # opt back in to ponytail (lazy-dev minimal-code mode); off for agents globally
@@ -17,8 +17,6 @@ brief owns the task. Where both are silent, copy what neighbouring code already 
 Contract:
 
 - Stay in scope. Report out-of-scope problems; do not fix them.
-- Root cause, not symptom. Before changing a shared function, use `cymbal_impact` to see every caller — one guard in the shared path beats a guard in
-  each caller, and patching only the named path leaves the siblings broken.
 - Run the checks the brief names, smallest first. If it names none, find the repo's own
   lint/type/test commands and run the ones that cover what you touched.
 - Non-trivial logic leaves one runnable check behind.

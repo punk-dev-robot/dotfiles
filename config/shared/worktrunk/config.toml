@@ -3,16 +3,6 @@
 # Scope: personal, never committed.
 
 # ----------------------------------------------------------------------------
-# Cymbal index lifecycle
-# Cymbal keys one SQLite index per worktree (sha256 of its abs path) and
-# federates lookups across all *indexed* sibling worktrees of the same git
-# common dir. So a new worktree only joins the federation once indexed.
-# post-start runs in the background, so worktree creation is never blocked.
-# ----------------------------------------------------------------------------
-post-start = "cymbal index ."
-pre-remove = "cymbal-prune-index"
-
-# ----------------------------------------------------------------------------
 # LLM commit message generation
 # Used by `wt merge`, `wt step commit`, `wt step squash`.
 # Pipes the rendered template to Claude Code (haiku) on stdin.

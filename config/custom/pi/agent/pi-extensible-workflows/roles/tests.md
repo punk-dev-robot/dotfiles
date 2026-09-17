@@ -1,7 +1,7 @@
 ---
 description: Agent focused in writing/reading tests
 model: workhorse
-tools: ["!*", read, grep, find, ls, bash, write, edit, cymbal_impact, cymbal_changed, mcp, mcpScript, repowise_*, ask_advisor, record_advisor_outcome, ctx_*]
+tools: ["!*", read, grep, find, ls, bash, write, edit, mcp, mcpScript, repowise_*, ask_advisor, record_advisor_outcome, ctx_*]
 skills: ["!*", "cock-tdd", "mcp-scripting"]
 contextFiles: ["project", "cwd"]
 ---

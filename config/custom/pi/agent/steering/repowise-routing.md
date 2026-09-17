@@ -13,6 +13,7 @@ Repowise FIRST for concept/history/risk questions; `grep`/`find` are the unindex
 - Concept/docs question ("how does X work", "where is Y flow") → `repowise_search_codebase`, `repowise_get_answer`.
 - File/symbol triage (usage, fix history, layer) → `repowise_get_context` (takes `targets` array).
 - Full symbol source → `repowise_get_symbol` (`symbol_id` = `path::Name`).
+- Explore codebase with repowise_* tools providing code intelligence
 - Change rationale / git archaeology → `repowise_get_why`; touch risk → `repowise_get_risk`.
 - Line-level references stay local: `cymbal_impact` (transitive callers), `cymbal_changed`
   (diff → affected symbols, pre-PR); exact text/regex → `grep`.

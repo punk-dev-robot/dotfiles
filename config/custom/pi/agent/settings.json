@@ -12,25 +12,16 @@
     "npm:pi-observational-memory",
     "npm:@ff-labs/pi-fff",
     {
-      "source": "npm:@dietrichgebert/ponytail",
-      "skills": [
-        "-skills/ponytail-audit/SKILL.md",
-        "-skills/ponytail-debt/SKILL.md",
-        "-skills/ponytail-gain/SKILL.md",
-        "-skills/ponytail-help/SKILL.md"
-      ]
+      "source": "npm:@dietrichgebert/ponytail"
     },
     "npm:pi-caveman",
     "npm:pi-mcp-adapter@2.32.1",
     "npm:pi-advisor-flow",
-    "npm:pi-cymbal",
     "npm:@ogulcancelik/pi-herdr",
     "npm:pi-web-access",
     {
       "source": "npm:context-mode",
-      "skills": [
-        "+skills/context-mode/SKILL.md"
-      ]
+      "skills": ["+skills/context-mode/SKILL.md"]
     },
     "npm:@plannotator/pi-extension",
     "npm:@firstpick/pi-extension-tools",
@@ -45,13 +36,7 @@
     "npm:pi-ask-user",
     "npm:@henryqw/pi-herdr-btw"
   ],
-  "npmCommand": [
-    "mise",
-    "exec",
-    "node@26",
-    "--",
-    "npm"
-  ],
+  "npmCommand": ["mise", "exec", "node@26", "--", "npm"],
   "lastChangelogVersion": "0.85.1",
   "showCacheMissNotices": false,
   "defaultProvider": "anthropic",

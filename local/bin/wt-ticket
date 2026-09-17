@@ -3,8 +3,7 @@
 #
 # Creates/lists/removes same-named branches + worktrees across several repos in
 # the swapc workspace, so a ticket touching N repos is one command. Wraps
-# worktrunk (`wt`) so its hooks fire (post-start: cymbal index; pre-remove:
-# cymbal-prune-index). Each new worktree also gets a background
+# worktrunk (`wt`) so its hooks fire . Each new worktree also gets a background
 # `repowise update --no-workspace` seed — bare `repowise update` inside a
 # worktree of a workspace member triggers a workspace-wide update instead.
 #

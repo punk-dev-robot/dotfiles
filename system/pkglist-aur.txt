@@ -12,7 +12,6 @@ brother-lpr-drivers-common
 btrfs-list
 ccusage
 claude-cowork-service
-cymbal
 deadbeef
 deadbeef-plugin-quicksearch-gtk3-git
 debtap

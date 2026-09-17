@@ -1,7 +1,7 @@
 ---
 description: Repo-read-only scout (NO bash/web/ssh) — codebase questions only. Route live-system or web questions to researcher/dev.
 model: workhorse:low
-tools: ["!*", read, grep, find, ls, write, cymbal_impact, ask_advisor, record_advisor_outcome, mcp, mcpScript, repowise_*, ctx_search, ctx_execute_file]
+tools: ["!*", read, grep, find, ls, write, ask_advisor, record_advisor_outcome, mcp, mcpScript, repowise_*, ctx_search, ctx_execute_file]
 overrideSystemPrompt: true
 contextFiles: []
 skills: ["!*", "logfire-query", "mcp-scripting"]
