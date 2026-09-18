@@ -39,11 +39,10 @@
       }
     },
     "mattpocock/skills": {
-      "version": "6654f6b60cd9d5be8b54c6fafe44346dabeb3b76",
+      "version": "74ca5fe077456a0b3b2f5310cf9430999fd0b5fd",
       "source": "https://github.com/mattpocock/skills",
       "include": {
         "skills": [
-          "code-review",
           "codebase-design",
           "diagnosing-bugs",
           "domain-modeling",
@@ -51,19 +50,18 @@
           "grill-with-docs",
           "grilling",
           "implement",
+          "implement-spec",
           "improve-codebase-architecture",
           "loop-me",
           "prototype",
           "research",
-          "resolving-merge-conflicts",
-          "setup-matt-pocock-skills",
+          "retro",
           "tdd",
           "teach",
           "to-questionnaire",
           "to-spec",
           "to-tickets",
           "triage",
-          "wait-what",
           "wayfinder",
           "wizard",
           "writing-for-agents"
@@ -84,14 +82,14 @@
       }
     },
     "humanlayer/skills": {
-      "version": "3c2629142c5d437428269b1b722b08c0b87f574d",
+      "version": "ca7c8088db69e315a8b2deea43820270457f8f3c",
       "source": "https://github.com/humanlayer/skills",
       "include": {
         "skills": [
           "build-iterated-agentic-loop",
           "design-control-loop",
-          "improve-claude-md",
-          "show-me"
+          "show-me",
+          "visual-pr"
         ]
       }
     },

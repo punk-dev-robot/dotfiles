@@ -5,6 +5,10 @@
     "outputGuard": true
   },
   "mcpServers": {
+    "incidentio": {
+      "url": "https://mcp.incident.io/mcp",
+      "lifestyle": "lazy"
+    },
     "github": {
       "url": "https://api.githubcopilot.com/mcp/",
       "auth": "bearer",
@@ -57,6 +61,12 @@
     "linear": {
       "url": "https://mcp.linear.app/mcp",
       "lifecycle": "lazy"
+    },
+    "executor": {
+      "url": "http://localhost:4789/mcp",
+      "lifecycle": "lazy",
+      "auth": "bearer",
+      "bearerTokenStore": true
     }
   }
 }
