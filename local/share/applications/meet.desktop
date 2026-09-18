@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Version=1.5
+Name=Google Meet
+Icon=/home/kuba/.config/zen/gnmpdd8e.Default (release)/taskbartabs/icons/8448c629-14a5-4599-9033-67cd57c1fb80.png
+Exec="/opt/zen-browser-bin/zen-bin" "-taskbar-tab" "8448c629-14a5-4599-9033-67cd57c1fb80" "-new-window" "https://meet.google.com/landing?lfhs=2" "-profile" "/home/kuba/.config/zen/gnmpdd8e.Default (release)" "-container" "1"
+

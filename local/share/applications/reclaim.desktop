@@ -1,9 +1,7 @@
-#!/usr/bin/env xdg-open
 [Desktop Entry]
-Version=1.0
-Terminal=false
 Type=Application
+Version=1.5
 Name=Reclaim
-Exec=/usr/bin/chromium "--profile-directory=Profile 1" --app=https://reclaim.ai
-Icon=chrome-chjbbpdidamagiofpdhenaghgkllbfml-Profile_1
-StartupWMClass=chrome-reclaim.ai__-Profile_1
+Icon=/home/kuba/.config/zen/gnmpdd8e.Default (release)/taskbartabs/icons/96cb1046-ed6d-4957-aa92-90c7781ceabf.png
+Exec="/opt/zen-browser-bin/zen-bin" "-taskbar-tab" "96cb1046-ed6d-4957-aa92-90c7781ceabf" "-new-window" "https://app.reclaim.ai/" "-profile" "/home/kuba/.config/zen/gnmpdd8e.Default (release)" "-container" "1"
+

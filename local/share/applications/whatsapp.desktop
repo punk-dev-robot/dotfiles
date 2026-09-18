@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Version=1.5
+Name=WhatsApp Web
+Icon=/home/kuba/.config/zen/gnmpdd8e.Default (release)/taskbartabs/icons/eaf6e404-6fe7-4c6f-819c-f794e85e0c9d.png
+Exec="/opt/zen-browser-bin/zen-bin" "-taskbar-tab" "eaf6e404-6fe7-4c6f-819c-f794e85e0c9d" "-new-window" "https://web.whatsapp.com/" "-profile" "/home/kuba/.config/zen/gnmpdd8e.Default (release)" "-container" "1"
+

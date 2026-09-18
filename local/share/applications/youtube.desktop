@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Version=1.5
+Name=YouTube
+Icon=/home/kuba/.config/zen/gnmpdd8e.Default (release)/taskbartabs/icons/02c50f5b-04e7-4596-9a36-cd88f815bc96.png
+Exec="/opt/zen-browser-bin/zen-bin" "-taskbar-tab" "02c50f5b-04e7-4596-9a36-cd88f815bc96" "-new-window" "https://www.youtube.com/?feature=ytca" "-profile" "/home/kuba/.config/zen/gnmpdd8e.Default (release)" "-container" "1"
+

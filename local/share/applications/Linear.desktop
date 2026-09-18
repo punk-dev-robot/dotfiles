@@ -1,8 +1,9 @@
 [Desktop Entry]
-# KUB-118: shadows /usr/share/applications/Linear.desktop. GDK_BACKEND=x11 skips tao 0.34's forced Wayland
-# header bar (GTK_CSD=0 is a no-op there). GTK_THEME: GTK-on-X11 has no XSettings here → ignores prefer-dark → WebKit renders light. Re-test native Wayland once linear-desktop-bin ships Tauri >= 2.12 (tao >= 0.36).
+# KUB-118: shadows /usr/share/applications/Linear.desktop. Native Wayland: tao 0.34 draws its own header bar
+# (GTK_CSD=0 / Hyprland rules can't remove it) — accepted over XWayland (blurry + black artifacts on hover popovers).
+# GTK_THEME kept so WebKit renders dark. Re-check header bar once linear-desktop-bin ships Tauri >= 2.12 (tao >= 0.36).
 Categories=
-Exec=env GDK_BACKEND=x11 GTK_THEME=Adwaita:dark linear-linux %U
+Exec=env GDK_BACKEND=wayland GTK_THEME=Adwaita:dark linear-linux %U
 StartupWMClass=linear-linux
 Icon=linear-linux
 Name=Linear

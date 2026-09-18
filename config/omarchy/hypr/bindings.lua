@@ -37,6 +37,8 @@ for _, k in ipairs({
   "SUPER + CTRL + S",             -- omarchy: Share menu (still in omarchy-menu) -> capture menu, next to SHIFT+S
   "SUPER + CTRL + C",             -- omarchy: capture menu -> moved to SUPER+CTRL+S
   "SUPER + CTRL + V", "SUPER + CTRL + E", -- omarchy: clipboard/emoji shell panels -> vicinae (omarchy ones on +SHIFT/+ALT)
+  "SUPER + SHIFT + C", "SUPER + SHIFT + E", "SUPER + SHIFT + Y", "SUPER + SHIFT + X", "SUPER + SHIFT + P", -- omarchy: Chromium webapps (HEY, YouTube, X, Photos) -> Zen taskbar tabs on own keys
+  "SUPER + C", "SUPER + V", "SUPER + X", -- omarchy: "universal" mac-style copy/paste/cut -> unbound, apps' own shortcuts + middle-click as usual
   "SUPER + SHIFT + LEFT", "SUPER + SHIFT + RIGHT", "SUPER + SHIFT + UP", "SUPER + SHIFT + DOWN", -- omarchy: swap tiled window -> floating-window nudge below
   "SUPER + CTRL + Q", "XF86Calculator", "SUPER + ALT + SPACE", -- omarchy: omacalc, apps menu -> vicinae root search does both
 }) do
@@ -279,7 +281,7 @@ o.bind("SUPER + SHIFT + RETURN", "Terminal", { omarchy = "terminal" })
 local function scratch(key, name, match, cmd, rules)
   o.bind(key, "Scratchpad: " .. name, function()
     -- "[Ss]potify.*" → "spotify" for the plain-find below (window-rule class regexes are full-match)
-    local needle = match:gsub("%[%a(%a)%]", "%1"):gsub("%.%*", ""):lower()
+    local needle = match:gsub("%[%a(%a)%]", "%1"):gsub("%.%*", ""):gsub("\\(.)", "%1"):lower()
     for _, w in ipairs(hl.get_windows({ mapped = true })) do
       if w.class:lower():find(needle, 1, true) then
         -- Tiled on a regular workspace = owner pinned it there (SUPER + SPACE pull). Focus only,
@@ -317,19 +319,27 @@ local function scratch(key, name, match, cmd, rules)
 end
 
 scratch("SUPER + BACKSPACE", "slack", "[Ss]lack", "slack")
-scratch("SUPER + SHIFT + BACKSPACE", "whatsapp", "chrome-web.whatsapp.com__.*",
-  "omarchy-launch-webapp https://web.whatsapp.com/")
+-- Zen taskbar tabs (Firefox web apps): class zen.webapp-<uuid>; launcher = local/share/applications/<name>.desktop
+-- (copy of Zen's zen.webapp-<uuid>.desktop, human-named; Zen's own copies deleted to avoid launcher duplicates)
+local function zenapp(key, name, uuid)
+  scratch(key, name, "zen\\.webapp-" .. uuid, "gtk-launch " .. name)
+end
+zenapp("SUPER + SHIFT + BACKSPACE", "whatsapp", "eaf6e404-6fe7-4c6f-819c-f794e85e0c9d")
+zenapp("SUPER + X", "x", "f2b1e02d-928f-4417-9266-dba2a676fed4")
+zenapp("SUPER + Y", "youtube", "02c50f5b-04e7-4596-9a36-cd88f815bc96")
+scratch("SUPER + SHIFT + V", "discord", "vesktop", "vesktop")
+zenapp("SUPER + V", "meet", "8448c629-14a5-4599-9033-67cd57c1fb80")
 scratch("SUPER + O", "obsidian", "obsidian", "obsidian")
-scratch("SUPER + N", "notion", "chrome-www.notion.so__.*", "omarchy-launch-webapp https://www.notion.so")
+scratch("SUPER + N", "notion", "[Nn]otion", "gtk-launch notion")
 scratch("SUPER + P", "1password", "1[Pp]assword", "1password", { size = { "33%", "66%" } })
 scratch("SUPER + M", "spotify", "[Ss]potify.*", "spotify-launcher")
 scratch("SUPER + A", "volume", "org.pulseaudio.pavucontrol", "pavucontrol", { size = { 800, 600 } })
 scratch("SUPER + SHIFT + A", "easyeffects", "com.github.wwmm.easyeffects", "easyeffects")
 scratch("SUPER + E", "protonmail", ".*[Pp]roton.*", "proton-mail")
-scratch("SUPER + T", "linear", "[Ll]inear-linux", "gtk-launch Linear") -- KUB-118: user .desktop adds GDK_BACKEND=x11 (class is Linear-linux on XWayland)
+scratch("SUPER + T", "linear", "[Ll]inear-linux", "gtk-launch Linear") -- KUB-118: user .desktop forces native Wayland (class linear-linux)
 scratch("SUPER + I", "top", "scratch.btm", "xdg-terminal-exec --app-id=scratch.btm -e btm")
 scratch("SUPER + SHIFT + I", "nvtop", "scratch.nvtop", "xdg-terminal-exec --app-id=scratch.nvtop -e nvtop")
 scratch("SUPER + RETURN", "dropterm", "scratch.dropterm", "xdg-terminal-exec --app-id=scratch.dropterm")
-scratch("SUPER + DELETE", "reclaim", "chrome-reclaim.ai__-Profile_1", "gtk-launch reclaim")
+zenapp("SUPER + DELETE", "reclaim", "96cb1046-ed6d-4957-aa92-90c7781ceabf")
 scratch("SUPER + SHIFT + DELETE", "todoist", ".*[Tt]odoist.*", "todoist")
 o.window("obsidian", { focus_on_activate = true })

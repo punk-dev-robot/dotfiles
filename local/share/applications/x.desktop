@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Version=1.5
+Name=X
+Icon=/home/kuba/.config/zen/gnmpdd8e.Default (release)/taskbartabs/icons/f2b1e02d-928f-4417-9266-dba2a676fed4.png
+Exec="/opt/zen-browser-bin/zen-bin" "-taskbar-tab" "f2b1e02d-928f-4417-9266-dba2a676fed4" "-new-window" "https://x.com/?utm_source=homescreen&utm_medium=shortcut" "-profile" "/home/kuba/.config/zen/gnmpdd8e.Default (release)" "-container" "1"
+
