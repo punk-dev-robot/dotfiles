@@ -55,6 +55,24 @@ autocmd DocStart localhost mode ignore
 " command line, so set an option to move the status bar to the right.
 guiset_quiet hoverlink right
 
+" Notion links clicked inside the browser go to the Notion app (url-open owns the
+" predicate; the hook only asks). DocStart, not BeforeRequest: webRequest URLs are
+" stripped of the #block fragment, tri.contentLocation.href keeps it, so the app
+" opens the block that was clicked. Cost: the page starts loading before we decide.
+" We never close the browser tab: the app opens alongside it, on purpose, so a tab
+" reached by clicking through (not opened fresh) keeps its history and can still
+" be navigated back. Fails open — not-ours (exit 3) or a dead native messenger
+" leaves the tab loading exactly as it would without this hook.
+autocmd DocStart ^https://((www\.)?notion\.so|app\.notion\.com)/ js tri.native.run("\"$HOME/.local/bin/url-open\" --route-stdin", tri.contentLocation.href).catch(() => 0)
+
+" Linear workspace links use the router's path allowlist; preserve the browser tab.
+autocmd DocStart ^https://linear\.app/ js tri.native.run("\"$HOME/.local/bin/url-open\" --route-stdin", tri.contentLocation.href).catch(() => 0)
+
+" Meet uses PWAsForFirefox's native auto-launch instead: enabled URL handler
+" https://meet.google.com/ on the Meet site, plus the extension's auto-launch switch.
+" It intercepts before page load and closes only newly created navigation tabs.
+" Do not add a Meet DocStart hook here: it would duplicate the native handoff.
+
 " Set up some shortcuts for running custom scripts.
 " bind zz composite jsb tri.native.run('cat /home/andrew/.config/tridactyl/rustdoc-condensed.js') | js -p eval(JS_ARG.content)
 "

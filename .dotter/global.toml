@@ -98,6 +98,9 @@ depends = ["base"]
 "config/omarchy/tridactyl/tridactylrc" = "~/.config/tridactyl/tridactylrc"
 "config/omarchy/1Password/ssh/agent.toml" = "~/.config/1Password/ssh/agent.toml"
 "config/omarchy/spotify-launcher.conf" = "~/.config/spotify-launcher.conf"
+# Meet's dedicated firefoxpwa profile (launchType=2: reuse the open window/tab).
+# Only user.js is managed — prefs.js is browser-written runtime state.
+"config/omarchy/firefoxpwa/user.js" = "~/.local/share/firefoxpwa/profiles/01M2TW5QTJCTQWA3YZCP436GEB/user.js"
 # KUB-111 follow-up: imv keybinds; Ctrl+E annotates in satty (omarchy default calls the dropped tensaku).
 "config/omarchy/imv/config" = "~/.config/imv/config"
 # KUB-122: udiskie device rules (omarchy autostarts udiskie; config.yml is read regardless of its flags).

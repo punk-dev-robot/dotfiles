@@ -1,0 +1,12 @@
+#!/bin/bash
+# Meet PWA follows the omarchy theme (see hooks/theme-set.d/zen for the pattern).
+# Symlinks the rendered firefoxpwa.css into the profile's chrome dir; never kills the app.
+set -euo pipefail
+
+theme=$HOME/.local/state/omarchy/current/theme
+dir=$HOME/.local/share/firefoxpwa/profiles/01M2TW5QTJCTQWA3YZCP436GEB
+[[ -d $dir && -f $theme/firefoxpwa.css ]] || exit 0
+
+mkdir -p "$dir/chrome"
+ln -sfn "$theme/firefoxpwa.css" "$dir/chrome/omarchy.css"
+grep -qsF 'omarchy.css' "$dir/chrome/userChrome.css" || printf '@import url("omarchy.css");\n' >>"$dir/chrome/userChrome.css"

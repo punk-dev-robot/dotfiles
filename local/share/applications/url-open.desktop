@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Web (Notion router)
+Comment=Opens Notion links in the Notion app, everything else in Zen
+Exec=/home/kuba/.local/bin/url-open %U
+Icon=zen-browser
+Terminal=false
+NoDisplay=true
+MimeType=x-scheme-handler/http;x-scheme-handler/https;

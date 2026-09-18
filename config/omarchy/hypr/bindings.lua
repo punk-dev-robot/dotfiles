@@ -328,7 +328,7 @@ zenapp("SUPER + SHIFT + BACKSPACE", "whatsapp", "eaf6e404-6fe7-4c6f-819c-f794e85
 zenapp("SUPER + X", "x", "f2b1e02d-928f-4417-9266-dba2a676fed4")
 zenapp("SUPER + Y", "youtube", "02c50f5b-04e7-4596-9a36-cd88f815bc96")
 scratch("SUPER + SHIFT + V", "discord", "vesktop", "vesktop")
-zenapp("SUPER + V", "meet", "8448c629-14a5-4599-9033-67cd57c1fb80")
+scratch("SUPER + V", "meet", "FFPWA-01M2TW5QXGJWY46NTDR6Z21WJG", "firefoxpwa site launch 01M2TW5QXGJWY46NTDR6Z21WJG", { focus_on_activate = true })
 scratch("SUPER + O", "obsidian", "obsidian", "obsidian")
 scratch("SUPER + N", "notion", "[Nn]otion", "gtk-launch notion")
 scratch("SUPER + P", "1password", "1[Pp]assword", "1password", { size = { "33%", "66%" } })

@@ -1,0 +1,222 @@
+#!/usr/bin/env python3
+"""url-open — route Notion/Linear/Meet web links to their apps, everything else to Zen.
+
+Three entry points, one predicate:
+  url-open [URL...]          MIME handler / $BROWSER. App links -> notion-app or the
+                             matching firefoxpwa site, the rest (and no args at all)
+                             -> Zen directly.
+  url-open --route-stdin     one URL on stdin, dispatch only. exit 0 = handed to an
+                             app, exit 3 = not ours or dispatch failed. The browser
+                             tab/page is the caller's concern either way — this mode
+                             never touches it and never opens a browser.
+
+Allowlist, not deny-list: a link moves only when it is recognisably app content —
+Notion: host notion.so / www.notion.so / app.notion.com AND a last path segment
+ending in a 32-hex (or hyphenated-UUID) page ID. Linear: host linear.app AND a
+deliberately *narrow* set of workspace content paths (see LINEAR_SECTIONS) — not
+"every Linear page". Meet: host meet.google.com. Everything else stays in the
+browser: homepages, marketing/pricing/help, docs, workspace roots, and every login
+/ SSO / OAuth callback path, known or not. Never calls xdg-open (that calls us).
+"""
+
+import os
+import re
+import shutil
+import subprocess
+import sys
+import time
+from urllib.parse import urlsplit
+
+ALLOWED_HOSTS = frozenset({"notion.so", "www.notion.so", "app.notion.com"})
+# A Notion page URL ends in its page ID: "Some-Title-<32 hex>", a bare "<32 hex>",
+# or the hyphenated UUID spelling. Nothing else is routed — an unknown path is a
+# marketing page or an auth callback, and both belong in the browser.
+PAGE_ID_RE = re.compile(
+    r"(?:^|-)(?:[0-9a-f]{32}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$",
+    re.IGNORECASE,
+)
+# firefoxpwa site IDs, read once off ~/.local/share/firefoxpwa/config.json and pinned
+# here — same as the hardcoded desktop-entry UUIDs elsewhere in these dotfiles. A new
+# install re-registers with fresh IDs; update these two lines then.
+PWA_LINEAR = "01M2TVXFD0W4WYQWGTQ7ANSYCC"
+PWA_MEET = "01M2TW5QXGJWY46NTDR6Z21WJG"
+# Linear routing is intentionally partial: only these second path segments under a
+# workspace slug count as app content. Anything else on linear.app — marketing, docs,
+# pricing, login, OAuth callbacks, unknown future sections — stays in the browser.
+LINEAR_SECTIONS = frozenset({
+    "issue", "project", "projects", "team", "view", "initiative", "initiatives",
+    "cycle", "my-issues", "inbox", "settings", "search", "roadmap",
+})
+# First segments that are never a workspace slug, so "/docs/issue" can't sneak in.
+LINEAR_RESERVED = frozenset({"auth", "login", "logout", "oauth", "docs", "blog", "pricing", "api"})
+# firefoxpwa exits as soon as the runtime is spawned, so we can wait for its status.
+PWA_LAUNCH_TIMEOUT_S = 10
+# $URL_OPEN_ZEN wins (other install paths, tests); never xdg-open, that calls us.
+ZEN_CANDIDATES = ("zen-bin", "/opt/zen-browser-bin/zen-bin", "zen-browser")
+# How long we wait to notice notion-app dying on the spot. A cold start stays
+# alive past this; a second-instance handoff exits 0 well inside it.
+DISPATCH_GRACE_S = 0.4
+
+
+def safe_parts(raw):
+    """Parse an http(s) URL, rejecting credentials and nonstandard ports. Else None."""
+    try:
+        parts = urlsplit(raw)
+    except ValueError:
+        return None
+    if parts.scheme not in ("http", "https"):
+        return None
+    if parts.username or parts.password or "@" in parts.netloc:
+        return None
+    try:
+        port = parts.port
+    except ValueError:  # malformed port
+        return None
+    if port not in (None, 80, 443):
+        return None
+    return parts
+
+
+def notion_target(raw):
+    """Return the notion: URL for a routable Notion link, else None."""
+    parts = safe_parts(raw)
+    if parts is None:
+        return None
+    host = (parts.hostname or "").lower()
+    if host not in ALLOWED_HOSTS:
+        return None
+    last = parts.path.rstrip("/").rsplit("/", 1)[-1]
+    if not PAGE_ID_RE.search(last):
+        return None
+    # Host is stripped by the app's own scheme mapper; path/query/fragment survive.
+    target = "notion://" + host + (parts.path or "/")
+    if parts.query:
+        target += "?" + parts.query
+    if parts.fragment:
+        target += "#" + parts.fragment
+    return target
+
+
+def pwa_target(raw):
+    """Return (firefoxpwa site id, url) for a routable Linear/Meet link, else None.
+
+    The URL is handed over byte-exact (query and fragment included): the PWA runs the
+    same web app, so its own router does the rest.
+    """
+    parts = safe_parts(raw)
+    if parts is None:
+        return None
+    host = (parts.hostname or "").lower()
+    if host == "meet.google.com":
+        return (PWA_MEET, raw)
+    if host != "linear.app":
+        return None
+    segs = [s.lower() for s in parts.path.split("/") if s]
+    if not segs or segs[0] in LINEAR_RESERVED:
+        return None
+    # Short app link /issue/KUB-12, or /<workspace>/<known section>[/...].
+    if len(segs) >= 2 and (segs[0] == "issue" or segs[1] in LINEAR_SECTIONS):
+        return (PWA_LINEAR, raw)
+    return None
+
+
+def dispatch_pwa(site_id, url):
+    """Hand the URL to a firefoxpwa site. True only if the launcher reported success.
+
+    `firefoxpwa site launch` spawns the runtime and exits, so unlike notion-app we can
+    simply wait for its exit status; a missing CLI, a nonzero exit or a wedged launcher
+    falls open to the browser. Closed stdio, so the tridactyl native messenger is never
+    held open by a child of ours.
+    """
+    exe = shutil.which("firefoxpwa")
+    if not exe:
+        return False
+    try:
+        proc = subprocess.run(  # noqa: S603 - argv list, never a shell
+            [exe, "site", "launch", site_id, "--url", url],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,  # runtime outlives us (and the native messenger)
+            timeout=PWA_LAUNCH_TIMEOUT_S,
+            check=False,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return proc.returncode == 0
+
+
+def dispatch_app(raw):
+    """Route one URL to its app. False = not ours, or the app refused to start."""
+    target = notion_target(raw)
+    if target:
+        return dispatch_notion(target)
+    pwa = pwa_target(raw)
+    if pwa:
+        return dispatch_pwa(*pwa)
+    return False
+
+
+def dispatch_notion(target):
+    """Hand the notion: URL to notion-app. True only if it really started."""
+    exe = shutil.which("notion-app")
+    if not exe:
+        return False
+    try:
+        with open(os.devnull, "wb") as null:
+            proc = subprocess.Popen(  # noqa: S603 - argv list, never a shell
+                [exe, target],
+                stdin=subprocess.DEVNULL,
+                stdout=null,
+                stderr=null,
+                start_new_session=True,  # outlives us (and the native messenger)
+            )
+    except OSError:
+        return False
+    deadline = time.monotonic() + DISPATCH_GRACE_S
+    while time.monotonic() < deadline:
+        code = proc.poll()
+        if code is not None:
+            return code == 0
+        time.sleep(0.02)
+    return True  # still running = cold start in progress
+
+
+def zen_binary():
+    override = os.environ.get("URL_OPEN_ZEN")
+    candidates = (override,) if override else ZEN_CANDIDATES  # override = the only one tried
+    for cand in candidates:
+        found = shutil.which(cand) if os.path.basename(cand) == cand else cand
+        if found and os.access(found, os.X_OK):
+            return found
+    return None
+
+
+def exec_zen(args):
+    exe = zen_binary()
+    if not exe:
+        sys.stderr.write("url-open: no Zen binary found; refusing to recurse via xdg-open\n")
+        return 127
+    os.execv(exe, [exe] + list(args))  # noqa: S606 - argv list, never a shell
+
+
+def main(argv):
+    if argv[:1] == ["--route-stdin"]:
+        url = sys.stdin.read().strip()
+        return 0 if dispatch_app(url) else 3
+
+    # Browser flags are not ours to interpret: hand the whole lot to Zen untouched.
+    if any(a.startswith("-") for a in argv):
+        return exec_zen(argv)
+
+    passthrough = []
+    for arg in argv:
+        if not dispatch_app(arg):
+            passthrough.append(arg)
+    if passthrough or not argv:
+        return exec_zen(passthrough)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

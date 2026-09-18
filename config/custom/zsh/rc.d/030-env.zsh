@@ -36,7 +36,11 @@ export ZSH_LIB_DIR="$ZDOTDIR/lib"
 export EDITOR="nvim"
 export VISUAL="nvim"
 export TERMINAL="ghostty"
-if (( $+commands[zen-browser] )); then
+# Linux: url-open routes Notion links to the Notion app, everything else to Zen
+# (zero args = plain Zen, so `b` still works). macOS keeps `open`.
+if [[ "$OSTYPE" != darwin* ]] && (( $+commands[url-open] )); then
+  export BROWSER="url-open"
+elif (( $+commands[zen-browser] )); then
   export BROWSER="zen-browser"
 elif [[ "$OSTYPE" == darwin* ]]; then
   export BROWSER="open"
