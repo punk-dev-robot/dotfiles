@@ -15,6 +15,7 @@ Both dirs are dotter-managed via `config/omarchy/omarchy → ~/.config/omarchy`:
 | app | template(s) | hook | takes effect |
 |---|---|---|---|
 | Zen | `themed/zen.css.tpl`, `zen-user.js.tpl` | `hooks/theme-set.d/zen` (symlinks into profile) | Zen restart |
+| FirefoxPWA | `themed/firefoxpwa.css.tpl` | `hooks/theme-set.d/firefoxpwa` (symlinks into every `~/.local/share/firefoxpwa/profiles/*/chrome/`) | app restart — see `firefoxpwa-web-apps.md` |
 | Vicinae | `themed/vicinae.toml.tpl` | `hooks/theme-set.d/vicinae` (cp → `~/.local/share/vicinae/themes/omarchy.toml`, `vicinae theme set omarchy`) | live |
 | Spotify | `themed/spicetify-color.ini.tpl`, `spicetify-user.css.tpl` | `hooks/theme-set.d/spotify` (cp → `~/.config/spicetify/Themes/omarchy/`, `spicetify -q -n apply`) | Spotify restart |
 
