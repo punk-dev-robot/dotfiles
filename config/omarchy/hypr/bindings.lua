@@ -111,38 +111,88 @@ o.bind("SUPER + ALT + grave", "Focus next monitor", hl.dsp.focus({ monitor = "+1
 o.bind("SUPER + semicolon", "Swap with master", hl.dsp.layout("swapwithmaster auto"))
 o.bind("SUPER + comma", "Roll stack left", hl.dsp.layout("rollprev"))
 o.bind("SUPER + period", "Roll stack right", hl.dsp.layout("rollnext"))
--- 3-way layout cycle for the active workspace (replaces hyprtogglelayout; `layoutmsg setlayout` is gone in 0.56).
+-- 4-way layout cycle for the active workspace (replaces hyprtogglelayout; `layoutmsg setlayout` is gone in 0.56).
 -- KUB-120: persisted the way omarchy-hyprland-workspace-layout-toggle does — one line in
 -- $XDG_STATE_HOME/omarchy/workspace-layouts/<id>.lua, which default/hypr/workspace-layouts.lua re-applies on every reload.
 local layouts_dir = require("default.hypr.paths").state_home .. "/omarchy/workspace-layouts"
-o.bind("SUPER + ALT + L", "Cycle layout master → dwindle → scrolling", function()
+_G.kuba_workspace_layout_cycle = _G.kuba_workspace_layout_cycle or {}
+local layout_cycle = _G.kuba_workspace_layout_cycle
+local layout_timers = {}
+
+local function apply_master_ratio(ws_id, mfact)
+  layout_timers[ws_id] = hl.timer(function()
+    local active = hl.get_active_workspace()
+    if active and active.id == ws_id and active.tiled_layout == "master" then
+      hl.dispatch(hl.dsp.layout("mfact exact " .. mfact))
+    end
+    layout_timers[ws_id] = nil
+  end, { timeout = 100, type = "oneshot" })
+end
+
+o.bind("SUPER + ALT + L", "Cycle layout master → dwindle → scrolling → master 2/3", function()
   local ws = hl.get_active_workspace()
   if not ws then return end
-  local nxt = ({ master = "dwindle", dwindle = "scrolling", scrolling = "master" })[ws.tiled_layout] or "master"
-  hl.workspace_rule({ workspace = tostring(ws.id), layout = nxt })
+
+  local current = ws.tiled_layout
+  if current == "master" then current = layout_cycle[ws.id] or "master" end
+  local nxt = ({ master = "dwindle", dwindle = "scrolling", scrolling = "master-thirds", ["master-thirds"] = "master" })[current] or "master"
+  local layout = nxt == "master-thirds" and "master" or nxt
+  local layout_opts
+  if nxt == "master" then
+    layout_opts = { orientation = "center", mfact = 0.5 }
+  elseif nxt == "master-thirds" then
+    layout_opts = { orientation = "right", mfact = 0.67 }
+  end
+
+  hl.workspace_rule({
+    workspace = tostring(ws.id),
+    layout = layout,
+    layout_opts = layout_opts and { orientation = layout_opts.orientation } or nil,
+  })
+  if layout_opts then apply_master_ratio(ws.id, layout_opts.mfact) end
+  layout_cycle[ws.id] = nxt
+
   os.execute("mkdir -p '" .. layouts_dir .. "'")
   local f = io.open(layouts_dir .. "/" .. ws.id .. ".lua", "w")
   if f then
-    f:write(string.format('hl.workspace_rule({ workspace = "%s", layout = "%s" })\n', ws.id, nxt))
+    f:write(string.format('_G.kuba_workspace_layout_cycle = _G.kuba_workspace_layout_cycle or {}\n_G.kuba_workspace_layout_cycle[%d] = "%s"\n', ws.id, nxt))
+    if layout_opts then
+      f:write(string.format('hl.workspace_rule({ workspace = "%s", layout = "%s", layout_opts = { orientation = "%s" } })\n',
+        ws.id, layout, layout_opts.orientation))
+    else
+      f:write(string.format('hl.workspace_rule({ workspace = "%s", layout = "%s" })\n', ws.id, layout))
+    end
     f:close()
   end
-  hl.exec_cmd("omarchy-notification-send -g 󱂬 'Layout: " .. nxt .. "'")
+
+  local label = nxt == "master-thirds" and "master 2/3" or nxt
+  hl.exec_cmd("omarchy-notification-send -g 󱂬 'Layout: " .. label .. "'")
 end)
 
--- Resize: SUPER+arrows ±50 (repeat), SUPER+R submap h/j/k/l ±10, escape to leave.
+local active_ws = hl.get_active_workspace()
+if active_ws then
+  local state_file = io.open(layouts_dir .. "/" .. active_ws.id .. ".lua", "r")
+  local saved = state_file and state_file:read("*a"):match('layout_cycle%[%d+%] = "([^"]+)"')
+  if state_file then state_file:close() end
+  if saved == "master" then
+    apply_master_ratio(active_ws.id, 0.5)
+  elseif saved == "master-thirds" then
+    apply_master_ratio(active_ws.id, 0.67)
+  end
+end
+
+-- Resize: SUPER+arrows ±50 (repeat). SUPER+R restores a floating window to the standard scratchpad size.
 o.bind("SUPER + LEFT", "Resize window left", hl.dsp.window.resize({ x = -50, y = 0, relative = true }),
   { repeating = true })
 o.bind("SUPER + RIGHT", "Resize window right", hl.dsp.window.resize({ x = 50, y = 0, relative = true }),
   { repeating = true })
 o.bind("SUPER + UP", "Resize window up", hl.dsp.window.resize({ x = 0, y = -50, relative = true }), { repeating = true })
 o.bind("SUPER + DOWN", "Resize window down", hl.dsp.window.resize({ x = 0, y = 50, relative = true }), { repeating = true })
-o.bind("SUPER + R", "Resize submap: hjkl then escape", hl.dsp.submap("resize"))
-hl.define_submap("resize", function()
-  hl.bind("escape", hl.dsp.submap("reset"))
-  hl.bind("H", hl.dsp.window.resize({ x = -10, y = 0, relative = true }), { repeating = true })
-  hl.bind("L", hl.dsp.window.resize({ x = 10, y = 0, relative = true }), { repeating = true })
-  hl.bind("K", hl.dsp.window.resize({ x = 0, y = -10, relative = true }), { repeating = true })
-  hl.bind("J", hl.dsp.window.resize({ x = 0, y = 10, relative = true }), { repeating = true })
+o.bind("SUPER + R", "Reset floating window size and position", function()
+  local w = hl.get_active_window()
+  if not w or not w.floating then return end
+  hl.dispatch(hl.dsp.window.resize({ x = 1920, y = 1200 }))
+  hl.dispatch(hl.dsp.window.center())
 end)
 
 -- Mouse
