@@ -37,6 +37,7 @@ for _, k in ipairs({
   "SUPER + CTRL + S",             -- omarchy: Share menu (still in omarchy-menu) -> capture menu, next to SHIFT+S
   "SUPER + CTRL + C",             -- omarchy: capture menu -> moved to SUPER+CTRL+S
   "SUPER + CTRL + V", "SUPER + CTRL + E", -- omarchy: clipboard/emoji shell panels -> vicinae (omarchy ones on +SHIFT/+ALT)
+  "SUPER + SHIFT + LEFT", "SUPER + SHIFT + RIGHT", "SUPER + SHIFT + UP", "SUPER + SHIFT + DOWN", -- omarchy: swap tiled window -> floating-window nudge below
   "SUPER + CTRL + Q", "XF86Calculator", "SUPER + ALT + SPACE", -- omarchy: omacalc, apps menu -> vicinae root search does both
 }) do
   hl.unbind(k)
@@ -188,6 +189,18 @@ o.bind("SUPER + RIGHT", "Resize window right", hl.dsp.window.resize({ x = 50, y 
   { repeating = true })
 o.bind("SUPER + UP", "Resize window up", hl.dsp.window.resize({ x = 0, y = -50, relative = true }), { repeating = true })
 o.bind("SUPER + DOWN", "Resize window down", hl.dsp.window.resize({ x = 0, y = 50, relative = true }), { repeating = true })
+
+local function move_floating(x, y)
+  return function()
+    local w = hl.get_active_window()
+    if w and w.floating then hl.dispatch(hl.dsp.window.move({ x = x, y = y, relative = true })) end
+  end
+end
+o.bind("SUPER + SHIFT + LEFT", "Move floating window left", move_floating(-50, 0), { repeating = true })
+o.bind("SUPER + SHIFT + RIGHT", "Move floating window right", move_floating(50, 0), { repeating = true })
+o.bind("SUPER + SHIFT + UP", "Move floating window up", move_floating(0, -50), { repeating = true })
+o.bind("SUPER + SHIFT + DOWN", "Move floating window down", move_floating(0, 50), { repeating = true })
+
 o.bind("SUPER + R", "Reset floating window size and position", function()
   local w = hl.get_active_window()
   if not w or not w.floating then return end
