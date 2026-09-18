@@ -1,5 +1,5 @@
-// Meet's dedicated PWA profile: navigate the existing tab instead of opening
-// another window. Read at profile startup; close Meet fully after changing this.
+// FirefoxPWA profiles (Work, Personal): navigate the existing tab instead of opening
+// another window. Read at profile startup; close the app fully after changing this.
 user_pref('firefoxpwa.launchType', 2);
 
 // Allow hiding the PWA's Icon Bar through its toolbar menu (experimental).

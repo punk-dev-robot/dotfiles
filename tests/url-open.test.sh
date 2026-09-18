@@ -77,7 +77,7 @@ run() {
 pid=1f2a3b4c5d6e7f80912a3b4c5d6e7f80
 uuid=1f2a3b4c-5d6e-7f80-912a-3b4c5d6e7f80
 # The registered firefoxpwa site IDs the router is pinned to.
-lin=01M2TVXFD0W4WYQWGTQ7ANSYCC
+lin=01M2V2Q68ZJ85SFA5CY5V6Q5KW
 meet=01M2TW5QXGJWY46NTDR6Z21WJG
 
 echo "— argv mode: routing (page-ID allowlist)"

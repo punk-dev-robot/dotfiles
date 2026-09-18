@@ -15,3 +15,8 @@
   --arrowpanel-background:  {{ dark_background }} !important;
   --arrowpanel-color:       {{ foreground }} !important;
 }
+/* PWAsForFirefox hides favicon+title when browser.tabs.inTitlebar=0 (assumes a native titlebar shows them);
+ * we have no titlebar under Hyprland, so show them in the icon bar again. */
+html:not([tabsintitlebar]):not([customtitlebar]) .site-info > * {
+  display: flex !important;
+}

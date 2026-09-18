@@ -38,7 +38,7 @@ PAGE_ID_RE = re.compile(
 # firefoxpwa site IDs, read once off ~/.local/share/firefoxpwa/config.json and pinned
 # here — same as the hardcoded desktop-entry UUIDs elsewhere in these dotfiles. A new
 # install re-registers with fresh IDs; update these two lines then.
-PWA_LINEAR = "01M2TVXFD0W4WYQWGTQ7ANSYCC"
+PWA_LINEAR = "01M2V2Q68ZJ85SFA5CY5V6Q5KW"
 PWA_MEET = "01M2TW5QXGJWY46NTDR6Z21WJG"
 # Linear routing is intentionally partial: only these second path segments under a
 # workspace slug count as app content. Anything else on linear.app — marketing, docs,
