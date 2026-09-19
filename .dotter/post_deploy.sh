@@ -1,6 +1,63 @@
 #!/usr/bin/env bash
 echo "Post deploy script"
 
+# Merge the live pi-multi-account models.json (backed up by pre_deploy.sh, or
+# absent on a first deploy) with our tracked context-window overrides, and
+# write the result back as a regular, plugin-owned
+# ~/.config/pi/agent/models.json. Ordered oldest -> newest -> wins: backup
+# (pre-deploy snapshot), live target (may have been written concurrently
+# since pre_deploy ran), then our tracked overrides (always win conflicts).
+pi_models_target="$HOME/.config/pi/agent/models.json"
+pi_models_backup="${pi_models_target}.pre-deploy.bak"
+
+pi_models_fail() {
+  echo "post_deploy: $1" >&2
+  if [[ -f "$pi_models_backup" ]]; then
+    cp "$pi_models_backup" "$pi_models_target" \
+      || echo "post_deploy: also failed to restore backup to $pi_models_target" >&2
+  fi
+  exit 1
+}
+
+repo_root="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)" \
+  || pi_models_fail "failed to resolve repo root via git"
+pi_overrides="$repo_root/config/custom/pi/model-overrides.json"
+
+mkdir -p "$(dirname "$pi_models_target")" || pi_models_fail "cannot create $(dirname "$pi_models_target")"
+
+# Dangling symlink at target (crash/interrupted prior run): nothing live to
+# merge, and mv would otherwise be replacing a broken link's identity only.
+if [[ -L "$pi_models_target" && ! -e "$pi_models_target" ]]; then
+  rm -f "$pi_models_target"
+fi
+
+pi_models_sources=()
+if [[ -f "$pi_models_backup" ]]; then
+  jq empty "$pi_models_backup" 2>/dev/null || pi_models_fail "$pi_models_backup is not valid JSON"
+  pi_models_sources+=("$pi_models_backup")
+fi
+if [[ -e "$pi_models_target" ]]; then
+  jq empty "$pi_models_target" 2>/dev/null || pi_models_fail "$pi_models_target is not valid JSON"
+  pi_models_sources+=("$pi_models_target")
+fi
+jq empty "$pi_overrides" 2>/dev/null || pi_models_fail "$pi_overrides is not valid JSON"
+pi_models_sources+=("$pi_overrides")
+
+# mktemp in the same directory (atomic mv, same filesystem) and mode 600 by
+# default; jq streams straight into it, so the merged JSON never sits in a
+# shell variable and the final file keeps mktemp's 600 mode.
+pi_models_tmp="$(mktemp "${pi_models_target}.XXXXXX")" || pi_models_fail "mktemp failed"
+if ! jq -s 'reduce .[] as $item ({}; . * $item)' "${pi_models_sources[@]}" > "$pi_models_tmp"; then
+  rm -f "$pi_models_tmp"
+  pi_models_fail "jq merge failed"
+fi
+if ! mv -f "$pi_models_tmp" "$pi_models_target"; then
+  rm -f "$pi_models_tmp"
+  pi_models_fail "failed to install merged models.json"
+fi
+
+rm -f "$pi_models_backup"
+
 # pi's default config dir is ~/.pi, but this repo manages ~/.config/pi. 9 installed
 # extensions still hardcode ~/.pi (docs/troubleshooting/pi-xdg-dir.md). Keep ~/.pi
 # as a symlink to ~/.config/pi so pi
