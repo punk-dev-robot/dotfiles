@@ -1,8 +1,8 @@
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
-# KUB-18: shared MCP gateway. Dotter TEMPLATE: work route (newrelic) is
-# mac-only — an unset env var anywhere in this file is a hard parse
-# failure on the host that lacks the secret (KUB-78 D2). slack is now
-# cross-platform (Linux env carries SLACK_MCP_CLIENT_SECRET).
+# KUB-18: shared MCP gateway. Dotter TEMPLATE: an unset env var anywhere
+# in this file is a hard parse failure on the host that lacks the secret
+# (KUB-78 D2). slack is cross-platform (Linux env carries
+# SLACK_MCP_CLIENT_SECRET); newrelic is OAuth-only, so all hosts too.
 # Run (mac):   op run --account my.1password.com --env-file=config/shared/claude/secrets.env \
 #   -- agentgateway -f <this file>
 # Run (linux): systemd user unit config/omarchy/systemd/agentgateway.service
@@ -84,7 +84,8 @@ routes:
               stdio:
                 cmd: npx
                 args: ["-y", "mcp-remote@0.8.3", "https://logfire-eu.pydantic.dev/mcp"]
-{{#if is_macos}}
+  # newrelic: OAuth via mcp-remote, no secret → all hosts (read-only
+  # telemetry, no code on this host — owner OK'd Linux, 2026-09-23).
   - name: newrelic
     matches:
       - path:
@@ -96,7 +97,6 @@ routes:
               stdio:
                 cmd: npx
                 args: ["-y", "mcp-remote@0.8.3", "https://mcp.eu.newrelic.com/mcp/"]
-{{/if}}
   - name: notion
     matches:
       - path:
