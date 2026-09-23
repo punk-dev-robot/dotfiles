@@ -165,6 +165,7 @@ Per runbook: 1 / 3 / 5 / 8 (no fetch needed — not a live Linear value).
 ## MCP quirks (learned)
 
 - `linear_list_cycles` takes `teamId` (not `team`).
+- `linear_save_issue` create response carries the key (`AGIA-228`) in `id`, not `identifier`; `list_issues` rows do the same. Check `list_issues` by title before retrying a create whose response you failed to parse — the create usually landed.
 - `linear_save_project`: teams via `addTeams`/`setTeams`, lead via `lead`, initiatives via `addInitiatives`; no `teamIds`/`leadId`.
 - `linear_get_issue` does not echo cycle or blocking relations, and can return a **stale state** right after an update — verify state via `linear_list_issues` (`status` field), cycle/blocking in UI.
 - `linear_get_project` takes `query` (not `id`). `linear_save_project` patch ops use `text` (not `content`); to append to Decisions-so-far chronologically use `insert_before` anchor `## Not yet specified`.
