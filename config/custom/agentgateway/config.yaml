@@ -58,6 +58,19 @@ routes:
               policies:
                 backendAuth:
                   key: "$LINEAR_API_KEY"
+  # logfire-swap: same server, Swap org grant. Logfire OAuth tokens are
+  # org-scoped, so a separate mcp-remote cache dir holds the second grant.
+  - name: logfire-swap
+    matches:
+      - path:
+          pathPrefix: /logfire-swap
+    backends:
+      - mcp:
+          targets:
+            - name: logfire-swap
+              stdio:
+                cmd: env
+                args: ["MCP_REMOTE_CONFIG_DIR={{home_dir}}/.mcp-auth-swap", "npx", "-y", "mcp-remote@0.8.3", "https://logfire-eu.pydantic.dev/mcp"]
   # logfire: OAuth via mcp-remote, no secret → all hosts (KUB-149 P2). Same
   # logfire-eu tenant that pi-otel exports to.
   - name: logfire

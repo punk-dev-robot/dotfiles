@@ -19,6 +19,10 @@
       "url": "http://localhost:3000/logfire",
       "lifecycle": "lazy"
     },
+    "logfire-swap": {
+      "url": "http://localhost:3000/logfire-swap",
+      "lifecycle": "lazy"
+    },
     "notion": {
       "url": "http://localhost:3000/notion",
       "lifecycle": "lazy"
