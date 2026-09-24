@@ -1,10 +1,12 @@
 [tools]
-"npm:pyright" = "latest"  # pyright-langserver for pi-lsp
-"npm:typescript" = "5"  # tsserver.js for typescript-language-server; TS 7 (native) ships none
-"npm:typescript-language-server" = "latest"  # pi-lsp
-node = "26"  # major pin: `mise up` follows patch/minor; same major as omarchy
-terraform = "1.12.2"
+"npm:pyright" = "latest"                    # pyright-langserver for pi-lsp
+"npm:typescript" = "5"                      # tsserver.js for typescript-language-server; TS 7 (native) ships none
+"npm:typescript-language-server" = "latest" # pi-lsp
+node = "26"                                 # major pin: `mise up` follows patch/minor; same major as omarchy
+terraform = "1.14"
 pi = "latest"
 
 [settings]
-idiomatic_version_file_enable_tools = ["node"]  # honour .nvmrc / .node-version (off by default since mise 2025.10)
+idiomatic_version_file_enable_tools = [
+  "node",
+] # honour .nvmrc / .node-version (off by default since mise 2025.10)
