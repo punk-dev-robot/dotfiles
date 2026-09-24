@@ -1,5 +1,5 @@
 {
-  "executor": "openai-codex-account-2/gpt-5.6-sol",
+  "executor": "anthropic/claude-opus-5-5",
   "executorEffort": "medium",
   "advisor": "anthropic/claude-fable-5",
   "advisorEffort": "xhigh",
