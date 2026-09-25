@@ -1,0 +1,4 @@
+#!/bin/sh
+# Serve the ~/dev/swapc repowise workspace. Run from a dir without .repowise/:
+# serve auto-picks cwd/.repowise/wiki.db (empty at the root) and 404s every repo.
+cd "$HOME/dev/swapc/.repowise-workspace" && exec repowise serve "$@"
