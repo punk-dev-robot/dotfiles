@@ -80,7 +80,7 @@ mac lid closed, on AC, on WiFi. Requires (owner tickets):
 
 | symptom | fix |
 |---|---|
-| sidebar **Attention** | first try `herdr machine disable <id> && herdr machine enable <id>` (id from `herdr machine list`) — clears stale Attention after a mac reboot or a transient auth failure, no prompts. If it comes back: a real interactive step (host key, auth, incompatible server) — run `herdr --remote mac` in a terminal, answer prompts, restart the Linux client. |
+| sidebar **Attention** | Cause is in `~/.config/herdr/herdr-client.log` (`endpoint needs attention … error=…`). Most common: Linux 1P agent was locked when the client (re)started or reconnected (`Permission denied (publickey…)`, `ssh-add -l` → no identities) — unlock, then **restart the Linux client** (`ctrl+b q`, `herdr`; local panes survive). Toggle doesn't help there: the client latched Attention and never retries. Otherwise first try `herdr machine disable <id> && herdr machine enable <id>` (id from `herdr machine list`) — clears stale Attention after a mac reboot, no prompts. If it comes back: a real interactive step (host key, auth, incompatible server) — run `herdr --remote mac` in a terminal, answer prompts, restart the Linux client. |
 | sidebar dimmed / Reconnecting | normal after sleep/network blip; bounded backoff. Check `ssh mac uptime`, then `hm status server`. |
 | `ssh mac` connection refused / timeout | mac asleep or off Wi-Fi; `ping 10.10.40.90`. If the lease changed, check OPNsense static mapping for `5c:9b:a6:86:f6:62`. |
 | auth fails from Linux | 1P agent locked on Linux — unlock, `ssh-add -l`. Background bridge cannot answer prompts. |
