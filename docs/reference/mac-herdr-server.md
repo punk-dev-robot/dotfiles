@@ -35,6 +35,15 @@ zsh: hm <herdr args> ───────────────────�
   keys, so no agent identity may be listed for those hosts. `op`: `OP_SERVICE_ACCOUNT_TOKEN`
   in `.zshenv.priv`; the agentgateway plist runs `zsh -lc 'exec op run …'` to pick it up.
 
+- **Prompts on the invisible screen.** 1Password (unlock, `op` CLI authorization — still asked
+  per process tree even with 1P auto-lock off), keychain (`SecurityAgent`) and TCC dialogs block
+  the caller silently. `mac-prompt-check` (`local/bin`, compiles a Swift `CGWindowList` dump on
+  first run) lists pending prompt windows — works over plain ssh with the screen locked, no
+  permissions. Linux `mac-prompt-watch.timer` polls it every 30 s → sticky `notify-send`.
+  `com.user.mac-warmup` (launchd, login) runs `mac-warmup` so first-use prompts land while you
+  are at the screen; run it by hand after `brew upgrade` (log: `~/Library/Logs/mac-warmup.log`).
+  **Brew upgrades on the mac only at the desk** — new binary paths/hashes re-trigger TCC prompts.
+
 ## Server lifecycle (verified KUB-135)
 
 No launchd unit. Herdr handles it:
@@ -84,6 +93,7 @@ mac lid closed, on AC, on WiFi. Requires (owner tickets):
 | sidebar dimmed / Reconnecting | normal after sleep/network blip; bounded backoff. Check `ssh mac uptime`, then `hm status server`. |
 | `ssh mac` connection refused / timeout | mac asleep or off Wi-Fi; `ping 10.10.40.90`. If the lease changed, check OPNsense static mapping for `5c:9b:a6:86:f6:62`. |
 | auth fails from Linux | 1P agent locked on Linux — unlock, `ssh-add -l`. Background bridge cannot answer prompts. |
+| `mac: prompt waiting on screen` notification | something on the mac waits for a click: Screen Sharing (`ssh -L 5900:localhost:5900 mac`) or walk over. Owner name in the notification (`1Password`, `SecurityAgent`, `UserNotificationCenter`…); text is not readable headless. |
 | mac-side git/`op` hangs | something reached the 1P desktop agent (prompt on the invisible screen). Git hosts must resolve to a file key (`ssh -G git@github.com`); `op` needs `OP_SERVICE_ACCOUNT_TOKEN` (login zsh). Wrap probes in `perl -e 'alarm 10; exec @ARGV' --`. |
 | version skew after `brew upgrade herdr` | client/server negotiate; don't stop a running server just because versions differ. Update the server explicitly when you need new server features. |
 

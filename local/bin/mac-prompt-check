@@ -1,0 +1,28 @@
+#!/bin/sh
+# Print OS/1Password prompt windows waiting on the (headless) mac screen; empty = none.
+# Works over plain ssh with the screen locked (CGWindowList needs no permissions).
+# Polled from Linux by mac-prompt-watch.
+[ "$(uname)" = Darwin ] || { echo "mac only" >&2; exit 1; }
+bin="${XDG_CACHE_HOME:-$HOME/.cache}/mac-prompt-check"
+if [ ! -x "$bin" ] || [ "$0" -nt "$bin" ]; then
+  mkdir -p "$(dirname "$bin")"
+  sed -n '/^\/\/ SWIFT$/,$p' "$0" > "$bin.swift"
+  swiftc -O "$bin.swift" -o "$bin" >&2 || exit 2
+fi
+exec "$bin"
+
+// SWIFT
+import CoreGraphics
+// Owners that host blocking prompts: 1P unlock / CLI authorization, keychain, TCC, Touch ID.
+let hosts: Set = ["1Password", "SecurityAgent", "CoreServicesUIAgent", "UserNotificationCenter",
+                  "universalAccessAuthWarn", "coreautha"]
+let wins = CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: Any]] ?? []
+for w in wins {
+  let owner = w[kCGWindowOwnerName as String] as? String ?? ""
+  let layer = w[kCGWindowLayer as String] as? Int ?? 0
+  let b = w[kCGWindowBounds as String] as? [String: CGFloat] ?? [:]
+  let (wd, ht) = (Int(b["Width"] ?? 0), Int(b["Height"] ?? 0))
+  guard hosts.contains(owner), wd >= 50, ht >= 50 else { continue }
+  if owner == "1Password" && layer < 100 { continue } // main window / menubar, not a prompt
+  print("\(owner) \(wd)x\(ht)")
+}

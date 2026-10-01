@@ -1,0 +1,10 @@
+[Unit]
+Description=Poll the headless mac for pending prompts every 30s
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=30s
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target

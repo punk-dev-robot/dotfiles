@@ -1,0 +1,16 @@
+#!/bin/sh
+# Surface mac auth prompts while someone is at the screen: login (com.user.mac-warmup) and
+# by hand after `brew upgrade`. Each step gets 60s to be answered; log says what passed.
+[ "$(uname)" = Darwin ] || { echo "mac only" >&2; exit 1; }
+PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
+t() { perl -e 'alarm shift; exec @ARGV' 60 "$@"; }
+step() { if t "$@" >/dev/null 2>&1; then echo "ok   $*"; else echo "FAIL $*"; fi; }
+
+echo "== mac-warmup $(date '+%F %T')"
+step op vault list --account my.1password.com # 1P unlock, CLI auth, TCC app-data for op
+step gh auth status                           # keychain item for gh
+repo=$(find "$HOME/dev/swapc" -mindepth 2 -maxdepth 2 -name .git -type d 2>/dev/null | head -1)
+[ -n "$repo" ] && step git -C "${repo%/.git}" ls-remote origin HEAD # git transport (file key, KUB-140)
+left=$(mac-prompt-check)
+[ -n "$left" ] && echo "still waiting: $left"
+exit 0

@@ -1,0 +1,6 @@
+[Unit]
+Description=Check the headless mac for pending 1Password/OS prompts
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/mac-prompt-watch

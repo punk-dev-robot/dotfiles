@@ -59,6 +59,7 @@ depends = ["base"]
 # KUB-144: borders/colima launchd agents parked in config/.disabled/launchagents (mac = headless herdr server; `mac-desktop` / `colima start` on demand).
 "config/custom/launchagents/com.user.agentgateway.plist" = { target = "~/Library/LaunchAgents/com.user.agentgateway.plist", type = "template" }
 "config/custom/agentgateway/config.yaml" = { target = "~/.config/agentgateway/config.yaml", type = "template" }
+"config/custom/launchagents/com.user.mac-warmup.plist" = { target = "~/Library/LaunchAgents/com.user.mac-warmup.plist", type = "template" }
 
 # ─── Omarchy = base + reviewed desktop overrides (per-file, listed under [omarchy.files]). ───
 [omarchy]
@@ -78,6 +79,8 @@ depends = ["base"]
 "config/omarchy/systemd/git-maintenance-sync.timer" = "~/.config/systemd/user/git-maintenance-sync.timer"
 "config/omarchy/systemd/screenshot-cleanup.service" = "~/.config/systemd/user/screenshot-cleanup.service"
 "config/omarchy/systemd/screenshot-cleanup.timer" = "~/.config/systemd/user/screenshot-cleanup.timer"
+"config/omarchy/systemd/mac-prompt-watch.service" = "~/.config/systemd/user/mac-prompt-watch.service"
+"config/omarchy/systemd/mac-prompt-watch.timer" = "~/.config/systemd/user/mac-prompt-watch.timer"
 # KUB-102: Hyprland override points. omarchy-refresh-hyprland targets → dotter owns them; omarchy's originals
 # are kept as ~/.config/hypr/*.omarchy-bak. hyprland.lua + .luarc.json are verbatim omarchy copies.
 "config/omarchy/hypr" = "~/.config/hypr"

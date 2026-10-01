@@ -1,0 +1,11 @@
+#!/bin/sh
+# Linux side of mac-prompt-check: notify when a prompt appears on the headless mac.
+# Run by mac-prompt-watch.timer. Notifies on change only; critical = sticky until dismissed.
+state="${XDG_RUNTIME_DIR:-/tmp}/mac-prompt-watch.last"
+out=$(ssh -o BatchMode=yes -o ConnectTimeout=5 \
+  -o ControlMaster=auto -o ControlPath="${XDG_RUNTIME_DIR:-/tmp}/mac-prompt-%C" -o ControlPersist=10m \
+  mac '~/.local/bin/mac-prompt-check' 2>/dev/null) || exit 0 # mac unreachable: herdr shows that
+[ "$out" = "$(cat "$state" 2>/dev/null)" ] && exit 0
+printf '%s' "$out" > "$state"
+[ -n "$out" ] && notify-send -u critical -a mac "mac: prompt waiting on screen" "$out"
+exit 0

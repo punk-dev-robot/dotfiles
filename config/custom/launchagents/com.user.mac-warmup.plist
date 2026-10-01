@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.user.mac-warmup</string>
+	<!-- login = owner is at the screen; give 1Password time to start before prompting -->
+	<key>ProgramArguments</key>
+	<array>
+		<string>/bin/sh</string>
+		<string>-c</string>
+		<string>sleep 30; exec {{home_dir}}/.local/bin/mac-warmup</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardOutPath</key>
+	<string>{{home_dir}}/Library/Logs/mac-warmup.log</string>
+	<key>StandardErrorPath</key>
+	<string>{{home_dir}}/Library/Logs/mac-warmup.log</string>
+</dict>
+</plist>
