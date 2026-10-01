@@ -10,6 +10,21 @@ opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
 opt.relativenumber = false
 
+-- Inside herdr, yank via OSC52 so it reaches the *attached client's* clipboard
+-- (mac server panes viewed from Linux would otherwise pbcopy into the mac).
+-- Paste from nvim's own register: OSC52 read through herdr can stall nvim.
+if vim.env.HERDR_ENV then
+  local osc52 = require("vim.ui.clipboard.osc52")
+  local function paste()
+    return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
+  end
+  vim.g.clipboard = {
+    name = "osc52-herdr",
+    copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+    paste = { ["+"] = paste, ["*"] = paste },
+  }
+end
+
 -- vim.lsp.set_log_level("debug")
 -- LazyVim root dir detection
 -- Patterns are checked closest-first (upward from buffer).
