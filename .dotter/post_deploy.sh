@@ -87,13 +87,6 @@ if [[ "$(uname)" == "Linux" ]]; then
   fi
 fi
 
-# herdr plugins: declared in config/shared/herdr/plugins.txt, installed by
-# local/bin/herdr-sync-plugins (both dotter-deployed). Skipped when the herdr
-# server is not running/reachable (plugin CLI needs it).
-if command -v herdr >/dev/null 2>&1 && [ -x "$HOME/.local/bin/herdr-sync-plugins" ]; then
-    "$HOME/.local/bin/herdr-sync-plugins" || echo "  warning: herdr plugin sync had failures" >&2
-fi
-
 # shell.{json,toml} are copies; omarchy-shell only re-reads them on request — otherwise its stale
 # in-memory config gets persisted over the file on the next bar edit.
 if command -v omarchy-shell >/dev/null 2>&1; then
