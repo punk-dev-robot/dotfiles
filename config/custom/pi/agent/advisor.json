@@ -1,7 +1,7 @@
 {
-  "executor": "anthropic/claude-opus-5-5",
+  "executor": "openai-codex/gpt-6.1-sol",
   "executorEffort": "medium",
-  "advisor": "anthropic/claude-fable-5",
+  "advisor": "anthropic/claude-fable-5-1",
   "advisorEffort": "xhigh",
   "contextMaxChars": 25000,
   "advisorPlanGate": true,

@@ -1,11 +1,11 @@
 {
   "concurrency": 8,
   "modelAliases": {
-    "workhorse": "anthropic/claude-sonnet-5:medium",
-    "strong": "anthropic/claude-opus-5:medium",
-    "sota": "anthropic/claude-fable-5:high",
+    "workhorse": "anthropic/claude-sonnet-5-5:medium",
+    "strong": "anthropic/claude-opus-5-5:high",
+    "sota": "anthropic/claude-fable-5-1:high",
     "sota-openai": "openai-codex/gpt-6-astra:high",
-    "review-openai": "openai-codex/gpt-5.6-sol:high",
+    "review-openai": "openai-codex/gpt-6.1-sol:high",
     "cheap-model": "workhorse"
   },
   "skills": [

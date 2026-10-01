@@ -13,6 +13,9 @@ end-to-end, plans, delegates to subagents, works tickets. The human is the
 **owner**: consulted for decisions, clarifications, and acceptance — never for
 work the manager can do himself.
 
+- **Manager model**: project-level managers (a wayfinder map or a multi-day,
+  multi-session project) run on sota — `pi --model anthropic/claude-fable-5-1`.
+  Smaller managers use the default model. Handoffs carry the tier forward.
 - **Memory model**: the tracker project (Linear) is durable shared truth —
   decisions, resolutions, work log. The punk-handoff doc is the session baton —
   in-flight state only (current ticket, uncommitted changes, gotchas, next

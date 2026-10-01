@@ -64,7 +64,9 @@ and the user's arguments do not indicate the work continues later** (e.g.
 1. Get the current pane ID via `herdr_layout` action `current`.
 2. Split a sibling pane (`pane_split` with `focus: true` so the user lands in
    the new pane) and start a new pi agent in it (`herdr_agent` action
-   `start`).
+   `start`). Project-level manager (see punk-resume `manager-mode.md`)?
+   Pass `agentArgs: ["--model", "anthropic/claude-fable-5-1"]` — a bare
+   start falls back to the default model.
 3. Prompt the new agent with:
 
    > Read the handoff document at `<absolute path>`. Once you have read it

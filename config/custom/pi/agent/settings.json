@@ -58,7 +58,7 @@
       "maxRetries": 0
     }
   },
-  "lastChangelogVersion": "0.87.1",
+  "lastChangelogVersion": "0.99.2",
   "showCacheMissNotices": false,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-5-5",
@@ -81,7 +81,7 @@
     "agentMaxTurns": 16,
     "model": {
       "provider": "anthropic",
-      "id": "claude-sonnet-5",
+      "id": "claude-sonnet-5-5",
       "thinking": "low"
     },
     "showWorkerNotifications": false,

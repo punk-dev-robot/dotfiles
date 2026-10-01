@@ -26,9 +26,9 @@ changes are live in new sessions, no `dotter deploy` needed.
 - `model:` — one string: an alias (optionally `alias:thinking`) or literal
   `provider/model:thinking`; a separate `thinking:` key is rejected. Roles use
   the static alias registry in workflow `settings.json` `modelAliases`:
-  `workhorse` (sonnet-5:medium — impl/tests/comms; recon uses `workhorse:low`),
-  `strong` (opus-5:medium — dev/researcher), `sota` (fable-5:high — reviewer),
-  `sota-openai` (gpt-6-astra:high), `review-openai` (gpt-5.6-sol:high, PR-review
+  `workhorse` (sonnet-5-5:medium — impl/tests/comms; recon uses `workhorse:low`),
+  `strong` (opus-5-5:high — dev/researcher), `sota` (fable-5-1:high — reviewer),
+  `sota-openai` (gpt-6-astra:high), `review-openai` (gpt-6.1-sol:high, PR-review
   OpenAI branch), `cheap-model` (chains to `workhorse`, back-compat). Naming:
   `-openai` suffix for OpenAI-pinned aliases, no model codenames in alias names.
   Model upgrades = edit the alias target, not the role files. A suffix on an
