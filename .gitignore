@@ -121,3 +121,4 @@ plans/
 # repowise-generated Claude Code artifacts (absolute paths)
 /.claude/CLAUDE.md
 /.mcp.json
+.envrc

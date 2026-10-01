@@ -1,13 +1,17 @@
 #!/bin/sh
 # op shim. Headless mac (ssh / herdr pane): a prompt on the invisible screen (TCC app-data,
-# 1P authorization) would block forever, so non-`run` commands get 60s, then fail loud.
-# `op run` is exempt: the alarm would kill the wrapped long-running child.
+# 1P authorization) would block forever, so non-`run` calls get OP_TIMEOUT (60s), then fail loud.
+# `op run` is exempt: the timeout would kill the wrapped long-running child.
 [ "$(uname)" = Darwin ] || exec /usr/bin/op "$@"
 real=/opt/homebrew/bin/op
-if [ "$1" != run ] && { [ -n "$SSH_CONNECTION" ] || [ -n "$HERDR_PANE_ID" ]; }; then
-  perl -e 'alarm shift; exec @ARGV' "${OP_TIMEOUT:-60}" "$real" "$@"
-  rc=$?
-  [ $rc -eq 142 ] && echo "op: no answer in ${OP_TIMEOUT:-60}s - prompt waiting on the mac screen? (mac-prompt-check)" >&2
-  exit $rc
-fi
-exec "$real" "$@"
+for a; do [ "$a" = -- ] && break; [ "$a" = run ] && exec "$real" "$@"; done
+{ [ -n "$SSH_CONNECTION" ] || [ -n "$HERDR_PANE_ID" ]; } || exec "$real" "$@"
+# op is Go: it ignores SIGALRM, so fork and TERM (then KILL) it from a parent.
+exec perl -e '
+  my $t = shift; my $pid = fork // die "fork: $!";
+  exec(@ARGV) or exit 127 unless $pid;
+  $SIG{ALRM} = sub { kill TERM => $pid; sleep 2; kill KILL => $pid;
+    print STDERR "op: no answer in ${t}s - prompt waiting on the mac screen? (mac-prompt-check)\n"; exit 124 };
+  alarm $t; waitpid $pid, 0;
+  exit($? & 127 ? 128 + ($? & 127) : $? >> 8);
+' "${OP_TIMEOUT:-60}" "$real" "$@"
