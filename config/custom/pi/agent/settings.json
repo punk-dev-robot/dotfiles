@@ -46,6 +46,7 @@
     "npm:pi-multi-account",
     "npm:@gotgenes/pi-anthropic-auth"
   ],
+  "extensions": ["-builtin:mcp"],
   "npmCommand": [
     "mise",
     "exec",

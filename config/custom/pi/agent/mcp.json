@@ -7,7 +7,7 @@
   "mcpServers": {
     "incidentio": {
       "url": "https://mcp.incident.io/mcp",
-      "lifestyle": "lazy"
+      "lifecycle": "lazy"
     },
     "github": {
       "url": "https://api.githubcopilot.com/mcp/",
