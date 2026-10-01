@@ -7,10 +7,10 @@
 	<key>ProgramArguments</key>
 	<array>
 		<!-- homelab service account scoped to this process only: never prompts on the headless screen.
-		     Missing token file = exit, never fall back to the desktop app (it would prompt every restart). -->
+		     Missing/empty token file = exit, never fall back to the desktop app (it would prompt every restart). -->
 		<string>/bin/sh</string>
 		<string>-c</string>
-		<string>t=$(cat "$HOME/.config/op/homelab-sa.token") || exit 1; export OP_SERVICE_ACCOUNT_TOKEN="$t"; exec /opt/homebrew/bin/op run --env-file="$HOME/.claude/secrets.env" -- "$@"</string>
+		<string>t=$(cat "$HOME/.config/op/homelab-sa.token") &amp;&amp; [ -n "$t" ] || exit 1; export OP_SERVICE_ACCOUNT_TOKEN="$t"; exec /opt/homebrew/bin/op run --env-file="$HOME/.claude/secrets.env" -- "$@"</string>
 		<string>agentgateway</string>
 		<string>{{home_dir}}/.local/bin/agentgateway</string>
 		<string>-f</string>
