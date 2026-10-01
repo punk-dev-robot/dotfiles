@@ -1,0 +1,19 @@
+#!/bin/sh
+# BROWSER handler: open loopback URLs (Plannotator reviews, local servers) in a
+# terminal-browser split when inside Herdr; everything else in the default
+# browser. Retire once Plannotator PR #1147 (external presenter) ships.
+LOG=/tmp/plannotator-terminal-browser.log
+echo "$(date '+%H:%M:%S') url=$1 HERDR_ENV=$HERDR_ENV HERDR_PANE_ID=$HERDR_PANE_ID" >> "$LOG"
+TB="$(command -v terminal-browser || echo "$HOME/.local/bin/terminal-browser")"
+case "$1" in
+  http://127.0.0.1:*|http://localhost:*|http://\[::1\]:*|https://127.0.0.1:*|https://localhost:*)
+    if [ "$HERDR_ENV" = "1" ] && [ -x "$TB" ]; then
+      if "$TB" open "$1" --split right >> "$LOG" 2>&1; then
+        echo "ok terminal-browser" >> "$LOG"
+        exit 0
+      fi
+      echo "terminal-browser failed, falling back to open" >> "$LOG"
+    fi
+    ;;
+esac
+exec open "$1"
