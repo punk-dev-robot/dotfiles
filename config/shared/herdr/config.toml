@@ -22,7 +22,7 @@ help = "prefix+?"
 settings = "prefix+s"
 detach = "prefix+d"
 reload_config = "prefix+shift+r"
-open_notification_target = "prefix+shift+o"
+open_notification_target = "prefix+shift+n"
 copy_mode = "prefix+enter"
 resize_mode = "prefix+alt+r"
 
@@ -137,7 +137,7 @@ command = "chmarax.herdr-nvim.toggle"
 description = "nvim sidebar"
 
 [[keys.command]]
-key = "prefix+o"
+key = "prefix+shift+e"
 type = "plugin_action"
 command = "chmarax.herdr-nvim.pick-file"
 description = "open file from agent output"
@@ -220,6 +220,7 @@ command = "flock.farm.open"
 description = "Open Flock Farm"
 
 # plannotator-tui (Terminal annotations)
+# Terminal annotations
 [[keys.command]]
 key = "prefix+a"
 type = "plugin_action"
@@ -233,22 +234,47 @@ command = "annotate.copy-context"
 description = "copy annotations as context"
 
 [[keys.command]]
+key = "prefix+ctrl+a"
+type = "plugin_action"
+command = "annotate.copy-archive"
+description = "copy annotations as context and archive them"
+
+[[keys.command]]
+key = "prefix+ctrl+v"
+type = "plugin_action"
+command = "annotate.paste-archive"
+description = "paste annotations into the agent's prompt and archive them"
+
+[[keys.command]]
+key = "prefix+ctrl+s"
+type = "plugin_action"
+command = "annotate.send-archive"
+description = "send annotations to the agent and archive them"
+
+[[keys.command]]
 key = "prefix+m"
 type = "plugin_action"
 command = "annotate.manage"
 description = "manage annotations"
 
+# Document review (plannotator-tui)
 [[keys.command]]
-key = "prefix+alt+o"
+key = "prefix+o"
 type = "plugin_action"
 command = "annotate.open"
 description = "review documents in this folder"
 
 [[keys.command]]
-key = "prefix+alt+shift+o"
+key = "prefix+shift+o"
 type = "plugin_action"
 command = "annotate.last"
 description = "review the agent's last reply"
+
+[[keys.command]]
+key = "prefix+ctrl+o"
+type = "plugin_action"
+command = "annotate.last-newest"
+description = "review the agent's newest reply"
 
 # herdr-floax:keybind (float term)
 [[keys.command]]

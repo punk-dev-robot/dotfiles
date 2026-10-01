@@ -35,7 +35,6 @@ setopt incappendhistory
 setopt extended_history
 setopt hist_ignore_space
 setopt hist_reduce_blanks
-setopt hist_verify
 
 # Auto-sync history between concurrent sessions.
 setopt share_history

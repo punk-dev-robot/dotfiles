@@ -58,7 +58,7 @@
       "maxRetries": 0
     }
   },
-  "lastChangelogVersion": "0.99.2",
+  "lastChangelogVersion": "1.0.0",
   "showCacheMissNotices": false,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-5-5",

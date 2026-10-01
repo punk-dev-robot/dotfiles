@@ -1,0 +1,1719 @@
+[
+  {
+    "plugin_id": "annotate",
+    "name": "Annotate",
+    "version": "0.8.0",
+    "min_herdr_version": "0.8.0",
+    "description": "Comment on terminal selections and copy annotations as agent context.",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/annotate-9c299759567c/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/annotate-9c299759567c",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "macos",
+          "linux"
+        ],
+        "command": [
+          "bash",
+          "scripts/fetch-herdr-annotate.sh"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell.exe",
+          "-NoProfile",
+          "-NonInteractive",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/fetch-herdr-annotate.ps1"
+        ]
+      },
+      {
+        "platforms": [
+          "macos",
+          "linux"
+        ],
+        "command": [
+          "bash",
+          "scripts/fetch-plannotator-tui.sh"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "capture",
+        "title": "Annotate selection",
+        "description": "Open a comment dialog for the current terminal selection.",
+        "contexts": [
+          "pane"
+        ],
+        "command": [
+          "./bin/herdr-annotate.exe",
+          "capture"
+        ]
+      },
+      {
+        "id": "copy-archive",
+        "title": "Copy annotations as context and archive them",
+        "description": "Copy all saved annotations to the clipboard as Markdown, then archive them.",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "./bin/herdr-annotate.exe",
+          "copy-archive"
+        ]
+      },
+      {
+        "id": "copy-context",
+        "title": "Copy annotations as context",
+        "description": "Copy all saved annotations to the clipboard as Markdown.",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "./bin/herdr-annotate.exe",
+          "copy-context"
+        ]
+      },
+      {
+        "id": "last",
+        "title": "Annotate: agent's last message",
+        "description": "Review the focused agent's most recent message in plannotator-tui and send feedback back.",
+        "contexts": [
+          "pane"
+        ],
+        "platforms": [
+          "macos",
+          "linux"
+        ],
+        "command": [
+          "./bin/plannotator-tui.exe",
+          "herdr",
+          "last"
+        ]
+      },
+      {
+        "id": "last-newest",
+        "title": "Annotate: agent's newest message",
+        "description": "Review the focused agent's newest message in plannotator-tui, without choosing from a picker first.",
+        "contexts": [
+          "pane"
+        ],
+        "platforms": [
+          "macos",
+          "linux"
+        ],
+        "command": [
+          "./bin/plannotator-tui.exe",
+          "herdr",
+          "last",
+          "--newest"
+        ]
+      },
+      {
+        "id": "manage",
+        "title": "Manage annotations",
+        "description": "Browse, copy, archive, restore, and delete annotations.",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "./bin/herdr-annotate.exe",
+          "manage"
+        ]
+      },
+      {
+        "id": "open",
+        "title": "Annotate: open here",
+        "description": "Review the focused pane's folder in plannotator-tui and send feedback to its agent.",
+        "contexts": [
+          "workspace",
+          "pane"
+        ],
+        "platforms": [
+          "macos",
+          "linux"
+        ],
+        "command": [
+          "./bin/plannotator-tui.exe",
+          "herdr",
+          "open"
+        ]
+      },
+      {
+        "id": "open-link",
+        "title": "Annotate this file",
+        "description": "Open a Ctrl-clicked Markdown file in plannotator-tui.",
+        "contexts": [
+          "pane"
+        ],
+        "platforms": [
+          "macos",
+          "linux"
+        ],
+        "command": [
+          "./bin/plannotator-tui.exe",
+          "herdr",
+          "open"
+        ]
+      },
+      {
+        "id": "paste-archive",
+        "title": "Paste annotations into the agent's prompt and archive them",
+        "description": "Paste all saved annotations into the focused agent's prompt without sending, then archive them.",
+        "contexts": [
+          "pane"
+        ],
+        "command": [
+          "./bin/herdr-annotate.exe",
+          "paste-archive"
+        ]
+      },
+      {
+        "id": "send-archive",
+        "title": "Send annotations to the agent and archive them",
+        "description": "Send all saved annotations as the focused agent's next message, then archive them.",
+        "contexts": [
+          "pane"
+        ],
+        "command": [
+          "./bin/herdr-annotate.exe",
+          "send-archive"
+        ]
+      },
+      {
+        "id": "terminal",
+        "title": "Annotate: terminal output",
+        "description": "Review the focused pane's recent terminal output in plannotator-tui and send feedback back.",
+        "contexts": [
+          "pane"
+        ],
+        "platforms": [
+          "macos",
+          "linux"
+        ],
+        "command": [
+          "./bin/plannotator-tui.exe",
+          "herdr",
+          "terminal"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "doc",
+        "title": "Annotate",
+        "platforms": [
+          "macos",
+          "linux"
+        ],
+        "placement": "overlay",
+        "command": [
+          "sh",
+          "-c",
+          "exec bash \"$HERDR_PLUGIN_ROOT/scripts/plannotator-tui.sh\" herdr pane"
+        ]
+      },
+      {
+        "id": "editor",
+        "title": "Annotate",
+        "placement": "popup",
+        "width": 88,
+        "height": 24,
+        "command": [
+          "./bin/herdr-annotate.exe",
+          "editor"
+        ]
+      },
+      {
+        "id": "manager",
+        "title": "Annotations",
+        "placement": "popup",
+        "width": 100,
+        "height": 30,
+        "command": [
+          "./bin/herdr-annotate.exe",
+          "manager"
+        ]
+      }
+    ],
+    "link_handlers": [
+      {
+        "id": "markdown-file",
+        "title": "Annotate this file",
+        "pattern": "^file://.*\\.(md|markdown|mdx)$",
+        "action": "open-link",
+        "platforms": [
+          "macos",
+          "linux"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "plannotator",
+      "repo": "herdr-annotate",
+      "resolved_commit": "cbba4732229191347ff5128e3da71f64474a6a49",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/annotate-9c299759567c",
+      "installed_unix_ms": 1790879894976
+    }
+  },
+  {
+    "plugin_id": "chmarax.herdr-nvim",
+    "name": "herdr-nvim",
+    "version": "1.1.0",
+    "min_herdr_version": "0.7.5",
+    "description": "Full-height nvim sidebar with agent annotations: toggle with one key, comment code, send to any agent.",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/chmarax.herdr-nvim-178624809c23/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/chmarax.herdr-nvim-178624809c23",
+    "enabled": true,
+    "platforms": [
+      "macos",
+      "linux",
+      "windows"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "macos",
+          "linux"
+        ],
+        "command": [
+          "bash",
+          "herdr/install.sh"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell.exe",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "herdr/install.ps1"
+        ]
+      }
+    ],
+    "startup": [
+      {
+        "command": [
+          "bin/herdr-nvim",
+          "daemon-gc"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open-link",
+        "title": "nvim sidebar: open clicked file",
+        "command": [
+          "bin/herdr-nvim",
+          "open-link"
+        ]
+      },
+      {
+        "id": "pick-file",
+        "title": "nvim sidebar: open file from agent output",
+        "contexts": [
+          "pane"
+        ],
+        "command": [
+          "bin/herdr-nvim",
+          "pick-file"
+        ]
+      },
+      {
+        "id": "toggle",
+        "title": "nvim sidebar: toggle",
+        "contexts": [
+          "pane",
+          "workspace"
+        ],
+        "command": [
+          "bin/herdr-nvim",
+          "toggle"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "tab.closed",
+        "command": [
+          "bin/herdr-nvim",
+          "on-event"
+        ]
+      },
+      {
+        "on": "workspace.closed",
+        "command": [
+          "bin/herdr-nvim",
+          "on-event"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "picker",
+        "title": "open file",
+        "placement": "popup",
+        "command": [
+          "bin/herdr-nvim",
+          "picker"
+        ]
+      },
+      {
+        "id": "sidebar",
+        "title": "nvim sidebar",
+        "placement": "split",
+        "command": [
+          "bin/herdr-nvim",
+          "sidebar"
+        ]
+      }
+    ],
+    "link_handlers": [
+      {
+        "id": "file-path",
+        "title": "Open in nvim sidebar",
+        "pattern": "^~?[\\w.@/()\\[\\]\\\\:+-]+[\\\\/][\\w.@()\\[\\]\\\\:+-]+\\.[A-Za-z]\\w*(?::\\d+){0,2}$",
+        "action": "open-link"
+      },
+      {
+        "id": "file-url",
+        "title": "Open in nvim sidebar",
+        "pattern": "^file://",
+        "action": "open-link"
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "ChmaraX",
+      "repo": "herdr-nvim",
+      "resolved_commit": "5e849b5377fd409d2fd4be159c9c9fa36c251f7a",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/chmarax.herdr-nvim-178624809c23",
+      "installed_unix_ms": 1790879918366
+    }
+  },
+  {
+    "plugin_id": "flock.farm",
+    "name": "Flock",
+    "version": "0.1.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Visualize your AI coding agents as pixel-art sheep on a top-down farm",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/flock.farm-2b3ae134c314/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/flock.farm-2b3ae134c314",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "cargo",
+          "build",
+          "--release"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "Open Flock Farm",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "sh",
+          "-c",
+          "$HERDR_BIN_PATH plugin pane open --plugin flock.farm --entrypoint farm --placement split --direction right --focus"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "farm",
+        "title": "Flock Farm",
+        "placement": "split",
+        "command": [
+          "./target/release/herdr-flock"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "ragamo",
+      "repo": "herdr-flock",
+      "resolved_commit": "e9a8f3ecca7304f3f868765194edf334242696a3",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/flock.farm-2b3ae134c314",
+      "installed_unix_ms": 1789631851166
+    }
+  },
+  {
+    "plugin_id": "gh-pr",
+    "name": "GitHub PR Status",
+    "version": "0.4.0",
+    "min_herdr_version": "0.7.4",
+    "description": "Labels the focused agent pane's sidebar row with its branch's GitHub PR status.",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/gh-pr-9d83f0425098/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/gh-pr-9d83f0425098",
+    "enabled": true,
+    "platforms": [
+      "macos",
+      "linux"
+    ],
+    "actions": [
+      {
+        "id": "open-pr",
+        "title": "Open PR in browser",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bun",
+          "bin/open-pr.ts"
+        ]
+      },
+      {
+        "id": "refresh",
+        "title": "Refresh PR status",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bun",
+          "bin/update-pr-status.ts"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "pane.focused",
+        "command": [
+          "bun",
+          "bin/update-pr-status.ts"
+        ]
+      },
+      {
+        "on": "worktree.created",
+        "command": [
+          "bun",
+          "bin/update-pr-status.ts"
+        ]
+      },
+      {
+        "on": "worktree.opened",
+        "command": [
+          "bun",
+          "bin/update-pr-status.ts"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "wyattjoh",
+      "repo": "herdr-plugin-gh-pr",
+      "resolved_commit": "6fe22de9a90c569f2186595cfddc3707f55ba1bd",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/gh-pr-9d83f0425098",
+      "installed_unix_ms": 1789631914861
+    }
+  },
+  {
+    "plugin_id": "herdr-automatic-rename",
+    "name": "Herdr Automatic Rename",
+    "version": "0.13.0",
+    "min_herdr_version": "0.7.1",
+    "description": "Auto-name tabs after where the work is and what is running there -- the directory, the branch, the machine reached over ssh, then the program or the task an agent reports -- and/or prefix workspaces, tabs, and agents with their 1-9 jump-key number. Each feature toggles via config.sh.",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/herdr-automatic-rename-db02a35e1e35/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/herdr-automatic-rename-db02a35e1e35",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "startup": [
+      {
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "startup"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "clear",
+        "title": "Herdr Automatic Rename: strip all number prefixes",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "--clear"
+        ]
+      },
+      {
+        "id": "doctor",
+        "title": "Herdr Automatic Rename: explain this tab's name",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "doctor"
+        ]
+      },
+      {
+        "id": "reset",
+        "title": "Reset tab to automatic naming",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "reset"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "pane.agent_detected",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "pane.agent_detected"
+        ]
+      },
+      {
+        "on": "pane.agent_status_changed",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "pane.agent_status_changed"
+        ]
+      },
+      {
+        "on": "pane.closed",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "pane.closed"
+        ]
+      },
+      {
+        "on": "pane.created",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "pane.created"
+        ]
+      },
+      {
+        "on": "pane.exited",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "pane.exited"
+        ]
+      },
+      {
+        "on": "pane.focused",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "pane.focused"
+        ]
+      },
+      {
+        "on": "pane.moved",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "pane.moved"
+        ]
+      },
+      {
+        "on": "tab.closed",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "tab.closed"
+        ]
+      },
+      {
+        "on": "tab.created",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "tab.created"
+        ]
+      },
+      {
+        "on": "tab.focused",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "tab.focused"
+        ]
+      },
+      {
+        "on": "tab.moved",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "tab.moved"
+        ]
+      },
+      {
+        "on": "tab.renamed",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "tab.renamed"
+        ]
+      },
+      {
+        "on": "workspace.closed",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "workspace.closed"
+        ]
+      },
+      {
+        "on": "workspace.created",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "workspace.created"
+        ]
+      },
+      {
+        "on": "workspace.moved",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "workspace.moved"
+        ]
+      },
+      {
+        "on": "workspace.renamed",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "workspace.renamed"
+        ]
+      },
+      {
+        "on": "workspace.reordered",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "workspace.reordered"
+        ]
+      },
+      {
+        "on": "worktree.created",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "worktree.created"
+        ]
+      },
+      {
+        "on": "worktree.opened",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "worktree.opened"
+        ]
+      },
+      {
+        "on": "worktree.removed",
+        "command": [
+          "bash",
+          "automatic-rename.sh",
+          "worktree.removed"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "qu8n",
+      "repo": "herdr-automatic-rename",
+      "resolved_commit": "c4d1400c1546e443bdae9d5121644ba13e417663",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/herdr-automatic-rename-db02a35e1e35",
+      "installed_unix_ms": 1790879922665
+    }
+  },
+  {
+    "plugin_id": "herdr-floax",
+    "name": "herdr-floax",
+    "version": "0.2.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Toggle a floating scratch shell (sized popup) for the current workspace, à la tmux-floax.",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/herdr-floax-0151ef56c880/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/herdr-floax-0151ef56c880",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "cargo",
+          "build",
+          "--release"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "title": "Toggle floating pane",
+        "description": "Open, reveal, or dismiss the floating scratch shell for this workspace.",
+        "command": [
+          "bash",
+          "scripts/toggle-floating.sh"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "floating",
+        "title": "⌂ floax",
+        "placement": "split",
+        "command": [
+          "./target/release/herdr-floax"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "Tyru5",
+      "repo": "herdr-floax",
+      "resolved_commit": "d6b283110c2e455fb3782595549895a840585e2b",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/herdr-floax-0151ef56c880",
+      "installed_unix_ms": 1789631916216
+    }
+  },
+  {
+    "plugin_id": "herdr-lazygit",
+    "name": "herdr-lazygit",
+    "version": "0.4.0",
+    "min_herdr_version": "0.7.0",
+    "description": "lazygit in a herdr split pane, with AI-assisted commit messages via custom commands.",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/herdr-lazygit-b11d62e75f78/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/herdr-lazygit-b11d62e75f78",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "/bin/sh",
+          "scripts/install-runtime.sh"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "Open lazygit",
+        "description": "Open lazygit in a split pane beside the current work (focus/toggle on repeat).",
+        "command": [
+          "bash",
+          "scripts/open-lazygit.sh"
+        ]
+      },
+      {
+        "id": "open-tab",
+        "title": "Open lazygit (tab)",
+        "description": "Open lazygit in its own tab (switch to it if already open, toggle off if focused).",
+        "command": [
+          "bash",
+          "scripts/open-lazygit-tab.sh"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "lazygit",
+        "title": "Git",
+        "placement": "split",
+        "command": [
+          "bash",
+          "-c",
+          "exec bash \"$HERDR_PLUGIN_ROOT/scripts/run-lazygit.sh\""
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "crokily",
+      "repo": "herdr-lazygit",
+      "resolved_commit": "ac955e59caae5cbc34b74ccf949e11f085269b4d",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/herdr-lazygit-b11d62e75f78",
+      "installed_unix_ms": 1789631928649
+    }
+  },
+  {
+    "plugin_id": "herdr-navigator",
+    "name": "Herdr Navigator",
+    "version": "0.3.6",
+    "min_herdr_version": "0.7.3",
+    "description": "Jump to any Herdr workspace, agent, project, session, remote, directory, or action from one fuzzy navigator.",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "cargo",
+          "build",
+          "--release"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "jump-back",
+        "title": "Herdr Navigator: jump back",
+        "contexts": [
+          "workspace",
+          "global"
+        ],
+        "command": [
+          "./target/release/herdr-navigator",
+          "jump-back"
+        ]
+      },
+      {
+        "id": "open",
+        "title": "Herdr Navigator: open",
+        "contexts": [
+          "workspace",
+          "global"
+        ],
+        "command": [
+          "./target/release/herdr-navigator",
+          "open"
+        ]
+      },
+      {
+        "id": "open-side",
+        "title": "Herdr Navigator: side pane",
+        "contexts": [
+          "workspace",
+          "global"
+        ],
+        "command": [
+          "./target/release/herdr-navigator",
+          "open-side"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "picker",
+        "title": "Herdr Navigator",
+        "placement": "overlay",
+        "command": [
+          "./target/release/herdr-navigator",
+          "ui"
+        ]
+      },
+      {
+        "id": "picker-side",
+        "title": "Navigator Side",
+        "placement": "split",
+        "command": [
+          "./target/release/herdr-navigator",
+          "ui",
+          "--side"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "thanhdat77",
+      "repo": "herdr-navigator",
+      "resolved_commit": "313b753b1f98f802b7d861430a13cb95a86e8dd3",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
+      "installed_unix_ms": 1790556320952
+    }
+  },
+  {
+    "plugin_id": "herdr-splits",
+    "name": "Herdr Splits",
+    "version": "0.5.1",
+    "min_herdr_version": "0.7.0",
+    "description": "Seamless navigation and resizing between Herdr panes and Neovim splits",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/herdr-splits-d880c4924f2b/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "actions": [
+      {
+        "id": "nav-down",
+        "title": "Navigate down (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-nav.sh",
+          "down"
+        ]
+      },
+      {
+        "id": "nav-left",
+        "title": "Navigate left (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-nav.sh",
+          "left"
+        ]
+      },
+      {
+        "id": "nav-right",
+        "title": "Navigate right (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-nav.sh",
+          "right"
+        ]
+      },
+      {
+        "id": "nav-up",
+        "title": "Navigate up (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-nav.sh",
+          "up"
+        ]
+      },
+      {
+        "id": "resize-down",
+        "title": "Resize down (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-resize.sh",
+          "down"
+        ]
+      },
+      {
+        "id": "resize-left",
+        "title": "Resize left (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-resize.sh",
+          "left"
+        ]
+      },
+      {
+        "id": "resize-right",
+        "title": "Resize right (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-resize.sh",
+          "right"
+        ]
+      },
+      {
+        "id": "resize-up",
+        "title": "Resize up (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-resize.sh",
+          "up"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "lmilojevicc",
+      "repo": "herdr-splits.nvim",
+      "requested_ref": "107273e004e4f7ef07f13c83164d2cb2c51df65d",
+      "resolved_commit": "107273e004e4f7ef07f13c83164d2cb2c51df65d",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
+      "installed_unix_ms": 1789174293839
+    }
+  },
+  {
+    "plugin_id": "mirror",
+    "name": "Herdr Mirror",
+    "version": "0.4.3",
+    "min_herdr_version": "0.7.2",
+    "description": "Mirror a remote herdr server's workspaces and agents into the local sidebar",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/mirror-00154761637c/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/mirror-00154761637c",
+    "enabled": true,
+    "platforms": [
+      "macos",
+      "linux"
+    ],
+    "build": [
+      {
+        "command": [
+          "bash",
+          "scripts/install.sh"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "hide",
+        "title": "Mirror: hide",
+        "description": "Hide this connection's mirrored terminals locally — remote keeps running",
+        "command": [
+          "./target/release/herdr-mirror",
+          "hide"
+        ]
+      },
+      {
+        "id": "new-workspace-pick",
+        "title": "Mirror: new workspace — pick host",
+        "description": "Pop up a picker: create the new workspace on this machine or on a configured host",
+        "command": [
+          "./target/release/herdr-mirror",
+          "pick-workspace"
+        ]
+      },
+      {
+        "id": "once",
+        "title": "Mirror: sync once",
+        "description": "One-shot mirror pass without starting the daemon",
+        "command": [
+          "./target/release/herdr-mirror",
+          "once"
+        ]
+      },
+      {
+        "id": "pause",
+        "title": "Mirror: pause",
+        "description": "Pause syncing — mirror workspaces stay put; resume with start",
+        "command": [
+          "./target/release/herdr-mirror",
+          "pause"
+        ]
+      },
+      {
+        "id": "remote-new-tab",
+        "title": "Mirror: new tab",
+        "description": "New tab on the remote when invoked inside a mirror; a plain local tab anywhere else",
+        "command": [
+          "./target/release/herdr-mirror",
+          "remote-tab"
+        ]
+      },
+      {
+        "id": "remote-new-workspace",
+        "title": "Mirror: new workspace",
+        "description": "New workspace on the remote host (the invoking mirror's host, else hosts.toml default_host)",
+        "command": [
+          "./target/release/herdr-mirror",
+          "remote-workspace"
+        ]
+      },
+      {
+        "id": "remote-split-down",
+        "title": "Mirror: split down",
+        "description": "Split the mirrored remote pane down; splits locally when invoked outside a mirror",
+        "command": [
+          "./target/release/herdr-mirror",
+          "remote-split",
+          "down"
+        ]
+      },
+      {
+        "id": "remote-split-right",
+        "title": "Mirror: split right",
+        "description": "Split the mirrored remote pane right; splits locally when invoked outside a mirror",
+        "command": [
+          "./target/release/herdr-mirror",
+          "remote-split",
+          "right"
+        ]
+      },
+      {
+        "id": "restore",
+        "title": "Mirror: restore closed mirrors",
+        "description": "Bring back mirror workspaces/panes you closed locally",
+        "command": [
+          "./target/release/herdr-mirror",
+          "restore"
+        ]
+      },
+      {
+        "id": "show",
+        "title": "Mirror: show",
+        "description": "Bring back a connection's mirrored terminals after hiding them",
+        "command": [
+          "./target/release/herdr-mirror",
+          "show"
+        ]
+      },
+      {
+        "id": "start",
+        "title": "Mirror: start / resume",
+        "description": "Start (or resume) the mirror daemon for all configured hosts",
+        "command": [
+          "./target/release/herdr-mirror",
+          "start"
+        ]
+      },
+      {
+        "id": "status",
+        "title": "Mirror: status",
+        "description": "Log daemon, host, and mirror-object status",
+        "command": [
+          "./target/release/herdr-mirror",
+          "status"
+        ]
+      },
+      {
+        "id": "teardown",
+        "title": "Mirror: teardown",
+        "description": "Stop the daemon and close all mirror workspaces",
+        "command": [
+          "./target/release/herdr-mirror",
+          "teardown"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "pane.created",
+        "command": [
+          "./target/release/herdr-mirror",
+          "intercept-new",
+          "pane"
+        ]
+      },
+      {
+        "on": "tab.created",
+        "command": [
+          "./target/release/herdr-mirror",
+          "intercept-new",
+          "tab"
+        ]
+      },
+      {
+        "on": "workspace.created",
+        "command": [
+          "./target/release/herdr-mirror",
+          "intercept-new",
+          "workspace"
+        ]
+      },
+      {
+        "on": "workspace.focused",
+        "command": [
+          "./target/release/herdr-mirror",
+          "ensure"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "pick-host",
+        "title": "New workspace",
+        "placement": "overlay",
+        "command": [
+          "./target/release/herdr-mirror",
+          "pick-workspace",
+          "--menu"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "nikok6",
+      "repo": "herdr-mirror",
+      "resolved_commit": "195398c1275f9f3d18ddff70282149005a2bec01",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/mirror-00154761637c",
+      "installed_unix_ms": 1789631956926
+    }
+  },
+  {
+    "plugin_id": "official.plannotator",
+    "name": "Plannotator",
+    "version": "0.1.0",
+    "min_herdr_version": "0.8.2",
+    "description": "Review Plannotator plans and changes inside Herdr.",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/official.plannotator-9838f572e64c/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/official.plannotator-9838f572e64c",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "bun",
+          "install",
+          "--frozen-lockfile"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "configure",
+        "title": "Configure Plannotator for Herdr",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bun",
+          "run",
+          "src/actions/configure.ts"
+        ]
+      },
+      {
+        "id": "doctor",
+        "title": "Check Plannotator Herdr integration",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bun",
+          "run",
+          "src/actions/doctor.ts"
+        ]
+      },
+      {
+        "id": "unconfigure",
+        "title": "Remove Plannotator Herdr integration",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bun",
+          "run",
+          "src/actions/unconfigure.ts"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "punk-dev-robot",
+      "repo": "herdr-plannotator",
+      "requested_ref": "terminal-browser-port",
+      "resolved_commit": "8c4d70a0e3689d4ab18132b55fe2d90dfad3a53b",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/official.plannotator-9838f572e64c",
+      "installed_unix_ms": 1789646626369
+    }
+  },
+  {
+    "plugin_id": "pet",
+    "name": "Herdr Pet",
+    "version": "0.1.2",
+    "min_herdr_version": "0.7.4",
+    "description": "Codex-style animated pet floating over your agent panes, reacting to agent status",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/pet-bbba57318f71/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/pet-bbba57318f71",
+    "enabled": true,
+    "platforms": [
+      "macos",
+      "linux"
+    ],
+    "build": [
+      {
+        "command": [
+          "bash",
+          "scripts/install.sh"
+        ]
+      }
+    ],
+    "startup": [
+      {
+        "command": [
+          "./target/release/herdr-pet",
+          "ensure"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "settings",
+        "title": "Pet: settings",
+        "description": "Open the pet settings popover (pet, size, speed, mode, …)",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "./target/release/herdr-pet",
+          "open-settings"
+        ]
+      },
+      {
+        "id": "toggle",
+        "title": "Pet: toggle",
+        "description": "Wake the pet or tuck it away",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "./target/release/herdr-pet",
+          "toggle"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "settings",
+        "title": "Pet settings",
+        "placement": "popup",
+        "width": 64,
+        "height": 16,
+        "command": [
+          "./target/release/herdr-pet",
+          "settings"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "nikok6",
+      "repo": "herdr-pet",
+      "resolved_commit": "deea6f7c014a959b3c7a7b36fe3e42a6b3f19537",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/pet-bbba57318f71",
+      "installed_unix_ms": 1789631958239
+    }
+  },
+  {
+    "plugin_id": "ray.plugin-manager",
+    "name": "Plugin Manager",
+    "version": "0.5.0",
+    "min_herdr_version": "0.7.4",
+    "description": "Manage herdr plugins from a popup: list, install, update, enable/disable, uninstall, browse the marketplace, open repo in browser, edit plugins.json",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/ray.plugin-manager-75f462e8e1d0/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/ray.plugin-manager-75f462e8e1d0",
+    "enabled": true,
+    "platforms": [
+      "macos",
+      "linux"
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "Open plugin manager",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "-c",
+          "exec \"${HERDR_BIN_PATH:-herdr}\" plugin pane open --plugin ray.plugin-manager --entrypoint manager --placement popup --focus"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "manager",
+        "title": "Plugin Manager",
+        "placement": "popup",
+        "width": 82,
+        "height": 28,
+        "command": [
+          "bash",
+          "-c",
+          "exec bash \"$HERDR_PLUGIN_ROOT/bin/manager.sh\""
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "speardragon",
+      "repo": "herdr-plugin-manager",
+      "resolved_commit": "e4fef2693728a36cbb389af033a389cad2257869",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/ray.plugin-manager-75f462e8e1d0",
+      "installed_unix_ms": 1790556048204
+    }
+  },
+  {
+    "plugin_id": "termscope",
+    "name": "Termscope",
+    "version": "0.2.0",
+    "min_herdr_version": "0.7.4",
+    "description": "Open files and links already visible on your terminal screen.",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/termscope-8275f2830cd8/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/termscope-8275f2830cd8",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/install-dependencies.sh"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "Termscope: open visible file picker",
+        "description": "Scan the focused pane for visible file paths and open a Television popup.",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "python3",
+          "termscope_herdr.py",
+          "--open-pane"
+        ]
+      },
+      {
+        "id": "open-links",
+        "title": "Termscope: open visible link picker",
+        "description": "Scan the focused pane for visible URLs and open a Television popup.",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "python3",
+          "termscope_herdr.py",
+          "--open-links-pane"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "link-picker",
+        "title": "Termscope Links",
+        "placement": "popup",
+        "width": "80%",
+        "height": "60%",
+        "command": [
+          "python3",
+          "termscope_herdr.py",
+          "--links"
+        ]
+      },
+      {
+        "id": "picker",
+        "title": "Termscope",
+        "placement": "popup",
+        "width": "80%",
+        "height": "60%",
+        "command": [
+          "python3",
+          "termscope_herdr.py"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "iurysza",
+      "repo": "termscope",
+      "requested_ref": "cbc6da8103c263343b7082e27e804cc91312f944",
+      "resolved_commit": "cbc6da8103c263343b7082e27e804cc91312f944",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/termscope-8275f2830cd8",
+      "installed_unix_ms": 1789200386943
+    }
+  },
+  {
+    "plugin_id": "worktrunk",
+    "name": "Worktrunk",
+    "version": "0.1.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Switch, create, or remove git worktrees via worktrunk",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/worktrunk-7fb519583f31/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/worktrunk-7fb519583f31",
+    "enabled": true,
+    "platforms": [
+      "macos",
+      "linux"
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "Worktree: switch / create from default branch",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "-c",
+          "cwd=$(jq -r '.workspace_cwd // .focused_pane_cwd' <<<\"$HERDR_PLUGIN_CONTEXT_JSON\"); exec \"$HERDR_BIN_PATH\" plugin pane open --plugin \"$HERDR_PLUGIN_ID\" --entrypoint picker-default --placement split --direction down --cwd \"$cwd\" --focus"
+        ]
+      },
+      {
+        "id": "open-current",
+        "title": "Worktree: switch / create from current branch",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "-c",
+          "cwd=$(jq -r '.workspace_cwd // .focused_pane_cwd' <<<\"$HERDR_PLUGIN_CONTEXT_JSON\"); exec \"$HERDR_BIN_PATH\" plugin pane open --plugin \"$HERDR_PLUGIN_ID\" --entrypoint picker-current --placement split --direction down --cwd \"$cwd\" --focus"
+        ]
+      },
+      {
+        "id": "remove",
+        "title": "Worktree: remove",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "-c",
+          "cwd=$(jq -r '.workspace_cwd // .focused_pane_cwd' <<<\"$HERDR_PLUGIN_CONTEXT_JSON\"); exec \"$HERDR_BIN_PATH\" plugin pane open --plugin \"$HERDR_PLUGIN_ID\" --entrypoint remover --placement split --direction down --cwd \"$cwd\" --focus"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "picker-current",
+        "title": "Worktrunk — current branch",
+        "placement": "split",
+        "command": [
+          "bash",
+          "-c",
+          "exec bash \"$HERDR_PLUGIN_ROOT/picker.sh\" --create-base=current"
+        ]
+      },
+      {
+        "id": "picker-default",
+        "title": "Worktrunk — default branch",
+        "placement": "split",
+        "command": [
+          "bash",
+          "-c",
+          "exec bash \"$HERDR_PLUGIN_ROOT/picker.sh\" --create-base=default"
+        ]
+      },
+      {
+        "id": "remover",
+        "title": "Worktrunk — remove",
+        "placement": "split",
+        "command": [
+          "bash",
+          "-c",
+          "exec bash \"$HERDR_PLUGIN_ROOT/remove.sh\""
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "devashish2203",
+      "repo": "herdr-worktrunk",
+      "requested_ref": "e9131c0b576fd68635194c758c9691dbfb778b61",
+      "resolved_commit": "e9131c0b576fd68635194c758c9691dbfb778b61",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/worktrunk-7fb519583f31",
+      "installed_unix_ms": 1789199898901
+    }
+  },
+  {
+    "plugin_id": "zenbu-labs.terminal-browser",
+    "name": "Terminal Browser",
+    "version": "0.1.1",
+    "min_herdr_version": "0.8.2",
+    "description": "Open a browser inside herdr",
+    "manifest_path": "/home/kuba/.config/herdr/plugins/github/zenbu-labs.terminal-browser-af24e09053e7/herdr-plugin/herdr-plugin.toml",
+    "plugin_root": "/home/kuba/.config/herdr/plugins/github/zenbu-labs.terminal-browser-af24e09053e7/herdr-plugin",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "-c",
+          "set -o pipefail; curl -fsSL https://terminal-browser.sh/install | bash"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open-split",
+        "title": "Open terminal-browser (right split)",
+        "description": "Split the focused pane and open terminal-browser in it",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "open-split.sh"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "zenbu-labs",
+      "repo": "terminal-browser",
+      "subdir": "herdr-plugin",
+      "resolved_commit": "b641f508632d883c2abd596d582cecc80099d349",
+      "managed_path": "/home/kuba/.config/herdr/plugins/github/zenbu-labs.terminal-browser-af24e09053e7",
+      "installed_unix_ms": 1790879925159
+    }
+  }
+]
