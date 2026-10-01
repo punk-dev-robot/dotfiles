@@ -4,12 +4,12 @@
     "layout": {
       "center": [
         {
+          "id": "omarchy.system-update"
+        },
+        {
           "id": "omaplug",
           "autoCheckUpdates": true,
           "autoCheckIntervalHours": 12
-        },
-        {
-          "id": "omarchy.system-update"
         },
         {
           "id": "omarchy.active-window"
@@ -99,7 +99,7 @@
     {
       "id": "io.github.tallsam.navbar-cat",
       "character": "neko",
-      "speed": 1.0,
+      "speed": 1,
       "size": 16,
       "pettable": true,
       "chaseCursor": true,
@@ -120,6 +120,11 @@
     }
   ],
   "version": 1,
-  "disabledPlugins": ["nerdyworm.easyeffects-presets", "omarchy.lock"],
-  "cloneSourceRestores": ["io.github.sirjul1337.lock-explorer"]
+  "disabledPlugins": [
+    "nerdyworm.easyeffects-presets",
+    "omarchy.lock"
+  ],
+  "cloneSourceRestores": [
+    "io.github.sirjul1337.lock-explorer"
+  ]
 }

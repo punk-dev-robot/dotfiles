@@ -30,11 +30,9 @@ BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 BROWSER_USE_TINYSKY_ENABLED = "1"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
-NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.908.31748"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"{{home_dir}}/.config/codex/plugins/cache/openai-bundled/browser/26.908.31748/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
-SKY_CUA_SERVICE_PATH = "{{home_dir}}/.config/codex/computer-use/Codex Computer Use.app"
+BROWSER_USE_CODEX_APP_VERSION = "26.911.61220"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"{{home_dir}}/.config/codex/plugins/cache/openai-bundled/browser/26.911.61220/scripts/browser-service.mjs"}'
 CODEX_CLI_PATH = "{{chatgpt_resources}}/codex"
 
 [mcp_servers.workshop]
@@ -55,12 +53,6 @@ url = "http://localhost:3000/newrelic"
 
 [mcp_servers.slack]
 url = "http://localhost:3000/slack"
-
-[mcp_servers.computer-use]
-command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
-args = ["mcp"]
-cwd = "."
-enabled = false
 
 [projects."{{home_dir}}/swapc/window-shop-monorepo"]
 trust_level = "trusted"
@@ -108,9 +100,6 @@ trusted_hash = "sha256:9080e32b83e1cac643899f11433f5b9ea6a5c03cfdde013224c00150e
 trusted_hash = "sha256:d129010a9a28e70c18ff4d6e66becfd1be79046483c5afdd518abfe4156286b6"
 
 [plugins."browser@openai-bundled"]
-enabled = true
-
-[plugins."sites@openai-bundled"]
 enabled = true
 
 [plugins."documents@openai-primary-runtime"]
