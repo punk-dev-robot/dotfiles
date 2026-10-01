@@ -199,7 +199,7 @@ description = "last workspace"
 
 [[keys.command]]
 key = "prefix+b"
-type = "shell"
+type = "plugin_action"
 command = "zenbu-labs.terminal-browser.open-split"
 description = "open browser in right split"
 
