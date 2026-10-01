@@ -60,5 +60,5 @@
   autoupdate = true        # Apply stored conflict resolutions automatically
 [url "git@github-swap:swapcommerce/"]
 	insteadOf = git@github.com:swapcommerce/
-[includeIf "gitdir:/Users/kuba.gaj/dev/swapc/"]
+[includeIf "gitdir:~/dev/swapc/"]
 	path = ~/dotfiles/config/custom/git/gitconfig-swap

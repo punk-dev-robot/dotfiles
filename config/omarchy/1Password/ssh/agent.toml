@@ -3,3 +3,7 @@
 
 [[ssh-keys]]
 vault = "Personal"
+
+# Swap Commerce account: kuba.swap (github-swap host alias)
+[[ssh-keys]]
+vault = "Employee"
