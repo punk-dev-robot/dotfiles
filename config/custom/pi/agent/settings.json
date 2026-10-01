@@ -88,7 +88,7 @@
     "passive": false,
     "debugLog": false
   },
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "quietStartup": false,
   "collapseChangelog": true,
   "clearOnStart": true,
