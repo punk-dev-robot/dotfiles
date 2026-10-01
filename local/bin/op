@@ -1,0 +1,13 @@
+#!/bin/sh
+# op shim. Headless mac (ssh / herdr pane): a prompt on the invisible screen (TCC app-data,
+# 1P authorization) would block forever, so non-`run` commands get 60s, then fail loud.
+# `op run` is exempt: the alarm would kill the wrapped long-running child.
+[ "$(uname)" = Darwin ] || exec /usr/bin/op "$@"
+real=/opt/homebrew/bin/op
+if [ "$1" != run ] && { [ -n "$SSH_CONNECTION" ] || [ -n "$HERDR_PANE_ID" ]; }; then
+  perl -e 'alarm shift; exec @ARGV' "${OP_TIMEOUT:-60}" "$real" "$@"
+  rc=$?
+  [ $rc -eq 142 ] && echo "op: no answer in ${OP_TIMEOUT:-60}s - prompt waiting on the mac screen? (mac-prompt-check)" >&2
+  exit $rc
+fi
+exec "$real" "$@"

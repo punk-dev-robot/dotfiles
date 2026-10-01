@@ -32,8 +32,11 @@ zsh: hm <herdr args> ───────────────────�
   only — `~/.ssh/kuba.mac-agent` (swap SSO, `Host github-swap`) and
   `~/.ssh/kuba.mac-agent-personal` (punk-dev-robot, `Host github.com`), `IdentitiesOnly yes`
   in the `{{#if is_macos}}` part of the ssh template; ssh offers agent keys *before* file
-  keys, so no agent identity may be listed for those hosts. `op`: `OP_SERVICE_ACCOUNT_TOKEN`
-  in `.zshenv.priv`; the agentgateway plist runs `zsh -lc 'exec op run …'` to pick it up.
+  keys, so no agent identity may be listed for those hosts. `op`: the homelab service account
+  can't see company vaults (with the token set, `op` uses only the SA), so it is not global.
+  The agentgateway plist alone reads it from `~/.config/op/homelab-sa.token` (0600) and
+  exits if the file is missing (no desktop fallback). Everything else uses desktop
+  integration and can prompt; the `op` shim (`local/bin/op`) gives headless non-`run` calls 60 s.
 
 - **Prompts on the invisible screen.** 1Password (unlock, `op` CLI authorization — still asked
   per process tree even with 1P auto-lock off), keychain (`SecurityAgent`) and TCC dialogs block
