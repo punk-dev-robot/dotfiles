@@ -33,7 +33,8 @@ previous_workspace = "prefix+k"
 next_workspace = "prefix+j"
 switch_workspace = "prefix+shift+1..9"
 close_workspace = "prefix+alt+d"
-new_worktree = "prefix+shift+n"
+new_workspace = "prefix+shift+n"
+new_worktree = ""
 
 new_tab = ["prefix+n", "prefix+c"]
 rename_tab = "prefix+r"
