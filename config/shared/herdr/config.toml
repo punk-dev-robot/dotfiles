@@ -163,8 +163,14 @@ description = "clear active pane"
 [[keys.command]]
 key = "prefix+p"
 type = "plugin_action"
-command = "pet.toggle"      # wake / tuck away
-description = "pet: toggle"
+command = "ray.plugin-manager.open"
+description = "open plugin manager"
+
+# [[keys.command]]
+# key = "prefix+p"
+# type = "plugin_action"
+# command = "pet.toggle"      # wake / tuck away
+# description = "pet: toggle"
 
 [[keys.command]]
 key = "prefix+shift+p"
@@ -292,7 +298,7 @@ rows = [
       { starts_with = "blocked", fg = "#f38ba8", bold = true },
       { starts_with = "working", fg = "#f9e2af" },
       { starts_with = "done", fg = "#a6e3a1" },
-      { starts_with = "idle", hide = true }, # 0.9.1: state_icon already says idle
+      { starts_with = "idle", hide = true },                    # 0.9.1: state_icon already says idle
     ] },
   ],
   [
