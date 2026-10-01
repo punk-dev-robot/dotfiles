@@ -1,0 +1,16 @@
+{
+  "providers": {
+    "openai-codex": {
+      "modelOverrides": {
+        "gpt-6.1-sol": { "contextWindow": 272000 },
+        "gpt-6-astra": { "contextWindow": 400000 }
+      }
+    },
+    "openai-codex-account-2": {
+      "modelOverrides": {
+        "gpt-6.1-sol": { "contextWindow": 272000 },
+        "gpt-6-astra": { "contextWindow": 400000 }
+      }
+    }
+  }
+}
