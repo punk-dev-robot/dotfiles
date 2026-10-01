@@ -22,7 +22,7 @@ help = "prefix+?"
 settings = "prefix+s"
 detach = "prefix+d"
 reload_config = "prefix+shift+r"
-open_notification_target = "prefix+shift+n"
+open_notification_target = "prefix+ctrl+n"
 copy_mode = "prefix+enter"
 resize_mode = "prefix+alt+r"
 
@@ -33,7 +33,7 @@ previous_workspace = "prefix+k"
 next_workspace = "prefix+j"
 switch_workspace = "prefix+shift+1..9"
 close_workspace = "prefix+alt+d"
-new_worktree = ""
+new_worktree = "prefix+shift+n"
 
 new_tab = ["prefix+n", "prefix+c"]
 rename_tab = "prefix+r"
