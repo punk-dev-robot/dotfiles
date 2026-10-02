@@ -7,7 +7,7 @@
   "mcpServers": {
     "sentry": {
       "url": "https://mcp.sentry.dev/mcp",
-      "lifestyle": "lazy"
+      "lifecycle": "lazy"
     },
     "incidentio": {
       "url": "https://mcp.incident.io/mcp",
