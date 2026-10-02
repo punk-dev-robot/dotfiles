@@ -1,15 +1,6 @@
 {
   "name": "project",
   "dependencies": {
-    "nyosegawa/notion-cli": {
-      "version": "a325ac7a6527860d081581215cf4662d59b41351",
-      "source": "https://github.com/nyosegawa/notion-cli",
-      "include": {
-        "skills": [
-          "notion"
-        ]
-      }
-    },
     "DrCatHicks/learning-opportunities": {
       "version": "3862d2eb6e93427f1f163a54360d11ef943b88b7",
       "source": "https://github.com/DrCatHicks/learning-opportunities",
@@ -29,17 +20,8 @@
         ]
       }
     },
-    "github/gh-stack": {
-      "version": "2bd699a544a09cb5c45a013d03416e0894b0454e",
-      "source": "https://github.com/github/gh-stack",
-      "include": {
-        "skills": [
-          "gh-stack"
-        ]
-      }
-    },
     "mattpocock/skills": {
-      "version": "74ca5fe077456a0b3b2f5310cf9430999fd0b5fd",
+      "version": "d81f3a183412e71a5b1e84ca21bc1a35eea03a60",
       "source": "https://github.com/mattpocock/skills",
       "include": {
         "skills": [
@@ -57,7 +39,6 @@
           "research",
           "retro",
           "tdd",
-          "teach",
           "to-questionnaire",
           "to-spec",
           "to-tickets",
@@ -69,17 +50,8 @@
       }
     },
     "plannotator/effective-html": {
-      "version": "d95debbaef15af1d201fc6c10c77cf92b524a0d6",
+      "version": "2ac1dfecb0f2474e75260cb6d3c9b9d6d9b5062e",
       "source": "https://github.com/plannotator/effective-html"
-    },
-    "schpet/linear-cli": {
-      "version": "189d1ee6ba7a272fef879ddb7eae68e4e901bad0",
-      "source": "https://github.com/schpet/linear-cli",
-      "include": {
-        "skills": [
-          "linear-cli"
-        ]
-      }
     },
     "humanlayer/skills": {
       "version": "ca7c8088db69e315a8b2deea43820270457f8f3c",
@@ -94,7 +66,7 @@
       }
     },
     "repowise-dev/repowise": {
-      "version": "9241f3bbe0db91d56e7eebc1c60c25921fd33e13",
+      "version": "57aaafede81df169218686668a99e7be00a59788",
       "source": "https://github.com/repowise-dev/repowise",
       "include": {
         "skills": [
@@ -104,7 +76,15 @@
           "codebase-exploration",
           "dead-code-cleanup",
           "pre-modification-check"
-          "show-me"
+        ]
+      }
+    },
+    "plannotator/herdr-annotate": {
+      "version": "cbba4732229191347ff5128e3da71f64474a6a49",
+      "source": "https://github.com/plannotator/herdr-annotate",
+      "include": {
+        "skills": [
+          "plannotator-tui"
         ]
       }
     }

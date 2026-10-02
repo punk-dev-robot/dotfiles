@@ -12,6 +12,8 @@ node = "26"  # major pin: `mise up` follows patch/minor
 opa = "latest"
 opencode = "latest"
 pi = "latest"
+gcloud = "latest"
+gemini = { version = "latest", allow_builds = ["@github/keytar", "node-pty"] }
 
 [settings.upgrade]
 auto_prune = false

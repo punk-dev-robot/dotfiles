@@ -100,3 +100,8 @@ if [[ "$(uname)" == "Linux" ]] && systemctl --user show-environment >/dev/null 2
     systemctl --user enable --now btrfs-space-monitor.timer git-maintenance-sync.timer screenshot-cleanup.timer \
         || echo "  warning: enabling user timers failed" >&2
 fi
+
+# Private swapc agent context (separate private repo): link AGENTS overrides, skills and worktrunk config into checkouts.
+if [[ -x "$HOME/dev/swapc/agentctx/deploy.sh" ]]; then
+    "$HOME/dev/swapc/agentctx/deploy.sh" || echo "  warning: agentctx deploy reported issues" >&2
+fi
