@@ -1,9 +1,0 @@
-{
-  "_comment": "2026-09-02: disabled — Headroom smart-crusher lossy-mangles tool results (dropped words in research briefs, Linear ticket bodies) once context >10k tokens; redundant with pi native compaction + observational-memory. Revisit: maybe re-enable with minMessageChars ~20000 / minContextTokens ~80000 as emergency-only crusher.",
-  "enabled": false,
-  "baseUrl": "http://127.0.0.1:8788",
-  "autoStart": false,
-  "mode": "silent",
-  "minContextTokens": 10000,
-  "minMessageChars": 2000
-}

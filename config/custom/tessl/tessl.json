@@ -87,6 +87,16 @@
           "plannotator-tui"
         ]
       }
+    },
+    "getsentry/skills": {
+      "version": "d18b7aa8ba878354e5c348310230e652f7690f9c",
+      "source": "https://github.com/getsentry/skills",
+      "include": {
+        "skills": [
+          "find-bugs",
+          "iterate-pr"
+        ]
+      }
     }
   }
 }

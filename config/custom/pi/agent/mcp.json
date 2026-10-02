@@ -5,6 +5,10 @@
     "outputGuard": true
   },
   "mcpServers": {
+    "sentry": {
+      "url": "https://mcp.sentry.dev/mcp",
+      "lifestyle": "lazy"
+    },
     "incidentio": {
       "url": "https://mcp.incident.io/mcp",
       "lifecycle": "lazy"
