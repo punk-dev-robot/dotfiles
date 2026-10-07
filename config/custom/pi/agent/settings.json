@@ -46,7 +46,9 @@
     "npm:pi-multi-account",
     "npm:@gotgenes/pi-anthropic-auth"
   ],
-  "extensions": ["-builtin:mcp"],
+  "extensions": [
+    "-builtin:mcp"
+  ],
   "npmCommand": [
     "mise",
     "exec",
@@ -59,7 +61,7 @@
       "maxRetries": 0
     }
   },
-  "lastChangelogVersion": "1.0.0",
+  "lastChangelogVersion": "1.0.4",
   "showCacheMissNotices": false,
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-5-5",
