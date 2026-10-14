@@ -10,7 +10,7 @@ model: {{model_strong}}
 thinking: high
 systemPromptMode: append
 inheritProjectContext: true
-inheritGlobalContext: false
+inheritGlobalContext: true
 tools: [read, grep, find, ls, bash, write, edit, mcp, mcpScript, "repowise_*", ask_advisor, record_advisor_outcome, "ctx_*", codemode]
 noSkills: true
 skills:
