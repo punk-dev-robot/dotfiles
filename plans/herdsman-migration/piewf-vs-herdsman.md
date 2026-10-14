@@ -649,3 +649,11 @@ Facts found while preparing round 3:
 - **End-to-end check with the real config** (fresh pi, no `-e`): no `subagents_*`/`workflow`; Herdsman tools and codemode present;
   only `delegation-herdsman` briefing loads; recon answered correctly; **`continue_agent` reuses the session**; Logfire shows
   `pi.agent.role=recon`, `pi.agent.label=e2e-recon`, `pi.parent.session.id` set. **Trial can start.**
+- **Phase 6 done (`5ba27af`):** `reviewer-sol` (`{{model_review_openai}}`) + `arbiter` (`{{model_sota}}`, read+write, no bash);
+  shared reviewer body in `agent-bodies/reviewer.md` via `@../agent-bodies/reviewer.md` (outside `agents/`: Herdsman parses every
+  `*.md` there recursively). `herdsman-defs-check` checks body `@` refs (13 defs, 128 paths). Herdsman parser + headless replay pass
+  (sol → `gpt-6.1-sol`, arbiter → `claude-fable-5-1`). Skill `pr-principal-review` is user-invoked. **Untested live** (Herdr run,
+  `@` expansion at real launch, retired-reviewer path). Open: arbiter shares fable with `reviewer` (not model-neutral); `sota` flag dropped.
+- **Phase 7 done (`9b0edf5`)** except ADR 0005 (waits for go). Findings: Manager scope = one git repo → cross-repo gap (**KUB-174**);
+  managed Leads launch from bundled `managed-lead`, no overlay (**KUB-173**, blocks `/manager` test). CONTEXT.md: Lead, Agent,
+  Agent definition, Manager (clash with punk's *manager mode* accepted).
