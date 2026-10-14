@@ -1,48 +1,48 @@
 # Logfire: role attribution for pi OTel data
 
-Query-time mapping from a pi session to the subagent role that ran it, from the first-turn prompt
-prefix pi-extensible-workflows injects (`Workflow: <name>\nAgent: <role>`). No instrumentation
-change. DataFusion dialect: `regexp_match(str, pat)` returns an array — index `[1]`. Validated
-live 2026-09-16, 14d window, `service_name = 'pi'`.
+Mapping from a pi session to the pi-herdsman agent role that ran it. pi-otel (KUB-171 patch)
+reads the env herdsman launches each delegated child `pi` with and sets OTel **resource**
+attributes:
+
+| resource attr | from env | meaning |
+|---|---|---|
+| `pi.agent.role` | `PI_HERDSMAN_AGENT_DEFINITION` | agent definition name |
+| `pi.agent.label` | `PI_HERDSMAN_LABEL` | per-run label |
+| `pi.parent.session.id` | `PI_SUBAGENT_PARENT_SESSION` | delegating session |
+| `pi.agent.owner.session.id` | `PI_HERDSMAN_OWNER_SESSION_ID` | owning session |
+| `pi.agent.child` | `PI_SUBAGENT_CHILD` | bool |
+
+Unset var → attr absent, so main sessions carry none and fall to `'main'`. Logfire stores resource
+attrs in the JSON text column `otel_resource_attributes` (on `records` and `metrics`), **not**
+`attributes` (per `query_schema_reference`; pi-otel's existing `pi.cwd` resource attr lands
+there). They are on every span/log/metric from process start — no wait for the session-end
+`invoke_agent pi` span. CTE syntax-checked live 2026-10-14 via the `logfire-swap` MCP (48h:
+all `main`, as expected pre-deploy); role values not yet observed.
+
+**Pre-Herdsman data** (pi-extensible-workflows) has no such attrs. It was attributed by matching
+the `Workflow: <name>\nAgent: <role>` prefix of `pi.user_prompt` on the first `invoke_agent pi`
+span (recipe in git history of this file, commit `50f83fb`). Under this CTE it reads as `main`.
 
 ## The CTE
 
 ```sql
-WITH first_agent AS (
-  SELECT attributes->>'pi.session.id'  AS sid,
-         service_instance_id           AS iid,
-         attributes->>'pi.user_prompt' AS prompt,
-         row_number() OVER (PARTITION BY attributes->>'pi.session.id'
-                            ORDER BY start_timestamp) AS rn
+WITH session_role AS (
+  SELECT attributes->>'pi.session.id' AS sid,
+         max(service_instance_id)    AS iid,
+         coalesce(max(otel_resource_attributes->>'pi.agent.role'), 'main') AS agent,
+         max(otel_resource_attributes->>'pi.agent.label')       AS label,
+         max(otel_resource_attributes->>'pi.parent.session.id') AS parent_sid
   FROM records
-  WHERE service_name = 'pi' AND span_name = 'invoke_agent pi'
+  WHERE service_name = 'pi' AND attributes->>'pi.session.id' IS NOT NULL
     AND start_timestamp >= now() - interval '14 days'
-),
-session_role AS (
-  SELECT sid, iid,
-         coalesce(regexp_match(prompt, '^Workflow: [^\n]+\nAgent: ([^\n]+)')[1], 'main') AS agent,
-         regexp_match(prompt, '^Workflow: ([^\n]+)\n')[1] AS workflow
-  FROM first_agent WHERE rn = 1
+  GROUP BY attributes->>'pi.session.id'
 )
 ```
 
-`row_number()` picks the earliest of multiple `invoke_agent pi` spans. Span join key:
+Resource attrs are constant per process, so `max()` only collapses rows. Span join key:
 `attributes->>'pi.session.id'` (on `chat *`, `execute_tool *`, `pi.turn`, `pi.session.*`);
-`gen_ai.conversation.id` holds the same value.
-
-## Resolution stats (14d, live)
-
-| agent | workflow | sessions |
-|---|---|---|
-| `otel role attribution recon` | subagents | 1 |
-| `<unresolved>` | – | 1 |
-
-Only 2 sessions in the window (genai export is days old), no legacy `pi.interaction` /
-`pi.tool.*` spans: this validates syntax, not population. The unresolved one failed on absence,
-not prompt format — it emitted `pi.session.start`, 10× `pi.turn`, 10× `chat claude-opus-5`,
-12× `execute_tool mcp` and **zero `invoke_agent pi`**. That span is emitted once per session
-with the final `pi.turn_count` (observed 13 for a 13-turn session), i.e. at session end;
-in-flight sessions carry no prompt attribute anywhere to sample.
+`gen_ai.conversation.id` holds the same value. Single-table queries can skip the join and read
+`coalesce(otel_resource_attributes->>'pi.agent.role', 'main')` off the row.
 
 ## Query (a) — cost and tokens per role per day (`chat` spans)
 
@@ -62,7 +62,7 @@ GROUP BY date_trunc('day', c.start_timestamp), coalesce(r.agent, '<unresolved>')
 ORDER BY day, cost_usd DESC LIMIT 50
 ```
 
-Cost is `pi.cost.usd`, **not** `gen_ai.usage.*`. Live: recon 13 calls / $0.5036; unresolved 12 / $0.8704.
+Cost is `pi.cost.usd`, **not** `gen_ai.usage.*`.
 ## Query (b) — tool calls per role per tool (`execute_tool` spans)
 
 ```sql
@@ -79,29 +79,24 @@ GROUP BY coalesce(r.agent, '<unresolved>'), t.attributes->>'gen_ai.tool.name'
 ORDER BY calls DESC LIMIT 50
 ```
 
-Live: recon → read 8, grep 8, ls 2, write 1, workflow_result 1, 0 errors.
 ## Query (c) — metrics: **no session id on data points**
 
-Verified: across 5907 pi metric points `pi.session.id` appears on **0**. Labels are only
-`gen_ai.system|tool.name|operation.name|request.model|response.model|token.type`, `error.type`;
-resource attributes carry no session id either, so the join is not symmetric with spans. Only
-bridge: `service_instance_id` (1 per session in records, same pid across sessions). Unproven:
+Verified 2026-09-16: across 5907 pi metric points `pi.session.id` appears on **0**; labels are
+only `gen_ai.system|tool.name|operation.name|request.model|response.model|token.type`,
+`error.type`, and the `service_instance_id` join to spans had zero overlap. Role now rides on the
+metric resource, so no join is needed (unproven until herdsman children export metrics):
 
 ```sql
--- CTE as above, then join on the instance id instead of the session id
-SELECT coalesce(ir.agent, '<unresolved>') AS agent,
+SELECT coalesce(m.otel_resource_attributes->>'pi.agent.role', 'main') AS agent,
        m.attributes->>'gen_ai.token.type' AS token_type,
        SUM(metric_sum(m.value)) AS tokens
 FROM metrics m
-LEFT JOIN session_role ir ON ir.iid = m.service_instance_id
 WHERE m.service_name = 'pi' AND m.metric_name = 'gen_ai.client.token.usage'
   AND m.recorded_timestamp >= now() - interval '14 days'
-GROUP BY coalesce(ir.agent, '<unresolved>'), m.attributes->>'gen_ai.token.type' LIMIT 20
+GROUP BY 1, 2 LIMIT 20
 ```
 
-Live: 100% `<unresolved>` (11.5M output / 70.9k input tokens) — zero instance-id overlap between
-metric-emitting and trace-emitting processes in this window. Treat metrics as role-blind; use
-span sums (query a) for per-role cost.
+Per-session metrics remain impossible; prefer span sums (query a) for per-role cost.
 
 ## Reuse: no server-side view
 
@@ -112,9 +107,9 @@ role dropdown via `LogfireQueryListVariable`) substitute values, not SQL. Nothin
 
 ## Caveats
 
-- **Coupling to piewf prompt format.** Role comes from the literal `Workflow: …\nAgent: …` prefix
-  in `pi.user_prompt`; change that prefix and attribution silently degrades to `main`.
-- `agent` is the free-text role string passed at launch (`otel role attribution recon` here),
-  not an enum — expect ad-hoc values, group loosely. `gen_ai.agent.name` is always `pi`.
-- In-flight sessions stay unresolved until `invoke_agent pi` exports at session end.
-- Tiny sample: 2 sessions / 677 records. Stats validate syntax, not distribution.
+- **Needs patched pi-otel.** Stock `npm:pi-otel` sets none of these attrs; everything reads `main`.
+- **Leads read as `main`.** Manager's `delegate_project` starts the Lead with `herdr agent start`
+  in a fresh worktree pane and passes no `--env`, so no herdsman vars reach it (herdsman
+  `startHerdrAgentInPane`). Only agents started via `startHerdrAgent` (delegation) carry them.
+- `agent` is the herdsman agent definition name. `gen_ai.agent.name` is always `pi`.
+- Pre-Herdsman sessions read as `main` (see note at top).
