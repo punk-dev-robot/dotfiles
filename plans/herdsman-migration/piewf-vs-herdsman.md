@@ -572,3 +572,16 @@ Facts found while preparing round 3:
 | 21 | Order | Phase 0 → Phase 2 templates with a `dotter -d` dry run (before the install) → pi-otel patch → Phase 1 install plus runtime checks → Phase 3 → trial. |
 | 22 | pi-herdr-rename | The user is unhappy with it anyway. **Remove `npm:@henryqw/pi-herdr-rename` in Phase 1**, so the conflict check is dropped. |
 | 23 | `isSubagent()` | Correction to Phase 3: the tool-absence check already classifies our 8 definitions correctly, because their `tools:` lists exclude `herdr_*`. The real gaps are a definition without a `tools:` list, and **managed Leads**: they would run punk-handoff into a pane Herdsman doesn't own. The `Workflow:` branch is dead. Open: managed Leads → subagent behaviour on strikes? Land in Phase 3? |
+
+### Progress (2026-10-14)
+
+- KUB-171 created. Doc drift fixed (`8270b29`).
+- **pi-otel patch**: fork branch `punk-dev-robot/pi-otel@feat/KUB-171-herdsman-agent-attrs` (`35328bc`, based on upstream
+  0.3.0; 35/35 tests). Phase 1 swaps `"npm:pi-otel"` for the `git:` source of that branch. The old fork branch
+  `feat/thinking-dropped-attr` is not included. Logfire doc now reads `otel_resource_attributes->>'pi.agent.role'` (`53ff7e2`).
+- **Finding: managed Leads get no env vars.** `delegate_project` starts the Lead via `startHerdrAgentInPane`
+  (`lead-runtime.ts:6966`) with no `--env`; only `--session-id <assignment.id>`. Delegated agents get
+  `PI_HERDSMAN_*`, `PI_SUBAGENT_CHILD=1`, and `PI_SUBAGENT_PARENT_SESSION` (`agent-controller.ts:5767-5781`, `herdr.ts:587-620`).
+  Consequences: managed Leads read as `main` in Logfire, and `isSubagent()` cannot tell them apart by env.
+- Logfire MCP routes are swapped: `logfire-swap` = personal org (`kuba-gaj`/`coding-agent`, pi data), `logfire` = work org.
+  The user will swap the auth caches later.
