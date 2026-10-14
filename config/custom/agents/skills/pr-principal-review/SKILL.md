@@ -34,11 +34,12 @@ Run from the repo checkout: agents inherit your cwd and read surrounding source 
   the PR head (`gh pr checkout <n>`). Save `gh pr diff <n>` to
   `.pi-herdsman/pr-review/PR-<n>.diff`.
   Report path: `reviews/PR-<n>-review-<A>-vs-<B>.md`.
-- **Branch**: save `git diff <base>...HEAD` to `.pi-herdsman/pr-review/branch-<base>.diff`
+- **Branch**: save `git --no-pager diff --no-ext-diff --no-color <base>...HEAD` (a plain
+  `git diff` may go through an external differ such as difftastic, which hides deletions) to `.pi-herdsman/pr-review/branch-<base>.diff`
   (`<base>` with every character outside `[A-Za-z0-9._-]` replaced by `_`).
   Report path: `reviews/branch-review-vs-<base>-<A>-vs-<B>.md`.
 
-Done when the diff file exists and is non-empty, `<A>`/`<B>`/`<ARB>` are fixed from `sota`, and `TARGET` (`PR #<n>` or
+Done when the diff file exists, starts with `diff --git`, `<A>`/`<B>`/`<ARB>` are fixed from `sota`, and `TARGET` (`PR #<n>` or
 `the branch diff vs <base>`) and the report path are fixed.
 
 ## 2. Independent review
