@@ -665,3 +665,11 @@ Facts found while preparing round 3:
   real bug: `diff.external=difft` made the branch artifact show deletions as additions → fixed `0814ee6` (`--no-ext-diff`, artifact must
   start with `diff --git`); sota run on the fix: approve. Untested: PR mode (`gh pr diff`), retired-reviewer path. Below threshold, open:
   no dirty-tree check; reviewer body output format (ship/block) vs skill briefs (`CONSENSUS:`). `.pi-herdsman/` + `reviews/` land untracked in the target repo.
+- **`managed-lead` overlay (KUB-173, `83a6191`, `fd8f8ac`):** opus/high, main working toolset, ext_base+bash-guard+context-events,
+  project + global context, bundled body. Reserved-profile locks: `enabled`, `agents`, `permission`, `systemPromptMode` (must be append).
+- **`/manager` trial passed** (scratch repo `~/dev/scratch/hm-trial`, Herdr workspace `wH`): `/manager` → two `delegate_project` Leads
+  (`feat/greet`, `feat/count`) in their own worktrees/workspaces, both committed, tests green, nothing merged. Each Lead confirmed:
+  `message_supervisor`/`list_peers`/`message_peer` present, Coding Standards global context loaded, `claude-opus-5-5`/high (overlay applied).
+  **Restart mid-run:** `/quit` the Manager while `feat/count` was still working, `pi --session <id>` → role came back as Manager without
+  re-running `/manager`; the `feat/count` report sent during the outage was delivered on return; `list_staff` showed both assignments
+  intact. Note: the held report did **not** trigger a Manager turn by itself (matches docs: only execution failures trigger); needed a nudge.
