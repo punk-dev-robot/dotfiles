@@ -313,6 +313,12 @@ window_title = "{hostname}: {workspace} · {tab}"
 status_indicators = "symbols"
 prompt_new_workspace_name = true
 tab_bar_position = "bottom"
+# Host badge: `command` resolves on the server, so the shared config shows
+# which machine the selected panes run on (sky = mac, peach = local).
+tab_bar_right = [
+  { type = "zoom" },
+  { type = "command", command = 'case $(uname) in Darwin) echo " mac";; *) echo "󰣇 $(hostname -s)";; esac', interval_seconds = 3600, timeout_seconds = 2 },
+]
 
 [ui.sidebar.agents]
 row_gap = 1
@@ -328,6 +334,10 @@ rows = [
     ] },
   ],
   [
+    { token = "machine", fg = "#fab387", rules = [
+      { equals = "kubas-mac", fg = "#89dceb", bold = true },
+      { equals = "Local", dim = true },
+    ] },
     { token = "tab", dim = false },
   ],
 ]

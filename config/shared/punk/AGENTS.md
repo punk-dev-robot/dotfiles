@@ -33,3 +33,11 @@ works" is wrong if you didn't verify the edge case asked about. Surface uncertai
 @/home/kuba/.tessl/RULES.md
 
 @/Users/kuba.gaj/.tessl/RULES.md
+
+<!-- plannotator-inbox:start v1 · added by Plannotator. Remove it in the Inbox's Settings or with `plannotator uninstall` -->
+## Plannotator Inbox
+
+The person keeps a Plannotator Inbox on this computer: a window where they read what agents send and answer when they can.
+If you have a `plannotator_inbox` tool or a `plannotator-inbox` MCP server, use its `send_message` when the person isn't here to answer in this chat: to ask a decision only they can make (as a `:::question` block), or to hand over finished long work (put the files to read in `attachments`). Then keep working.
+Their reply comes back to this session by itself where your agent supports that; otherwise call `wait_for_reply`. When they are here, ask in this chat instead.
+<!-- plannotator-inbox:end -->

@@ -3,8 +3,6 @@
     "npm:pi-terminal-theme",
     "npm:pi-vim",
     "npm:@pi-kaush/pi-double-paste@0.1.0",
-    "npm:pi-tool-display",
-    "npm:pi-fancy-footer",
     "npm:pi-image-tools",
     "npm:pi-rtk-optimizer",
     "npm:pine-of-glass",
@@ -33,17 +31,17 @@
     },
     "npm:@plannotator/pi-extension",
     "npm:@firstpick/pi-extension-tools",
-    "npm:pi-cc-header",
     "npm:pi-skills-manager",
     "npm:@d3ara1n/pi-context-include",
     "npm:@henryqw/pi-task-models",
     "git:github.com/punk-dev-robot/pi-otel@feat/KUB-171-herdsman-agent-attrs",
     "npm:pi-herdsman",
     "npm:pi-ask-user",
-    "npm:@henryqw/pi-herdr-btw",
     "npm:pi-multi-account",
     "npm:@gotgenes/pi-anthropic-auth",
-    "git:github.com/punk-dev-robot/pi-pstack-herdsman@kub-176-herdsman-026-compat"
+    "git:github.com/punk-dev-robot/pi-pstack-herdsman@kub-176-herdsman-026-compat",
+    "npm:pi-open-tui",
+    "npm:pi-tool-display"
   ],
   "extensions": [
     "-builtin:mcp"
@@ -98,10 +96,6 @@
   "collapseChangelog": true,
   "clearOnStart": true,
   "theme": "terminal",
-  "ccHeader": {
-    "pkg": true,
-    "readOnlyConfig": true
-  },
   "otel": {
     "enabled": true,
     "endpoint": "https://logfire-eu.pydantic.dev",
@@ -116,16 +110,5 @@
       "metrics": false,
       "logs": true
     }
-  },
-  "skills": [
-    "-../../.agents/skills/plannotator-compound/SKILL.md",
-    "-../../.agents/skills/plannotator-setup-goal/SKILL.md",
-    "+../../.agents/skills/tessl__wayfinder/SKILL.md",
-    "+../../.agents/skills/logfire-instrumentation/SKILL.md",
-    "-../../.agents/skills/tessl__html-prototype/SKILL.md",
-    "-../../.agents/skills/tessl__html-wireframe/SKILL.md",
-    "-../../.agents/skills/tessl__writing-for-agents/SKILL.md",
-    "-../../.agents/skills/tessl__wizard/SKILL.md",
-    "-../../.agents/skills/tessl__setup-matt-pocock-skills/SKILL.md"
-  ]
+  }
 }

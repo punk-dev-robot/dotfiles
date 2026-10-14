@@ -15,7 +15,7 @@
       {
         "hooks": [
           {
-            "command": "plannotator",
+            "command": "/home/kuba/.local/bin/plannotator",
             "timeout": 345600,
             "type": "command"
           }
