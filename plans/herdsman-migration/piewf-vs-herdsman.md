@@ -599,3 +599,16 @@ Facts found while preparing round 3:
   - The bodies of recon, planner and comms were fixed: recon has no inherited AGENTS.md, punk-sdlc is disabled, and "workflow" wording is gone.
   - Correction to §4.2: global definitions load from `getAgentDir()/agents` = `~/.config/pi/agent/agents/`.
   - Not verified: rendering for mac, and runtime acceptance of `--extension`/`--skill` paths, child auth and tool globs (Phase 1).
+- **Smoke test** (`pi -e npm:pi-herdsman` in a separate Herdr pane, settings untouched; `-e` takes package sources):
+  - **Blocker found and fixed:** the `/tools` allowlist (`config/custom/pi/webui/settings.json`) disables new static tools, so
+    the Lead had Herdsman's prompt but no tools. Added the 21 Herdsman tool names. The Phase 5 pin swap is partly done; the piewf
+    pins stay until removal.
+  - **Bug found and fixed:** Herdsman skips symlinked definitions (`readdir` + `entry.isFile()`, `agent-definitions.ts:159`),
+    so the `enabled:false` overlays deployed as symlinks were silently ignored. They're now `type = "template"` (real copies). Verified:
+    the 3 are listed as disabled and `delegate_agent scout` is rejected. Worth an upstream issue: no warning is shown.
+  - Passed: `recon` gets exactly its tools plus `ask_owner`, repowise works, no edit/bash. `impl` session file shows
+    `claude-sonnet-5-5`/`medium`, so short model ids and `thinking` take effect. Children launched with no path/auth/model errors,
+    so the `noExtensions` + explicit-paths children authenticate. Both were cleaned up after finishing.
+  - Child env, verified at runtime: `PI_HERDSMAN_AGENT_DEFINITION`, `_LABEL`, `_OWNER_SESSION_ID`, `_RUN_ID`, `_MAILBOX`,
+    `_WORKSPACE_ID`, `_OWNER_DISPLAY`, `_ALLOWED_AGENT_DEFINITIONS`, `PI_SUBAGENT_CHILD=1`, `PI_SUBAGENT_PARENT_SESSION`, `PI_OFFLINE=1`.
+  - Not yet tested: nested dev→recon, `continue_agent`, restart re-bind, `/manager`, researcher web tools, mac.
