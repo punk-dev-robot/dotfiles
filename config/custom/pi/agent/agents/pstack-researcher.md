@@ -1,7 +1,7 @@
 ---
 # dotter template (KUB-176): edit in ~/dotfiles, then `dotter deploy`. Vars: .dotter/global.toml [base.variables].
 # pstack leaf: name/description/thinking/body verbatim from pi-pstack-herdsman definitions/pstack-researcher.md (names are hard-coded in its playbooks).
-# upstream model openai-codex/gpt-6.1-sol -> {{model_strong}}; tools/extensions = our `researcher` kit (codex tools dropped).
+# upstream model openai-codex/gpt-6.1-sol -> {{model_strong}}; tools/extensions = our `researcher` kit + upstream grep/find/ls (codex tools dropped).
 name: pstack-researcher
 description: Bounded pstack researcher
 model: {{model_strong}}
@@ -9,7 +9,7 @@ thinking: medium
 systemPromptMode: append
 inheritProjectContext: true
 inheritGlobalContext: false
-tools: [read, write, bash, mcp, mcpScript, web_search, fetch_content, get_search_content, ask_advisor, record_advisor_outcome, "ctx_*", codemode]
+tools: [read, grep, find, ls, write, bash, mcp, mcpScript, web_search, fetch_content, get_search_content, ask_advisor, record_advisor_outcome, "ctx_*", codemode]
 agents: []
 noSkills: true
 skills: []
