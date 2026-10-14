@@ -97,6 +97,18 @@ Blocking or rewriting a tool call via hooks. Distinct from steering: steering
 advises, enforcement prevents.
 _Avoid_: guardrail, policy, ban
 
+**Poteto mode**:
+The opt-in pi-pstack-herdsman playbook mode (`/poteto-mode`) for the lead
+session: match a task to a playbook, then delegate its steps to the pstack
+roster.
+_Avoid_: pstack mode, controller mode
+
+**pstack roster**:
+The 11 `pstack-*` leaf agent definitions the poteto-mode playbooks name.
+Ours are dotter templates on our model tiers and tool kits; names must match
+the package's.
+_Avoid_: pstack agents, poteto agents
+
 ### Ticket workflow
 
 **Stage**:

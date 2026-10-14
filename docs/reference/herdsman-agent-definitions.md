@@ -14,7 +14,8 @@ body. Herdsman loads global definitions from `~/.config/pi/agent/agents/`
 Roster: `recon`, `researcher`, `dev`, `impl`, `tests`, `reviewer`, `comms`,
 `planner`, plus `reviewer-sol`, `reviewer-opus`, `reviewer-astra` (second-model reviewers) and
 `arbiter` / `arbiter-opus` (write the report; share `agent-bodies/arbiter.md`) for the `pr-principal-review` skill, plus the reserved
-`managed-lead` overlay (below; not an Agent). Only `dev` delegates (`agents: [recon, researcher, tests]`); every
+`managed-lead` overlay (below; not an Agent), plus the 11 `pstack-*` leaves for
+poteto-mode playbooks (see [pstack roster](#pstack-roster-kub-176)). Only `dev` delegates (`agents: [recon, researcher, tests]`); every
 other definition is a leaf. `scout.md`, `implementer.md`, `generalist.md` are
 `enabled: false` overlays that switch off the bundled definitions our roster
 replaces.
@@ -120,6 +121,47 @@ the bundled body stays. Without pi-herdr it has no `herdr_*` tools, so
 punk-steering's `isSubagent()` treats it as a child: no punk-handoff into a
 pane Herdsman owns. Changes apply to the next Lead launch only
 (`stop_lead` + `resume_project` to restart one).
+
+## pstack roster (KUB-176)
+
+pi-pstack-herdsman (our fork `punk-dev-robot/pi-pstack-herdsman`, branch
+`kub-176-herdsman-026-compat`) adds poteto mode: the lead matches a task to a
+playbook and delegates its steps to `pstack-*` leaves. The 11 names
+(`pstack-advisor`, `-bug-fix`, `-hillclimb`, `-how-explorer`,
+`-investigator`, `-perf-issue`, `-poteto-agent`, `-researcher`, `-reviewer`,
+`-verifier`, `-verifier-sol`) are hard-coded in the package's playbook and
+skill prose, so **our definitions keep the package's names**. Name,
+description, thinking and body are verbatim from the package's
+`definitions/`; we only swap models and tool kits. All are leaves
+(`agents: []`), `systemPromptMode: append`, `inheritProjectContext: true`,
+`skills: []`.
+
+Model map (1:1 by upstream tier):
+
+| Upstream model | Ours | Roles |
+|---|---|---|
+| `openai-codex/gpt-6.1-sol` | `{{model_strong}}` | advisor, bug-fix, poteto-agent, researcher, reviewer, verifier-sol |
+| `openai-codex/gpt-6-astra` | `{{model_sota}}` | perf-issue, verifier |
+| `openai-codex/gpt-6-luna` | `{{model_workhorse}}` | hillclimb, how-explorer, investigator |
+
+Kit map (tools + extensions copied from our matching definition; upstream's
+codex tools `exec_command`, `write_stdin`, `exec`, `wait`, `notebook`,
+`new_context`, `history`, `notes` dropped; kit skills not copied):
+
+| Kit | Roles |
+|---|---|
+| `recon` | investigator, how-explorer, advisor, reviewer |
+| `dev` (minus the `agent` sentinel and `agents:` list) | poteto-agent, bug-fix, perf-issue, hillclimb |
+| `researcher` | researcher |
+| `reviewer` | verifier, verifier-sol |
+
+Routing: inside an active poteto-mode playbook use its `pstack-*` role table
+for that task; otherwise the default routing (`steering/delegation-herdsman.md`).
+
+The package auto-copies its own templates to
+`~/.config/pi/agent/agents/pstack-<role>.md` on lead `session_start`, but
+only for **missing** files (`wx`, never overwrites). With ours deployed, it
+never fires; delete one and the package's codex-pinned copy comes back.
 
 ## Tool activation (`/tools`)
 

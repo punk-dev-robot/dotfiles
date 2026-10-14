@@ -54,6 +54,19 @@ default_target_type = "symbolic"
 "config/custom/pi/agent/agents/scout.md" = { target = "~/.config/pi/agent/agents/scout.md", type = "template" }
 "config/custom/pi/agent/agents/implementer.md" = { target = "~/.config/pi/agent/agents/implementer.md", type = "template" }
 "config/custom/pi/agent/agents/generalist.md" = { target = "~/.config/pi/agent/agents/generalist.md", type = "template" }
+# KUB-176: pstack-* leaves for pi-pstack-herdsman's poteto-mode playbooks. Names match the package's definitions/ on purpose:
+# its auto-copy only writes *missing* ~/.config/pi/agent/agents/pstack-*.md, so with these deployed it never fires.
+"config/custom/pi/agent/agents/pstack-advisor.md" = { target = "~/.config/pi/agent/agents/pstack-advisor.md", type = "template" }
+"config/custom/pi/agent/agents/pstack-bug-fix.md" = { target = "~/.config/pi/agent/agents/pstack-bug-fix.md", type = "template" }
+"config/custom/pi/agent/agents/pstack-hillclimb.md" = { target = "~/.config/pi/agent/agents/pstack-hillclimb.md", type = "template" }
+"config/custom/pi/agent/agents/pstack-how-explorer.md" = { target = "~/.config/pi/agent/agents/pstack-how-explorer.md", type = "template" }
+"config/custom/pi/agent/agents/pstack-investigator.md" = { target = "~/.config/pi/agent/agents/pstack-investigator.md", type = "template" }
+"config/custom/pi/agent/agents/pstack-perf-issue.md" = { target = "~/.config/pi/agent/agents/pstack-perf-issue.md", type = "template" }
+"config/custom/pi/agent/agents/pstack-poteto-agent.md" = { target = "~/.config/pi/agent/agents/pstack-poteto-agent.md", type = "template" }
+"config/custom/pi/agent/agents/pstack-researcher.md" = { target = "~/.config/pi/agent/agents/pstack-researcher.md", type = "template" }
+"config/custom/pi/agent/agents/pstack-reviewer.md" = { target = "~/.config/pi/agent/agents/pstack-reviewer.md", type = "template" }
+"config/custom/pi/agent/agents/pstack-verifier.md" = { target = "~/.config/pi/agent/agents/pstack-verifier.md", type = "template" }
+"config/custom/pi/agent/agents/pstack-verifier-sol.md" = { target = "~/.config/pi/agent/agents/pstack-verifier-sol.md", type = "template" }
 # vendored pi-lsp (patched, see its package.json); lives outside the recursive pi/agent map so node_modules is not walked; whole-dir symlink. `npm install` inside after clone.
 "config/custom/pi-lsp" = { target = "~/.config/pi/agent/extensions/pi-lsp", type = "symbolic", recurse = false }
 # @firstpick/pi-extension-tools (/tools) resource defaults; path via PI_WEBUI_SETTINGS_FILE in .zshenv

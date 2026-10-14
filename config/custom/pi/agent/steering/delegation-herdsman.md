@@ -26,6 +26,7 @@ Delegate with `delegate_agent` to a definition:
   never land here. **Bulk reads or multi-step external ops go to `comms`** (triage a
   project, cross-reference issues, anything returning tens of KB).
 - **A finished change goes to `reviewer`** before you call it done.
+- **Inside an active poteto-mode playbook, use its `pstack-*` role table for that task**; otherwise the routing above.
 
 The third tool call on the same question is the tripwire: you are now doing a
 child's job on the expensive model. Stop, brief, dispatch. Watch for salami
