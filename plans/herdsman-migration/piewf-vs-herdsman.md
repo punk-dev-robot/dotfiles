@@ -639,3 +639,13 @@ Facts found while preparing round 3:
     **The `Workflow:` check stays until piewf is removed**: today's piewf children have `herdr_*` tools (roles not applied),
     so that prefix is the only thing classifying them. Test 23/23; it fails when the env branch is removed.
   - Upstream issue drafts in `upstream/` (symlinked definitions skipped silently; managed Leads get no env). Not posted yet.
+- **Upstream issues posted:** boadij/pi-herdsman#390 (symlinked definitions ignored), #391 (managed Leads get no env). Both offer a PR.
+- **Phase 1 switched (2026-10-14):** `settings.json` adds `npm:pi-herdsman`; removes `pi-extensible-workflows`, `@piewf/herdr`,
+  `@henryqw/pi-herdr-rename`; `pi-otel` now comes from `git:github.com/punk-dev-robot/pi-otel@feat/KUB-171-herdsman-agent-attrs`.
+  - pi installs git packages with `--omit=dev`, so upstream's "build in `prepare`" (`7be94cc`) fails (needs husky and tsc).
+    The fork branch commits `dist/` and sets `prepare: husky || true` (`c59e25c`). **Rebuild and commit `dist/` after any fork change.**
+  - `ext_base` now points children at the git copy of pi-otel.
+  - Phase 5: piewf tool pins (`subagents_*`, `workflow*`) and stale `herdr_start_worktree`/`ask_user_question` removed from the `/tools` allowlist.
+- **End-to-end check with the real config** (fresh pi, no `-e`): no `subagents_*`/`workflow`; Herdsman tools and codemode present;
+  only `delegation-herdsman` briefing loads; recon answered correctly; **`continue_agent` reuses the session**; Logfire shows
+  `pi.agent.role=recon`, `pi.agent.label=e2e-recon`, `pi.parent.session.id` set. **Trial can start.**

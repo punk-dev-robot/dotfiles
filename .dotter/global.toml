@@ -73,7 +73,7 @@ model_review_openai = "openai-codex/sol"
 # Child extension entries, relative to ~/.config/pi/agent/; rendered as {{home_dir}}/.config/pi/agent/<entry>.
 # No pi-rtk-optimizer, no pi-caveman in children.
 ext_base = [
-  "npm/node_modules/pi-otel/dist/index.js",
+  "git/github.com/punk-dev-robot/pi-otel/dist/index.js",  # KUB-171 fork (herdsman attrs)
   "npm/node_modules/@ff-labs/pi-fff/src/index.ts",
   "npm/node_modules/context-mode/build/adapters/pi/extension.js",
   "npm/node_modules/pi-mcp-adapter/index.ts",
