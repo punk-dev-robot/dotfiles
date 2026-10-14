@@ -42,7 +42,8 @@
     "npm:pi-ask-user",
     "npm:@henryqw/pi-herdr-btw",
     "npm:pi-multi-account",
-    "npm:@gotgenes/pi-anthropic-auth"
+    "npm:@gotgenes/pi-anthropic-auth",
+    "git:github.com/punk-dev-robot/pi-pstack-herdsman@kub-176-herdsman-026-compat"
   ],
   "extensions": [
     "-builtin:mcp"
