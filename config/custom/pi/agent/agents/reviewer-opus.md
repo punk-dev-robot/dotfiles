@@ -5,7 +5,7 @@
 name: reviewer-opus
 description: Reviewer on the strong (opus) model. Use for an independent review opinion (pr-principal-review default side A)
 model: {{model_strong}}
-thinking: high
+thinking: xhigh
 systemPromptMode: replace
 inheritProjectContext: false
 inheritGlobalContext: false

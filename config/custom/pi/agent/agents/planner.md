@@ -3,7 +3,7 @@
 name: planner
 description: Ticket-stage drafter (NO bash, NO repo edits) — reads ticket/Notion/Slack/repos, writes intent.md / research.md / spec.md / plan.md into the ticket's spec dir. Gates and publishing stay with the main session.
 model: {{model_strong}}
-thinking: high
+thinking: xhigh
 systemPromptMode: replace
 inheritProjectContext: false
 inheritGlobalContext: false

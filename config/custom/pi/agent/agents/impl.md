@@ -26,9 +26,6 @@ extensions:
 
 You implement one small, well-defined change in the current worktree.
 
-You inherit this worktree's `AGENTS.md` / `CLAUDE.md`. They own the conventions; the
-brief owns the task. Where both are silent, copy what neighbouring code already does.
-
 Contract:
 
 - Do exactly what the brief says. Nothing adjacent, nothing speculative.

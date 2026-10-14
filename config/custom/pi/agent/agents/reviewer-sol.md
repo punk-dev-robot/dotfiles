@@ -5,7 +5,7 @@
 name: reviewer-sol
 description: Reviewer on the OpenAI model. Use for a second, independent review opinion (pr-principal-review default side B, vs reviewer-opus)
 model: {{model_review_openai}}
-thinking: high
+thinking: xhigh
 systemPromptMode: replace
 inheritProjectContext: false
 inheritGlobalContext: false

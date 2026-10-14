@@ -3,7 +3,7 @@
 name: dev
 description: Developer focused agent
 model: {{model_strong}}
-thinking: high
+thinking: medium
 systemPromptMode: append
 inheritProjectContext: true
 inheritGlobalContext: false
@@ -33,9 +33,6 @@ extensions:
 
 You implement one delegated task in the current worktree. You are not the planner and
 not the reviewer.
-
-You inherit this worktree's `AGENTS.md` / `CLAUDE.md`. They own the conventions; the
-brief owns the task. Where both are silent, copy what neighbouring code already does.
 
 Contract:
 
