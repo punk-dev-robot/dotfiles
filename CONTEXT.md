@@ -69,7 +69,7 @@ _Avoid_: dropdown, hyprscratch, special
 **Harness**:
 A runtime that loads context files and exposes tools to a model — coding-agent
 CLIs (pi, Claude Code, codex, opencode) and custom SDK-built agents alike.
-_Avoid_: agent, CLI, tool
+_Avoid_: CLI, tool
 
 **Context file**:
 A markdown file (`AGENTS.md`, `CLAUDE.md`) a harness reads into the system
@@ -96,6 +96,29 @@ _Avoid_: rules, instructions, hints
 Blocking or rewriting a tool call via hooks. Distinct from steering: steering
 advises, enforcement prevents.
 _Avoid_: guardrail, policy, ban
+
+### Delegation
+
+**Lead**:
+A pi session that owns the Agents it delegates. Every normal pi session you
+talk to is a Lead.
+_Avoid_: main, parent, orchestrator
+
+**Agent**:
+A delegated pi session running one bounded assignment from an Agent
+definition, owned by a Lead or by another Agent.
+_Avoid_: subagent, child, worker
+
+**Agent definition**:
+The named recipe an Agent starts from: model, tools, extensions, skills,
+prompt (`recon`, `dev`, `reviewer`, ...).
+_Avoid_: role, profile, persona
+
+**Manager**:
+A Lead switched into coordinating other Leads, one per Git branch of a single
+repo, instead of delegating to Agents. Not the same as punk's *manager mode*
+(a session owning a project's delivery); the two share the word.
+_Avoid_: coordinator, orchestrator
 
 ### Ticket workflow
 
@@ -131,7 +154,7 @@ _Avoid_: feature dir, workspace, folder
 **Verifier**:
 A concrete check named in the spec that proves an acceptance criterion
 ("query X returns 0 rows", "p95 < 300 ms", "screenshot matches"). Run in the
-`verify` stage by the tests/reviewer roles; no dedicated "verifier agent" noun.
+`verify` stage by the tests/reviewer Agents; no dedicated "verifier agent" noun.
 _Avoid_: acceptance test, validator, verifier agent
 
 **Gate**:

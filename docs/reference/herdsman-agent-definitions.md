@@ -1,129 +1,146 @@
-# piewf role configuration
+# pi-herdsman agent definitions
 
-How agent roles for pi-extensible-workflows (piewf) are configured in this repo.
+How the agents behind `delegate_agent` are configured in this repo. pi-herdsman
+replaced piewf as the delegation layer on 2026-10-14 (KUB-171; rationale and
+decision log in `plans/herdsman-migration/piewf-vs-herdsman.md`). Upstream schema:
+`~/.config/pi/agent/npm/node_modules/pi-herdsman/docs/reference/agent-definition-schema.md`.
 
-## Where roles live
+## Where definitions live
 
-Roles are single self-contained files in
-`config/custom/pi/agent/pi-ext-roles/roles/<name>.md` (shared settings:
-`config/custom/pi/agent/pi-ext-roles/settings.json`), since piewf 6.1 split roles
-into `@piewf/pi-ext-roles`:
-YAML frontmatter (model, tools/skills/extensions selectors) + the prompt as body.
-Eight roles: `recon`, `researcher`, `dev`, `impl`, `reviewer`, `tests`, `comms`,
-`planner` — consumed by both piewf workflows (`agent(...)`) and standalone `subagents_run`.
+One file per definition in `config/custom/pi/agent/agents/<name>.md`: YAML
+frontmatter (model, thinking, tools, skills, extensions, context) + the prompt as
+body. Herdsman loads global definitions from `~/.config/pi/agent/agents/`
+(precedence: bundled < project `<cwd>/.pi/agents/` < global).
 
-> **Not applied today (2026-10):** `role:` only takes effect with the
-> `npm:@piewf/pi-ext-roles` *Pi extension* in `settings.json` `packages`; only
-> the pnpm-global `pi-role` launcher is installed, so children run on the main
-> model with the full toolset. Being replaced by pi-herdsman (KUB-171,
-> `plans/herdsman-migration/`).
+Roster: `recon`, `researcher`, `dev`, `impl`, `tests`, `reviewer`, `comms`,
+`planner`, plus `reviewer-sol` (OpenAI second reviewer) and `arbiter` (writes the
+report) for the `pr-principal-review` skill. Only `dev` delegates (`agents: [recon, researcher, tests]`); every
+other definition is a leaf. `scout.md`, `implementer.md`, `generalist.md` are
+`enabled: false` overlays that switch off the bundled definitions our roster
+replaces.
 
-Deployed as **symlinks** through the whole-dir dotter mapping
-(`config/custom/pi/agent` → `~/.config/pi/agent`). Edit the repo file directly;
-changes are live in new sessions, no `dotter deploy` needed.
+Shared bodies live in `config/custom/pi/agent/agent-bodies/` and are pulled in
+with a body line `@../agent-bodies/<name>.md` (resolved relative to the
+definition file, expanded at launch). `reviewer` and `reviewer-sol` share
+`agent-bodies/reviewer.md`. Keep them **outside** `agents/`: Herdsman parses
+every `*.md` under `agents/` recursively as a definition.
 
-> History: an earlier design used dotter handlebars variables
-> (`pi_tools_*`, `pi_model_*`) with template-copy deployment and shared prompt
-> bodies under `config/custom/pi/prompts/`. Replaced 2026-08 by plain
-> self-contained files + symlinks. The old `pi-subagents` extension
-> (`agents/<name>.md`) was removed 2026-08; `lead` retired pending a piewf
-> workflow-script port.
+**Every definition is a dotter template.** Each file has its own
+`type = "template"` entry in `.dotter/global.toml` `[base.files]`, so the
+deployed copy is a real file:
+
+1. Edit the repo file (or a variable in `[base.variables]`).
+2. `dotter deploy`.
+3. `herdsman-defs-check` (`local/bin/`): every rendered `extensions:` / `skills:`
+   path and every body `@file` must exist, and no `{{` may survive. Package updates can move entry
+   files, so rerun it after `pi update --extensions`.
+4. `/herdsman definitions` lists the effective roster; a single invalid
+   definition fails the whole roster.
+
+Gotchas:
+
+- **Templates, never symlinks.** Herdsman skips symlinked definition files
+  silently (`readdir` + `isFile()`; boadij/pi-herdsman#390). A new definition
+  needs its own `type = "template"` line even when it has no variables.
+- **Change models through dotter variables**, not the `/herdsman definitions`
+  model editor: the editor writes override files into the same directory that
+  dotter renders into.
+
+## Template variables (`.dotter/global.toml` `[base.variables]`)
+
+Herdsman has no model-alias layer; these variables are ours.
+
+- `model_workhorse` / `model_strong` / `model_sota` / `model_review_openai` —
+  short `provider/family` ids (`anthropic/sonnet`, `anthropic/opus`,
+  `anthropic/fable`, `openai-codex/sol`) that pi resolves to the newest model at
+  launch. **The provider prefix is mandatory**: bare `sonnet` resolves to an
+  `openai-codex` model. `thinking:` is a separate per-definition field. A new
+  model release therefore changes agents silently; Logfire's model attribute
+  shows it.
+- `ext_base`, `ext_web`, `ext_ponytail`, `ext_bash_guard`,
+  `ext_context_events` — lists of extension entry files relative to
+  `~/.config/pi/agent/`, rendered per entry as
+  `{{@root.home_dir}}/.config/pi/agent/{{this}}` inside `{{#each}}`
+  (`home_dir` is per host). `ext_base` goes to every definition;
+  `ext_web` to researcher and planner, `ext_ponytail` to dev,
+  `ext_bash_guard` to bash-capable definitions, `ext_context_events` to all.
+  No pi-rtk-optimizer and no pi-caveman in agents.
 
 ## Frontmatter conventions
 
-- `model:` — one string: an alias (optionally `alias:thinking`) or literal
-  `provider/model:thinking`; a separate `thinking:` key is rejected. Roles use
-  the static alias registry in `pi-ext-roles/settings.json` `modelAliases`:
-  `workhorse` (sonnet-5-5:medium — impl/tests/comms; recon uses `workhorse:low`),
-  `strong` (opus-5-5:high — dev/researcher), `sota` (fable-5-1:high — reviewer),
-  `sota-openai` (gpt-6-astra:high), `review-openai` (gpt-6.1-sol:high, PR-review
-  OpenAI branch), `cheap-model` (chains to `workhorse`, back-compat). Naming:
-  `-openai` suffix for OpenAI-pinned aliases, no model codenames in alias names.
-  Model upgrades = edit the alias target, not the role files. A suffix on an
-  alias reference overrides the target's thinking level. Beware: a trusted
-  project's `modelAliases` key REPLACES the whole global map (`{}` wipes it);
-  omit the key to inherit. Aliases are piewf-only — `advisor.json`,
-  `pi-task-models`, and web-search take literal `provider/model` strings.
-- `tools:` starts with `"!*"` (wipe) then lists literals (plus lazy-tool
-  globs `ctx_*` / `repowise_*`). Since the repowise migration (KUB-17):
-  navigation = `readSeek_*`, call-graph = `cymbal_impact` / `cymbal_changed`
-  (only cymbal tools still active), codebase intelligence = direct
-  `repowise_*` tools (recon/dev/reviewer/tests). Every role with `mcp` also
-  gets `mcpScript` + the `mcp-scripting` skill. `ctx_*` on all roles except
-  recon (only `ctx_search`/`ctx_execute_file` — keeps its no-shell design)
-  and impl (minimal). `source_check` removed 2026-08 — disabled in
-  web-search.json, passing it was a no-op.
-- `skills:` negations after the `"!*"` wipe (exact names — a selector matching
-  nothing silently disables everything): `dev` = `cock-tdd`,
-  `cock-codebase-design`, `mcp-scripting`; `tests` = `cock-tdd`,
-  `mcp-scripting`; `recon` = `logfire-query`, `mcp-scripting`; `researcher` =
-  `cock-research`, `mcp-scripting`; `comms` and `reviewer` = `mcp-scripting`;
-  `impl` = none (`["!*"]`) — composio/notion/linear skills dropped with
-  the move to direct remote MCP (KUB-22).
-- `extensions:` refinements (layered after global settings, last-match-wins):
-  caveman terse mode ON for dev/impl/tests, re-disabled
-  (`"!**/pi-caveman/**"`) for reviewer/recon/researcher/comms whose prose is
-  the product; ponytail off globally for agents, dev opts back in
-  (`["**/ponytail/**"]` — positive re-enable); researcher re-enables
-  pi-web-access per-role (`"**/pi-web-access/**"`); other roles get web tools
-  per call only.
+- `noExtensions: true` + explicit `extensions:` paths. `pi --extension` takes a
+  file path or `builtin:<name>`, never a glob or package name. `--no-extensions`
+  also drops pi's built-in extensions.
+- `tools:` is a closed allowlist (globs like `"repowise_*"` / `"ctx_*"` work).
+  Herdsman passes it as `--tools`, which overrides `settings.json`
+  `defaultTools`. Herdsman appends `ask_owner` (all agents) and the nine
+  delegation tools (definitions with a non-empty `agents:`). The `agent` entry in
+  dev's list is a policy sentinel, not a callable tool.
+- **codemode needs both halves:** `codemode` in `tools:` **and**
+  `- "builtin:codemode"` in `extensions:`. A child's codemode `ALL_TOOLS`
+  equals its allowlist, so it cannot widen it.
+- `skills:` takes SKILL.md paths (not names), with `noSkills: true`.
+  `mcp-scripting` loads but stays hidden from the model
+  (`disable-model-invocation: true` upstream); the `mcpScript` tool description
+  carries the basics.
+- `systemPromptMode: replace` + `inheritProjectContext: false` for recon,
+  researcher, impl, reviewer, comms, planner; `append` +
+  `inheritProjectContext: true` for dev and tests. `inheritGlobalContext: false`
+  everywhere.
+- Escalation in bodies is `ask_owner` (Herdsman contract), not a `BLOCKED:`
+  return.
 
-## Global tool activation (/tools)
+### Overlays of bundled definitions
+
+`researcher` and `reviewer` share names with bundled Herdsman definitions, so
+our files *overlay* them rather than replace them:
+
+- Set `bodyMode: replace` and restate every field: an overlay inherits every
+  field it leaves unset.
+- `reviewer` sets `agents: []`: the bundled reviewer delegates to `scout`, and
+  every `agents:` reference must resolve, so inheriting it from a disabled
+  `scout` breaks the roster.
+- Disabling a bundled definition is a file with just `name:` + `enabled: false`.
+
+## Tool activation (`/tools`)
 
 `@firstpick/pi-extension-tools` owns the `/tools` TUI command and is the single
-place tools are enabled/disabled. Scope precedence: session (session entries) >
-exact model profile > global default > runtime. Global + model scopes persist
-to `~/.pi/webui/settings.json` (`resourceDefaults.tools.enabledTools`
-allowlist) — dotter-managed as `config/custom/pi/webui/settings.json`; `pi-rw`
-points `PI_WEBUI_SETTINGS_FILE` at the worktree copy.
+place tools are enabled/disabled. Global + model scopes persist to
+`resourceDefaults.tools.enabledTools` in `config/custom/pi/webui/settings.json`
+(`PI_WEBUI_SETTINGS_FILE` in `config/custom/zsh/.zshenv` points straight at the
+repo file, so `/tools` saves land as a git diff; commit when happy).
 
-Dynamic tools (`ctx_*`, `workflow_*`, `subagents_*`, `repowise_*`, lazy
-`mcp__*` proxies) register after startup; they are pinned in the allowlist
-anyway so scope recomputes (model switch, session-tree navigation) cannot
-clamp them — the extension preserves saved-but-unavailable names.
+The allowlist is deliberate (KUB-26): **a new static tool from a freshly
+installed extension starts disabled.** Pin every new Herdsman or pi tool there
+(the Herdsman agent, staff, peer and supervisor tools and `codemode` are pinned);
+without the pin the main session gets Herdsman's prompt but no tools. Dynamic
+tools (`ctx_*`, `repowise_*`, `mcp__<server>` proxies) are pinned too, so scope
+recomputes cannot clamp them. Remove pins when a tool or MCP server is retired.
+This allowlist governs the main session; agents get their tools from
+`tools:` above.
 
-Policy (KUB-26 audit, 2026-09): the allowlist is deliberate. New *static*
-tools from a freshly installed extension start disabled — enable via
-`/tools`, commit the settings diff. New MCP servers in `mcp.json` need their
-`mcp__<server>` proxy pinned here too; remove pins when a server is retired
-(context7/exa/firecrawl/linear proxies went stale when those servers folded
-into `gateway`). Aug 5 disable-intent for `mcpScript` and
-`plannotator_submit_plan` is superseded — both deliberately enabled and in
-daily use. `source_check` stays out (disabled via web-search.json).
-Usage-telemetry-based pruning waits on pi-otel data maturity (KUB-24).
+## Observability and detection
 
-Write-source: the extension saves via tmp-file + rename, which would replace a
-dotter *symlink* with a regular file. Solved by `PI_WEBUI_SETTINGS_FILE` (set in
-`.zshenv`) pointing straight at the repo file — `/tools` saves land in the
-working tree as a normal git diff; commit when happy.
-The old `config/custom/pi/agent/tools.json` snapshot and its enforcement shim
-were removed (KUB-17). pi-cymbal's injected system-prompt guidance and nudges
-are disabled in `extensions/pi-cymbal.json` (they recommended deactivated tools).
+Delegated agents start with `PI_HERDSMAN_AGENT_DEFINITION`, `PI_HERDSMAN_LABEL`,
+`PI_HERDSMAN_OWNER_SESSION_ID`, `PI_SUBAGENT_CHILD=1` and
+`PI_SUBAGENT_PARENT_SESSION` (among others). Two consumers:
 
-## Verification
+- **pi-otel fork** (`punk-dev-robot/pi-otel@feat/KUB-171-herdsman-agent-attrs`,
+  checkout `~/dev/oss/pi-otel`) maps them to `pi.agent.role`, `pi.agent.label`,
+  `pi.parent.session.id`; queries in `docs/reference/logfire-pi-role-attribution.md`.
+  pi installs git packages with `--omit=dev`, so the fork ships `dist/`. After
+  any fork change: `npm run build`, commit `dist/` (`git add -f` for new files;
+  `dist/` is gitignored), push, then `pi update --extensions`.
+- **punk-steering** `isSubagent()` checks the env first.
 
-`piewf doctor --role` no longer exists (removed with the 6.x roles split); no
-replacement was checked. The notes below describe the old command.
+**Managed Leads get no env** (`delegate_project` launches them without `--env`;
+boadij/pi-herdsman#391). They read as `main` in Logfire and to punk-steering.
 
-Known false positives: context-mode registers `ctx_*` tools lazily on a
-session's first agent turn, and `@ff-labs/pi-fff` queues `find`/`grep` and
-registers them on `session_start` — so `piewf doctor` (fresh process, no
-turn) flags them ROLE_TOOL_INACTIVE. Real dispatch works (`ctx_*` verified
-end-to-end; `find`/`grep` same lazy-registration class). Glob selectors like
-`ctx_*`/`repowise_*` match nothing at doctor time and stay silent. Ignore
-doctor errors for `ctx_*`, `find`, and `grep` only.
+## History
 
-## Per-call role overrides
-
-Workflows can grant extra capability for a single `agent()` call — `role`
-accepts an object (`applyRoleOverride`). `disabledAgentResources` is gone;
-both frontmatter and `settings.json` reject it with `INVALID_METADATA`.
-Check upstream piewf docs for the current
-call-level override syntax before writing one.
-
-A role tool only works if its providing extension is enabled for agents via
-`extensions:` selectors in workflow `settings.json`. Web tools need
-`!**/pi-web-access/**`, advisor tools need `!**/pi-advisor-flow/**`. Tools
-from disabled extensions (herdr_*, agent_browser, recall, plannotator,
-ask_user_question, workflow_*) do not exist in role sessions. Tool→provider
-map: `.scratch/pi-tool-provider-map.md` (regenerate via recon if stale).
+- 2026-08: dotter handlebars role templates (`pi_tools_*`, `pi_model_*`) replaced
+  by symlinked piewf roles in `config/custom/pi/agent/pi-ext-roles/roles/`.
+- 2026-10-14: piewf replaced by pi-herdsman; definitions back to dotter templates
+  because extension entries must be concrete paths. `pi-ext-roles/`,
+  `workflows/` and `steering/delegation.md` stay until the trial's go decision,
+  for rollback.

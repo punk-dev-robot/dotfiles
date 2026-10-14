@@ -12,8 +12,9 @@ laptop — deployed by dotter. Vocabulary: `CONTEXT.md`. Decisions: `docs/adr/`.
 - `config/.disabled/` — parked, not deployed
 - `config/shared/punk/AGENTS.md` — global context (every harness's global slot symlinks here)
 - `config/custom/pi/agent/` — pi settings, `steering/*.md` (punk-steering rules), extensions
-- `config/custom/agents/skills/` — own skills (`punk-*`, `swap-linear`, `swap-project`, `multi-repo-ticket`) → `~/.agents/skills`
-- `config/custom/pi/agent/pi-ext-roles/roles/` — piewf agent roles (`@piewf/pi-ext-roles`)
+- `config/custom/agents/skills/` — own skills (`punk-handoff`, `punk-resume`, `pr-principal-review`) → `~/.agents/skills`; parked ones in `skills.disabled/`
+- `config/custom/pi/agent/agents/` — pi-herdsman agent definitions (dotter templates)
+- `config/custom/pi/agent/pi-ext-roles/`, `workflows/` — retired piewf roles/workflow, kept for rollback until the KUB-171 go decision
 - `etc/`, `system/` — root-owned templates (`omarchy-system` package)
 - `local/bin/` — scripts → `~/.local/bin`
 - `docs/` — `reference/`, `troubleshooting/`, `workflow/` (tracker ops, team rules, wayfinding), `adr/`, `otel_retro/` (Logfire-driven workflow retros + experiments ledger); index in `docs/README.md`
@@ -31,9 +32,9 @@ laptop — deployed by dotter. Vocabulary: `CONTEXT.md`. Decisions: `docs/adr/`.
 - After `tessl update`, run `tessl-cock-prefix` (`local/bin/`) — re-applies the `cock-` prefix that updates revert.
 - Global manifest: `config/custom/tessl/tessl.json` → `~/.tessl/tessl.json`.
 
-**When editing agent roles for `subagents_run` or workflow `agent(...)`**
+**When editing agent definitions for `delegate_agent`**
 
-- One file per role in `config/custom/pi/agent/pi-ext-roles/roles/<name>.md`: YAML frontmatter (model `provider/model:thinking`, tool/skill/extension selectors) + prompt body. Live via symlink. Details: `docs/reference/piewf-role-config.md`.
+- One file per definition in `config/custom/pi/agent/agents/<name>.md`: YAML frontmatter + prompt body. Dotter templates, not live: edit → `dotter deploy` → `herdsman-defs-check`. New file = new `type = "template"` line in `.dotter/global.toml`; never a symlink. Details: `docs/reference/herdsman-agent-definitions.md`.
 
 **When creating or updating tracker issues**
 

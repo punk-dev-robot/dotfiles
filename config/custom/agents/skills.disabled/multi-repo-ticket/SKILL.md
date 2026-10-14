@@ -10,6 +10,13 @@ description: >
   executor agents in worktrees.
 ---
 
+> [!WARNING]
+> **Superseded (parked, 2026-10-14, KUB-171).** Delegation moved to pi-herdsman;
+> per-repo branch work goes through Herdsman Manager mode (`/manager` +
+> `delegate_project`). The `herdr_agent` executor mechanics below are obsolete.
+> Herdsman's project scope is one repo, so the cross-repo coordination here has
+> no replacement yet. Kept for reference, not deployed.
+
 # Multi-repo ticket coordination
 
 You are the **coordinator**: an interactive pi session at the workspace root
