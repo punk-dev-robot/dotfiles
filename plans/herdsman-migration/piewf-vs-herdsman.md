@@ -564,3 +564,11 @@ Facts found while preparing round 3:
 - `inheritGlobalContext: false` everywhere. Tools are ported 1:1 with globs, `workflow_result` is dropped, and dev
   gets the `agent` sentinel.
 - Bodies: drop the `workflow_result` contract and `BLOCKED:`. Use `ask_owner` for escalation.
+
+### Round 6 (2026-10-14): execution order
+
+| # | Question | Decision |
+|---|---|---|
+| 21 | Order | Phase 0 → Phase 2 templates with a `dotter -d` dry run (before the install) → pi-otel patch → Phase 1 install plus runtime checks → Phase 3 → trial. |
+| 22 | pi-herdr-rename | The user is unhappy with it anyway. **Remove `npm:@henryqw/pi-herdr-rename` in Phase 1**, so the conflict check is dropped. |
+| 23 | `isSubagent()` | Correction to Phase 3: the tool-absence check already classifies our 8 definitions correctly, because their `tools:` lists exclude `herdr_*`. The real gaps are a definition without a `tools:` list, and **managed Leads**: they would run punk-handoff into a pane Herdsman doesn't own. The `Workflow:` branch is dead. Open: managed Leads → subagent behaviour on strikes? Land in Phase 3? |
