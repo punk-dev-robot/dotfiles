@@ -1,0 +1,13 @@
+# Install: herdr plugin install timofey-TK/herdr-worktree-hooks --yes  (KUB-175)
+# Delegate Herdr worktree setup to each project's worktrunk hooks (.config/wt.toml),
+# so `herdr worktree create` (incl. pi-herdsman Leads) gets the same setup as `wt switch`.
+# Runs in a split pane in the new workspace; cwd = the new checkout.
+# NOTE: herdr event hooks are async — `herdr worktree create` returns before this runs.
+[default]
+created = [
+  "wt hook pre-start --foreground -y",
+  "wt hook post-start -y",
+]
+# opened: intentionally empty — herdr-worktrunk/trunkr open wt-created checkouts via
+# `herdr worktree open`, which fires `opened`; wt already ran hooks for those.
+# removed: checkout is gone when this fires, so wt pre-remove hooks cannot run here.
