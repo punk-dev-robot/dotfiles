@@ -5,10 +5,18 @@ How agent roles for pi-extensible-workflows (piewf) are configured in this repo.
 ## Where roles live
 
 Roles are single self-contained files in
-`config/custom/pi/agent/pi-extensible-workflows/roles/<name>.md`:
+`config/custom/pi/agent/pi-ext-roles/roles/<name>.md` (shared settings:
+`config/custom/pi/agent/pi-ext-roles/settings.json`), since piewf 6.1 split roles
+into `@piewf/pi-ext-roles`:
 YAML frontmatter (model, tools/skills/extensions selectors) + the prompt as body.
-Seven roles: `recon`, `researcher`, `dev`, `impl`, `reviewer`, `tests`, `comms` —
-consumed by both piewf workflows (`agent(...)`) and standalone `subagents_run`.
+Eight roles: `recon`, `researcher`, `dev`, `impl`, `reviewer`, `tests`, `comms`,
+`planner` — consumed by both piewf workflows (`agent(...)`) and standalone `subagents_run`.
+
+> **Not applied today (2026-10):** `role:` only takes effect with the
+> `npm:@piewf/pi-ext-roles` *Pi extension* in `settings.json` `packages`; only
+> the pnpm-global `pi-role` launcher is installed, so children run on the main
+> model with the full toolset. Being replaced by pi-herdsman (KUB-171,
+> `plans/herdsman-migration/`).
 
 Deployed as **symlinks** through the whole-dir dotter mapping
 (`config/custom/pi/agent` → `~/.config/pi/agent`). Edit the repo file directly;
@@ -25,7 +33,7 @@ changes are live in new sessions, no `dotter deploy` needed.
 
 - `model:` — one string: an alias (optionally `alias:thinking`) or literal
   `provider/model:thinking`; a separate `thinking:` key is rejected. Roles use
-  the static alias registry in workflow `settings.json` `modelAliases`:
+  the static alias registry in `pi-ext-roles/settings.json` `modelAliases`:
   `workhorse` (sonnet-5-5:medium — impl/tests/comms; recon uses `workhorse:low`),
   `strong` (opus-5-5:high — dev/researcher), `sota` (fable-5-1:high — reviewer),
   `sota-openai` (gpt-6-astra:high), `review-openai` (gpt-6.1-sol:high, PR-review
@@ -94,12 +102,8 @@ are disabled in `extensions/pi-cymbal.json` (they recommended deactivated tools)
 
 ## Verification
 
-```bash
-npx -y @piewf/cli doctor --role <role>   # aliased to `piewf` in zsh
-```
-
-Read-only. Reports resolved model, tools, effective/excluded skills and
-extensions, and prepared prompt. Run after any role or settings change.
+`piewf doctor --role` no longer exists (removed with the 6.x roles split); no
+replacement was checked. The notes below describe the old command.
 
 Known false positives: context-mode registers `ctx_*` tools lazily on a
 session's first agent turn, and `@ff-labs/pi-fff` queues `find`/`grep` and
@@ -114,7 +118,7 @@ doctor errors for `ctx_*`, `find`, and `grep` only.
 Workflows can grant extra capability for a single `agent()` call — `role`
 accepts an object (`applyRoleOverride`). `disabledAgentResources` is gone;
 both frontmatter and `settings.json` reject it with `INVALID_METADATA`.
-Check `piewf doctor --role <role>` and upstream piewf docs for the current
+Check upstream piewf docs for the current
 call-level override syntax before writing one.
 
 A role tool only works if its providing extension is enabled for agents via

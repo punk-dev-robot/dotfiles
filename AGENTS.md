@@ -13,7 +13,7 @@ laptop — deployed by dotter. Vocabulary: `CONTEXT.md`. Decisions: `docs/adr/`.
 - `config/shared/punk/AGENTS.md` — global context (every harness's global slot symlinks here)
 - `config/custom/pi/agent/` — pi settings, `steering/*.md` (punk-steering rules), extensions
 - `config/custom/agents/skills/` — own skills (`punk-*`, `swap-linear`, `swap-project`, `multi-repo-ticket`) → `~/.agents/skills`
-- `config/custom/pi/agent/pi-extensible-workflows/roles/` — piewf agent roles
+- `config/custom/pi/agent/pi-ext-roles/roles/` — piewf agent roles (`@piewf/pi-ext-roles`)
 - `etc/`, `system/` — root-owned templates (`omarchy-system` package)
 - `local/bin/` — scripts → `~/.local/bin`
 - `docs/` — `reference/`, `troubleshooting/`, `workflow/` (tracker ops, team rules, wayfinding), `adr/`, `otel_retro/` (Logfire-driven workflow retros + experiments ledger); index in `docs/README.md`
@@ -33,7 +33,7 @@ laptop — deployed by dotter. Vocabulary: `CONTEXT.md`. Decisions: `docs/adr/`.
 
 **When editing agent roles for `subagents_run` or workflow `agent(...)`**
 
-- One file per role in `config/custom/pi/agent/pi-extensible-workflows/roles/<name>.md`: YAML frontmatter (model `provider/model:thinking`, tool/skill/extension selectors) + prompt body. Live via symlink. Details: `docs/reference/piewf-role-config.md`.
+- One file per role in `config/custom/pi/agent/pi-ext-roles/roles/<name>.md`: YAML frontmatter (model `provider/model:thinking`, tool/skill/extension selectors) + prompt body. Live via symlink. Details: `docs/reference/piewf-role-config.md`.
 
 **When creating or updating tracker issues**
 
