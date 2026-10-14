@@ -10,7 +10,7 @@ inheritGlobalContext: false
 tools: [read, grep, find, ls, bash, write, edit, mcp, mcpScript, "repowise_*", ask_advisor, record_advisor_outcome, "ctx_*", codemode]
 noSkills: true
 skills:
-  - "{{home_dir}}/.agents/skills/tdd/SKILL.md"
+  - "{{home_dir}}/.agents/skills/tessl__tdd/SKILL.md"
   - "{{home_dir}}/.config/pi/agent/npm/node_modules/pi-mcp-adapter/skills/mcp-scripting/SKILL.md"
 noExtensions: true
 extensions:
