@@ -13,11 +13,11 @@
     {
       "source": "npm:@dietrichgebert/ponytail",
       "skills": [
-        "-skills/ponytail-audit/SKILL.md",
         "-skills/ponytail-debt/SKILL.md",
         "-skills/ponytail-gain/SKILL.md",
         "-skills/ponytail-help/SKILL.md",
-        "+skills/ponytail-review/SKILL.md"
+        "+skills/ponytail-review/SKILL.md",
+        "+skills/ponytail-audit/SKILL.md"
       ]
     },
     "npm:pi-caveman",
@@ -27,7 +27,9 @@
     "npm:pi-web-access",
     {
       "source": "npm:context-mode",
-      "skills": ["+skills/context-mode/SKILL.md"]
+      "skills": [
+        "+skills/context-mode/SKILL.md"
+      ]
     },
     "npm:@plannotator/pi-extension",
     "npm:@firstpick/pi-extension-tools",
@@ -42,9 +44,19 @@
     "npm:pi-multi-account",
     "npm:@gotgenes/pi-anthropic-auth"
   ],
-  "extensions": ["-builtin:mcp"],
-  "defaultTools": ["+codemode"],
-  "npmCommand": ["mise", "exec", "node@26", "--", "npm"],
+  "extensions": [
+    "-builtin:mcp"
+  ],
+  "defaultTools": [
+    "+codemode"
+  ],
+  "npmCommand": [
+    "mise",
+    "exec",
+    "node@26",
+    "--",
+    "npm"
+  ],
   "retry": {
     "provider": {
       "maxRetries": 0
