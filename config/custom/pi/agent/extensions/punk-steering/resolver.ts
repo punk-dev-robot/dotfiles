@@ -434,7 +434,7 @@ export interface GuardAction {
 /**
  * Is this pi session a delegated child (never blocked, never handed off) rather than a main session?
  * 1. pi-herdsman delegated agents carry PI_SUBAGENT_CHILD=1 / PI_HERDSMAN_AGENT_DEFINITION (verified at runtime).
- *    Managed Leads (Manager → delegate_project) get no env and count as main (KUB-171).
+ *    Managed Leads (Manager → delegate_project) get no env (#391); our managed-lead overlay has no herdr_* tools, so they classify as subagents (KUB-173).
  * 2. No herdr pane tools: children can't run punk-handoff anyway.
  * 3. piewf children: first user message starts with "Workflow: ". Remove with piewf (KUB-171 go decision).
  */

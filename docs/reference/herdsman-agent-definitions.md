@@ -14,7 +14,8 @@ body. Herdsman loads global definitions from `~/.config/pi/agent/agents/`
 
 Roster: `recon`, `researcher`, `dev`, `impl`, `tests`, `reviewer`, `comms`,
 `planner`, plus `reviewer-sol`, `reviewer-opus`, `reviewer-astra` (second-model reviewers) and
-`arbiter` / `arbiter-opus` (write the report; share `agent-bodies/arbiter.md`) for the `pr-principal-review` skill. Only `dev` delegates (`agents: [recon, researcher, tests]`); every
+`arbiter` / `arbiter-opus` (write the report; share `agent-bodies/arbiter.md`) for the `pr-principal-review` skill, plus the reserved
+`managed-lead` overlay (below; not an Agent). Only `dev` delegates (`agents: [recon, researcher, tests]`); every
 other definition is a leaf. `scout.md`, `implementer.md`, `generalist.md` are
 `enabled: false` overlays that switch off the bundled definitions our roster
 replaces.
@@ -102,6 +103,25 @@ our files *overlay* them rather than replace them:
   `scout` breaks the roster.
 - Disabling a bundled definition is a file with just `name:` + `enabled: false`.
 
+### `managed-lead` (Leads started by Manager `delegate_project`)
+
+`managed-lead.md` overlays Herdsman's reserved launch definition for
+Manager-assigned project Leads (KUB-173). It is not in the Agent roster and
+cannot be delegated to. **Locked** (parser rejects): `enabled`, `agents`,
+`permission`, and `systemPromptMode: replace`. Herdsman always adds the Lead
+coordination tools (the nine delegation tools, `message_supervisor`,
+`list_peers`, `message_peer`) to `tools:`; the supervisor/peer ones only go
+live inside a real Herdr-managed Lead. **Overlaid:** model `{{model_strong}}`
+/ `high` (same as the main session), our main-session working tools instead of
+the bundled coordination-only `tools: []`, dev's skills, `ext_base` +
+`ext_bash_guard` + `ext_context_events` (no pi-herdr, caveman, web, OM or
+plannotator), `inheritProjectContext: true` + `inheritGlobalContext: false`
+(the bundled default inherits global context). The body is not restated, so
+the bundled body stays. Without pi-herdr it has no `herdr_*` tools, so
+punk-steering's `isSubagent()` treats it as a child: no punk-handoff into a
+pane Herdsman owns. Changes apply to the next Lead launch only
+(`stop_lead` + `resume_project` to restart one).
+
 ## Tool activation (`/tools`)
 
 `@firstpick/pi-extension-tools` owns the `/tools` TUI command and is the single
@@ -134,7 +154,8 @@ Delegated agents start with `PI_HERDSMAN_AGENT_DEFINITION`, `PI_HERDSMAN_LABEL`,
 - **punk-steering** `isSubagent()` checks the env first.
 
 **Managed Leads get no env** (`delegate_project` launches them without `--env`;
-boadij/pi-herdsman#391). They read as `main` in Logfire and to punk-steering.
+boadij/pi-herdsman#391). They read as `main` in Logfire; punk-steering still
+treats them as children because our `managed-lead` loads no `herdr_*` tools.
 
 ## History
 

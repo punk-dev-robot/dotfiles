@@ -48,6 +48,8 @@ default_target_type = "symbolic"
 "config/custom/pi/agent/agents/reviewer-opus.md" = { target = "~/.config/pi/agent/agents/reviewer-opus.md", type = "template" }
 "config/custom/pi/agent/agents/reviewer-astra.md" = { target = "~/.config/pi/agent/agents/reviewer-astra.md", type = "template" }
 "config/custom/pi/agent/agents/arbiter-opus.md" = { target = "~/.config/pi/agent/agents/arbiter-opus.md", type = "template" }
+# KUB-173: overlay of Herdsman's reserved managed-lead (Leads started by Manager delegate_project).
+"config/custom/pi/agent/agents/managed-lead.md" = { target = "~/.config/pi/agent/agents/managed-lead.md", type = "template" }
 # enabled:false overlays: template (= real file copy) because Herdsman skips symlinks (readdir isFile, agent-definitions.ts:159).
 "config/custom/pi/agent/agents/scout.md" = { target = "~/.config/pi/agent/agents/scout.md", type = "template" }
 "config/custom/pi/agent/agents/implementer.md" = { target = "~/.config/pi/agent/agents/implementer.md", type = "template" }
