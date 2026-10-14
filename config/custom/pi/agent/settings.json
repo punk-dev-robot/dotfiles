@@ -27,9 +27,7 @@
     "npm:pi-web-access",
     {
       "source": "npm:context-mode",
-      "skills": [
-        "+skills/context-mode/SKILL.md"
-      ]
+      "skills": ["+skills/context-mode/SKILL.md"]
     },
     "npm:@plannotator/pi-extension",
     "npm:@firstpick/pi-extension-tools",
@@ -46,16 +44,8 @@
     "npm:pi-multi-account",
     "npm:@gotgenes/pi-anthropic-auth"
   ],
-  "extensions": [
-    "-builtin:mcp"
-  ],
-  "npmCommand": [
-    "mise",
-    "exec",
-    "node@26",
-    "--",
-    "npm"
-  ],
+  "extensions": ["-builtin:mcp"],
+  "npmCommand": ["mise", "exec", "node@26", "--", "npm"],
   "retry": {
     "provider": {
       "maxRetries": 0
@@ -124,11 +114,6 @@
     "-../../.agents/skills/tessl__html-wireframe/SKILL.md",
     "-../../.agents/skills/tessl__writing-for-agents/SKILL.md",
     "-../../.agents/skills/tessl__wizard/SKILL.md",
-    "-../../.agents/skills/tessl__improve-claude-md/SKILL.md",
-    "-../../.agents/skills/tessl__linear-cli/SKILL.md",
-    "-../../.agents/skills/tessl__notion/SKILL.md",
-    "-../../.agents/skills/tessl__resolving-merge-conflicts/SKILL.md",
-    "-../../.agents/skills/tessl__setup-matt-pocock-skills/SKILL.md",
-    "-../../.agents/skills/tessl__wait-what/SKILL.md"
+    "-../../.agents/skills/tessl__setup-matt-pocock-skills/SKILL.md"
   ]
 }
