@@ -9,7 +9,7 @@ import { appendFileSync, existsSync, readdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { basename, join } from "node:path";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { guard, guardAction, LEVELS, type Level, mergeRules, parseRules, renderBriefings, resolve, type Resolution, type Rule, type ProbeResult } from "./resolver.ts";
+import { guard, guardAction, isSubagent as isSubagentSession, LEVELS, type Level, mergeRules, parseRules, renderBriefings, resolve, type Resolution, type Rule, type ProbeResult } from "./resolver.ts";
 
 /** what the punk-handoff skill needs (write the file, spawn the next pane) and nothing else */
 const HANDOFF_TOOLS = ["read", "write", "herdr_layout", "herdr_agent", "herdr_pane"];
@@ -59,20 +59,18 @@ export default function (pi: ExtensionAPI) {
 		});
 	};
 
-	// Subagents (piewf roles) are never blocked — the parent reruns them. Cheap signal: no herdr pane tools / piewf's prompt prefix.
-	const isSubagent = (ctx: any) => {
-		const tools = pi.getActiveTools();
-		if (!tools.includes("herdr_layout") && !tools.includes("herdr_agent")) return true;
+	// Subagents are never blocked: their owner reruns them. Decision lives in resolver.ts (isSubagent).
+	const firstUserText = (ctx: any) => {
 		try {
 			for (const e of ctx.sessionManager.getEntries()) {
 				if (e.type !== "message" || e.message?.role !== "user") continue;
 				const c = e.message.content;
-				const text = typeof c === "string" ? c : Array.isArray(c) ? c.map((p: any) => p?.text ?? "").join("") : "";
-				return text.trimStart().startsWith("Workflow: ");
+				return typeof c === "string" ? c : Array.isArray(c) ? c.map((p: any) => p?.text ?? "").join("") : "";
 			}
 		} catch {}
-		return false;
+		return "";
 	};
+	const isSubagent = (ctx: any) => isSubagentSession(process.env, pi.getActiveTools(), firstUserText(ctx));
 
 	const load = (cwd: string, trusted: boolean) => {
 		level = readLevel();

@@ -431,6 +431,19 @@ export interface GuardAction {
  * What the adapter does with a violation. Subagents (piewf roles) are rejected on every
  * violation but never blocked — the parent reruns them, a handoff would strand the brief.
  */
+/**
+ * Is this pi session a delegated child (never blocked, never handed off) rather than a main session?
+ * 1. pi-herdsman delegated agents carry PI_SUBAGENT_CHILD=1 / PI_HERDSMAN_AGENT_DEFINITION (verified at runtime).
+ *    Managed Leads (Manager → delegate_project) get no env and count as main (KUB-171).
+ * 2. No herdr pane tools: children can't run punk-handoff anyway.
+ * 3. piewf children: first user message starts with "Workflow: ". Remove with piewf (KUB-171 go decision).
+ */
+export function isSubagent(env: Record<string, string | undefined>, tools: string[], firstUserText: string): boolean {
+	if (env.PI_SUBAGENT_CHILD === "1" || env.PI_HERDSMAN_AGENT_DEFINITION) return true;
+	if (!tools.includes("herdr_layout") && !tools.includes("herdr_agent")) return true;
+	return firstUserText.trimStart().startsWith("Workflow: ");
+}
+
 export function guardAction(rule: Rule, v: Verdict, strikes: number, level: Level, subagent: boolean): GuardAction {
 	const max = rule.guard?.strikes ?? 3;
 	const enforced = level === "advise" || level === "rewrite";

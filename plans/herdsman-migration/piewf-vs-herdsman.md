@@ -632,3 +632,10 @@ Facts found while preparing round 3:
 | 24 | `mcp-scripting` skill | Leave it hidden. Upstream made it manual-only (pi-mcp-adapter PR #478, merged 2026-09-01, `disable-model-invocation: true`); there is no setting to flip it. The `mcpScript` tool description covers the basics. |
 | 25 | pi native codemode | **Keep pi-mcp-adapter and enable `codemode` everywhere.** Main: `"defaultTools": ["+codemode"]` in `settings.json` plus a `codemode` pin in the `/tools` allowlist. Children: `codemode` in every `tools:` list **and** `- "builtin:codemode"` in `extensions:`, because `--no-extensions` also drops pi's built-in extensions and Herdsman's `--tools` overrides `defaultTools`. Verified: main runs a script; a live Herdsman `recon` child runs a script whose `ALL_TOOLS` equals its allowlist, so codemode can't get around it. `herdsman-defs-check` skips `builtin:` entries. Native pi MCP stays off (`-builtin:mcp`). |
 | 26 | MCP scope per definition | Accept for the trial: `mcp`/`mcpScript` reach every gateway server, so read-only roles are read-only by prompt only (as under piewf). Follow-up in Backlog: **KUB-172**. Tool globs are not the lever: codemode only sees the session's active tools. |
+- **Phase 3 prepared (inert until install):**
+  - `steering/delegation-herdsman.md`, gated on `delegate_agent`. The old `delegation.md` (gated on `subagents_run`) stays
+    until the go decision; checked that each session gets exactly one of them.
+  - `isSubagent()` moved into `resolver.ts` as a pure function: herdsman env → no herdr tools → `Workflow:` prefix.
+    **The `Workflow:` check stays until piewf is removed**: today's piewf children have `herdr_*` tools (roles not applied),
+    so that prefix is the only thing classifying them. Test 23/23; it fails when the env branch is removed.
+  - Upstream issue drafts in `upstream/` (symlinked definitions skipped silently; managed Leads get no env). Not posted yet.

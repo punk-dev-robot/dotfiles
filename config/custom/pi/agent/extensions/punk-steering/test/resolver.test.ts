@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
-import { guard, guardAction, mergeRules, normalise, parseRule, parseRules, renderBriefings, resolve, type Rule } from "../resolver.ts";
+import { guard, guardAction, isSubagent, mergeRules, normalise, parseRule, parseRules, renderBriefings, resolve, type Rule } from "../resolver.ts";
 
 const FIX = join(import.meta.dirname, "fixtures");
 const load = (dir: "global" | "project") =>
@@ -215,4 +215,15 @@ test("subagents: rejected on every violation, never blocked, no handoff text", (
 		assert.doesNotMatch(a.reason!, /punk-handoff|Session blocked/);
 	}
 	assert.equal(guardAction(bash, v, 5, "observe", true).enforced, false);
+});
+
+// Why: a child classified as main gets strike-3 → punk-handoff, spawning an unowned pane mid-task.
+test("isSubagent: herdsman env marks a child even when it has herdr tools", () => {
+	const herdr = ["read", "bash", "herdr_layout", "herdr_agent"];
+	assert.equal(isSubagent({ PI_SUBAGENT_CHILD: "1" }, herdr, "do X"), true);
+	assert.equal(isSubagent({ PI_HERDSMAN_AGENT_DEFINITION: "dev" }, herdr, "do X"), true);
+	assert.equal(isSubagent({}, herdr, "Workflow: review\nAgent: a"), true, "piewf children (until piewf is removed)");
+	assert.equal(isSubagent({}, ["read", "bash"], "do X"), true, "no herdr tools → cannot hand off → child");
+	assert.equal(isSubagent({}, herdr, "fix the bug"), false, "main session keeps the strike-3 handoff");
+	assert.equal(isSubagent({ PI_SUBAGENT_CHILD: "0" }, herdr, "fix the bug"), false);
 });
