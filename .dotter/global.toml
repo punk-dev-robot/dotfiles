@@ -41,6 +41,10 @@ default_target_type = "symbolic"
 "config/custom/pi/agent/agents/reviewer.md" = { target = "~/.config/pi/agent/agents/reviewer.md", type = "template" }
 "config/custom/pi/agent/agents/comms.md" = { target = "~/.config/pi/agent/agents/comms.md", type = "template" }
 "config/custom/pi/agent/agents/planner.md" = { target = "~/.config/pi/agent/agents/planner.md", type = "template" }
+# pr-principal-review skill: second reviewer (OpenAI) + arbiter. reviewer/reviewer-sol bodies: `@../agent-bodies/reviewer.md`
+# (plain symlink via the recursive map; kept outside agents/ because Herdsman parses every *.md there, recursively).
+"config/custom/pi/agent/agents/reviewer-sol.md" = { target = "~/.config/pi/agent/agents/reviewer-sol.md", type = "template" }
+"config/custom/pi/agent/agents/arbiter.md" = { target = "~/.config/pi/agent/agents/arbiter.md", type = "template" }
 # enabled:false overlays: template (= real file copy) because Herdsman skips symlinks (readdir isFile, agent-definitions.ts:159).
 "config/custom/pi/agent/agents/scout.md" = { target = "~/.config/pi/agent/agents/scout.md", type = "template" }
 "config/custom/pi/agent/agents/implementer.md" = { target = "~/.config/pi/agent/agents/implementer.md", type = "template" }

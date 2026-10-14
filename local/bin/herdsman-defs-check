@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # KUB-171: check that every extensions:/skills: path in the deployed pi-herdsman agent
-# definitions exists. Package updates can move entry files; a missing path means a child
+# definitions (and every body `@file` reference) exists. Package updates can move entry files; a missing path means a child
 # launches without that extension/skill (or fails). Exit 1 on any missing path.
 set -euo pipefail
 
@@ -34,6 +34,17 @@ for f in "${files[@]}"; do
     }
     inlist && /^[[:space:]]*-[[:space:]]/ { s = $0; sub(/^[[:space:]]*-[[:space:]]*/, "", s); print s }
   ' "$f" | sed -E 's/^[[:space:]]*["'\'']?//; s/["'\'']?[[:space:]]*$//' | grep -v '^$' || true)
+  # body file references: a whole line `@./x`, `@../x`, `@/x`, `@~/x`, resolved from the definition's dir
+  while IFS= read -r ref; do
+    case $ref in
+      "~/"*) p="$HOME/${ref#\~/}" ;;
+      /*) p=$ref ;;
+      *) p="$(dirname "$f")/$ref" ;;
+    esac
+    checked=$((checked + 1))
+    [[ -f "$p" ]] || { echo "MISSING  $(basename "$f") body @: $p"; fail=1; }
+  done < <(awk 'NR > 1 && $0 == "---" { body = 1; next } body' "$f" |
+    sed -nE 's/^[[:space:]]*@((\.\.?|~)?\/[^[:space:]]+)[[:space:]]*$/\1/p')
 done
 
 echo "herdsman-defs-check: ${#files[@]} definitions, $checked paths checked"
