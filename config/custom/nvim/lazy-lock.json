@@ -67,6 +67,7 @@
   "rainbow-delimiters.nvim": { "branch": "master", "commit": "b55decda611755171bc5bf8f4c99603a75de4b41" },
   "refactoring.nvim": { "branch": "master", "commit": "684b3484796ea44595bebbfddee4fa4dbfc90939" },
   "render-markdown.nvim": { "branch": "main", "commit": "8e8795368391036643b622875a6da6a51bcd33f4" },
+  "retro-82.nvim": { "branch": "master", "commit": "41b8c42ed0099eb43824903ef606a6b051d33505" },
   "rustaceanvim": { "branch": "main", "commit": "a968f5133b8b24f481de12f08cd79420d1ace559" },
   "snacks.nvim": { "branch": "main", "commit": "882c996cf28183f4d63640de0b4c02ec886d01f2" },
   "telescope-terraform-doc.nvim": { "branch": "main", "commit": "66987fac94d12704fdfd90b857f4f648e31251c9" },

@@ -8,3 +8,5 @@ export FFF_HISTORY_DB="$HOME/.config/pi-fff/history.db"
 if [[ $OSTYPE == darwin* && $HERDR_ENV == 1 ]]; then
   export PLANNOTATOR_BROWSER="$HOME/.local/bin/plannotator-terminal-browser"
 fi
+
+export PI_CLIPBOARD_OSC52=1

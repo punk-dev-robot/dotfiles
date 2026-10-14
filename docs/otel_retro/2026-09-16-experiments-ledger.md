@@ -50,12 +50,19 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   `pi.context.nudge` count vs sessions >150k.
 - **Early read (omarchy only, 09-15 23:35 → 09-16 21:00):** 24 sessions, p50 76k, max 200k,
   0 over 200k. Mac not yet deployed in that window (3 sessions >200k, max 298k) — excluded.
-- **Status:** open — score ≥ 2026-09-19.
+- **Scored 2026-09-19:** inconclusive, positive signal — fully-post cohort (omarchy 20 sessions,
+  p50 peak 62k, max 172k, 0 >200k; mac 1 session, 108k, 0 >200k); two omarchy sessions crossed
+  150k and each emitted exactly one nudge; no fully-post session crossed 180k, so compaction
+  itself stayed unexercised. Mac sample too thin to close.
+- **Status:** inconclusive — need more mac sessions and a fully-post session >180k.
 
 ### E2 — context-events extension (this)
 - **Shipped:** 2026-09-16 21:45Z. Not a cost change; enables E1 scoring. Cost of the extension
   itself: one log record per compaction/OM entry — negligible.
 - **Expect:** `pi.context.*` records appear for every real session; `pi.session.id` joins chat spans.
+- **Scored 2026-09-19:** confirmed — compaction 1/1, compaction_failed 2/2, nudges 5/4,
+  OM observations 170/32, reflections 98/22, dropped 7/3; high-context omarchy session IDs
+  joined correctly to chat spans.
 - **Status:** confirmed on omarchy test session (compaction_failed + om.observations.recorded, join ok).
   Verify on mac after next pull.
 
@@ -70,8 +77,11 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   `2026-09-16-logfire-queries.md`, window ≥ 2026-09-16T21:30Z, main models only.
 - **Early read (first 3h omarchy, 15 sessions):** bash-nav share 45% → 58%, repowise 0, delegated 2.
   No step change visible; sample too small.
-- **Status:** open — score ≥ 2026-09-19. If refuted → E4 = hard `tool_call` hook on bash (reject
-  grep/cat/ls/head/find/`sed -n` with redirect), which the subagent data predicts will work.
+- **Scored 2026-09-19:** refuted — correct metric (bash-nav / (bash-nav + proper nav/edit))
+  barely moved on the fully-post cohort (51.8% → 49.7%), every meaningful post cohort stayed
+  40.1–61.3%, same-cwd `cd` no-ops rose instead of disappearing. Advice alone didn't move behavior.
+- **Status:** refuted — superseded by E5 (hard-enforcement guard rules), not E4 (readseek removal;
+  previous fallback reference corrected here).
 
 ### E4 — uninstall pi-readseek; vanilla read/edit/write
 - **Shipped:** 2026-09-16 ~23:00Z omarchy (settings.json package + `readseek` block removed;
@@ -88,6 +98,9 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   window ≥ 2026-09-16T23:00Z. Compare edit err% against 18%.
 - **Fallback if refuted:** `pi-hashline-edit-pro-lean` with auto-read off (selective override,
   423 preamble tok, 1.09× read).
+- **Early read 2026-09-19:** exact post-removal cohort passes token/error targets (read 295
+  calls / 1,273 avg tok / 1.7% err; write 56 / 30 tok / 0% err; edit 115 / 930 tok / 1.7% err),
+  but bash substitutes persist (`sed` 75, `cat` 38, `head` 5) — not yet normalized against target.
 - **Status:** open — score ≥ 2026-09-23.
 
 ### E5 — punk-steering v2 `guard` rules (reject → block, telemetry)
@@ -103,7 +116,11 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   cat/grep substitute (watch its content).
 - **Measure:** `SELECT span_name, attributes->>'pi.steering.rule', attributes->>'pi.steering.enforced', count(*) FROM records WHERE span_name LIKE 'pi.steering.%' GROUP BY 1,2,3` + bash-nav share query, window from flip time.
 - **Shipped:** 2026-09-16 23:20Z omarchy, per-rule `level: observe` on both guard rules (global level stays `advise`). Smoke: observe → violation logged, command ran; advise → rejected with strike text, haiku stopped after strike 1.
-- **Status:** open — flip = delete `level: observe` in `steering/guard-*.md` ≥ 09-17 23:00Z after false-positive check; score ≥ 09-24.
+- **Early read 2026-09-19:** 604 `guard-bash` violations / 56 sessions, 21 read-outside-repo
+  violations / 10 sessions, one enforced event (smoke test only). Several false-positive classes
+  need classifier review before flipping (mutating `cat >>`, `/tmp` artifacts, inline python,
+  legit system-path reads).
+- **Status:** open — stays in `observe` (no flip today); label/fix false positives, score ≥ 09-24.
 
 ### E6 — pi-otel noise: logLevel warn, metrics off
 - **Shipped:** 2026-09-16 23:40Z omarchy (settings.json `otel.logLevel`, `signals.metrics`).
@@ -111,13 +128,19 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
 - **Expect:** metrics-reader records → 0; request-timeout unchanged (Bun/http issue, separate
   ticket); no loss of chat/execute_tool spans (compare session count vs `pi.session.start`).
 - **Measure:** inventory query, `span_name LIKE '{"message":%'` grouped by day/host.
-- **Status:** open — score ≥ 09-18.
+- **Scored 2026-09-19:** confirmed, process-tail caveat — post-fix metric-reader tail of 1,220
+  records from old omarchy processes, last seen 2026-09-17T03:03:19Z, then zero through window
+  end; real telemetry stayed intact (2,134 chat spans / 114 sessions). Request-timeout noise
+  continues post-fix (26,732 rows) — separate Bun/http issue, tracked apart.
+- **Status:** confirmed, process-tail caveat.
 
 ### E7 — ctx_execute_file allow-list (unblocks recon outside the repo)
 - **Shipped:** 2026-09-17 00:05Z omarchy; mac on pull (uses `{{home_dir}}`).
 - **Baseline (14d):** ctx_execute_file 43 calls, 37% `File access blocked`; each failure → bash `cat`/`grep` fallback in main.
 - **Expect:** ctx_execute_file err% → <5%; recon runs on installed-package questions succeed; precondition for flipping `guard-read-outside-repo` to advise.
-- **Status:** open — score with E5.
+- **Early read 2026-09-19:** exact post-fix cohort 18 calls, 1 error (5.6%, `/usr/share/firefoxpwa/...`,
+  outside home allow-list) — just above the 5% target on a small sample.
+- **Status:** open — score with E5 ≥ 2026-09-24.
 
 ### E8 — repowise augment: telemetry + read success path + SessionStart decisions
 - **Shipped:** 2026-09-17 omarchy (`extensions/repowise-augment.ts`: `pi.augment.fired` log on every
@@ -159,8 +182,10 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   - `repowise update` (fired by the new hooks) writes `.vscode/mcp.json` + `extensions.json` into
     every indexed repo on every commit/checkout — gitignored in dotfiles, may not be elsewhere.
   - Global `core.hooksPath` chains to per-repo hooks; untested with a real pre-commit/lefthook repo.
-- **Status:** open — score ≥ 2026-09-20 (need ≥20 sessions). Refuted if hit rate <5% on read
-  (notices never fire → revert the read path and keep telemetry only).
+- **Early read 2026-09-19:** SessionStart 49 firings / 38 sessions; read 99 calls / 33 sessions,
+  p95 178ms, 0 timeouts (clears p95/timeout bars); hit rate 1/99 on read — plumbing/latency solid,
+  usefulness evidence thin. Session count already clears the ≥20 minimum.
+- **Status:** open, early pass — formal score ≥ 2026-09-20.
 
 ### E9 — repowise full setup on dotfiles (claude_cli/opus + gemini embedder + decisions)
 - **Shipped:** 2026-09-17 02:25Z omarchy. `repowise init --provider claude_cli --model claude-opus-5
@@ -202,8 +227,12 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   backfill in runbook until fixed; re-check after each `repowise` upgrade whether the backfill is
   still needed), #2289 (per-page regenerate + steering; onboarding pages on dotfiles are
   graph-derived noise — ignore them, decisions + augment are the value here).
-- **Status:** open — score ≥ 2026-09-18 with the query above. Refuted if `SessionStart
-  decision_blocks = 0` across ≥5 dotfiles sessions that touched `config/omarchy/hypr/*`.
+- **Scored 2026-09-19:** confirmed — SessionStart 49 firings / 38 sessions, 31 hits, 2 real
+  decision blocks, max 1,660 chars (under 1,900 cap), p95 137ms, 0 timeouts; 1 of 10 sessions
+  touching `config/omarchy/hypr/*` got a decision block (clears the ≥5-session refutation gate).
+  Edit had 0 hits from natural traffic, but none of those edits touched a governed hypr path.
+- **Status:** confirmed, natural-edit caveat — governed-edit hit rests on the earlier hand test,
+  not a natural edit; watch for and note the first natural governed-edit hit.
 
 ### E10 — pi-lsp (vendored) edit-time diagnostics for py/ts
 - **Shipped:** 2026-09-17 03:50Z omarchy. `config/custom/pi-lsp/` = vendored pi-lsp 0.1.7 (npm has no
@@ -248,8 +277,11 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   `diagnosticsWaitMs` per edit for nothing).
 - **Measure:** query above, window ≥ 2026-09-17T04:00Z, against baseline window; plus the leaderboard
   `err_pct`/`avg_out_tok` row for `edit`.
-- **Status:** open — score ≥ 2026-09-24 (needs swapc py/ts sessions on the mac; dotfiles alone is
-  mostly toml/sh/md).
+- **Early read 2026-09-19:** exact post-ship cohort 17 groups, 29% re-edit (down from 42%
+  baseline), 12% LSP coverage, 12% warnings, 1.35 edits/file. Re-edit signal encouraging but
+  12% coverage is far below the ~100% expectation — likely host/deploy/config gap, not the
+  diagnostics mechanism; flagging as a coverage warning ahead of scoring.
+- **Status:** open, early coverage warning — verify mac install; score ≥ 2026-09-24.
 
 ### E11 — punk-sdlc artifact-per-stage + `planner` role (main-session token cost per ticket)
 - **Hypothesis:** running a ticket as staged `planner` dispatches that write `intent.md` /
@@ -259,8 +291,8 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   summary comes back. Total spend across all roles may rise; the main session's peak is what E1's
   compaction work is protecting, so that is the metric.
 - **Spec:** `docs/.scratch/plan-agentic-sdlc.md` § Inc 2; ADR `docs/adr/0004-artifact-per-stage-sdlc.md`.
-  Not shipped for dogfooding yet (mac is the runtime host; `~/dev/swapc/specs` + direct `linear`
-  MCP route unverified there).
+  One intent-stage dogfood dispatch observed; mac runtime prerequisites (`~/dev/swapc/specs` + direct
+  `linear` MCP route) remain unverified.
 - **Baseline (to fill before first dogfood run):** main-session (`claude-fable%`) tokens and cost
   for the last ~10 sessions whose user prompt names a ticket key, no `planner` dispatch — standard
   per-session query, window 14d, plus `count(*)` of `execute_tool read|grep|mcp` calls in those
@@ -292,5 +324,7 @@ FROM records WHERE span_name LIKE 'pi.context.%' GROUP BY 1 LIMIT 20
   comparing per-ticket sessions. Refuted if `role='main'` p50 peak on those ticket sessions is
   flat or up while `planner` sessions add cost —
   i.e. the delegation pays for itself in neither context nor money.
-- **Status:** not started — ships with the first dogfooded ticket (one `full` flow, one `fast`);
-  fill the baseline row in the same session.
+- **Early read 2026-09-19:** one planner dispatch observed, `AGIA-211 intent`, 2026-09-17T12:12Z.
+  No completed ticket cohort or baseline yet, so cost/peak comparison isn't possible.
+- **Status:** one dogfood dispatch; unscored — build a baseline and run against a real ticket
+  before scoring.

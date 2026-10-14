@@ -135,6 +135,9 @@ SELECT CASE WHEN regexp_match(attributes->'pi.tool.input'->>'command','^cd ([^ &
 FROM records WHERE span_name='execute_tool bash' AND attributes->'pi.tool.input'->>'command' LIKE 'cd %' GROUP BY 1 LIMIT 10;
 
 -- bash-nav share per model/host (tool availability vs steering)
+-- denominator is explicit: bash_nav / (bash_nav + proper nav/edit), i.e. share of
+-- nav/edit-capable calls done via raw bash instead of the proper tools. Never divide
+-- by tool_calls (total) — that dilutes the ratio with unrelated tool calls (fetch, task, etc).
 WITH m AS (SELECT attributes->>'pi.session.id' sid, min(attributes->>'gen_ai.request.model') model
   FROM records WHERE span_name LIKE 'chat %' GROUP BY 1),
 t AS (SELECT attributes->>'pi.session.id' sid,
@@ -144,8 +147,11 @@ t AS (SELECT attributes->>'pi.session.id' sid,
   FROM records WHERE span_name LIKE 'execute_tool %')
 SELECT m.model, t.host, count(DISTINCT t.sid) sess, count(*) tool_calls,
   count(*) FILTER (WHERE tool='bash') bash,
-  count(*) FILTER (WHERE tool='bash' AND bcmd IN ('grep','cat','ls','head','find','rg','tail','wc','sed')) bash_nav_edit,
-  count(*) FILTER (WHERE tool IN ('read','grep','find','ls','readSeek_grep','readSeek_def','readSeek_refs','readSeek_search','edit','write')) proper
+  count(*) FILTER (WHERE tool='bash' AND bcmd IN ('grep','cat','ls','head','find','rg','tail','wc','sed')) bash_nav,
+  count(*) FILTER (WHERE tool IN ('read','grep','find','ls','readSeek_grep','readSeek_def','readSeek_refs','readSeek_search','edit','write')) proper,
+  round(100.0 * count(*) FILTER (WHERE tool='bash' AND bcmd IN ('grep','cat','ls','head','find','rg','tail','wc','sed'))
+    / nullif(count(*) FILTER (WHERE tool='bash' AND bcmd IN ('grep','cat','ls','head','find','rg','tail','wc','sed'))
+       + count(*) FILTER (WHERE tool IN ('read','grep','find','ls','readSeek_grep','readSeek_def','readSeek_refs','readSeek_search','edit','write')),0),1) bash_nav_pct
 FROM t JOIN m USING (sid) GROUP BY 1,2 ORDER BY tool_calls DESC LIMIT 12;
 
 -- daily trend of the same
@@ -179,6 +185,55 @@ SELECT span_name, attributes->>'pi.compaction.reason' reason,
        attributes->>'pi.compaction.tokens_before' tok_before, attributes->>'pi.context.tokens' ctx_tok,
        attributes->>'pi.om.items' om_items, attributes->>'gen_ai.request.model' model, attributes->>'pi.session.id' sid
 FROM records WHERE span_name LIKE 'pi.context.%' ORDER BY start_timestamp DESC LIMIT 50;
+```
+
+## Weekly comparison (copy-paste template)
+
+Substitute `:start`, `:week_cut`, `:end` with literal `TIMESTAMPTZ` strings before running
+(e.g. `:start` = `'2026-09-09T00:00:00Z'`, `:week_cut` = `'2026-09-16T00:00:00Z'`, `:end` =
+`'2026-09-23T00:00:00Z'`); `query_run`'s own `start_timestamp`/`end_timestamp` args must still
+cover `[:start, :end)`.
+
+```sql
+-- fable session shape by host/week
+WITH s AS (SELECT attributes->>'pi.session.id' sid,
+  CASE WHEN attributes->>'pi.cwd' LIKE '/Users/%' THEN 'mac' ELSE 'omarchy' END host,
+  CASE WHEN min(start_timestamp) >= :week_cut THEN 'week2' ELSE 'week1' END week,
+  count(*) calls, sum((attributes->>'pi.cost.usd')::double) cost,
+  max((attributes->>'gen_ai.usage.cache_read_input_tokens')::double
+    + (attributes->>'gen_ai.usage.cache_write_input_tokens')::double) peak
+  FROM records
+  WHERE span_name LIKE 'chat %' AND attributes->>'gen_ai.request.model' LIKE 'claude-fable%'
+    AND start_timestamp >= :start AND start_timestamp < :end
+  GROUP BY 1,2)
+SELECT host, week, count(*) sessions, round(approx_percentile_cont(peak,0.5)/1000) p50_peak_k,
+       round(max(peak)/1000) max_peak_k, count(*) FILTER (WHERE peak>200000) over_200k,
+       round(approx_percentile_cont(cost,0.5),2) p50_cost, round(avg(cost),2) avg_cost,
+       round(sum(cost),2) total_cost, round(avg(calls)) avg_calls
+FROM s GROUP BY 1,2 ORDER BY 1,2 LIMIT 20;
+
+-- tool-shape weekly summary (bash-nav vs proper nav/edit, cost from chat spans only)
+WITH t AS (SELECT CASE WHEN start_timestamp >= :week_cut THEN 'week2' ELSE 'week1' END week,
+  attributes->>'gen_ai.tool.name' tool,
+  regexp_match(regexp_replace(trim(attributes->'pi.tool.input'->>'command'),'^cd [^&;|]+(&&|;)\s*',''),'^\(?([A-Za-z0-9_./-]+)')[1] bcmd
+  FROM records
+  WHERE span_name LIKE 'execute_tool %' AND start_timestamp >= :start AND start_timestamp < :end),
+tool_agg AS (SELECT week,
+  count(*) FILTER (WHERE tool='bash' AND bcmd IN ('grep','cat','ls','head','find','rg','tail','wc','sed')) bash_nav,
+  count(*) FILTER (WHERE tool IN ('read','grep','find','ls','readSeek_grep','readSeek_def','readSeek_refs','readSeek_search','edit','write')) proper,
+  count(*) FILTER (WHERE tool LIKE 'repowise%' OR tool LIKE 'cymbal%') smart_tools,
+  count(*) FILTER (WHERE tool='subagents_run') delegated,
+  count(*) tool_calls
+  FROM t GROUP BY 1),
+cost_agg AS (SELECT CASE WHEN start_timestamp >= :week_cut THEN 'week2' ELSE 'week1' END week,
+  round(sum((attributes->>'pi.cost.usd')::double),2) cost
+  FROM records
+  WHERE span_name LIKE 'chat %' AND start_timestamp >= :start AND start_timestamp < :end
+  GROUP BY 1)
+SELECT ta.week, ta.bash_nav, ta.proper,
+       round(100.0*ta.bash_nav/nullif(ta.bash_nav+ta.proper,0),1) bash_nav_pct,
+       ta.smart_tools, ta.delegated, ta.tool_calls, ca.cost
+FROM tool_agg ta LEFT JOIN cost_agg ca USING (week) ORDER BY 1 LIMIT 10;
 ```
 
 ## Steering guards (punk-steering v2, from 2026-09-16 23:20Z)
