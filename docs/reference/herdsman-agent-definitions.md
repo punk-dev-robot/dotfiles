@@ -146,13 +146,14 @@ Model map (1:1 by upstream tier):
 
 Kit map (tools + extensions copied from our matching definition; upstream's
 codex tools `exec_command`, `write_stdin`, `exec`, `wait`, `notebook`,
-`new_context`, `history`, `notes` dropped; kit skills not copied):
+`new_context`, `history`, `notes` dropped; kit skills not copied; context
+flags stay upstream's, so recon-kit leaves still get project context, unlike `recon`):
 
 | Kit | Roles |
 |---|---|
 | `recon` | investigator, how-explorer, advisor, reviewer |
 | `dev` (minus the `agent` sentinel and `agents:` list) | poteto-agent, bug-fix, perf-issue, hillclimb |
-| `researcher` | researcher |
+| `researcher` (+ upstream `grep`, `find`, `ls`) | researcher |
 | `reviewer` | verifier, verifier-sol |
 
 Routing: inside an active poteto-mode playbook use its `pstack-*` role table
@@ -162,6 +163,11 @@ The package auto-copies its own templates to
 `~/.config/pi/agent/agents/pstack-<role>.md` on lead `session_start`, but
 only for **missing** files (`wx`, never overwrites). With ours deployed, it
 never fires; delete one and the package's codex-pinned copy comes back.
+
+First deploy: the auto-copies already exist as unmanaged files and dotter
+skips templates whose target exists, so `rm ~/.config/pi/agent/agents/pstack-*.md`
+immediately before `dotter deploy` (no lead session in between). Don't use
+`--force`: it clobbers every drifted template target.
 
 ## Tool activation (`/tools`)
 
