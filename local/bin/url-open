@@ -12,9 +12,8 @@ Three entry points, one predicate:
 
 Allowlist, not deny-list: a link moves only when it is recognisably app content —
 Notion: host notion.so / www.notion.so / app.notion.com AND a last path segment
-ending in a 32-hex (or hyphenated-UUID) page ID. Linear: host linear.app AND a
-deliberately *narrow* set of workspace content paths (see LINEAR_SECTIONS) — not
-"every Linear page". Meet: host meet.google.com. Everything else stays in the
+ending in a 32-hex (or hyphenated-UUID) page ID. Linear: host linear.app AND a path
+under our workspace slug (LINEAR_WORKSPACE) or a /issue/<ID> short link. Meet: host meet.google.com. Everything else stays in the
 browser: homepages, marketing/pricing/help, docs, workspace roots, and every login
 / SSO / OAuth callback path, known or not. Never calls xdg-open (that calls us).
 """
@@ -40,15 +39,10 @@ PAGE_ID_RE = re.compile(
 # install re-registers with fresh IDs; update these two lines then.
 PWA_LINEAR = "01M2V2Q68ZJ85SFA5CY5V6Q5KW"
 PWA_MEET = "01M2TW5QXGJWY46NTDR6Z21WJG"
-# Linear routing is intentionally partial: only these second path segments under a
-# workspace slug count as app content. Anything else on linear.app — marketing, docs,
-# pricing, login, OAuth callbacks, unknown future sections — stays in the browser.
-LINEAR_SECTIONS = frozenset({
-    "issue", "project", "projects", "team", "view", "initiative", "initiatives",
-    "cycle", "my-issues", "inbox", "settings", "search", "roadmap",
-})
-# First segments that are never a workspace slug, so "/docs/issue" can't sneak in.
-LINEAR_RESERVED = frozenset({"auth", "login", "logout", "oauth", "docs", "blog", "pricing", "api"})
+# Every page of our workspace goes to the app. Pinning the slug is what keeps
+# marketing, docs, login and OAuth paths (and other workspaces) in the browser:
+# by shape alone "/customers/foo" is indistinguishable from "/<workspace>/foo".
+LINEAR_WORKSPACE = "swap-commerce"
 # firefoxpwa exits as soon as the runtime is spawned, so we can wait for its status.
 PWA_LAUNCH_TIMEOUT_S = 10
 # $URL_OPEN_ZEN wins (other install paths, tests); never xdg-open, that calls us.
@@ -112,10 +106,8 @@ def pwa_target(raw):
     if host != "linear.app":
         return None
     segs = [s.lower() for s in parts.path.split("/") if s]
-    if not segs or segs[0] in LINEAR_RESERVED:
-        return None
-    # Short app link /issue/KUB-12, or /<workspace>/<known section>[/...].
-    if len(segs) >= 2 and (segs[0] == "issue" or segs[1] in LINEAR_SECTIONS):
+    # /<our workspace>[/...], or the short app link /issue/KUB-12.
+    if segs and (segs[0] == LINEAR_WORKSPACE or (segs[0] == "issue" and len(segs) >= 2)):
         return (PWA_LINEAR, raw)
     return None
 

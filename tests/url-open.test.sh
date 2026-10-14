@@ -162,28 +162,31 @@ else
   fail "missing binaries" "exit $code out=$out log=$(cat "$log")"
 fi
 
-echo "— argv mode: Linear PWA (narrow workspace-content allowlist)"
+echo "— argv mode: Linear PWA (every page of our workspace)"
 for path in \
-  "myteam/issue/KUB-12/some-title" \
-  "myteam/issue/KUB-12" \
+  "swap-commerce/issue/KUB-12/some-title" \
+  "swap-commerce/issue/KUB-12" \
   "issue/KUB-12" \
-  "myteam/project/roadmap-x-1a2b" \
-  "myteam/projects" \
-  "myteam/team/KUB/all" \
-  "myteam/view/abc-123" \
-  "myteam/initiative/foo" \
-  "myteam/cycle/3" \
-  "myteam/my-issues" \
-  "myteam/inbox" \
-  "myteam/settings/members" \
-  "myteam/search" \
-  "myteam/roadmap"; do
+  "swap-commerce/project/roadmap-x-1a2b" \
+  "swap-commerce/projects" \
+  "swap-commerce/team/KUB/all" \
+  "swap-commerce/view/abc-123" \
+  "swap-commerce/initiative/foo" \
+  "swap-commerce/cycle/3" \
+  "swap-commerce/my-issues" \
+  "swap-commerce/inbox" \
+  "swap-commerce/settings/members" \
+  "swap-commerce/search" \
+  "swap-commerce/roadmap" \
+  "swap-commerce" \
+  "Swap-Commerce/inbox" \
+  "swap-commerce/some-future-section/x"; do
   run "linear /$path -> Linear PWA" 0 "firefoxpwa site launch $lin --url https://linear.app/$path|" - \
     "https://linear.app/$path"
 done
 run "linear query+fragment preserved byte-exact" 0 \
-  "firefoxpwa site launch $lin --url https://linear.app/myteam/issue/KUB-12?tab=activity&a=b#comment-9|" - \
-  "https://linear.app/myteam/issue/KUB-12?tab=activity&a=b#comment-9"
+  "firefoxpwa site launch $lin --url https://linear.app/swap-commerce/issue/KUB-12?tab=activity&a=b#comment-9|" - \
+  "https://linear.app/swap-commerce/issue/KUB-12?tab=activity&a=b#comment-9"
 
 echo "— argv mode: Linear marketing/auth/unknown paths stay in the browser"
 for url in \
@@ -196,14 +199,16 @@ for url in \
   "https://linear.app/auth/callback?code=abc" \
   "https://linear.app/oauth/authorize?client_id=x" \
   "https://linear.app/api/graphql" \
-  "https://linear.app/myteam" \
-  "https://linear.app/myteam/unknown-section/x" \
+  "https://linear.app/customers/acme" \
+  "https://linear.app/integrations/github" \
+  "https://linear.app/otherteam/issue/KUB-12" \
+  "https://linear.app/swap-commerce-evil/issue/KUB-12" \
   "https://linear.app/issue" \
-  "https://linear.app:8443/myteam/issue/KUB-12" \
-  "https://u:p@linear.app/myteam/issue/KUB-12" \
-  "https://linear.app.evil.com/myteam/issue/KUB-12" \
-  "https://sub.linear.app/myteam/issue/KUB-12" \
-  "https://evillinear.app/myteam/issue/KUB-12"; do
+  "https://linear.app:8443/swap-commerce/issue/KUB-12" \
+  "https://u:p@linear.app/swap-commerce/issue/KUB-12" \
+  "https://linear.app.evil.com/swap-commerce/issue/KUB-12" \
+  "https://sub.linear.app/swap-commerce/issue/KUB-12" \
+  "https://evillinear.app/swap-commerce/issue/KUB-12"; do
   run "browser keeps $url" 0 "zen $url|" - "$url"
 done
 
@@ -224,8 +229,8 @@ done
 
 echo "— argv mode: PWA launch failures fail open"
 MOCK_PWA_FAIL=1 run "firefoxpwa nonzero exit falls back to Zen" 0 \
-  "firefoxpwa site launch $lin --url https://linear.app/myteam/issue/KUB-12|zen https://linear.app/myteam/issue/KUB-12|" - \
-  "https://linear.app/myteam/issue/KUB-12"
+  "firefoxpwa site launch $lin --url https://linear.app/swap-commerce/issue/KUB-12|zen https://linear.app/swap-commerce/issue/KUB-12|" - \
+  "https://linear.app/swap-commerce/issue/KUB-12"
 MOCK_PWA_FAIL=1 run "firefoxpwa nonzero exit signals fail-open (3) in stdin mode" 3 \
   "firefoxpwa site launch $meet --url https://meet.google.com/abc-defg-hij|" \
   "https://meet.google.com/abc-defg-hij" --route-stdin
@@ -236,10 +241,10 @@ mkdir -p "$nopwa"
 cp "$mockbin/zen-bin" "$mockbin/xdg-open" "$nopwa/"
 : >"$log"
 out=$(PATH="$nopwa" MOCK_LOG="$log" /usr/bin/python3 "$router" \
-  "https://linear.app/myteam/issue/KUB-12" 2>&1)
+  "https://linear.app/swap-commerce/issue/KUB-12" 2>&1)
 code=$?
 got=$(tr '\n' '|' <"$log")
-if [[ $code == 0 && $got == "zen https://linear.app/myteam/issue/KUB-12|" ]]; then
+if [[ $code == 0 && $got == "zen https://linear.app/swap-commerce/issue/KUB-12|" ]]; then
   pass "missing firefoxpwa: no launch attempt, link goes to Zen"
 else
   fail "missing firefoxpwa" "exit $code log=[$got] out=$out"
@@ -256,8 +261,8 @@ run "unknown callback signals fail-open (3)" 3 '' \
   "https://www.notion.so/googlepopupredirect?state=x" --route-stdin
 run "never opens a browser in stdin mode" 3 '' "https://example.com/" --route-stdin
 run "linear issue dispatches in stdin mode" 0 \
-  "firefoxpwa site launch $lin --url https://linear.app/myteam/issue/KUB-12#c1|" \
-  "https://linear.app/myteam/issue/KUB-12#c1" --route-stdin
+  "firefoxpwa site launch $lin --url https://linear.app/swap-commerce/issue/KUB-12#c1|" \
+  "https://linear.app/swap-commerce/issue/KUB-12#c1" --route-stdin
 run "meet dispatches in stdin mode" 0 \
   "firefoxpwa site launch $meet --url https://meet.google.com/abc-defg-hij|" \
   "https://meet.google.com/abc-defg-hij" --route-stdin
@@ -329,9 +334,9 @@ const cases = [
     dispatch: `notion-app notion://app.notion.com/myteam/Page-${pid}?v=1`,
   },
   {
-    url: "https://linear.app/myteam/issue/KUB-12?tab=activity#comment-9",
+    url: "https://linear.app/swap-commerce/issue/KUB-12?tab=activity#comment-9",
     close: false,
-    dispatch: `firefoxpwa site launch ${lin} --url https://linear.app/myteam/issue/KUB-12?tab=activity#comment-9`,
+    dispatch: `firefoxpwa site launch ${lin} --url https://linear.app/swap-commerce/issue/KUB-12?tab=activity#comment-9`,
   },
   {
     url: "https://linear.app/issue/KUB-12",
@@ -350,7 +355,7 @@ const cases = [
   { url: "https://linear.app/docs/issue", close: false, dispatch: false },
   { url: "https://linear.app/login", close: false, dispatch: false },
   { url: "https://linear.app/auth/callback?code=x", close: false, dispatch: false },
-  { url: "https://linear.app/myteam", close: false, dispatch: false },
+  { url: "https://linear.app/otherteam/issue/KUB-12", close: false, dispatch: false },
   { url: "https://meet.google.com.evil.com/abc-defg-hij", close: false, dispatch: false },
   // Marketing, product and unknown auth callbacks: hook may fire, router says no.
   { url: "https://www.notion.so/pricing", close: false, dispatch: false },
@@ -363,7 +368,7 @@ const cases = [
   // Not our hosts / not our scheme (notion: belongs to the desktop handler).
   { url: `https://mysite.notion.site/Page-${pid}`, close: false, dispatch: false },
   { url: `notion://www.notion.so/Page-${pid}`, close: false, dispatch: false },
-  { url: "https://sub.linear.app/myteam/issue/KUB-12", close: false, dispatch: false },
+  { url: "https://sub.linear.app/swap-commerce/issue/KUB-12", close: false, dispatch: false },
 ];
 
 (async () => {

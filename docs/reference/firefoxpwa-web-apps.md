@@ -16,7 +16,8 @@ Site IDs (= window class suffix `FFPWA-<id>`) are in `~/.local/share/firefoxpwa/
 `config/omarchy/hypr/bindings.lua` uses `pwa(key, name, site)` which wraps `scratch()` with
 `firefoxpwa site launch <id>`. Site IDs are **not** profile IDs — don't mix them.
 
-- `url-open` (`local/bin/`) routes `meet.google.com` / known `linear.app` paths to the PWA with `--url`.
+- `url-open` (`local/bin/`) routes `meet.google.com` and every `linear.app/swap-commerce/…` page (+ `/issue/<ID>`)
+  to the PWA with `--url`; other workspaces, marketing, login and OAuth paths stay in Zen.
   Meet additionally has the extension's native URL handler enabled (`enabled_url_handlers`), so no Tridactyl hook
   — adding one double-dispatches.
 - The Default profile (`0000…`) is empty; the extension recreates it, leave it.
@@ -37,6 +38,8 @@ Site IDs (= window class suffix `FFPWA-<id>`) are in `~/.local/share/firefoxpwa/
 | `firefoxpwa.launchType = 2` | reuse the open window/tab and navigate; `3` would focus and ignore the clicked URL |
 | `browser.tabs.inTitlebar = 0`, `browser.tabs.drawInTitlebar = false` | no CSD title bar under Hyprland (PWA runtime defaults both on; use bool `false` not `0`) |
 | `firefoxpwa.sitesSetThemeColor = false`, `firefoxpwa.dynamicThemeColor = false` | otherwise the icon bar is painted with the manifest/page `theme_color` (Meet: `#1a73e8` Google blue) via an injected `<style>` |
+| `firefoxpwa.openOutOfScopeInDefaultBrowser = true` | out-of-scope top-level GET is cancelled and handed to the xdg https handler (`url-open`): app links → their PWA / Notion app, rest → Zen tab. Off = link navigates the PWA itself |
+| `firefoxpwa.allowedDomains` | hosts exempt from the above (wildcards on host): Google/YouTube login + consent, X/Twitter API. Without them SSO bounces to Zen |
 | `toolkit.legacyUserProfileCustomizations.stylesheets = true` | loads `chrome/userChrome.css` → `omarchy.css` |
 | `firefoxpwa.enableHidingIconBar = true` | experimental; the promised menu entry never showed up on 2.19, harmless |
 

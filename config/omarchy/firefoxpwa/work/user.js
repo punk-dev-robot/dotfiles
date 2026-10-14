@@ -2,6 +2,12 @@
 // another window. Read at profile startup; close the app fully after changing this.
 user_pref('firefoxpwa.launchType', 2);
 
+// Out-of-scope links leave the app: the runtime cancels the navigation and hands the URL
+// to the xdg https handler (url-open), which routes app links to their PWA/app and the
+// rest to a Zen tab. Login hosts stay in-app, else SSO bounces to the browser.
+user_pref('firefoxpwa.openOutOfScopeInDefaultBrowser', true);
+user_pref('firefoxpwa.allowedDomains', 'accounts.google.com,accounts.youtube.com,consent.google.com,consent.youtube.com,*.youtube.com,twitter.com,*.x.com');
+
 // Allow hiding the PWA's Icon Bar through its toolbar menu (experimental).
 user_pref('firefoxpwa.enableHidingIconBar', true);
 
