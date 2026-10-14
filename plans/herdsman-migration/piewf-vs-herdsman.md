@@ -492,14 +492,75 @@ This also stands in for piewf's `/review`, `/parallel-review` and `/review-loop`
 | 4 | Manager mode | Correct: it is a **runtime mode**. `/manager` from a Lead in a Herdr *primary* workspace claims the lease, and `/manager leave` drops back to Lead (`autoActivateManager: false` by default). Nothing to decide up front. Retire `multi-repo-ticket` and rewrite the mechanics in manager-mode.md after the first real `/manager` use. |
 | 5 | pi-ext-roles | **Partly right.** The global pnpm install exists, but it only provides the `pi-role` launcher (a separate native pi with a role). Applying `role:` inside `subagents_run` / workflows needs the **Pi extension** (`pi install npm:@piewf/pi-ext-roles`; README: "enable this Pi extension explicitly alongside workflows"). That is not in `settings.json`. Runtime evidence: this session's recon children ran on `claude-opus-5-5` / high with the full main toolset (`herdr_*`, `plannotator_submit_plan`). Moot now that piewf is going; relevant only for rollback. |
 
+### Round 2 (2026-10-14): roster, part 1
+
+| # | Question | Decision |
+|---|---|---|
+| 6 | Plan files | Committed (`6bc30c8`). `plans/` is gitignored; force-added like the earlier plans. |
+| 7 | Names | **Keep all 8 of your names** (`recon`, `researcher`, `dev`, `impl`, `tests`, `reviewer`, `comms`, `planner`). Disable bundled `scout`, `implementer`, `generalist` via `enabled: false` overlays. |
+| 8 | `researcher` / `reviewer` collision | **Overlay with `bodyMode: replace`**, restating every field. |
+| 9 | System prompt + context | **1:1 with today.** `systemPromptMode: replace`, `inheritProjectContext: false`, `inheritGlobalContext: false` for recon, researcher, impl, reviewer, comms, planner. `append` + `inheritProjectContext: true` + `inheritGlobalContext: false` for dev, tests. |
+| 10 | Delegation edges | **`dev: [recon, researcher, tests]` only.** Everyone else, `reviewer` included, is a leaf for the trial. |
+
+### Round 3 (2026-10-14): roster, part 2 (extensions, tools)
+
+| # | Question | Decision |
+|---|---|---|
+| 11 | Base extension partial | `pi-otel`, `pi-fff`, `context-mode`, `pi-mcp-adapter`, `pi-context-include`, `punk-steering`, `@gotgenes/pi-anthropic-auth`, `pi-multi-account`. **`pi-rtk-optimizer` dropped**: no measured savings and it causes issues. Per-role adds as today: `pi-web-access` for researcher and planner, `ponytail` for dev. |
+| 12 | Caveman | It's for the Lead/Manager you talk to. **Off in all children** (agent call): child output is evidence the Lead reads, and dropping it removes the per-role exception. |
+| 13 | Advisor in children | **Keep `pi-advisor-flow` in all 8 for now.** Herdsman's own escalation is `ask_owner` (the user's "ask_parent"); it asks the direct owner and must be the final call. Revisit after the trial: advisor vs `ask_owner` overlap. |
+| 14 | Local extensions | Add `bash-output-guard` to bash-capable roles and `context-events` to all children. `repowise-augment` and `pi-lsp` stay out. |
+| 15 | Tools | 1:1 port with the `repowise_*` / `ctx_*` globs. Drop `workflow_result`. `dev` gets the `agent` sentinel. |
+
+### Round 4 (2026-10-14): roster, part 3 (models, skills, escalation)
+
+| # | Question | Decision |
+|---|---|---|
+| 16 | Models | **Dotter variables as the alias layer, with short `provider/family` values** that pi resolves to the newest model at launch. Runtime test (`pi -p --mode json --model "<p>"`): `anthropic/sonnet` → `claude-sonnet-5-5`, `anthropic/opus` → `claude-opus-5-5`, `anthropic/fable` → `claude-fable-5-1`, `openai-codex/sol` → `gpt-6.1-sol`. Bare `sonnet` → `openai-codex/gpt-5.6-terra`, so the **provider prefix is mandatory**. Herdsman passes a pinned `model` through unchanged (`agent-definitions.ts:791`). `thinking` is a separate field. Accepted: a new release silently changes the model, which Logfire's model attribute shows. |
+| 17 | Skills | 1:1 to paths, dropping dead ones (`logfire-query`, `punk-sdlc`, `swap-*`). dev: tdd, codebase-design, mcp-scripting. tests: tdd, mcp-scripting. researcher: research, mcp-scripting. planner: research, domain-modeling, codebase-design, mcp-scripting (no `grilling`: a child can't interview the user). impl: none. Others: mcp-scripting. |
+| 18 | Escalation | **Delete the `BLOCKED:` convention from the bodies.** Use the `ask_owner` rule from Herdsman's contract. Trial it and revisit if it is awkward. |
+
+Facts found while preparing round 3:
+
+- Herdsman `tools` accepts `*` globs (schema, `herdsman.md` §Fields). Still confirm at runtime.
+- piewf child allowlist entry `**/pi-claude-auth/**` matches **no installed package**. Anthropic auth comes from
+  `@gotgenes/pi-anthropic-auth` (`./src/index.ts`) and `pi-multi-account` (`./index.ts`). Under `noExtensions: true`
+  with an explicit `anthropic/*` model, children may fail to authenticate unless these load (**VERIFY**).
+- Extension entries (under `~/.config/pi/agent/npm/node_modules/`): `pi-otel/dist/index.js`,
+  `pi-rtk-optimizer/index.ts`, `@ff-labs/pi-fff/src/index.ts`, `pi-caveman/extensions/caveman.ts`,
+  `context-mode/build/adapters/pi/extension.js`, `pi-advisor-flow/dist/index.js`, `pi-mcp-adapter/index.ts`,
+  `@d3ara1n/pi-context-include/src/index.ts`, `@dietrichgebert/ponytail/pi-extension/index.js`,
+  `pi-web-access/dist` (a **directory**: check `--extension` accepts it, else `dist/index.js`). punk-steering is
+  local: `~/.config/pi/agent/extensions/punk-steering/`.
+- Skill paths: `tdd`, `codebase-design`, `research`, `domain-modeling`, `grilling` → `~/.agents/skills/tessl__<name>/SKILL.md`;
+  `mcp-scripting` → `~/.config/pi/agent/npm/node_modules/pi-mcp-adapter/skills/mcp-scripting/SKILL.md`.
+  `logfire-query` is **not installed**.
+
 ### 7.1 Open: definition roster design (next round)
 
-Axes to decide per definition:
+### Round 5 (2026-10-14): roster, part 4 (template layout)
 
-- **Name.** Your routing vocabulary (recon/impl/dev/tests/comms/planner) or Herdsman's bundled names (scout/implementer/generalist). Steering and skills reference yours.
-- **Base.** A standalone file, or an overlay on a bundled definition (`bodyMode: append|replace`). Overlays inherit upstream prompt improvements, and upstream churn with them.
-- **System prompt.** `systemPromptMode: append`, which keeps pi's base prompt plus the Herdsman contract, or `replace`.
-- **Tools / extensions / skills.** Which template partials each definition gets.
-- **Delegation edges (`agents:`).** Who may nest. The Herdsman contract is roster-agnostic, so names matter only to *your* steering.
+| # | Question | Decision |
+|---|---|---|
+| 19 | Template location | **In-map**: `config/custom/pi/agent/agents/<name>.md`, each with a per-file `type = "template"` entry in `.dotter/global.toml` (the `lsp.json` precedent). This supersedes the separate `agent-definitions/` dir in §4.2. The disabled bundled defs (`scout`, `implementer`, `generalist`) are plain files in the same dir. |
+| 20 | Variables | New `[base.variables]`: list variables `ext_base`, `ext_web`, `ext_ponytail`, `ext_bash_guard`, `ext_context_events` (entries relative to `~/.config/pi/agent/`), rendered as `{{home_dir}}/…` via `{{#each}}`, plus `model_workhorse`, `model_strong`, `model_sota`, `model_review_openai`. `home_dir` already exists per host. Add `local/bin/herdsman-defs-check` to check that every rendered path exists. A `dotter -d` dry run on one definition comes first. |
 
-Strawman, not a decision: keep the 8 names standalone, disable the bundled `scout`, `implementer` and `generalist`, and overlay `researcher` and `reviewer` with `bodyMode: replace`.
+### 7.1 Resolved roster (summary of rounds 2–5)
+
+| Definition | Base | Model / thinking | systemPrompt / context | Extensions (beyond `ext_base`) | Skills | `agents:` |
+|---|---|---|---|---|---|---|
+| `recon` | standalone | workhorse / low | replace / none | context-events | mcp-scripting | — |
+| `researcher` | overlay, `bodyMode: replace` | strong / high | replace / none | web, bash-guard, context-events | research, mcp-scripting | — |
+| `dev` | standalone | strong / high | append / project | ponytail, bash-guard, context-events | tdd, codebase-design, mcp-scripting | recon, researcher, tests |
+| `impl` | standalone | workhorse / medium | replace / none | bash-guard, context-events | — | — |
+| `tests` | standalone | workhorse / medium | append / project | bash-guard, context-events | tdd, mcp-scripting | — |
+| `reviewer` | overlay, `bodyMode: replace` | sota / high | replace / none | bash-guard, context-events | mcp-scripting | — |
+| `comms` | standalone | workhorse / medium | replace / none | bash-guard, context-events | mcp-scripting | — |
+| `planner` | standalone | strong / high | replace / none | web, context-events | research, domain-modeling, codebase-design, mcp-scripting | — |
+| `scout`, `implementer`, `generalist` | overlay | `enabled: false` | | | | |
+
+- `ext_base`: pi-otel, pi-fff, context-mode, pi-mcp-adapter, pi-context-include, punk-steering, pi-anthropic-auth,
+  pi-multi-account, pi-advisor-flow. No rtk, no caveman.
+- `inheritGlobalContext: false` everywhere. Tools are ported 1:1 with globs, `workflow_result` is dropped, and dev
+  gets the `agent` sentinel.
+- Bodies: drop the `workflow_result` contract and `BLOCKED:`. Use `ask_owner` for escalation.
