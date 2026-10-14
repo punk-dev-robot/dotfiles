@@ -107,10 +107,57 @@ Diff:
 [aliases]
 # Drop worktrees + branches integrated into develop (squash-merge aware).
 # Usage:
-#   wt clean              remove all merged worktrees (>=1h old)
-#   wt clean --dry-run    preview only
-#   wt clean --min-age=0s no age guard
-prune = "wt step prune {{ args }}"
+#   wt prune              remove all merged worktrees (>=1h old)
+#   wt prune -- --dry-run preview only (bare --dry-run is eaten by wt itself)
+#   wt prune --min-age=0s no age guard
+prune = "wt step prune {% if '--min-age' not in args | join(' ') %}--min-age=1h {% endif %}{{ args }}"
+
+# Drop worktrees whose GitHub PR is merged, using gh as the source of truth.
+# Complements `wt prune`, whose content check misses squash merges once the
+# default branch later edits the same lines (merge-tree conflicts), and which
+# ignores detached-HEAD worktrees. Branch = checked-out branch, or for a
+# detached worktree the dir suffix after `<repo>.`. Removes only when a merged
+# PR's head contains the worktree HEAD (no unmerged local commits) and the
+# worktree is clean (incl. untracked). Branch deleted via `wt remove -D`, or
+# for detached worktrees `git branch -D` when its tip is also in the PR head.
+# Usage:
+#   wt prune-gone -n         preview only (or `-- --dry-run`)
+#   wt prune-gone            remove
+prune-gone = '''
+set -u
+dry=0; case " {{ args }} " in *" --dry-run "*|*" -n "*) dry=1;; esac
+primary={{ primary_worktree_path }}
+repo=$(basename "$primary")
+git fetch -q origin || exit 1
+git worktree list --porcelain | awk '
+  /^worktree / { p = substr($0, 10); b = "" }
+  /^branch refs\/heads\// { b = substr($0, 19) }
+  /^HEAD / { h = $2 }
+  /^$/ { print p "|" b "|" h }
+  END { if (p != "") print p "|" b "|" h }
+' | sort -u | while IFS='|' read -r path branch head; do
+  [ "$path" = "$primary" ] && continue
+  name=$branch
+  [ -z "$name" ] && name=${path##*/"$repo".}
+  [ "$name" = "$path" ] && { echo "○ skip $path (detached, name not derivable)"; continue; }
+  merged=$(gh pr list --state merged --head "$name" --json headRefOid -q '.[].headRefOid' </dev/null) || { echo "✗ gh failed for $name"; continue; }
+  [ -z "$merged" ] && continue
+  ok=""
+  for oid in $merged; do
+    git cat-file -e "$oid^{commit}" 2>/dev/null || git fetch -q origin "$oid" 2>/dev/null
+    git merge-base --is-ancestor "$head" "$oid" 2>/dev/null && { ok=$oid; break; }
+  done
+  [ -z "$ok" ] && { echo "○ skip $name (local commits not in merged PR)"; continue; }
+  [ -n "$(git -C "$path" status --porcelain 2>/dev/null)" ] && { echo "○ skip $name (uncommitted changes)"; continue; }
+  if [ "$dry" = 1 ]; then echo "would remove $path ($name)"; continue; fi
+  if [ -n "$branch" ]; then
+    wt remove -D --foreground "$branch" </dev/null
+  else
+    wt remove --foreground "$path" </dev/null
+    tip=$(git rev-parse -q --verify "refs/heads/$name") && git merge-base --is-ancestor "$tip" "$ok" && git branch -D "$name"
+  fi
+done
+'''
 
 # Open a worktree for a GitHub PR. Branch is created tracking the PR head.
 # Usage: wt pr 547

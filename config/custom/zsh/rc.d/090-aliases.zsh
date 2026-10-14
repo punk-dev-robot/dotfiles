@@ -174,8 +174,9 @@ alias lg='lazygit'
   alias wtm='wt merge'
   alias wtcl='wt clean'
   alias wtd='wt step diff'
-  alias wtx='wt remove -f -D'
-  alias wtX='wt prune'
+  alias wtdel='wt remove -f -D'
+  alias wtx='wt prune'
+  alias wtx='wt prune-gone'
 
 # kubernetes
 # alias kdhm='kubectl describe HelmChart'
