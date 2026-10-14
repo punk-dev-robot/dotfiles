@@ -585,3 +585,9 @@ Facts found while preparing round 3:
   Consequences: managed Leads read as `main` in Logfire, and `isSubagent()` cannot tell them apart by env.
 - Logfire MCP routes are swapped: `logfire-swap` = personal org (`kuba-gaj`/`coding-agent`, pi data), `logfire` = work org.
   The user will swap the auth caches later.
+- **Baseline** recorded in [`baseline.md`](baseline.md), with SQL you can rerun. Over 14d (7 days with data): children cost
+  $130 against $178 for main sessions, so 42% of spend. Over the last 3d it's 59%, because children have run on opus since ~Oct 8.
+  First-turn input for a fresh main session: p50 39k, p90 52k tokens.
+- **Correction to §0:** the `Workflow: …` prompt prefix is **still present** through Oct 14 (baseline query). What broke
+  is that roles stopped being applied (between Oct 2 and Oct 8), not the prefix. So `isSubagent()`'s `Workflow:` fallback still works under piewf
+  today. It only becomes dead once piewf is removed.
