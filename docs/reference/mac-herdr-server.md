@@ -70,6 +70,14 @@ own pref: `app.autostart-mode="off"` in `~/Library/Application Support/Spotify/p
 shows **Attention** after every mac reboot (bridge stops retrying while the host is down); see
 runbook.
 
+## Telling machines apart
+
+Mac = catppuccin **sky**, local = peach (herdr accent). Herdr themes are client-side only, so
+the cue comes from things that run on the server: tab-bar `command` badge (` mac` / `󰣇 host`,
+`ui.tab_bar_right`), sidebar `machine` token rule, `pi()` wrapper in `063-ai.zsh` →
+`pi --use-theme terminal-mac` (sky editor border + tinted user messages; theme in
+`config/custom/pi/agent/themes/`), starship `os` module ( on mac only).
+
 ## Agent topologies
 
 1. **Agent on the mac, local to the code** — default for company code. pi/claude runs in a
