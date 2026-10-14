@@ -21,32 +21,31 @@ gui:
       - "#cdd6f4"
     searchingActiveBorderColor:
       - "#f9e2af"
-  authorColors:
-    "*": "#b4befe"
-    # frappe
-  #   activeBorderColor:
-  #     - "#ca9ee6"
-  #     - bold
-  #   inactiveBorderColor:
-  #     - "#a5adce"
-  #   optionsTextColor:
-  #     - "#8caaee"
-  #   selectedLineBgColor:
-  #     - "#414559"
-  #   cherryPickedCommitBgColor:
-  #     - "#51576d"
-  #   cherryPickedCommitFgColor:
-  #     - "#ca9ee6"
-  #   unstagedChangesColor:
-  #     - "#e78284"
-  #   defaultFgColor:
-  #     - "#c6d0f5"
-  #   searchingActiveBorderColor:
-  #     - "#e5c890"
-  #
-  # authorColors:
-  #   "*": "#b7bdf8"
-
+    authorColors:
+      "*": "#b4befe"
+      # frappe
+    #   activeBorderColor:
+    #     - "#ca9ee6"
+    #     - bold
+    #   inactiveBorderColor:
+    #     - "#a5adce"
+    #   optionsTextColor:
+    #     - "#8caaee"
+    #   selectedLineBgColor:
+    #     - "#414559"
+    #   cherryPickedCommitBgColor:
+    #     - "#51576d"
+    #   cherryPickedCommitFgColor:
+    #     - "#ca9ee6"
+    #   unstagedChangesColor:
+    #     - "#e78284"
+    #   defaultFgColor:
+    #     - "#c6d0f5"
+    #   searchingActiveBorderColor:
+    #     - "#e5c890"
+    #
+    # authorColors:
+    #   "*": "#b7bdf8"
   # macchiato
   #   activeBorderColor:
   #     - "#c6a0f6"

@@ -6,6 +6,7 @@
 //   base   — git base ref (uses `git diff <base>...HEAD`)
 //   rounds — max debate rounds after initial review (default 1)
 //   repo   — absolute path to the repo checkout (default: cwd)
+//   sota   — true: fable vs astra; default: opus vs sol. Arbiter is fable in both.
 
 // args may arrive as a JSON string depending on the caller — normalize
 const a = typeof args === "string" ? JSON.parse(args) : (args ?? {});
@@ -13,6 +14,12 @@ const pr = a.pr ?? null;
 const base = a.base ?? null;
 if (!pr && !base) throw new Error("Pass args.pr (PR number) or args.base (git base ref)");
 const rounds = a.rounds ?? 1;
+// reviewer pair by tier; models pinned explicitly so role resolution can't swap them
+const [A, B] = a.sota
+  ? [{ name: "fable", model: "sota" }, { name: "astra", model: "sota-openai" }]
+  : [{ name: "opus", model: "strong" }, { name: "sol", model: "review-openai" }];
+const revA = { role: "reviewer", model: A.model };
+const revB = { role: "reviewer", model: B.model };
 const repoNote = a.repo
   ? `The repo is at ${a.repo} — cd there for all git/gh/file commands.`
   : `The repo is checked out at cwd.`;
@@ -38,16 +45,14 @@ Output markdown. End with a line: FINDINGS: <n>.`;
 
 const reviewBrief = `Review ${target}\n\n${criteria}`;
 
-// reviewer role model = sota (fable); the openai branch overrides it with the review-openai alias
-const openaiReviewer = { role: "reviewer", model: "review-openai" };
 
 const initial = await parallel("review", {
-  fable: () => agent(reviewBrief, { role: "reviewer", label: "fable-review" }),
-  sol: () => agent(reviewBrief, { ...openaiReviewer, label: "sol-review" }),
+  a: () => agent(reviewBrief, { ...revA, label: `${A.name}-review` }),
+  b: () => agent(reviewBrief, { ...revB, label: `${B.name}-review` }),
 });
 
-let fablePos = initial.fable;
-let solPos = initial.sol;
+let posA = initial.a;
+let posB = initial.b;
 
 const debateTemplate = `You previously reviewed ${pr ? `PR #${pr}` : `branch diff vs ${base}`} (same repo access as before: ${repoNote}). Another principal reviewer did too.
 
@@ -66,34 +71,35 @@ CONSENSUS: no    (if contested items remain)`;
 for (let i = 1; i <= rounds; i++) {
   // operation name must be a static string literal (preflight AST check); loop occurrences get their own identity
   const debate = await parallel("debate", {
-    fable: () =>
-      agent(prompt(debateTemplate, { own: fablePos, other: solPos }), {
-        role: "reviewer", label: `fable-debate-${i}`,
+    a: () =>
+      agent(prompt(debateTemplate, { own: posA, other: posB }), {
+        ...revA, label: `${A.name}-debate-${i}`,
       }),
-    sol: () =>
-      agent(prompt(debateTemplate, { own: solPos, other: fablePos }), {
-        ...openaiReviewer, label: `sol-debate-${i}`,
+    b: () =>
+      agent(prompt(debateTemplate, { own: posB, other: posA }), {
+        ...revB, label: `${B.name}-debate-${i}`,
       }),
   });
-  fablePos = debate.fable;
-  solPos = debate.sol;
-  const done = /CONSENSUS:\s*yes/i.test(fablePos) && /CONSENSUS:\s*yes/i.test(solPos);
+  posA = debate.a;
+  posB = debate.b;
+  const done = /CONSENSUS:\s*yes/i.test(posA) && /CONSENSUS:\s*yes/i.test(posB);
   log(`debate round ${i}/${rounds} done, consensus: ${done}`);
   if (done) break;
 }
 
+const tag = `${A.name}-vs-${B.name}`;
 const reportPath =
   (a.repo ? `${a.repo}/` : "") +
-  (pr ? `reviews/PR-${pr}-review.md` : `reviews/branch-review-vs-${String(base).replace(/[^\w.-]/g, "_")}.md`);
+  (pr ? `reviews/PR-${pr}-review-${tag}.md` : `reviews/branch-review-vs-${String(base).replace(/[^\w.-]/g, "_")}-${tag}.md`);
 
 const arbiterBrief = prompt(
   `You are the neutral arbiter of a two-reviewer principal-level review of ${pr ? `PR #${pr}` : `the branch diff vs ${base}`}. ${repoNote} You may read source and the diff to spot-check.
 
-REVIEWER A (fable) FINAL POSITION:
-{fable}
+REVIEWER A (${A.name}) FINAL POSITION:
+{posA}
 
-REVIEWER B (sol) FINAL POSITION:
-{sol}
+REVIEWER B (${B.name}) FINAL POSITION:
+{posB}
 
 Produce the consensus report, severity-ordered, with sections:
 1. Agreed findings — deduped, each with file:line, impact, fix direction.
@@ -104,7 +110,7 @@ Produce the consensus report, severity-ordered, with sections:
 Spot-check any finding whose evidence looks thin before including it as agreed.
 Write the full report to {reportPath} (create the directory if needed).
 Return a short summary: verdict + top 3 findings + the report path.`,
-  { fable: fablePos, sol: solPos, reportPath },
+  { posA, posB, reportPath },
 );
 
-return await agent(arbiterBrief, { model: "strong:high", label: "arbiter" });
+return await agent(arbiterBrief, { model: "sota", label: "fable-arbiter" });

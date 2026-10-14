@@ -21,7 +21,7 @@
       }
     },
     "mattpocock/skills": {
-      "version": "d81f3a183412e71a5b1e84ca21bc1a35eea03a60",
+      "version": "49dd158d1076134a641b33efb035946536778336",
       "source": "https://github.com/mattpocock/skills",
       "include": {
         "skills": [
@@ -45,7 +45,12 @@
           "triage",
           "wayfinder",
           "wizard",
-          "writing-for-agents"
+          "writing-for-agents",
+          "pr",
+          "code-review",
+          "setup-matt-pocock-skills",
+          "teach",
+          "wait-what"
         ]
       }
     },
@@ -54,7 +59,7 @@
       "source": "https://github.com/plannotator/effective-html"
     },
     "humanlayer/skills": {
-      "version": "ca7c8088db69e315a8b2deea43820270457f8f3c",
+      "version": "653b6411c1f70c275a18e37673b042ff99f67ceb",
       "source": "https://github.com/humanlayer/skills",
       "include": {
         "skills": [
@@ -66,7 +71,7 @@
       }
     },
     "repowise-dev/repowise": {
-      "version": "57aaafede81df169218686668a99e7be00a59788",
+      "version": "bd02d4d0db40dd8eae082bbbe15d3f153b97863a",
       "source": "https://github.com/repowise-dev/repowise",
       "include": {
         "skills": [
@@ -80,7 +85,7 @@
       }
     },
     "plannotator/herdr-annotate": {
-      "version": "cbba4732229191347ff5128e3da71f64474a6a49",
+      "version": "ceab050b77bea07bbeabdfda5c138be8c9c5c517",
       "source": "https://github.com/plannotator/herdr-annotate",
       "include": {
         "skills": [
