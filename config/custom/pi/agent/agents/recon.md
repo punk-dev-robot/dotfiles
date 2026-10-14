@@ -7,12 +7,13 @@ thinking: low
 systemPromptMode: replace
 inheritProjectContext: false
 inheritGlobalContext: false
-tools: [read, grep, find, ls, write, ask_advisor, record_advisor_outcome, mcp, mcpScript, "repowise_*", ctx_search, ctx_execute_file]
+tools: [read, grep, find, ls, write, ask_advisor, record_advisor_outcome, mcp, mcpScript, "repowise_*", ctx_search, ctx_execute_file, codemode]
 noSkills: true
 skills:
   - "{{home_dir}}/.config/pi/agent/npm/node_modules/pi-mcp-adapter/skills/mcp-scripting/SKILL.md"
 noExtensions: true
 extensions:
+  - "builtin:codemode"
 {{#each ext_base}}
   - "{{@root.home_dir}}/.config/pi/agent/{{this}}"
 {{/each}}

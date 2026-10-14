@@ -80,7 +80,8 @@
         "reply_agent",
         "resume_project",
         "steer_agent",
-        "stop_lead"
+        "stop_lead",
+        "codemode"
       ]
     },
     "skills": {

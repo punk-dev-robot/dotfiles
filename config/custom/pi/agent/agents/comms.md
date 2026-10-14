@@ -7,12 +7,13 @@ thinking: medium
 systemPromptMode: replace
 inheritProjectContext: false
 inheritGlobalContext: false
-tools: [read, write, bash, mcp, mcpScript, ask_advisor, record_advisor_outcome, "ctx_*"]
+tools: [read, write, bash, mcp, mcpScript, ask_advisor, record_advisor_outcome, "ctx_*", codemode]
 noSkills: true
 skills:
   - "{{home_dir}}/.config/pi/agent/npm/node_modules/pi-mcp-adapter/skills/mcp-scripting/SKILL.md"
 noExtensions: true
 extensions:
+  - "builtin:codemode"
 {{#each ext_base}}
   - "{{@root.home_dir}}/.config/pi/agent/{{this}}"
 {{/each}}

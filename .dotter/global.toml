@@ -30,7 +30,7 @@ default_target_type = "symbolic"
 # pi-lsp: tsserver fallbackPath is absolute per host ({{home_dir}}); pi-lsp does not expand ~ in initializationOptions.
 # fallbackPath (not path): TLS resolves user path > workspace node_modules/typescript > fallbackPath, so the repo TS wins.
 "config/custom/pi/agent/lsp.json" = { target = "~/.config/pi/agent/lsp.json", type = "template" }
-# KUB-171: pi-herdsman agent definitions. Templated ones render model ids + absolute extension/skill
+# KUB-171: pi-herdsman agent definitions. Each lists "builtin:codemode" (--no-extensions drops pi built-ins). Templated ones render model ids + absolute extension/skill
 # paths from [base.variables] below (edit there, then `dotter deploy`; never via /herdsman's model editor).
 # Check rendered paths with `herdsman-defs-check`.
 "config/custom/pi/agent/agents/recon.md" = { target = "~/.config/pi/agent/agents/recon.md", type = "template" }

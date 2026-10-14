@@ -17,6 +17,7 @@ for f in "${files[@]}"; do
   fi
   # frontmatter only; entries of extensions:/skills: as block (- x) or flow ([x, y]) lists
   while IFS= read -r p; do
+    [[ $p == builtin:* ]] && continue  # pi built-in extension, not a path
     checked=$((checked + 1))
     [[ -e "$p" ]] || { echo "MISSING  $(basename "$f"): $p"; fail=1; }
   done < <(awk '

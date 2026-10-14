@@ -45,6 +45,7 @@
     "npm:@gotgenes/pi-anthropic-auth"
   ],
   "extensions": ["-builtin:mcp"],
+  "defaultTools": ["+codemode"],
   "npmCommand": ["mise", "exec", "node@26", "--", "npm"],
   "retry": {
     "provider": {

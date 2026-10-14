@@ -624,3 +624,10 @@ Facts found while preparing round 3:
   - **`mcp-scripting` is inert in children**: its frontmatter has `disable-model-invocation: true`, so pi loads it but never shows it
     to the model. The same was true under piewf. Open: drop it from the definitions?
   - Still untested: `continue_agent`, restart re-bind, `/manager`, mac.
+
+### Round 7 (2026-10-14): scripting
+
+| # | Question | Decision |
+|---|---|---|
+| 24 | `mcp-scripting` skill | Leave it hidden. Upstream made it manual-only (pi-mcp-adapter PR #478, merged 2026-09-01, `disable-model-invocation: true`); there is no setting to flip it. The `mcpScript` tool description covers the basics. |
+| 25 | pi native codemode | **Keep pi-mcp-adapter and enable `codemode` everywhere.** Main: `"defaultTools": ["+codemode"]` in `settings.json` plus a `codemode` pin in the `/tools` allowlist. Children: `codemode` in every `tools:` list **and** `- "builtin:codemode"` in `extensions:`, because `--no-extensions` also drops pi's built-in extensions and Herdsman's `--tools` overrides `defaultTools`. Verified: main runs a script; a live Herdsman `recon` child runs a script whose `ALL_TOOLS` equals its allowlist, so codemode can't get around it. `herdsman-defs-check` skips `builtin:` entries. Native pi MCP stays off (`-builtin:mcp`). |
