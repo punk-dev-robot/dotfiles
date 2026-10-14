@@ -612,3 +612,15 @@ Facts found while preparing round 3:
   - Child env, verified at runtime: `PI_HERDSMAN_AGENT_DEFINITION`, `_LABEL`, `_OWNER_SESSION_ID`, `_RUN_ID`, `_MAILBOX`,
     `_WORKSPACE_ID`, `_OWNER_DISPLAY`, `_ALLOWED_AGENT_DEFINITIONS`, `PI_SUBAGENT_CHILD=1`, `PI_SUBAGENT_PARENT_SESSION`, `PI_OFFLINE=1`.
   - Not yet tested: nested dev→recon, `continue_agent`, restart re-bind, `/manager`, researcher web tools, mac.
+- **Format test, all 8 definitions** (live `delegate_agent` per definition, with the real child command lines recorded from `/proc`):
+  - Command lines match §7.1 exactly per definition: `--model`/`--thinking`, `--tools` (globs kept; Herdsman appends
+    `ask_owner`, `mcp__`, and the delegation tools for dev), `--skill` paths, `--no-extensions` plus `-e` paths (Herdsman prepends its own
+    agent extension and `herdr-agent-state.ts`).
+  - Each command line, replayed headless (`pi -p`, sonnet/low): exit 0, no error/warn lines, so every extension and skill path loads.
+  - Live tool lists match the definitions. The probes worked: ctx_search (recon), web_search (researcher), fetch_content (planner),
+    repowise (reviewer), mcp status (comms, 14 servers), bash plus env (impl), skill path (tests). **Nested dev → recon works.**
+  - Steering briefings arrive per tool set (punk-steering loads). No caveman anywhere. Ponytail active in dev
+    (checked by replay: "PONYTAIL MODE ACTIVE — level: full").
+  - **`mcp-scripting` is inert in children**: its frontmatter has `disable-model-invocation: true`, so pi loads it but never shows it
+    to the model. The same was true under piewf. Open: drop it from the definitions?
+  - Still untested: `continue_agent`, restart re-bind, `/manager`, mac.
