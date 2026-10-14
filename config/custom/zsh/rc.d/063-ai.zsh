@@ -7,6 +7,8 @@ export FFF_HISTORY_DB="$HOME/.config/pi-fff/history.db"
 # localhost resolves on the mac, nothing exposed on the LAN).
 if [[ $OSTYPE == darwin* && $HERDR_ENV == 1 ]]; then
   export PLANNOTATOR_BROWSER="$HOME/.local/bin/plannotator-terminal-browser"
+  # Sky-tinted pi (themes/terminal-mac.json) so mac panes are obvious at a glance.
+  pi() { command pi --use-theme terminal-mac "$@"; }
 fi
 
 export PI_CLIPBOARD_OSC52=1

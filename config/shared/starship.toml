@@ -5,7 +5,18 @@ palette = "catppuccin_mocha"
 
 add_newline = true
 command_timeout = 200
-format = "[$directory$git_branch$git_status]($style)$character"
+format = "$os[$directory$git_branch$git_status]($style)$character"
+
+# Host badge: Apple glyph on the mac (herdr remote panes), nothing locally.
+[os]
+disabled = false
+format = "[$symbol]($style)"
+style = "bold sky"
+
+[os.symbols]
+Macos = " "
+Arch = ""
+Linux = ""
 
 [character]
 success_symbol = "[❯](bold maroon)"

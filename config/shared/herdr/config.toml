@@ -317,7 +317,7 @@ tab_bar_position = "bottom"
 # which machine the selected panes run on (sky = mac, peach = local).
 tab_bar_right = [
   { type = "zoom" },
-  { type = "command", command = 'case $(uname) in Darwin) echo " mac";; *) echo "󰣇 $(hostname -s)";; esac', interval_seconds = 3600, timeout_seconds = 2 },
+  { type = "command", command = 'case $(uname) in Darwin) echo " mac";; *) echo "󰣇 $(hostname -s)";; esac', interval_seconds = 3600, timeout_seconds = 2 },
 ]
 
 [ui.sidebar.agents]
