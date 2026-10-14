@@ -72,10 +72,10 @@ runbook.
 
 ## Telling machines apart
 
-Mac = catppuccin **sky**, local = peach (herdr accent). Herdr themes are client-side only, so
+Mac = burnt orange **#bc6536**, local = default colours. Herdr themes are client-side only, so
 the cue comes from things that run on the server: tab-bar `command` badge (` mac` / `󰣇 host`,
 `ui.tab_bar_right`), sidebar `machine` token rule, `pi()` wrapper in `063-ai.zsh` →
-`pi --use-theme terminal-mac` (sky editor border + tinted user messages; theme in
+`pi --use-theme terminal-mac` (orange editor border at every thinking level but xhigh + tinted user messages; theme in
 `config/custom/pi/agent/themes/`), starship `os` module ( on mac only).
 
 ## Agent topologies

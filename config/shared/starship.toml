@@ -11,7 +11,7 @@ format = "$os[$directory$git_branch$git_status]($style)$character"
 [os]
 disabled = false
 format = "[$symbol]($style)"
-style = "bold sky"
+style = "bold #bc6536"
 
 [os.symbols]
 Macos = " "
