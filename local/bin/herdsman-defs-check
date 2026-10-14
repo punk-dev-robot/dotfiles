@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# KUB-171: check that every extensions:/skills: path in the deployed pi-herdsman agent
+# definitions exists. Package updates can move entry files; a missing path means a child
+# launches without that extension/skill (or fails). Exit 1 on any missing path.
+set -euo pipefail
+
+dir="${1:-$HOME/.config/pi/agent/agents}"
+shopt -s nullglob
+files=("$dir"/*.md)
+((${#files[@]})) || { echo "herdsman-defs-check: no definitions in $dir" >&2; exit 1; }
+
+fail=0 checked=0
+for f in "${files[@]}"; do
+  if grep -q '{{' "$f"; then
+    echo "UNRENDERED $f (contains '{{' — symlinked source instead of rendered template?)"
+    fail=1
+  fi
+  # frontmatter only; entries of extensions:/skills: as block (- x) or flow ([x, y]) lists
+  while IFS= read -r p; do
+    checked=$((checked + 1))
+    [[ -e "$p" ]] || { echo "MISSING  $(basename "$f"): $p"; fail=1; }
+  done < <(awk '
+    NR == 1 && $0 != "---" { exit }
+    NR > 1 && $0 == "---" { exit }
+    /^[A-Za-z]/ {
+      key = $0; sub(/:.*/, "", key)
+      inlist = (key == "extensions" || key == "skills")
+      if (inlist && match($0, /\[.*\]/)) {
+        s = substr($0, RSTART + 1, RLENGTH - 2); n = split(s, a, ",")
+        for (i = 1; i <= n; i++) print a[i]
+      }
+      next
+    }
+    inlist && /^[[:space:]]*-[[:space:]]/ { s = $0; sub(/^[[:space:]]*-[[:space:]]*/, "", s); print s }
+  ' "$f" | sed -E 's/^[[:space:]]*["'\'']?//; s/["'\'']?[[:space:]]*$//' | grep -v '^$' || true)
+done
+
+echo "herdsman-defs-check: ${#files[@]} definitions, $checked paths checked"
+if ((fail)); then
+  echo "herdsman-defs-check: FAILED" >&2
+  exit 1
+fi
+echo "herdsman-defs-check: OK"

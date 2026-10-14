@@ -30,6 +30,18 @@ default_target_type = "symbolic"
 # pi-lsp: tsserver fallbackPath is absolute per host ({{home_dir}}); pi-lsp does not expand ~ in initializationOptions.
 # fallbackPath (not path): TLS resolves user path > workspace node_modules/typescript > fallbackPath, so the repo TS wins.
 "config/custom/pi/agent/lsp.json" = { target = "~/.config/pi/agent/lsp.json", type = "template" }
+# KUB-171: pi-herdsman agent definitions. Templated ones render model ids + absolute extension/skill
+# paths from [base.variables] below (edit there, then `dotter deploy`; never via /herdsman's model editor).
+# scout/implementer/generalist (enabled: false overlays) are plain files deployed by the recursive map.
+# Check rendered paths with `herdsman-defs-check`.
+"config/custom/pi/agent/agents/recon.md" = { target = "~/.config/pi/agent/agents/recon.md", type = "template" }
+"config/custom/pi/agent/agents/researcher.md" = { target = "~/.config/pi/agent/agents/researcher.md", type = "template" }
+"config/custom/pi/agent/agents/dev.md" = { target = "~/.config/pi/agent/agents/dev.md", type = "template" }
+"config/custom/pi/agent/agents/impl.md" = { target = "~/.config/pi/agent/agents/impl.md", type = "template" }
+"config/custom/pi/agent/agents/tests.md" = { target = "~/.config/pi/agent/agents/tests.md", type = "template" }
+"config/custom/pi/agent/agents/reviewer.md" = { target = "~/.config/pi/agent/agents/reviewer.md", type = "template" }
+"config/custom/pi/agent/agents/comms.md" = { target = "~/.config/pi/agent/agents/comms.md", type = "template" }
+"config/custom/pi/agent/agents/planner.md" = { target = "~/.config/pi/agent/agents/planner.md", type = "template" }
 # vendored pi-lsp (patched, see its package.json); lives outside the recursive pi/agent map so node_modules is not walked; whole-dir symlink. `npm install` inside after clone.
 "config/custom/pi-lsp" = { target = "~/.config/pi/agent/extensions/pi-lsp", type = "symbolic", recurse = false }
 # @firstpick/pi-extension-tools (/tools) resource defaults; path via PI_WEBUI_SETTINGS_FILE in .zshenv
@@ -46,6 +58,32 @@ default_target_type = "symbolic"
 
 # own agent skills (punk-*); deployed next to tessl__* symlinks managed by tessl-cock-prefix.
 "config/custom/agents/skills" = "~/.agents/skills"
+
+# KUB-171: shared by all hosts (home_dir stays per host). Used by config/custom/pi/agent/agents/*.md.
+[base.variables]
+# Herdsman has no alias layer; short provider/family ids resolve to the newest model at pi launch
+# (provider prefix mandatory: bare "sonnet" resolves to openai-codex). Thinking is set per definition.
+model_workhorse = "anthropic/sonnet"
+model_strong = "anthropic/opus"
+model_sota = "anthropic/fable"
+model_review_openai = "openai-codex/sol"
+# Child extension entries, relative to ~/.config/pi/agent/; rendered as {{home_dir}}/.config/pi/agent/<entry>.
+# No pi-rtk-optimizer, no pi-caveman in children.
+ext_base = [
+  "npm/node_modules/pi-otel/dist/index.js",
+  "npm/node_modules/@ff-labs/pi-fff/src/index.ts",
+  "npm/node_modules/context-mode/build/adapters/pi/extension.js",
+  "npm/node_modules/pi-mcp-adapter/index.ts",
+  "npm/node_modules/@d3ara1n/pi-context-include/src/index.ts",
+  "extensions/punk-steering/index.ts",
+  "npm/node_modules/@gotgenes/pi-anthropic-auth/src/index.ts",
+  "npm/node_modules/pi-multi-account/index.ts",
+  "npm/node_modules/pi-advisor-flow/dist/index.js",
+]
+ext_web = ["npm/node_modules/pi-web-access/dist/index.js"]
+ext_ponytail = ["npm/node_modules/@dietrichgebert/ponytail/pi-extension/index.js"]
+ext_bash_guard = ["extensions/bash-output-guard.ts"]
+ext_context_events = ["extensions/context-events.ts"]
 
 # ─── macOS (AeroSpace stack) ───
 [macos]

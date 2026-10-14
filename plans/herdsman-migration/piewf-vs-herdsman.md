@@ -591,3 +591,11 @@ Facts found while preparing round 3:
 - **Correction to §0:** the `Workflow: …` prompt prefix is **still present** through Oct 14 (baseline query). What broke
   is that roles stopped being applied (between Oct 2 and Oct 8), not the prefix. So `isSubagent()`'s `Workflow:` fallback still works under piewf
   today. It only becomes dead once piewf is removed.
+- **Phase 2 definitions are deployed but inert until install.** 11 files in `config/custom/pi/agent/agents/` plus `[base.variables]`
+  in `.dotter/global.toml` plus `local/bin/herdsman-defs-check`. Herdsman's own parser (run from a /tmp copy) accepts all 11.
+  `dotter deploy` and the check pass (103 paths). Deviations from §7.1:
+  - `reviewer` sets `agents: []`. The bundled reviewer delegates to the disabled `scout`, and overlays inherit unset
+    fields, so without it the definition fails to resolve.
+  - The bodies of recon, planner and comms were fixed: recon has no inherited AGENTS.md, punk-sdlc is disabled, and "workflow" wording is gone.
+  - Correction to §4.2: global definitions load from `getAgentDir()/agents` = `~/.config/pi/agent/agents/`.
+  - Not verified: rendering for mac, and runtime acceptance of `--extension`/`--skill` paths, child auth and tool globs (Phase 1).
