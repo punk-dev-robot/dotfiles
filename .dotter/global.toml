@@ -41,10 +41,13 @@ default_target_type = "symbolic"
 "config/custom/pi/agent/agents/reviewer.md" = { target = "~/.config/pi/agent/agents/reviewer.md", type = "template" }
 "config/custom/pi/agent/agents/comms.md" = { target = "~/.config/pi/agent/agents/comms.md", type = "template" }
 "config/custom/pi/agent/agents/planner.md" = { target = "~/.config/pi/agent/agents/planner.md", type = "template" }
-# pr-principal-review skill: second reviewer (OpenAI) + arbiter. reviewer/reviewer-sol bodies: `@../agent-bodies/reviewer.md`
+# pr-principal-review skill: reviewer variants + arbiters. reviewer* bodies: `@../agent-bodies/reviewer.md`, arbiter* bodies: `@../agent-bodies/arbiter.md`
 # (plain symlink via the recursive map; kept outside agents/ because Herdsman parses every *.md there, recursively).
 "config/custom/pi/agent/agents/reviewer-sol.md" = { target = "~/.config/pi/agent/agents/reviewer-sol.md", type = "template" }
 "config/custom/pi/agent/agents/arbiter.md" = { target = "~/.config/pi/agent/agents/arbiter.md", type = "template" }
+"config/custom/pi/agent/agents/reviewer-opus.md" = { target = "~/.config/pi/agent/agents/reviewer-opus.md", type = "template" }
+"config/custom/pi/agent/agents/reviewer-astra.md" = { target = "~/.config/pi/agent/agents/reviewer-astra.md", type = "template" }
+"config/custom/pi/agent/agents/arbiter-opus.md" = { target = "~/.config/pi/agent/agents/arbiter-opus.md", type = "template" }
 # enabled:false overlays: template (= real file copy) because Herdsman skips symlinks (readdir isFile, agent-definitions.ts:159).
 "config/custom/pi/agent/agents/scout.md" = { target = "~/.config/pi/agent/agents/scout.md", type = "template" }
 "config/custom/pi/agent/agents/implementer.md" = { target = "~/.config/pi/agent/agents/implementer.md", type = "template" }
@@ -74,6 +77,7 @@ model_workhorse = "anthropic/sonnet"
 model_strong = "anthropic/opus"
 model_sota = "anthropic/fable"
 model_review_openai = "openai-codex/sol"
+model_sota_openai = "openai-codex/astra"
 # Child extension entries, relative to ~/.config/pi/agent/; rendered as {{home_dir}}/.config/pi/agent/<entry>.
 # No pi-rtk-optimizer, no pi-caveman in children.
 ext_base = [

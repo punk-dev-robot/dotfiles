@@ -1,7 +1,7 @@
 ---
 name: pr-principal-review
 description: Principal-level review of a PR or branch — two reviewers on different models review independently, debate to consensus, a neutral arbiter writes the report.
-argument-hint: "<PR number> | base=<git ref>  [rounds=<n>, default 1; 0 = no debate]"
+argument-hint: "<PR number> | base=<git ref>  [rounds=<n>, default 1; 0 = no debate]  [sota=true]"
 disable-model-invocation: true
 ---
 
@@ -13,11 +13,12 @@ turn; the delivered results wake you.
 
 Agents (Herdsman definitions, dotter templates in `~/dotfiles/config/custom/pi/agent/agents/`):
 
-| Side | Definition | Label |
-|---|---|---|
-| A | `reviewer` | `rev-a` |
-| B | `reviewer-sol` (OpenAI model) | `rev-b` |
-| Arbiter | `arbiter` | `arbiter` |
+| Mode | Side A (`rev-a`) | Side B (`rev-b`) | Arbiter (`arbiter`) |
+|---|---|---|---|
+| default | `reviewer-opus` | `reviewer-sol` | `arbiter` (fable) |
+| `sota=true` | `reviewer` (fable) | `reviewer-astra` | `arbiter-opus` (neutral: neither side is opus) |
+
+Below, `<A>`, `<B>`, `<ARB>` are the definitions of the chosen mode.
 
 This replaces the piewf `pr-principal-review.js` workflow and the `/review`,
 `/parallel-review`, `/review-loop` starters: `rounds=0` is a parallel review; a
@@ -25,24 +26,24 @@ single-reviewer pass needs no skill, delegate `reviewer` directly.
 
 ## 1. Resolve the target
 
-Inputs: a PR number **or** `base=<ref>` (exactly one), and `rounds` (default 1).
+Inputs: a PR number **or** `base=<ref>` (exactly one), `rounds` (default 1) and `sota` (default false).
 Run from the repo checkout: agents inherit your cwd and read surrounding source there.
 
 - **PR**: `gh pr view <n> --json number,title,url,baseRefName,headRefOid`. Compare
   `headRefOid` with `git rev-parse HEAD`; on mismatch, stop and ask the user to check out
   the PR head (`gh pr checkout <n>`). Save `gh pr diff <n>` to
   `.pi-herdsman/pr-review/PR-<n>.diff`.
-  Report path: `reviews/PR-<n>-review-reviewer-vs-reviewer-sol.md`.
+  Report path: `reviews/PR-<n>-review-<A>-vs-<B>.md`.
 - **Branch**: save `git diff <base>...HEAD` to `.pi-herdsman/pr-review/branch-<base>.diff`
   (`<base>` with every character outside `[A-Za-z0-9._-]` replaced by `_`).
-  Report path: `reviews/branch-review-vs-<base>-reviewer-vs-reviewer-sol.md`.
+  Report path: `reviews/branch-review-vs-<base>-<A>-vs-<B>.md`.
 
-Done when the diff file exists and is non-empty, and `TARGET` (`PR #<n>` or
+Done when the diff file exists and is non-empty, `<A>`/`<B>`/`<ARB>` are fixed from `sota`, and `TARGET` (`PR #<n>` or
 `the branch diff vs <base>`) and the report path are fixed.
 
 ## 2. Independent review
 
-In one turn, `delegate_agent` side A and side B with the **review brief** below and
+In one turn, `delegate_agent` `<A>` and `<B>` with the **review brief** below and
 `files: [<diff file>]`. End the turn.
 
 Done when both results have arrived. For each side record its latest **result ref** and
@@ -71,7 +72,7 @@ ref per side.
 
 ## 4. Arbiter
 
-`delegate_agent arbiter` with the **arbiter brief** and
+`delegate_agent <ARB>` (label `arbiter`) with the **arbiter brief** and
 `files: [<A final ref>, <B final ref>, <diff file>]`. End the turn.
 
 ## 5. Relay
@@ -122,8 +123,8 @@ CONSENSUS: no    (contested items remain)
 **Arbiter brief**
 
 ```text
-Arbitrate the principal-level review of <TARGET>. Reviewer A (`reviewer`) final position:
-<A ref>. Reviewer B (`reviewer-sol`) final position: <B ref>. The diff is attached; the
+Arbitrate the principal-level review of <TARGET>. Reviewer A (`<A>`) final position:
+<A ref>. Reviewer B (`<B>`) final position: <B ref>. The diff is attached; the
 repo is checked out at cwd. Debate: <k> round(s), consensus <reached|not reached>.
 Write the report to <report path>.
 ```

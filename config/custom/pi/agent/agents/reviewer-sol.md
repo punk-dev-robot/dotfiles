@@ -3,7 +3,7 @@
 # Second-opinion reviewer on the OpenAI model (pr-principal-review skill). Same fields and body as reviewer.md;
 # keep the two frontmatters in sync. Body shared via agent-bodies/reviewer.md.
 name: reviewer-sol
-description: Reviewer on the OpenAI model. Use for a second, independent review opinion (pr-principal-review pairs it with reviewer)
+description: Reviewer on the OpenAI model. Use for a second, independent review opinion (pr-principal-review default side B, vs reviewer-opus)
 model: {{model_review_openai}}
 thinking: high
 systemPromptMode: replace

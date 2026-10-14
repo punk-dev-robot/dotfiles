@@ -13,16 +13,16 @@ body. Herdsman loads global definitions from `~/.config/pi/agent/agents/`
 (precedence: bundled < project `<cwd>/.pi/agents/` < global).
 
 Roster: `recon`, `researcher`, `dev`, `impl`, `tests`, `reviewer`, `comms`,
-`planner`, plus `reviewer-sol` (OpenAI second reviewer) and `arbiter` (writes the
-report) for the `pr-principal-review` skill. Only `dev` delegates (`agents: [recon, researcher, tests]`); every
+`planner`, plus `reviewer-sol`, `reviewer-opus`, `reviewer-astra` (second-model reviewers) and
+`arbiter` / `arbiter-opus` (write the report; share `agent-bodies/arbiter.md`) for the `pr-principal-review` skill. Only `dev` delegates (`agents: [recon, researcher, tests]`); every
 other definition is a leaf. `scout.md`, `implementer.md`, `generalist.md` are
 `enabled: false` overlays that switch off the bundled definitions our roster
 replaces.
 
 Shared bodies live in `config/custom/pi/agent/agent-bodies/` and are pulled in
 with a body line `@../agent-bodies/<name>.md` (resolved relative to the
-definition file, expanded at launch). `reviewer` and `reviewer-sol` share
-`agent-bodies/reviewer.md`. Keep them **outside** `agents/`: Herdsman parses
+definition file, expanded at launch). All `reviewer*` definitions share
+`agent-bodies/reviewer.md`, both arbiters `agent-bodies/arbiter.md`. Keep them **outside** `agents/`: Herdsman parses
 every `*.md` under `agents/` recursively as a definition.
 
 **Every definition is a dotter template.** Each file has its own
