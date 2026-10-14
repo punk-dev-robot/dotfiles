@@ -657,3 +657,11 @@ Facts found while preparing round 3:
 - **Phase 7 done (`9b0edf5`)** except ADR 0005 (waits for go). Findings: Manager scope = one git repo → cross-repo gap (**KUB-174**);
   managed Leads launch from bundled `managed-lead`, no overlay (**KUB-173**, blocks `/manager` test). CONTEXT.md: Lead, Agent,
   Agent definition, Manager (clash with punk's *manager mode* accepted).
+- **Reviewer pairs (`b79dc36`):** default `reviewer-opus` vs `reviewer-sol` + `arbiter` (fable); `sota=true` `reviewer` (fable) vs
+  `reviewer-astra` (`model_sota_openai` = `openai-codex/astra` → `gpt-6-astra`) + `arbiter-opus` (opus, xhigh). Arbiter body shared via
+  `agent-bodies/arbiter.md`.
+- **pr-principal-review live runs (branch mode), both modes passed end to end:** parallel `delegate_agent`, wake on results,
+  `continue_agent` debate with cross result refs, label reuse after cleanup, arbiter writes report. Default run (`base=f8b9a28`) found a
+  real bug: `diff.external=difft` made the branch artifact show deletions as additions → fixed `0814ee6` (`--no-ext-diff`, artifact must
+  start with `diff --git`); sota run on the fix: approve. Untested: PR mode (`gh pr diff`), retired-reviewer path. Below threshold, open:
+  no dirty-tree check; reviewer body output format (ship/block) vs skill briefs (`CONSENSUS:`). `.pi-herdsman/` + `reviews/` land untracked in the target repo.
