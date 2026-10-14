@@ -5,14 +5,19 @@
       "version": "3862d2eb6e93427f1f163a54360d11ef943b88b7",
       "source": "https://github.com/DrCatHicks/learning-opportunities",
       "include": {
-        "skills": ["learning-opportunities", "orient"]
+        "skills": [
+          "learning-opportunities",
+          "orient"
+        ]
       }
     },
     "DrCatHicks/learning-goal": {
       "version": "d459a8b34f47101ab8e4c61ea1360e7a102c1da3",
       "source": "https://github.com/DrCatHicks/learning-goal",
       "include": {
-        "skills": ["learning-goal"]
+        "skills": [
+          "learning-goal"
+        ]
       }
     },
     "mattpocock/skills": {
@@ -56,6 +61,7 @@
         "skills": [
           "build-iterated-agentic-loop",
           "design-control-loop",
+          "rpi",
           "show-me",
           "visual-pr"
         ]
@@ -79,14 +85,19 @@
       "version": "ceab050b77bea07bbeabdfda5c138be8c9c5c517",
       "source": "https://github.com/plannotator/herdr-annotate",
       "include": {
-        "skills": ["plannotator-tui"]
+        "skills": [
+          "plannotator-tui"
+        ]
       }
     },
     "getsentry/skills": {
       "version": "d18b7aa8ba878354e5c348310230e652f7690f9c",
       "source": "https://github.com/getsentry/skills",
       "include": {
-        "skills": ["find-bugs", "iterate-pr"]
+        "skills": [
+          "find-bugs",
+          "iterate-pr"
+        ]
       }
     }
   }

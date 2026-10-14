@@ -165,17 +165,18 @@ type = "plugin_action"
 command = "ray.plugin-manager.open"
 description = "open plugin manager"
 
-# [[keys.command]]
-# key = "prefix+p"
-# type = "plugin_action"
-# command = "pet.toggle"      # wake / tuck away
-# description = "pet: toggle"
-
 [[keys.command]]
 key = "prefix+shift+p"
 type = "plugin_action"
-command = "pet.settings"      # popover: pick a pet, size, speed, mode…
-description = "pet: settings"
+command = "pet.toggle"      # wake / tuck away
+description = "pet: toggle"
+
+# [[keys.command]]
+# key = "prefix+shift+p"
+# type = "plugin_action"
+# command = "pet.settings"      # popover: pick a pet, size, speed, mode…
+# description = "pet: settings"
+
 # [[keys.command]]
 # key = "prefix+p"
 # type = "popup"
