@@ -28,6 +28,8 @@ single-reviewer pass needs no skill, delegate `reviewer` directly.
 
 Inputs: a PR number **or** `base=<ref>` (exactly one), `rounds` (default 1) and `sota` (default false).
 Run from the repo checkout: agents inherit your cwd and read surrounding source there.
+If `git status --porcelain` shows changes, stop and ask the user to commit or stash them:
+reviewers read the working tree, so uncommitted edits would leak into the review.
 
 - **PR**: `gh pr view <n> --json number,title,url,baseRefName,headRefOid`. Compare
   `headRefOid` with `git rev-parse HEAD`; on mismatch, stop and ask the user to check out
@@ -104,7 +106,7 @@ Leave out style, naming, nits, minor test gaps and subjective preferences.
 For each finding: severity (blocker/major), file:line, what breaks and why it matters,
 concrete evidence from the actual code (quote it), and a suggested fix direction.
 Verify each claim by reading the relevant source before reporting it.
-Output markdown. End with a line: FINDINGS: <n>
+Output markdown in this format, not your default review template. End with a line: FINDINGS: <n>
 ```
 
 **Debate brief**
@@ -116,7 +118,8 @@ attached result. For each of their findings: AGREE (with refinement if any) or C
 or WITHDRAW, and say why. Add a new finding only if it is high-priority and evidenced.
 Re-read source wherever the two of you disagree.
 
-Output your full updated position as markdown. End with exactly one line:
+Output your full updated position as markdown in this format, not your default review
+template. End with exactly one line:
 CONSENSUS: yes   (nothing remains contested)
 CONSENSUS: no    (contested items remain)
 ```
