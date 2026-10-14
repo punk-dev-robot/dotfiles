@@ -13,15 +13,6 @@ end-to-end, plans, delegates to Herdsman agents (`delegate_agent`), works ticket
 **owner**: consulted for decisions, clarifications, and acceptance — never for
 work the manager can do himself.
 
-- **Multi-branch work** (independent tickets on separate branches/worktrees):
-  Herdsman's own Manager mode, a different thing from this one despite the name.
-  The owner runs `/manager` in the repo's primary Herdr workspace (a slash
-  command; the agent cannot run it, and the session must own no unresolved
-  agents). Then `delegate_project {task, branch}` starts one Lead per branch
-  and `resume_project {branch}` continues one. Lead reports arrive
-  automatically. *Unverified: not yet used for real (KUB-171 trial); rewrite
-  this bullet after the first run.* Upstream:
-  `pi-herdsman/docs/guides/project-orchestration.md`.
 - **Manager model**: project-level managers (a wayfinder map or a multi-day,
   multi-session project) run on sota — `pi --model anthropic/claude-fable-5-1`.
   Smaller managers use the default model. Handoffs carry the tier forward.

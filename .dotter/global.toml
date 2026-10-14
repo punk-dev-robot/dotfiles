@@ -162,7 +162,7 @@ depends = ["base"]
 "config/omarchy/imv/config" = "~/.config/imv/config"
 # KUB-122: udiskie device rules (omarchy autostarts udiskie; config.yml is read regardless of its flags).
 "config/omarchy/udiskie" = "~/.config/udiskie"
-"config/omarchy/wireplumber" = "~/.config/wireplumber" # pro-audio profile + disable unused mics (plans/soundid-migration.md)
+"config/omarchy/wireplumber" = "~/.config/wireplumber" # pro-audio profile + disable unused mics
 "config/omarchy/easyeffects" = "~/.local/share/easyeffects" # 8.x preset dir; it migrates+trashes ~/.config/easyeffects/{input,output}
 
 # ─── Omarchy system files (/etc, root-owned copies). KUB-129 / verdicts KUB-94 / ADR 0003.

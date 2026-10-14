@@ -1,8 +1,7 @@
 # pi-herdsman agent definitions
 
 How the agents behind `delegate_agent` are configured in this repo. pi-herdsman
-replaced piewf as the delegation layer on 2026-10-14 (KUB-171; rationale and
-decision log in `plans/herdsman-migration/piewf-vs-herdsman.md`). Upstream schema:
+replaced piewf as the delegation layer on 2026-10-14 (KUB-171). Upstream schema:
 `~/.config/pi/agent/npm/node_modules/pi-herdsman/docs/reference/agent-definition-schema.md`.
 
 ## Where definitions live

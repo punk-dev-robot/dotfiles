@@ -2,7 +2,7 @@
 
 Sonarworks SoundID Reference (mac) has no Linux build. This documents how the speaker calibration
 was transplanted losslessly, how the headphone correction was re-derived, and what the Quantum ES 2
-looks like on Linux. Plan and history: `plans/soundid-migration.md`. Raw data (gitignored):
+looks like on Linux. Raw data (gitignored):
 `docs/.scratch/soundid/`.
 
 ## Result

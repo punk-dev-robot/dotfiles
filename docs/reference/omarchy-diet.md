@@ -5,8 +5,6 @@ Omarchy 4.x pacstraps a fixed set of ~145 packages listed in
 them we removed and why, so a fresh install (or an `omarchy-reinstall-pkgs`,
 which re-adds the whole default set) can be re-slimmed in one command.
 
-Full audit and rationale: `plans/omarchy-diet.md` (local only — `plans/` is gitignored).
-
 ## Re-apply after a reinstall
 
 ```bash
