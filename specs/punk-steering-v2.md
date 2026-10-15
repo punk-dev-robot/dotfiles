@@ -72,6 +72,11 @@ site-packages, ~/.config) → dispatch `recon`.
 Body = the redirect text appended to every rejection. `<cwd>` in a pattern is substituted with
 the session cwd (regex-escaped) at load.
 
+**Check guards** (KUB-175) gate on state instead of text: `check: '<sh>'` replaces `allow`/`deny`. It runs
+per matching call in the session cwd with the field value as `$1` (`""` when absent); non-zero exit
+blocks the call with stdout + body as the reason. No strikes: a missing setup step is not misbehaviour.
+Example: `steering/guard-swapc-worktree.md` blocks `delegate_project` until `wt` created the worktree.
+
 ## Implementation decisions
 
 **Normalisation** (pure, resolver): trim; strip one leading `cd <path> (&&|;)`; split into

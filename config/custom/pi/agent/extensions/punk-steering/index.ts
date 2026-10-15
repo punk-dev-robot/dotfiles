@@ -159,10 +159,22 @@ export default function (pi: ExtensionAPI) {
 		if (ret.systemPrompt || ret.message) return ret;
 	});
 
-	pi.on("tool_call", (event, ctx) => {
+	pi.on("tool_call", async (event, ctx) => {
 		if (level === "off" || !last?.guards.length) return;
 		for (const { rule, level: lv } of last.guards) {
 			if (lv === "off" || rule.guard!.tool !== event.toolName) continue;
+			if (rule.guard!.check) {
+				// state check, not a pattern: a missing setup step is not misbehaviour, so no strike
+				const raw = (event.input as Record<string, unknown> | undefined)?.[rule.guard!.field];
+				const r = await pi.exec("sh", ["-c", rule.guard!.check, "steering-check", typeof raw === "string" ? raw : ""], { cwd: ctx.cwd ?? cwd, timeout: 15_000 } as any);
+				if (r.code === 0) continue;
+				const why = (r.stdout || r.stderr || "").trim() || `check exited ${r.code}`;
+				const enforced = lv === "advise" || lv === "rewrite";
+				verdictLog.push(`${enforced ? "violation" : "observed"} ${rule.name}: ${why.slice(0, 120)}`);
+				log(ctx, "pi.steering.violation", `${rule.name}: check failed`, { "pi.steering.rule": rule.name, "pi.steering.tool": event.toolName, "pi.steering.enforced": enforced, "pi.steering.check": true });
+				if (!enforced) continue;
+				return { block: true, reason: `steering/${rule.name} — ${why} ${rule.body}` };
+			}
 			const input = (event.input as Record<string, unknown> | undefined)?.[rule.guard!.field];
 			if (typeof input !== "string" || !input) continue;
 			const v = guard(rule, input, ctx.cwd ?? cwd);

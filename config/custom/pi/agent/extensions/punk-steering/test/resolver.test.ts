@@ -1,7 +1,9 @@
 // Run: node --test config/custom/pi/agent/extensions/punk-steering/test/resolver.test.ts
 // External behaviour only: rule files + tool list + level + probe outcomes → actions.
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import { guard, guardAction, isSubagent, mergeRules, normalise, parseRule, parseRules, renderBriefings, resolve, type Rule } from "../resolver.ts";
@@ -226,4 +228,33 @@ test("isSubagent: herdsman env marks a child even when it has herdr tools", () =
 	assert.equal(isSubagent({}, ["read", "bash"], "do X"), true, "no herdr tools → cannot hand off → child");
 	assert.equal(isSubagent({}, herdr, "fix the bug"), false, "main session keeps the strike-3 handoff");
 	assert.equal(isSubagent({ PI_SUBAGENT_CHILD: "0" }, herdr, "fix the bug"), false);
+});
+
+// ─── check guards: state, not patterns
+
+const wtGuard = guardRule("guard-swapc-worktree.md");
+
+test("a guard may use a check instead of deny patterns", () => {
+	assert.equal(wtGuard.guard!.tool, "delegate_project");
+	assert.equal(wtGuard.guard!.field, "branch");
+	assert.deepEqual(wtGuard.guard!.deny, []);
+	assert.ok(wtGuard.guard!.check);
+	assert.throws(() => parseRule("x", "---\nkind: guard\ntool: t\n---\nb", "global"), /deny pattern or a check/);
+});
+
+test("swapc worktree check: only swapc repos need a wt worktree for the delegated branch", () => {
+	const home = mkdtempSync(join(tmpdir(), "steer-wt-"));
+	const git = (cwd: string, ...a: string[]) => spawnSync("git", ["-C", cwd, ...a], { encoding: "utf8" });
+	const repo = (dir: string) => { mkdirSync(dir, { recursive: true }); git(dir, "init", "-q", "-b", "develop"); git(dir, "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-q", "--allow-empty", "-m", "i"); return dir; };
+	const swapc = repo(join(home, "dev", "swapc", "shopmr"));
+	const other = repo(join(home, "dev", "oss", "tool"));
+	git(swapc, "worktree", "add", "-q", "-b", "AGIT-1-ready", join(home, "dev", "swapc", "shopmr.AGIT-1-ready"));
+	const run = (cwd: string, branch: string) => spawnSync("sh", ["-c", wtGuard.guard!.check!, "steering-check", branch], { cwd, encoding: "utf8", env: { ...process.env, HOME: home } });
+
+	assert.equal(run(swapc, "AGIT-1-ready").status, 0, "wt pre-created the worktree → delegate proceeds");
+	const missing = run(swapc, "AGIT-2-new");
+	assert.notEqual(missing.status, 0, "no worktree yet → blocked");
+	assert.match(missing.stdout, /wt -C .*shopmr switch --create AGIT-2-new --no-cd -y/, "reason names the exact fix");
+	assert.match(run(swapc, "").stdout, /explicit branch/, "Herdsman would invent a branch wt never created");
+	assert.equal(run(other, "AGIT-2-new").status, 0, "repos outside ~/dev/swapc are not gated");
 });

@@ -16,6 +16,8 @@ export interface GuardSpec {
 	allow: string[];
 	deny: string[];
 	strikes: number;
+	/** sh command run per call with the field value as $1 ("" when absent); non-zero exit blocks, stdout is the reason. No strikes. */
+	check?: string;
 }
 
 export interface Rule {
@@ -148,13 +150,15 @@ export function parseRule(name: string, text: string, source: Rule["source"] = "
 	if (kind === "guard") {
 		const tool = str(fm.tool, "tool") ?? "bash";
 		const deny = strList(fm.deny, "deny");
-		if (deny.length === 0) throw new Error("guard needs at least one deny pattern");
+		const check = str(fm.check, "check");
+		if (deny.length === 0 && !check) throw new Error("guard needs at least one deny pattern or a check");
 		guard = {
 			tool,
 			field: str(fm.field, "field") ?? (tool === "read" ? "path" : "command"),
 			allow: strList(fm.allow, "allow"),
 			deny,
 			strikes: typeof fm.strikes === "number" ? fm.strikes : 3,
+			...(check ? { check } : {}),
 		};
 		for (const p of [...guard.allow, ...guard.deny]) compile(p, ""); // fail the rule, not the tool call, on a bad regex
 	}
