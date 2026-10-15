@@ -55,7 +55,8 @@ prompt.
    `verify-merchdash` (`~/dev/swapc/merchdash/.pi/skills/verify-merchdash`) for merchdash
    work, both when the slice spans both. When `--live` is asked for, pull the traces through
    Logfire MCP and put a table in the PR body: Case · What the user got · Trace link.
-4. **Open the stack** (`gh stack submit`); PR bodies follow `cock-pr` (summary, evidence,
+4. **Open the stack ready for review** (`gh stack submit --open`; without `--open` new PRs
+   are drafts). Draft only when the owner asks. PR bodies follow `cock-pr` (summary, evidence,
    merge danger) plus the verification table (CI posts the score as a sticky comment).
 5. **Size for auto-approve.** Per layer PR, in shopmr (merchdash has no scorer):
    `node tools/pr-risk-score/score-pr.mjs --pr <n>` (`--pr` is required, `--base-sha` /
