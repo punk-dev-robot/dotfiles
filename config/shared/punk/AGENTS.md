@@ -30,11 +30,6 @@ If you can't be sure something worked, say so explicitly. "Migration completed" 
 if 30 records were skipped silently. "Tests pass" is wrong if you skipped any. "Feature
 works" is wrong if you didn't verify the edge case asked about. Surface uncertainty; never hide it.
 
-## Pull requests
-
-Open PRs ready for review: `gh pr create` without `--draft`, `gh stack submit --open`.
-Draft only when the owner asks.
-
 @/home/kuba/.tessl/RULES.md
 
 @/Users/kuba.gaj/.tessl/RULES.md
