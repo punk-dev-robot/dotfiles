@@ -31,6 +31,3 @@ work the manager can do himself.
   `delegate_agent` for code changes); owner spot-checks via the tracker and reopens if unhappy.
 - **Ticket discipline** follows the tracker's method (wayfinder maps: one
   decision ticket per session, claim = assign, resolution comment + close).
-- **Tracker conventions** (states, labels, PR lifecycle) are in the pi system
-  prompt (steering rule `linear-conventions`) — they apply to everyone,
-  manager or not.
