@@ -41,7 +41,7 @@ default_target_type = "symbolic"
 "config/custom/pi/agent/agents/reviewer.md" = { target = "~/.config/pi/agent/agents/reviewer.md", type = "template" }
 "config/custom/pi/agent/agents/comms.md" = { target = "~/.config/pi/agent/agents/comms.md", type = "template" }
 "config/custom/pi/agent/agents/planner.md" = { target = "~/.config/pi/agent/agents/planner.md", type = "template" }
-# pr-principal-review skill: reviewer variants + arbiters. reviewer* bodies: `@../agent-bodies/reviewer.md`, arbiter* bodies: `@../agent-bodies/arbiter.md`
+# pr-panel-review skill: reviewer variants + arbiters. reviewer* bodies: `@../agent-bodies/reviewer.md`, arbiter* bodies: `@../agent-bodies/arbiter.md`
 # (plain symlink via the recursive map; kept outside agents/ because Herdsman parses every *.md there, recursively).
 "config/custom/pi/agent/agents/reviewer-sol.md" = { target = "~/.config/pi/agent/agents/reviewer-sol.md", type = "template" }
 "config/custom/pi/agent/agents/arbiter.md" = { target = "~/.config/pi/agent/agents/arbiter.md", type = "template" }

@@ -1,0 +1,42 @@
+{
+  "skill_name": "swap-bet",
+  "note": "Prompts only; not run. Running them reads Linear/Notion/Slack and later stages write there — run against a throwaway AGIT project or with MCP write tools disabled.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "picked up PDE-917 [Spike] Ability to edit order, I'm delivery owner. research is mostly in my head + a few slack threads in C0C8PMBNSQL. can you get it to a one-pager I can take to the PO sync tomorrow",
+      "expected_output": "Runs intake then brief: preflight Linear/Notion/Slack, picks <KEY> (starter ticket or project slug), writes intake.md (richness one-liner) and brief.md (one-pager + PO sync agenda with options and recommendations) in ~/dev/swapc/specs/<KEY>/, commits, names `swap-bet publish <KEY>` next. Nothing posted to Slack/Linear.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "swap-bet tickets AGIT-1302",
+      "expected_output": "Reads spec.md; if there is no sign-off line it stops and says so (hard rule). With sign-off: walking skeleton is ticket 1, each ticket has What/Slice/Verification (feature ids, action, read-back, expected text, flags, --live), fixed fields AGIT/project/assignee/Storefront, created in dependency order with native blocked-by, no per-ticket confirm, then post-hoc list to owner.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "status of the edit-order bet? and kick off whatever's next",
+      "expected_output": "Lists artifacts present, last gate and sign-offs, proposes the next stage; runs that stage's preflight first and, on any auth failure (e.g. Slack MCP not connected), sends one Plannotator inbox message listing every failure with exact errors and stops.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "swap-bet brief AGIT-564 — ticket just says \"make the recently closed entries in order history clickable\"",
+      "expected_output": "Reads the ask literally: the recommendation covers all rows/entries being clickable, not a cheaper partial cut (e.g. only some row types). If any option cuts scope, the full-scope option (backend + UI) is sized next to it in Fibonacci points; no time or day estimates anywhere. Agenda is numbered decisions with options + rec, no 'yes accepts' boilerplate.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "small one: AGIT-564, lone ticket, no project. take it through intake and brief",
+      "expected_output": "Treats it as a small bet (<KEY> = AGIT-564). Intake searches Slack for the ticket id and topic even though no thread was given, finds the PO and the bet thread (e.g. context that it is bundled into edit-order), and records PO + thread permalink, channel id and thread_ts in intake.md. Brief ends by creating a short, plain PO message (no tech detail) as a Slack draft in that thread via slack_slack_send_message_draft for the owner to send; on attached_draft_exists it tells the owner and pastes the message in chat.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "swap-bet build AGIT-564 AGIT-565 — principal review flagged the gateway double-encodes query params, which is outside this bet. fix it too",
+      "expected_output": "Treats the finding as an out-of-bet prerequisite: creates its own Linear ticket related to the bet ticket before any branch exists, then cuts the branch / PR with that Linear id in the branch name or title from the start. Does not fold the fix into a bet ticket's PR or open a PR without a Linear id; records the PR and its place in tickets.md's Deploy order.",
+      "files": []
+    }
+  ]
+}

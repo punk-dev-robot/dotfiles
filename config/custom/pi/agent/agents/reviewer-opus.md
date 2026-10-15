@@ -1,9 +1,9 @@
 ---
 # dotter template (KUB-171): edit in ~/dotfiles, then `dotter deploy`. Vars: .dotter/global.toml [base.variables].
-# Reviewer variant (opus) (pr-principal-review skill). Same fields and body as reviewer.md;
+# Reviewer variant (opus) (pr-panel-review skill). Same fields and body as reviewer.md;
 # keep the two frontmatters in sync. Body shared via agent-bodies/reviewer.md.
 name: reviewer-opus
-description: Reviewer on the strong (opus) model. Use for an independent review opinion (pr-principal-review default side A)
+description: Reviewer on the strong (opus) model. Use for an independent review opinion (pr-panel-review default side A)
 model: {{model_strong}}
 thinking: xhigh
 systemPromptMode: replace

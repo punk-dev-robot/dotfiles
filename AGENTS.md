@@ -12,7 +12,7 @@ laptop — deployed by dotter. Vocabulary: `CONTEXT.md`. Decisions: `docs/adr/`.
 - `config/.disabled/` — parked, not deployed
 - `config/shared/punk/AGENTS.md` — global context (every harness's global slot symlinks here)
 - `config/custom/pi/agent/` — pi settings, `steering/*.md` (punk-steering rules), extensions
-- `config/custom/agents/skills/` — own skills (`punk-handoff`, `punk-resume`, `pr-principal-review`) → `~/.agents/skills`; parked ones in `skills.disabled/`
+- `config/custom/agents/skills/` — own skills (`punk-handoff`, `punk-resume`, `pr-panel-review`, `swap-bet`) → `~/.agents/skills`; parked ones in `skills.disabled/`
 - `config/custom/pi/agent/agents/` — pi-herdsman agent definitions (dotter templates)
 - `config/custom/pi/agent/pi-ext-roles/`, `workflows/` — retired piewf roles/workflow, kept for rollback until the KUB-171 go decision
 - `etc/`, `system/` — root-owned templates (`omarchy-system` package)

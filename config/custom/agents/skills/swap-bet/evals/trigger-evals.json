@@ -1,0 +1,22 @@
+[
+  {"query": "picked up PDE-917 edit order spike as delivery owner, need a one-pager + questions for the PO before thursday", "should_trigger": true},
+  {"query": "denis just dropped a one-liner in #custom-agents: 'support agent can edit orders'. can we turn that into something product can decide on", "should_trigger": true},
+  {"query": "swap-bet status AGIT-1302", "should_trigger": true},
+  {"query": "had the sync with the PO on the order editing thing, notes below — they want address changes only, 1h window. write it up as a spec i can sign", "should_trigger": true},
+  {"query": "spec for the edit-order bet is signed off, slice it into AGIT tickets in the project with blockers", "should_trigger": true},
+  {"query": "the custom agents discount codes epic shipped 2 weeks ago, pull resolution rate before/after from BQ and draft whether we kill or scale it", "should_trigger": true},
+  {"query": "new swap labs bet: resolved ticket summary on the merchant dashboard. linear project exists in AGIT but empty. start it", "should_trigger": true},
+  {"query": "post the edit order brief to the epic slack channel and tag the PO, link it from the notion epic", "should_trigger": true},
+  {"query": "AGIT-1310 is unblocked now, build it as stacked PRs and keep each under the risk score threshold", "should_trigger": true},
+  {"query": "create an AGIK bug ticket for the checkout crash on UAT, assign to rafael", "should_trigger": false},
+  {"query": "babysit my shopmr PR #4821, claude review left 6 comments and sonar is red", "should_trigger": false},
+  {"query": "verify this widget change on run-local — chat history should restore after reload", "should_trigger": false},
+  {"query": "split my branch feat/order-edit into a stack of 3 PRs: entities, agents tool, widget", "should_trigger": false},
+  {"query": "what's the resolution rate for 'where is my order' across merchants last 30 days? just the BQ number", "should_trigger": false},
+  {"query": "set up a launchdarkly experiment for the new nudge copy on Manors, metric is add-to-cart", "should_trigger": false},
+  {"query": "grill me on whether we should move the agents backend to pydantic ai", "should_trigger": false},
+  {"query": "write a KUB ticket for fixing my hyprland scratchpad keybinds", "should_trigger": false},
+  {"query": "review the notion epic template for the data platform team's PRD and suggest improvements", "should_trigger": false},
+  {"query": "hand off this session, context is running low — I'm midway through the order edit brief", "should_trigger": false},
+  {"query": "replay the logfire conversation for trace 0af7651916cd43dd and tell me why the agent refused to cancel", "should_trigger": false}
+]

@@ -1,6 +1,6 @@
 ---
 # dotter template (KUB-171): edit in ~/dotfiles, then `dotter deploy`. Vars: .dotter/global.toml [base.variables].
-# Neutral arbiter for the pr-principal-review skill: reads both reviewers' final positions, writes the report.
+# Neutral arbiter for the pr-panel-review skill: reads both reviewers' final positions, writes the report.
 # No bash: the Lead passes the diff as a file; `write` creates the report directory.
 name: arbiter
 description: Neutral arbiter. Use to rule between two reviewers' final positions and write the consensus review report

@@ -1,9 +1,9 @@
 ---
 # dotter template (KUB-171): edit in ~/dotfiles, then `dotter deploy`. Vars: .dotter/global.toml [base.variables].
-# Reviewer variant (astra) (pr-principal-review skill). Same fields and body as reviewer.md;
+# Reviewer variant (astra) (pr-panel-review skill). Same fields and body as reviewer.md;
 # keep the two frontmatters in sync. Body shared via agent-bodies/reviewer.md.
 name: reviewer-astra
-description: Reviewer on the OpenAI sota model. Use for a second, independent review opinion (pr-principal-review sota side B)
+description: Reviewer on the OpenAI sota model. Use for a second, independent review opinion (pr-panel-review sota side B)
 model: {{model_sota_openai}}
 thinking: high
 systemPromptMode: replace

@@ -1,7 +1,7 @@
 ---
-name: pr-principal-review
-description: Principal-level review of a PR or branch — two reviewers on different models review independently, debate to consensus, a neutral arbiter writes the report.
-argument-hint: "<PR number> | base=<git ref>  [rounds=<n>, default 1; 0 = no debate]  [sota=true]"
+name: pr-panel-review
+description: Principal-level review of a PR or branch — two reviewers on different models review independently and debate to consensus; a neutral arbiter writes the report only when they do not agree.
+argument-hint: "<PR number> | base=<git ref>  [rounds=<n>, default 2, max 3; 0 = no debate]  [sota=true]"
 disable-model-invocation: true
 ---
 
@@ -26,7 +26,7 @@ single-reviewer pass needs no skill, delegate `reviewer` directly.
 
 ## 1. Resolve the target
 
-Inputs: a PR number **or** `base=<ref>` (exactly one), `rounds` (default 1) and `sota` (default false).
+Inputs: a PR number **or** `base=<ref>` (exactly one), `rounds` (default 2; above 3 runs 3) and `sota` (default false).
 Run from the repo checkout: agents inherit your cwd and read surrounding source there.
 If `git status --porcelain` shows changes, stop and ask the user to commit or stash them:
 reviewers read the working tree, so uncommitted edits would leak into the review.
@@ -73,16 +73,21 @@ If it fails again, stop and report to the user with the refs you have.
 Done when `rounds` rounds have run or consensus was reached; you hold one final result
 ref per side.
 
-## 4. Arbiter
+## 4. Arbiter (no consensus only)
 
-`delegate_agent <ARB>` (label `arbiter`) with the **arbiter brief** and
+Consensus reached → skip to step 5. Otherwise (and always at `rounds=0`, which produces no
+consensus line) `delegate_agent <ARB>` (label `arbiter`) with the **arbiter brief** and
 `files: [<A final ref>, <B final ref>, <diff file>]`. End the turn.
 
 ## 5. Relay
 
-Give the user: the arbiter's verdict and top 3 findings, the report path, the rounds run,
-and whether consensus was reached. The arbiter's report is the deliverable: relay it
-as written.
+- **Consensus** (both final lines `CONSENSUS: yes`): the agreed final position (side A's
+  final result; a debate position, not an arbiter report) is the report. Write it to the
+  report path as written,
+  then give the user its verdict and top 3 findings, the report path and the rounds run.
+- **No consensus**: give the user the arbiter's verdict and top 3 findings, the report path,
+  the rounds run, and that consensus was not reached. The arbiter's report is the
+  deliverable: relay it as written.
 
 ## Briefs
 
@@ -129,6 +134,6 @@ CONSENSUS: no    (contested items remain)
 ```text
 Arbitrate the principal-level review of <TARGET>. Reviewer A (`<A>`) final position:
 <A ref>. Reviewer B (`<B>`) final position: <B ref>. The diff is attached; the
-repo is checked out at cwd. Debate: <k> round(s), consensus <reached|not reached>.
+repo is checked out at cwd. Debate: <k> round(s) (or: no debate), consensus not reached.
 Write the report to <report path>.
 ```

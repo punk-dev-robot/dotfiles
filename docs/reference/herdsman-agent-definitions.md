@@ -13,7 +13,7 @@ body. Herdsman loads global definitions from `~/.config/pi/agent/agents/`
 
 Roster: `recon`, `researcher`, `dev`, `impl`, `tests`, `reviewer`, `comms`,
 `planner`, plus `reviewer-sol`, `reviewer-opus`, `reviewer-astra` (second-model reviewers) and
-`arbiter` / `arbiter-opus` (write the report; share `agent-bodies/arbiter.md`) for the `pr-principal-review` skill, plus the reserved
+`arbiter` / `arbiter-opus` (write the report; share `agent-bodies/arbiter.md`) for the `pr-panel-review` skill, plus the reserved
 `managed-lead` overlay (below; not an Agent), plus the 11 `pstack-*` leaves for
 poteto-mode playbooks (see [pstack roster](#pstack-roster-kub-176)). Only `dev` delegates (`agents: [recon, researcher, tests]`); every
 other definition is a leaf. `scout.md`, `implementer.md`, `generalist.md` are
