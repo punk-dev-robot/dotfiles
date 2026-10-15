@@ -9,6 +9,12 @@ dir, which stays the source of truth. Publishing to Linear or Notion is a separa
 through the `comms` role, after sign-off, from a sanitised `<KEY>-public.md`. Candid notes never
 leave the spec dir. Owned by the `punk-sdlc` skill and the `planner` role.
 
+Update 2026-10: `punk-sdlc` evolved into the `swap-bet` skill (Swap Labs bets, team AGIT). It keeps
+the spec dir, commit per stage, owner gate and sanitised public copy; stages are now
+`intake, brief, publish, sync, tickets, build, close`, only the spec gate is mandatory, and the
+gate goes through plannotator-tui or the Plannotator inbox (no cwd copy). Public copies are
+`brief-public.md` and `outcome-public.md` (was `<KEY>-public.md`).
+
 Local-first because the artifact is a working draft: cheap to rewrite, diffable, and an audit trail
 of how the spec evolved, with no half-formed opinion visible to the team. Publishing on agreement
 keeps the team's surfaces free of drafts and makes the gate meaningful — the sign-off, not the

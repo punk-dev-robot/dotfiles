@@ -112,26 +112,32 @@ _Avoid_: pstack agents, poteto agents
 ### Ticket workflow
 
 **Stage**:
-One unit of the ticket pipeline (`intent`, `research`, `spec`, `plan`, `build`,
-`verify`, `ship`, `observe`). Ends by writing an artifact; either gated or
-automatic.
+One unit of the bet pipeline run by the `swap-bet` skill (`intake`, `brief`,
+`publish`, `sync`, `tickets`, `build`, `close`). Ends by writing an artifact;
+either gated or automatic.
 _Avoid_: phase, step, milestone (a milestone is Linear's grouping inside a Project)
 
-**Flow**:
-Which stages a ticket runs: `fast` skips research and inlines a short spec,
-`full` runs every stage. Chosen at intent. Exact boundary between the two is
-deliberately open and settled per ticket.
-_Avoid_: track, lane, bugfix-flow, feature-flow
+**Bet**:
+A Swap Labs experiment (team AGIT) run end to end by its Delivery Owner, from
+ask to kill / iterate / scale. Keyed by a Linear id; product tracks it as a
+Notion epic.
+_Avoid_: feature, initiative
 
-**Intent**:
-First stage and its artifact `intent.md`: the ticket restated as ours —
-problem, outcome, affected systems, constraints, unknowns — plus the flow
-choice. Where a one-sentence ticket and a well-specced one become the same
-shape.
-_Avoid_: intake, brief, ticket summary
+**Intake**:
+First stage and its artifact `intake.md`: the ask pulled from any entry point
+(Notion epic, Linear, Slack, one sentence), the `<KEY>`, and its **richness**
+(`one-liner` / `partial` / `PRD`), which sizes the brief's research. Replaces
+the older `intent` stage and its `fast`/`full` flow.
+_Avoid_: intent, ticket summary
+
+**Brief**:
+The one-pager plus PO sync agenda (decisions with options and a
+recommendation) written by the `brief` stage.
+_Avoid_: research doc, PRD (product's)
 
 **Artifact**:
-The file a stage writes (`intent.md`, `research.md`, `spec.md`, `plan.md`).
+The file a stage writes (`intake.md`, `brief.md`, `spec.md`, `tickets.md`,
+`outcome.md`).
 Lives in the spec dir, committed per stage.
 _Avoid_: document, output, deliverable
 
@@ -142,13 +148,14 @@ _Avoid_: feature dir, workspace, folder
 
 **Verifier**:
 A concrete check named in the spec that proves an acceptance criterion
-("query X returns 0 rows", "p95 < 300 ms", "screenshot matches"). Run in the
-`verify` stage by the tests/reviewer roles; no dedicated "verifier agent" noun.
+("query X returns 0 rows", "p95 < 300 ms", "screenshot matches"). Run during
+`build` (e.g. `verify-window-shop`); no dedicated "verifier agent" noun.
 _Avoid_: acceptance test, validator, verifier agent
 
 **Gate**:
 A stage boundary that stops until a human decides. Has an owner (me, squad
-lead, product). Default gates: after spec, after plan.
+lead, product). Only mandatory gate: owner sign-off on the spec (`sync`);
+`publish` and `close` default to an owner OK.
 _Avoid_: checkpoint, approval, review (review is a stage)
 
 **Sign-off**:
@@ -157,11 +164,11 @@ comment. Unblocks the next stage.
 _Avoid_: approval, LGTM, ack
 
 **Publish**:
-Explicit step copying an agreed artifact to where the team reads it: Linear
-issue description or document, Notion epic page. Only after sign-off, never
-automatic, and always from a sanitised public copy — candid notes stay in the
-spec dir.
-_Avoid_: sync, export, attach
+Explicit step copying an artifact to where the team reads it: Linear project
+description, Slack post to the PO, Notion epic link. After owner OK by default
+(`--direct` skips it for the brief), never automatic, and always from a
+sanitised public copy — candid notes stay in the spec dir.
+_Avoid_: export, attach (`sync` is the stage after the PO meeting)
 
 **Project**:
 The planning container in Swap shape (what `cock-wayfinder` calls a map): a Linear Project under an initiative,
@@ -177,7 +184,7 @@ _Avoid_: next up, ready queue
 
 **Triage**:
 Our read-only mode over tickets others assigned to me: rank, flag missing
-fields, propose a flow. Distinct from Linear's `Triage` status, which is
+fields, propose the next stage. Distinct from Linear's `Triage` status, which is
 always written with the word "status".
 _Avoid_: pick, inbox
 

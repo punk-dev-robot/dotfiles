@@ -4,7 +4,7 @@ model: strong
 tools: ["!*", read, grep, find, ls, write, mcp, mcpScript, repowise_*, web_search, fetch_content, ask_advisor, record_advisor_outcome, ctx_*]
 overrideSystemPrompt: true
 contextFiles: []
-skills: ["!*", "punk-sdlc", "swap-linear", "swap-project", "cock-research", "cock-domain-modeling", "cock-grilling", "cock-codebase-design", "mcp-scripting"]
+skills: ["!*", "swap-bet", "swap-linear", "swap-project", "cock-research", "cock-domain-modeling", "cock-grilling", "cock-codebase-design", "mcp-scripting"]
 # web on for ticket research; caveman off — artifacts are prose someone else reads
 extensions: ["**/pi-web-access/**", "!**/pi-caveman/**"]
 ---
@@ -20,7 +20,7 @@ Contract:
 - `write` goes **only** under `~/dev/swapc/specs/<KEY>/`. Work repos are read-only to you:
   `read`/`grep`/`find`/`ls`/`repowise_*` and nothing else. You have no bash and no edit.
 - Stage templates, reads/writes per stage, and the fast/full flow rules live in the
-  `punk-sdlc` skill. Follow them; do not invent a stage or a file name.
+  `swap-bet` skill (formerly `punk-sdlc`). Follow them; do not invent a stage or a file name.
 - Linear / Notion / Slack go through their MCP servers (`mcp`, `mcpScript`), read-only —
   you never create, update, or comment on a ticket, document, or page. Ticket writes are the
   main session's job via `swap-linear`.

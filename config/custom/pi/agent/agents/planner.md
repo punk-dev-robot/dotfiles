@@ -38,7 +38,7 @@ Contract:
 
 - `write` goes **only** under `~/dev/swapc/specs/<KEY>/`. Work repos are read-only to you:
   `read`/`grep`/`find`/`ls`/`repowise_*` and nothing else. You have no bash and no edit.
-- Stage templates and file names come from the brief (the `punk-sdlc` skill is disabled).
+- Stage templates and file names come from the brief (`punk-sdlc` became the `swap-bet` skill; for Swap bets its `templates/` apply).
   If the brief does not name the stage and file, `ask_owner`; do not invent them.
 - Linear / Notion / Slack go through their MCP servers (`mcp`, `mcpScript`), read-only —
   you never create, update, or comment on a ticket, document, or page. Ticket writes are the
