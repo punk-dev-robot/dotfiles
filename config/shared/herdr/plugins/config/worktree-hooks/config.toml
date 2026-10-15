@@ -4,7 +4,10 @@
 # Runs in a split pane in the new workspace; cwd = the new checkout.
 # NOTE: herdr event hooks are async — `herdr worktree create` returns before this runs.
 [default]
+# wt reads project hooks from the checkout it runs in; repos that keep .config/wt.toml ignored (swapc)
+# lack it in a fresh Herdr checkout, so copy it from the main checkout first.
 created = [
+  "[ -e .config/wt.toml ] || [ ! -e {repo_root}/.config/wt.toml ] || { mkdir -p .config && cp {repo_root}/.config/wt.toml .config/; }",
   "wt hook pre-start --foreground -y",
   "wt hook post-start -y",
 ]

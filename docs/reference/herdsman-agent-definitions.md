@@ -116,8 +116,8 @@ live inside a real Herdr-managed Lead. **Overlaid:** model `{{model_strong}}`
 the bundled coordination-only `tools: []`, dev's skills, `ext_base` +
 `ext_bash_guard` + `ext_context_events` (no pi-herdr, caveman, web, OM or
 plannotator), `inheritProjectContext: true` + `inheritGlobalContext: false`
-(the bundled default inherits global context). The body is not restated, so
-the bundled body stays. Without pi-herdr it has no `herdr_*` tools, so
+(the bundled default inherits global context). Its body is appended to the bundled
+one (`bodyMode: append`): a checkout-setup check for Leads in Herdr-created worktrees. Without pi-herdr it has no `herdr_*` tools, so
 punk-steering's `isSubagent()` treats it as a child: no punk-handoff into a
 pane Herdsman owns. Changes apply to the next Lead launch only
 (`stop_lead` + `resume_project` to restart one).
