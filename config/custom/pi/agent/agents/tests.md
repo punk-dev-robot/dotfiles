@@ -1,7 +1,7 @@
 ---
 # dotter template (KUB-171): edit in ~/dotfiles, then `dotter deploy`. Vars: .dotter/global.toml [base.variables].
 name: tests
-description: Agent focused in writing/reading tests
+description: Test specialist — test strategy, writing or reviewing tests, coverage gaps.
 model: {{model_workhorse}}
 thinking: medium
 systemPromptMode: append

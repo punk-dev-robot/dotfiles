@@ -1,7 +1,7 @@
 ---
 # dotter template (KUB-171): edit in ~/dotfiles, then `dotter deploy`. Vars: .dotter/global.toml [base.variables].
 name: recon
-description: Repo-read-only scout (NO bash/web/ssh) — codebase questions only. Route live-system or web questions to researcher/dev.
+description: Repo-read-only scout (NO bash/web/ssh) — codebase questions only (where is X, how does Y work, which files touch Z, source in node_modules or installed packages); returns a path plus a paragraph. Route live-system or web questions to researcher/dev.
 model: {{model_workhorse}}
 thinking: low
 systemPromptMode: replace

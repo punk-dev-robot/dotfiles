@@ -3,7 +3,7 @@
 # same-name overlay of the bundled Herdsman definition; every bundled field restated.
 # Body shared with reviewer-sol: agent-bodies/reviewer.md (outside agents/: Herdsman parses every *.md under agents/ as a definition).
 name: reviewer
-description: Reviewer. Use when we need to review decisions or code changes
+description: Reviewer for finished changes and decisions — run before calling work done.
 bodyMode: replace
 model: {{model_sota}}
 thinking: high

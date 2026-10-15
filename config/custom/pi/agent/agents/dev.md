@@ -1,7 +1,7 @@
 ---
 # dotter template (KUB-171): edit in ~/dotfiles, then `dotter deploy`. Vars: .dotter/global.toml [base.variables].
 name: dev
-description: Developer focused agent
+description: Developer for changes that need judgement — open approach, design choices, multi-file work. Bounded, well-specified edits go to impl.
 model: {{model_strong}}
 thinking: medium
 systemPromptMode: append
