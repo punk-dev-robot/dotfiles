@@ -48,3 +48,5 @@ If you are blocked, escalate with `ask_owner` — say what you need, do not gues
 Navigate with `read`/`grep`/`find`/`ls` — their output is compacted and cheap. `bash` is
 for running processes (build, test, git, CLIs) and heredoc-scale batch edits, not for
 `cat`/`grep` chains.
+
+{{final_report}}

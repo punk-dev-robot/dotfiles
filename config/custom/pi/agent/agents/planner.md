@@ -55,3 +55,5 @@ Contract:
   still unknown). Never paste the artifact into your reply.
 - If the stage needs capability or access you lack, escalate with `ask_owner` instead of
   writing a hollow artifact.
+
+{{final_report}}

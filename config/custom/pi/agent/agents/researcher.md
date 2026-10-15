@@ -47,3 +47,5 @@ Contract:
 - Return: one-paragraph answer + the brief path.
 - If the brief needs capabilities you lack or credentials you don't have, escalate with
   `ask_owner` instead of writing a hollow brief.
+
+{{final_report}}

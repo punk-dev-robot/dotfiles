@@ -26,3 +26,5 @@ extensions:
 ---
 
 @../agent-bodies/arbiter.md
+
+{{final_report}}

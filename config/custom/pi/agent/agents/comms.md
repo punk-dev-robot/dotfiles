@@ -45,3 +45,5 @@ Contract:
 
 Return: what was read, every mutation performed (with ids/URLs), anything
 skipped and why.
+
+{{final_report}}

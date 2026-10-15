@@ -66,6 +66,9 @@ Herdsman has no model-alias layer; these variables are ours.
   `ext_web` to researcher and planner, `ext_ponytail` to dev,
   `ext_bash_guard` to bash-capable definitions, `ext_context_events` to all.
   No pi-rtk-optimizer and no pi-caveman in agents.
+- `final_report` — the complete-final-report rule; a `{{final_report}}` line ends
+  every reporting definition's body (all but the `enabled: false` overlays and
+  `managed-lead`). Add it to new definitions too.
 
 ## Frontmatter conventions
 

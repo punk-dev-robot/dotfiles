@@ -110,6 +110,8 @@ ext_web = ["npm/node_modules/pi-web-access/dist/index.js"]
 ext_ponytail = ["npm/node_modules/@dietrichgebert/ponytail/pi-extension/index.js"]
 ext_bash_guard = ["extensions/bash-output-guard.ts"]
 ext_context_events = ["extensions/context-events.ts"]
+# Appended to every worker body: steers and follow-ups must not truncate the report the owner receives.
+final_report = "Your final message is the complete report: restate every result, PR link, command output and open issue, even after steers or follow-ups. Only the final message reaches your owner."
 
 # ─── macOS (AeroSpace stack) ───
 [macos]
