@@ -6,7 +6,16 @@ user_pref('firefoxpwa.launchType', 2);
 // to the xdg https handler (url-open), which routes app links to their PWA/app and the
 // rest to a Zen tab. Login hosts stay in-app, else SSO bounces to the browser.
 user_pref('firefoxpwa.openOutOfScopeInDefaultBrowser', true);
+// _blank links (Meet chat, outbound links) open in a new window, not the current tab. The
+// runtime default (1 = current tab) navigates the app's own tab before the out-of-scope hand-off
+// cancels it, and Meet treats that as leaving the call. In-scope ctrl/middle-click: new window too.
+user_pref('firefoxpwa.linksTarget', 2);
 user_pref('firefoxpwa.allowedDomains', 'accounts.google.com,accounts.youtube.com,consent.google.com,consent.youtube.com,*.youtube.com,twitter.com,*.x.com');
+
+// No Ctrl+W / Ctrl+Shift+W: a habitual close kills a Meet call. Close windows via Hyprland;
+// Ctrl+Shift+Q (quit app) stays.
+user_pref('firefoxpwa.shortcuts.closeTab', false);
+user_pref('firefoxpwa.shortcuts.closeWindow', false);
 
 // Allow hiding the PWA's Icon Bar through its toolbar menu (experimental).
 user_pref('firefoxpwa.enableHidingIconBar', true);

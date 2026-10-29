@@ -79,6 +79,7 @@ uuid=1f2a3b4c-5d6e-7f80-912a-3b4c5d6e7f80
 # The registered firefoxpwa site IDs the router is pinned to.
 lin=01M2V2Q68ZJ85SFA5CY5V6Q5KW
 meet=01M2TW5QXGJWY46NTDR6Z21WJG
+wa=01M2V2Q827W2W8M213NYZG6RQK
 
 echo "— argv mode: routing (page-ID allowlist)"
 run "titled page -> notion-app" 0 "notion-app notion://www.notion.so/Page-Title-$pid|" - \
@@ -225,6 +226,54 @@ for url in \
   "https://u:p@meet.google.com/abc-defg-hij" \
   "http://meet.google.com.co/abc"; do
   run "browser keeps $url" 0 "zen $url|" - "$url"
+done
+
+echo "— argv mode: WhatsApp PWA (Web + chat links)"
+run "web.whatsapp.com -> WhatsApp PWA byte-exact" 0 \
+  "firefoxpwa site launch $wa --url https://web.whatsapp.com/send?phone=447700900123|" - \
+  "https://web.whatsapp.com/send?phone=447700900123"
+run "wa.me/<phone> -> WhatsApp Web /send" 0 \
+  "firefoxpwa site launch $wa --url https://web.whatsapp.com/send?phone=447700900123|" - \
+  "https://wa.me/447700900123"
+run "wa.me prefilled text survives" 0 \
+  "firefoxpwa site launch $wa --url https://web.whatsapp.com/send?phone=447700900123&text=hi%20there|" - \
+  "https://wa.me/447700900123?text=hi%20there"
+run "api.whatsapp.com/send -> WhatsApp Web /send" 0 \
+  "firefoxpwa site launch $wa --url https://web.whatsapp.com/send?phone=447700900123&text=hi|" - \
+  "https://api.whatsapp.com/send?phone=447700900123&text=hi"
+# Business/catalog/group links: WhatsApp Web can't open them by URL, so the browser keeps them.
+for url in \
+  "https://wa.me/message/ABCDEF123" \
+  "https://wa.me/c/447700900123" \
+  "https://wa.me/" \
+  "https://api.whatsapp.com/send" \
+  "https://chat.whatsapp.com/InviteCode123" \
+  "https://www.whatsapp.com/download" \
+  "https://wa.me.evil.com/447700900123" \
+  "https://web.whatsapp.com.evil.com/"; do
+  run "browser keeps $url" 0 "zen $url|" - "$url"
+done
+
+echo "— argv mode: Google redirector is unwrapped (Meet chat wraps every link)"
+# Opened outside the page that minted it, google.com/url shows a "Redirect notice"
+# interstitial, so the router must hand on the target, not the wrapper.
+run "meet chat link -> target in Zen, no interstitial" 0 "zen https://nx.dev/|" - \
+  "https://www.google.com/url?sa=j&url=https%3A%2F%2Fnx.dev%2F&uct=1789755857&usg=kCnZY-bylAGdMmyvq_O4_6kTlb0.&opi=76390225"
+run "wrapped Linear link -> Linear PWA" 0 \
+  "firefoxpwa site launch $lin --url https://linear.app/swap-commerce/issue/KUB-12|" - \
+  "https://www.google.com/url?sa=j&url=https%3A%2F%2Flinear.app%2Fswap-commerce%2Fissue%2FKUB-12&usg=x"
+run "q= form (Gmail/search) unwrapped too" 0 "zen https://example.com/a?b=c|" - \
+  "https://google.com/url?q=https://example.com/a%3Fb%3Dc&sa=D"
+run "literal + in the target survives (not form-decoded to a space)" 0 "zen https://example.com/a+b|" - \
+  "https://www.google.com/url?sa=j&url=https%3A%2F%2Fexample.com%2Fa+b"
+for url in \
+  "https://www.google.com/url?url=javascript%3Aalert(1)" \
+  "https://www.google.com/url?url=file%3A%2F%2F%2Fetc%2Fpasswd" \
+  "https://www.google.com/url?sa=j" \
+  "https://www.google.com/search?q=https://nx.dev/" \
+  "https://www.google.com.evil.com/url?url=https%3A%2F%2Fnx.dev%2F" \
+  "https://mail.google.com/url?url=https%3A%2F%2Fnx.dev%2F"; do
+  run "not unwrapped: $url" 0 "zen $url|" - "$url"
 done
 
 echo "— argv mode: PWA launch failures fail open"
