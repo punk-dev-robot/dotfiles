@@ -5,7 +5,7 @@
 hl.env("GDK_SCALE", "1")
 
 -- Catch-all for office / unknown outputs.
-hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })
+hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1.25 })
 
 -- Home ultrawide. Match by description: the connector (DP-3 → DP-6) changes between docks.
 hl.monitor({

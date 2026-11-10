@@ -26,13 +26,13 @@ NODE_REPL_NODE_MODULE_DIRS = "{{chatgpt_resources}}/cua_node/lib/node_modules"
 NODE_REPL_NODE_PATH = "{{chatgpt_resources}}/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "{{home_dir}}/.config/codex:{{chatgpt_resources}}/cua_node/lib/node_modules"
 CODEX_HOME = "{{home_dir}}/.config/codex"
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab,mcpapps"
 BROWSER_USE_TINYSKY_ENABLED = "1"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.911.61220"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"{{home_dir}}/.config/codex/plugins/cache/openai-bundled/browser/26.911.61220/scripts/browser-service.mjs"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.1007.71326"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"{{home_dir}}/.config/codex/plugins/cache/openai-bundled/browser/26.1007.71326/scripts/browser-service.mjs"}'
 CODEX_CLI_PATH = "{{chatgpt_resources}}/codex"
 
 [mcp_servers.workshop]
