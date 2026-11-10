@@ -58,13 +58,12 @@ Herdsman has no model-alias layer; these variables are ours.
   `openai-codex` model. `thinking:` is a separate per-definition field. A new
   model release therefore changes agents silently; Logfire's model attribute
   shows it.
-- `ext_base`, `ext_web`, `ext_ponytail`, `ext_bash_guard`,
-  `ext_context_events` — lists of extension entry files relative to
-  `~/.config/pi/agent/`, rendered per entry as
+- `ext_base`, `ext_web`, `ext_ponytail`, `ext_context_events` — lists of
+  extension entry files relative to `~/.config/pi/agent/`, rendered per entry as
   `{{@root.home_dir}}/.config/pi/agent/{{this}}` inside `{{#each}}`
   (`home_dir` is per host). `ext_base` goes to every definition;
   `ext_web` to researcher and planner, `ext_ponytail` to dev,
-  `ext_bash_guard` to bash-capable definitions, `ext_context_events` to all.
+  `ext_context_events` to all.
   No pi-rtk-optimizer and no pi-caveman in agents.
 - `final_report` — the complete-final-report rule; a `{{final_report}}` line ends
   every reporting definition's body (all but the `enabled: false` overlays and
@@ -117,7 +116,7 @@ coordination tools (the nine delegation tools, `message_supervisor`,
 live inside a real Herdr-managed Lead. **Overlaid:** model `{{model_strong}}`
 / `high` (same as the main session), our main-session working tools instead of
 the bundled coordination-only `tools: []`, dev's skills, `ext_base` +
-`ext_bash_guard` + `ext_context_events` (no pi-herdr, caveman, web, OM or
+`ext_context_events` (no pi-herdr, caveman, web, OM or
 plannotator), `inheritProjectContext: true` + `inheritGlobalContext: false`
 (the bundled default inherits global context). Its body is appended to the bundled
 one (`bodyMode: append`): a checkout-setup check for Leads in Herdr-created worktrees. Without pi-herdr it has no `herdr_*` tools, so

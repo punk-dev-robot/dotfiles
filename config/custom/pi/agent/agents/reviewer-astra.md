@@ -20,9 +20,6 @@ extensions:
 {{#each ext_base}}
   - "{{@root.home_dir}}/.config/pi/agent/{{this}}"
 {{/each}}
-{{#each ext_bash_guard}}
-  - "{{@root.home_dir}}/.config/pi/agent/{{this}}"
-{{/each}}
 {{#each ext_context_events}}
   - "{{@root.home_dir}}/.config/pi/agent/{{this}}"
 {{/each}}
